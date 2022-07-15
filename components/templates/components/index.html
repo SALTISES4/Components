@@ -1,0 +1,46 @@
+{% load static i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<!DOCTYPE html>
+<html lang="{{LANGUAGE_CODE}}">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+
+    <script
+      src="{% static 'components/js/app.min.js' %}"
+      defer="true"
+    ></script>
+
+    <style nonce="{{ request.csp_nonce }}">
+    </style>
+  </head>
+  <body>
+    <div id="components-app"></div>
+    {% csrf_token %}
+  </body>
+  <script nonce="{{ request.csp_nonce }}">
+    window.addEventListener("load", function () {
+      const navigation = () => {
+        return components.h(components.Navigation, {
+          links: [
+            {title: "Questions", icon: "InboxIcon", url: "/"},
+            {title: "Assignments", icon: "InboxIcon", url: "/"},
+            {title: "Collections", icon: "InboxIcon", url: "/"}
+          ],
+          nonce: "{{ request.csp_nonce }}",
+        });
+      };
+      components.render(
+        navigation(),
+        document.getElementById("components-app")
+      );
+    });
+  </script>
+</html>

@@ -2,7 +2,7 @@
 components
 ==========
 
-SALTISE-components is a simple Django app to build and test a collection of front-end components for myDALITE
+SALTISE-components is a simple Django app to build and test a collection of front-end components for myDALITE built with preact and Material UI.
 
 Quick start
 -----------

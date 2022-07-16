@@ -1,0 +1,10 @@
+db.sqlite3
+node_modules
+/static/
+venv*
+*.pyc
+.tox/
+*.egg-info/
+.dccache
+.DS_Store
+*.map

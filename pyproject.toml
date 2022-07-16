@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.curlylint.rules]
+html_has_lang = true
+image_alt = true
+meta_viewport = true
+
+[tool.black]
+target-version = ['py38']
+line_length = 79
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+/)
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 79
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py{38,39}-django{2_2,3,3_1,3_2}
+
+[testenv]
+deps =
+  django-csp
+  django2_2: Django>=2.2,<3
+  django3: Django>2.2,<3.1
+  django3_1: Django>3,<3.2
+  django3_2: Django>3.1,<3.3
+commands = python -Wa components.py test
+"""

@@ -1,0 +1,8 @@
+include LICENSE
+include README.rst
+recursive-include user_feedback/static *
+exclude components/urls_test.py
+exclude components/views_test.py
+exclude components/settings.py
+exclude components/static/components/js/app.js
+exclude components/static/components/js/*.map

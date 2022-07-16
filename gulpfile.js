@@ -60,6 +60,12 @@ function buildScript(app, module) {
 
 exports.scripts = () => buildScript("components", "app");
 exports.watch = () =>
-  gulp.watch("./components/static/components/js/app.js", () => {
-    buildScript("components", "app");
-  });
+  gulp.watch(
+    [
+      "./components/static/components/js/app.js",
+      "./components/static/components/js/_navigation/drawer.jsx",
+    ],
+    () => {
+      buildScript("components", "app");
+    },
+  );

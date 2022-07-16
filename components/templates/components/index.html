@@ -13,12 +13,32 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
 
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Cardo:400i&display=swap"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat:400&display=swap"
+      type="text/css"
+    />
+
     <script
       src="{% static 'components/js/app.min.js' %}"
       defer="true"
     ></script>
 
     <style nonce="{{ request.csp_nonce }}">
+      html {
+        background-color: #EDF5FC;
+      }
+      .cardo {
+        font-family: "Cardo";
+      }
+      .montserrat {
+        font-family: "Montserrat";
+      }
     </style>
   </head>
   <body>
@@ -29,12 +49,31 @@
     window.addEventListener("load", function () {
       const navigation = () => {
         return components.h(components.Navigation, {
-          links: [
-            {title: "Questions", icon: "InboxIcon", url: "/"},
-            {title: "Assignments", icon: "InboxIcon", url: "/"},
-            {title: "Collections", icon: "InboxIcon", url: "/"}
+          logo: "{% static 'components/img/logo.png' %}",
+          groups:[
+            [
+              {title: "Search", icon: "search", url: "/"},
+              {title: "Dashboard", icon: "dashboard", url: "/"},
+            ],
+            [
+              {title: "Questions", icon: "forum", url: "/"},
+              {title: "Assignments", icon: "assignment", url: "/"},
+              {title: "Collections", icon: "collections_bookmark", url: "/"}
+            ],
+            [
+              {title: "Student Activity", icon: "notifications", url: "/"},
+              {title: "Group 1", icon: "groups", url: "/"},
+              {title: "Group 2", icon: "groups", url: "/"},
+              {title: "Group 3", icon: "groups", url: "/"},
+              {title: "Manage groups", icon: "settings", url: "/"},
+            ],
+            [
+              {title: "CourseFlow", icon: "account_tree", url: "/"},
+            ]
           ],
           nonce: "{{ request.csp_nonce }}",
+          username: "jsumner",
+          avatar: "{% static 'components/img/avatar.jpg' %}"
         });
       };
       components.render(

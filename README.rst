@@ -29,13 +29,13 @@ Quick start
 
         <script nonce="{{ request.csp_nonce }}">
             window.addEventListener("load", function () {
-                const feedback = () => {
+                const nav = () => {
                     return components.h(components.Navigation, {
                     nonce: "{{ request.csp_nonce }}",
                     });
                 };
-                user_feedback.render(
-                    feedback(),
+                components.render(
+                    nav(),
                     document.getElementById("navigation-app")
                 );
             });

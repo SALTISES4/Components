@@ -62,8 +62,7 @@ exports.scripts = () => buildScript("components", "app");
 exports.watch = () =>
   gulp.watch(
     [
-      "./components/static/components/js/app.js",
-      "./components/static/components/js/_navigation/drawer.jsx",
+      "./components/static/components/js/app.js"
     ],
     () => {
       buildScript("components", "app");

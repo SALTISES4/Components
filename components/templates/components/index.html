@@ -48,8 +48,7 @@
   <script nonce="{{ request.csp_nonce }}">
     window.addEventListener("load", function () {
       const navigation = () => {
-        return components.h(components.Navigation, {
-          logo: "{% static 'components/img/logo.png' %}",
+        return components.h(components.App, {
           groups:[
             [
               {title: "Search", icon: "search", url: "/"},
@@ -72,8 +71,6 @@
             ]
           ],
           nonce: "{{ request.csp_nonce }}",
-          username: "jsumner",
-          avatar: "{% static 'components/img/avatar.jpg' %}"
         });
       };
       components.render(

@@ -13,9 +13,12 @@ const nodeResolve = resolve.default;
 const alias = require("@rollup/plugin-alias");
 const replace = require("@rollup/plugin-replace");
 
-function buildScript(app, module) {
+/* Add new apps to the list */
+const modules = ["dashboard", "navigation"];
+
+function buildScript(module) {
   const inputOptions = {
-    input: `./${app}/static/${app}/js/${module}.js`,
+    input: `./components/static/components/js/${module}.jsx`,
     plugins: [
       alias({
         entries: [
@@ -46,9 +49,9 @@ function buildScript(app, module) {
   };
   const outputOptions = {
     extend: true,
-    file: `./${app}/static/${app}/js/${module}.min.js`,
+    file: `./components/static/components/js/build/${module}.min.js`,
     format: "iife",
-    name: app,
+    name: `${module}`,
     plugins: [terser()],
     sourcemap: true,
   };
@@ -58,13 +61,14 @@ function buildScript(app, module) {
     .then((bundle) => bundle.write(outputOptions));
 }
 
-exports.scripts = () => buildScript("components", "app");
-exports.watch = () =>
-  gulp.watch(
-    [
-      "./components/static/components/js/app.js"
-    ],
-    () => {
-      buildScript("components", "app");
-    },
-  );
+exports.scripts = gulp.parallel(
+  ...[].concat(
+    ...modules.map((m) => {
+      function task() {
+        return buildScript(m);
+      }
+      task.displayName = m;
+      return task;
+    }),
+  ),
+);

@@ -60,15 +60,15 @@ export const collections = [
     title: "A collection title",
     autor: "Saltise",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
-    tags: ["Biology"],
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. Consectetur adipiscing elit, sed do.",
+    tags: ["Biology", "tag2", "tag3"],
   },
   {
     title: "A collection title",
     autor: "Saltise",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
-    tags: ["Biology"],
+    tags: ["Biology", "tag2"],
   },
 ];
 

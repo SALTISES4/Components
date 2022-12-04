@@ -49,27 +49,6 @@
     window.addEventListener("load", function () {
       const navigation = () => {
         return components.h(components.App, {
-          groups:[
-            [
-              {title: "Search", icon: "search", url: "/"},
-              {title: "Dashboard", icon: "dashboard", url: "/"},
-            ],
-            [
-              {title: "Questions", icon: "forum", url: "/"},
-              {title: "Assignments", icon: "assignment", url: "/"},
-              {title: "Collections", icon: "collections_bookmark", url: "/"}
-            ],
-            [
-              {title: "Student Activity", icon: "notifications", url: "/"},
-              {title: "Group 1", icon: "groups", url: "/"},
-              {title: "Group 2", icon: "groups", url: "/"},
-              {title: "Group 3", icon: "groups", url: "/"},
-              {title: "Manage groups", icon: "settings", url: "/"},
-            ],
-            [
-              {title: "CourseFlow", icon: "account_tree", url: "/"},
-            ]
-          ],
           nonce: "{{ request.csp_nonce }}",
         });
       };

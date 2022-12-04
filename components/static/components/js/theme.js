@@ -1,5 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 
+const primaryBlue = "#1743B3";
+
 const saltise = createTheme({
   palette: {
     background: {
@@ -18,7 +20,7 @@ const saltise = createTheme({
       main: "#90929B",
     },
     primaryBlue: {
-      main: "#1743B3",
+      main: primaryBlue,
     },
     primaryRed: {
       main: "#D70000",
@@ -178,6 +180,14 @@ const saltise = createTheme({
         },
       },
     },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: primaryBlue,
+          padding: "0px",
+        },
+      },
+    },
     MuiListItemButton: {
       styleOverrides: {
         root: {
@@ -189,14 +199,20 @@ const saltise = createTheme({
         },
       },
     },
-    MuiSvgIcon: {
+    MuiListItemIcon: {
       styleOverrides: {
         root: {
-          paddingRight: "6px",
-          paddingLeft: "1px",
+          color: "#fff",
+        },
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        fontSizeSmall: {
+          fontSize: "14px",
         },
         fontSizeMedium: {
-          height: "15px",
+          fontSize: "20px",
         },
       },
     },

@@ -1,29 +1,16 @@
 import { h } from "preact";
-import Typography from "@mui/material/Typography";
+
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import { Card } from "@mui/material";
-import { Box } from "@mui/system";
-//import IconButton from "@mui/material/IconButton";
-//import Button from "@mui/material/Button";
-import { Tag } from "../styledComponent.js";
-import styled from "@mui/system/styled";
-import saltise from "../theme";
+import Typography from "@mui/material/Typography";
+
 import AlarmIcon from "@mui/icons-material/Alarm";
 
-const CircularBox = styled("div")({
-  position: "relative",
-  display: "inline-flex",
-  borderRadius: "100%",
-  backgroundColor: saltise.palette.paleOrange.main,
-  background: saltise.palette.paleOrange.main,
-  width: "20px",
-  height: "20px",
-  margin: "10px",
-});
+import saltise from "../theme";
+import { Tag, CircularBox } from "../styledComponent.js";
 
 import CircularProgress from "@mui/material/CircularProgress";
-
-//import { CircularProgressWithLabel } from "../reusableComponents/circularProgressWithLabel.jsx";
 
 export const Group = (props) => {
   const theme = saltise;
@@ -44,7 +31,7 @@ export const Group = (props) => {
                 backgroundColor: theme.palette.paleRed.main,
               }}
             >
-              <AlarmIcon />
+              <AlarmIcon fontSize="small" sx={{ pr: "6px" }} />
               <Typography variant="tag"> Due un five days </Typography>
             </Tag>
             <Box display="flex" alignItems="center">

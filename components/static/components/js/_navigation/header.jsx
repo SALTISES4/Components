@@ -7,11 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
-//import useTheme from "@mui/material/styles/useTheme";
-
 export const Header = (props) => {
-  //const theme = useTheme();
-
   return (
     <AppBar
       position="fixed"
@@ -20,15 +16,16 @@ export const Header = (props) => {
       <Toolbar>
         <img class="logo" src={props.logo} />
         <Typography
-          variant="h5"
+          variant="h4"
           noWrap
           component="div"
-          sx={{ flexGrow: 1, color: "#fff" }}
+          fontSize="16px"
+          sx={{ flexGrow: 1 }}
         >
           <span class="cardo">my</span>
           <span class="montserrat">DALITE</span>
         </Typography>
-        <IconButton sx={{ color: "white" }}>
+        <IconButton sx={{ color: "#fff", mr: "30px", ml: "30px" }}>
           <HelpIcon fontSize="large" />
         </IconButton>
         <IconButton>

@@ -1,28 +1,26 @@
 import { h } from "preact";
 
-import Card from "@mui/material/Card";
-import {
-  CardHeader,
-  Avatar,
-  Typography,
-  CardContent,
-  CardActions,
-} from "@mui/material";
-import Grid from "@mui/material/Grid";
-import saltise from "../theme";
-import { Tag } from "../styledComponent.js";
+import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 
+import { Tag } from "../styledComponent.js";
+
 export const Collection = (props) => {
-  const theme = saltise;
   const collection = props.collection;
   return (
     <Grid item xs={6}>
       <Card>
         <CardHeader
-          avatar={<Avatar sx={{ bgcolor: theme.palette.primaryBlue.main }} />}
+          avatar={<Avatar />}
           action={<img src="../static/components/img/logo.gif" height="30" />}
           title={<Typography variant="h3">{collection.title}</Typography>}
           subheader={"From ".concat(collection.autor)}
@@ -31,25 +29,21 @@ export const Collection = (props) => {
           <Typography color="text.secondary">
             {collection.description}
           </Typography>
-          <Box display="flex" />
         </CardContent>
         <CardActions>
           <Grid container>
             {collection.tags.map((tag) => (
-              <Tag key={tag}>
+              <Tag key={tag} sx={{ marginRight: "5px" }}>
                 <Typography variant="tag"> {tag} </Typography>
               </Tag>
             ))}
             <Tag>
-              <BookmarksIcon sx={{ fontSize: 40 }} />
+              <BookmarksIcon fontSize="small" sx={{ pr: "6px" }} />
               <Typography variant="tag"> 123 </Typography>
             </Tag>
           </Grid>
           <Box>
-            <BookmarkAddOutlinedIcon
-              sx={{ fontSize: 40 }}
-              color="primaryBlue"
-            />
+            <BookmarkAddOutlinedIcon fontSize="medium" color="primaryBlue" />
           </Box>
         </CardActions>
       </Card>

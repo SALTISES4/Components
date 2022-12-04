@@ -1,9 +1,6 @@
 import { h } from "preact";
 
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import { Divider, Link } from "@mui/material";
-import Typography from "@mui/material/Typography";
+import { Box, Divider, Grid, Link, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { DashboardBar, SubtitleBar } from "../styledComponent";
 
@@ -46,7 +43,6 @@ export const Dashboard = (props) => {
           {assigments.map((assigment) => (
             <Assigment key={assigment.title} assigment={assigment} />
           ))}
-
           {groups.map((group) => (
             <Group key={group.title} group={group} />
           ))}
@@ -77,12 +73,3 @@ export const Dashboard = (props) => {
     </Box>
   );
 };
-
-/* <Paper
-        sx={{
-          p: 2,
-          display: "flex",
-          flexDirection: "column",
-          height: 240,
-        }}
-      /> */

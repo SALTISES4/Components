@@ -1,6 +1,17 @@
 import saltise from "./theme.js";
 import styled from "@mui/system/styled";
 
+export const CircularBox = styled("div")({
+  position: "relative",
+  display: "inline-flex",
+  borderRadius: "100%",
+  backgroundColor: saltise.palette.paleOrange.main,
+  background: saltise.palette.paleOrange.main,
+  width: "20px",
+  height: "20px",
+  margin: "10px",
+});
+
 export const DashboardBar = styled("div")({
   color: saltise.palette.neutral.main,
   backgroundColor: "#fff",
@@ -30,6 +41,5 @@ export const Tag = styled("div")({
   borderRadius: "5px",
   display: "flex",
   padding: "5px",
-  marginRight: "5px",
   alignItems: "center",
 });

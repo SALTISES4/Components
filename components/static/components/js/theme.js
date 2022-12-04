@@ -6,12 +6,200 @@ const saltise = createTheme({
       paper: "#fff",
     },
     primary: {
-      main: "#54c0db",
+      main: "#1743B3",
+    },
+    secondary1: {
+      main: "#E9EBF2",
+    },
+    secondary4: {
+      main: "#515159",
+    },
+    neutral: {
+      main: "#90929B",
+    },
+    primaryBlue: {
+      main: "#1743B3",
+    },
+    primaryRed: {
+      main: "#D70000",
+    },
+    primaryOrange: {
+      main: "#F09326",
+    },
+    primaryYellow: {
+      main: "#FFC911",
+    },
+    primaryGreen: {
+      main: "#2BA789",
+    },
+    paleRed: {
+      main: "#FFEBE6",
+    },
+    paleYellow: {
+      main: "#FFF2C4",
+    },
+    paleOrange: {
+      main: "#FFEBD4",
+    },
+    paleGreen: {
+      main: "#E7FFF6",
     },
   },
   typography: {
     fontFamily: ["Open Sans", "sans-serif"].join(","),
     fontSize: 12,
+    root: {
+      color: "#515159",
+    },
+    h1: {
+      fontSize: "36px",
+      fontWeight: 400,
+      lineHeight: "49px",
+      marginTop: "30px",
+      marginBottom: "30px",
+      color: "#515159",
+    },
+    h2: {
+      fontSize: "20px",
+      fontWeight: 600,
+      lineHeight: "28px",
+      color: "#515159",
+      marginTop: "50px",
+    },
+    h3: {
+      fontSize: "16px",
+      fontWeight: 600,
+      lineHeight: "28px",
+      color: "#515159",
+    },
+    h4: {
+      fontSize: "14px",
+      fontWeight: 400,
+      lineHeight: "20px",
+    },
+    h5: {
+      fontSize: "14px",
+      fontWeight: 600,
+      lineHeight: "19px",
+      padding: "15px",
+      color: "#515159",
+    },
+    h6: {
+      fontSize: "10px",
+      fontWeight: 400,
+      lineHeight: "22px",
+      color: "#90929B",
+    },
+    tag: {
+      fontSize: "12px",
+      fontWeight: 400,
+      lineHeight: "16px",
+      fontFamily: ["Open Sans", "sans-serif"].join(","),
+    },
+  },
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#000B26",
+          color: "#fff",
+          paddingLeft: 2,
+          " img.logo": {
+            height: 40,
+            marginRight: 10,
+          },
+          " .MuiAvatar-root": {
+            height: 30,
+            width: 30,
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        sizeSmall: {
+          padding: "5px",
+          height: "26px",
+          borderRadius: "5px",
+        },
+        root: {
+          boxShadow: "none",
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          padding: "10px 20px",
+          borderRadius: "10px",
+          boxShadow: "none",
+        },
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: "10px 0px 10px 0px",
+        },
+      },
+    },
+    MuiCardHeader: {
+      styleOverrides: {
+        root: {
+          padding: "0px",
+        },
+      },
+    },
+    MuiCardActions: {
+      styleOverrides: {
+        root: {
+          padding: "0px",
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          borderColor: "rgb(255, 255, 255, 0.1)",
+        },
+        vertical: {
+          borderWidth: "0px",
+          backgroundColor: "#EDF5FC",
+          width: "3px",
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          padding: "20px 10px",
+          backgroundColor: "#0D2666",
+          color: "#fff",
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 10,
+          padding: "4px 16px",
+          "&:hover": {
+            backgroundColor: "rgb(255, 255, 255, 0.1)",
+          },
+        },
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          paddingRight: "6px",
+          paddingLeft: "1px",
+        },
+        fontSizeMedium: {
+          height: "15px",
+        },
+      },
+    },
   },
 });
 

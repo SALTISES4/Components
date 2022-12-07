@@ -121,8 +121,13 @@ const saltise = createTheme({
             marginRight: 10,
           },
           " .MuiAvatar-root": {
-            height: 20,
-            width: 20,
+            height: 30,
+            width: 30,
+          },
+          " .MuiIconButton-root": {
+            marginLeft: "15px",
+            marginRight: "15px",
+            color: "#fff",
           },
         },
       },

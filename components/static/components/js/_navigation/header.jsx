@@ -6,6 +6,10 @@ import HelpIcon from "@mui/icons-material/Help";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import Box from "@mui/material/Box";
+
+import { HeaderDropdown } from "./headerDropdown";
 
 export const Header = (props) => {
   return (
@@ -16,7 +20,6 @@ export const Header = (props) => {
       <Toolbar>
         <img class="logo" src={props.logo} />
         <Typography
-          variant="h4"
           noWrap
           component="div"
           fontSize="16px"
@@ -26,10 +29,16 @@ export const Header = (props) => {
           <span class="cardo">my</span>
           <span class="montserrat">DALITE</span>
         </Typography>
-        <IconButton sx={{ color: "#fff", mr: "30px", ml: "30px" }}>
+        <Box display="flex" justifyContent="center">
+          <IconButton>
+            <AddCircleIcon fontSize="large" />
+          </IconButton>
+          <HeaderDropdown />
+        </Box>
+        <IconButton>
           <HelpIcon fontSize="large" />
         </IconButton>
-        <IconButton>
+        <IconButton sx={{ ml: "0px" }}>
           <Avatar alt={props.username} src={props.avatar} fontSize="large" />
         </IconButton>
       </Toolbar>

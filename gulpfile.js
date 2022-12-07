@@ -14,7 +14,7 @@ const alias = require("@rollup/plugin-alias");
 const replace = require("@rollup/plugin-replace");
 
 /* Add new apps to the list */
-const modules = ["dashboard", "navigation"];
+const modules = ["dashboard", "navigation","search"];
 
 function buildScript(module) {
   const inputOptions = {

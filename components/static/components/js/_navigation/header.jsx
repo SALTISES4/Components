@@ -20,6 +20,7 @@ export const Header = (props) => {
           noWrap
           component="div"
           fontSize="16px"
+          color="#fff"
           sx={{ flexGrow: 1 }}
         >
           <span class="cardo">my</span>
@@ -29,7 +30,7 @@ export const Header = (props) => {
           <HelpIcon fontSize="large" />
         </IconButton>
         <IconButton>
-          <Avatar alt={props.username} src={props.avatar} />
+          <Avatar alt={props.username} src={props.avatar} fontSize="large" />
         </IconButton>
       </Toolbar>
     </AppBar>

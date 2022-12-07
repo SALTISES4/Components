@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import { Divider, Link } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Container } from "@mui/system";
-import { DashboardBar, SubtitleBar } from "./styledComponent";
+import { DashboardBar, Subtitle } from "./styledComponent";
 
 import { Assigment } from "./_localComponents/assigment";
 import { Collection } from "./_localComponents/collection";
@@ -53,11 +53,11 @@ export const App = (props) => {
             </DashboardBar>
           </Container>
           <Container>
-            <SubtitleBar>
+            <Subtitle>
               <Typography variant="h2"> Active Assigments </Typography>
               <Link variant="h4"> See my assigments</Link>
-            </SubtitleBar>
-            <Grid container spacing="15px">
+            </Subtitle>
+            <Grid container spacing="10px">
               {props.assigments.map((assigment) => (
                 <Assigment key={assigment.title} assigment={assigment} />
               ))}
@@ -68,22 +68,22 @@ export const App = (props) => {
             </Grid>
           </Container>
           <Container>
-            <SubtitleBar>
+            <Subtitle>
               <Typography variant="h2"> Featured Collection </Typography>
               <Link variant="h4"> Explore collections</Link>
-            </SubtitleBar>
-            <Grid container spacing="15px">
+            </Subtitle>
+            <Grid container spacing="20px">
               {props.collections.map((collection) => (
                 <Collection key={collection.title} collection={collection} />
               ))}
             </Grid>
           </Container>
           <Container>
-            <SubtitleBar>
+            <Subtitle>
               <Typography variant="h2"> Newly Added Questions </Typography>
               <Link variant="h4">Explore Question</Link>
-            </SubtitleBar>
-            <Grid container spacing="15px">
+            </Subtitle>
+            <Grid container spacing="0px">
               {props.questions.map((question) => (
                 <Question key={question.title} question={question} />
               ))}

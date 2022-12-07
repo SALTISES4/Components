@@ -13,11 +13,20 @@ const saltise = createTheme({
     secondary1: {
       main: "#E9EBF2",
     },
+    secondary2: {
+      main: " #AEAEBF",
+    },
     secondary4: {
       main: "#515159",
     },
+    secondaryGrey: {
+      main: "#696973",
+    },
     neutral: {
       main: "#90929B",
+    },
+    darkGrey: {
+      main: "#414141",
     },
     primaryBlue: {
       main: primaryBlue,
@@ -78,6 +87,7 @@ const saltise = createTheme({
       fontSize: "14px",
       fontWeight: 400,
       lineHeight: "20px",
+      color: "#515159",
     },
     h5: {
       fontSize: "14px",
@@ -111,8 +121,8 @@ const saltise = createTheme({
             marginRight: 10,
           },
           " .MuiAvatar-root": {
-            height: 30,
-            width: 30,
+            height: 20,
+            width: 20,
           },
         },
       },
@@ -213,6 +223,9 @@ const saltise = createTheme({
         },
         fontSizeMedium: {
           fontSize: "20px",
+        },
+        fontSizeLarge: {
+          fontSize: "24px",
         },
       },
     },

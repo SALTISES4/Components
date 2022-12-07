@@ -48,7 +48,9 @@ export const Question = (props) => {
             </Box>
           </Box>
           <Typography variant="h6">From {question.autor}</Typography>
-          <Typography>{question.description}</Typography>
+          <Typography sx={{ mb: "10px", mt: "20px" }}>
+            {question.description}
+          </Typography>
         </CardContent>
         <CardActions>
           <Grid container>

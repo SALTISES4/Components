@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import { Link } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Container } from "@mui/system";
-import { Subtitle, Filter, SearchBar, Notification } from "./styledComponent";
+import { Subtitle, SearchBar } from "./styledComponent";
 
 import { AssigmentBis } from "./_localComponents/assigment_bis";
 import { Collection } from "./_localComponents/collection";
@@ -27,7 +27,8 @@ import CategoryIcon from "@mui/icons-material/Category";
 import ScienceIcon from "@mui/icons-material/Science";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import PeopleIcon from "@mui/icons-material/People";
-import { SearchDropdown } from "./_localComponents/searchDropdown";
+
+import { SearchFilter } from "./_search/searchFilter";
 
 export const App = (props) => {
   const cache = createCache({
@@ -38,6 +39,44 @@ export const App = (props) => {
   });
   const viewAll = "View all results";
   const pageWidth = "82%";
+
+  const filters = [
+    {
+      title: "Type",
+      subtitle: "types",
+      icon: CategoryIcon,
+      notification: "0",
+      choices: ["Type 1", "Type 2", "Type 3", "Type 4"],
+    },
+    {
+      title: "Discipline",
+      subtitle: "disciplines",
+      icon: ScienceIcon,
+      notification: "1",
+      choices: ["Disc 1", "Disc 2", "Disc 3", "Disc 4", "Disc 5", "Disc 6"],
+    },
+    {
+      title: "Category",
+      subtitle: "categories",
+      icon: FilterAltIcon,
+      notification: "10",
+      choices: ["Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6"],
+    },
+    {
+      title: "Difficulty",
+      subtitle: "difficulties",
+      icon: NetworkCheckIcon,
+      notification: "4",
+      choices: ["Easy", "Moderate", "Difficult"],
+    },
+    {
+      title: "Peer Impact",
+      subtitle: "peer impacts",
+      icon: PeopleIcon,
+      notification: "0",
+      choices: ["1", "2", "3"],
+    },
+  ];
 
   return (
     <ThemeProvider theme={saltise}>
@@ -83,35 +122,16 @@ export const App = (props) => {
               <Typography variant="h4" sx={{ margin: "5px 10px" }}>
                 Filtred by
               </Typography>
-              <Filter>
-                <Notification sx={{ top: "-8px", left: "-13px" }}>
-                  <Typography fontSize="inherit">11</Typography>
-                </Notification>
-                <CategoryIcon fontSize="small" sx={{ position: "absolute" }} />
-                <Typography color="inherit" sx={{ pl: "3px" }}>
-                  Type
-                </Typography>
-              </Filter>
-              <Filter>
-                <ScienceIcon fontSize="small" />
-                <Typography sx={{ pl: "3px" }}>Discipline</Typography>
-              </Filter>
-              <Box>
-                <Filter>
-                  <FilterAltIcon fontSize="small" />
-                  <Typography sx={{ pl: "3px" }}>Category</Typography>
-                </Filter>
-                <SearchDropdown filter="category" title="categories" />
-              </Box>
-
-              <Filter>
-                <NetworkCheckIcon fontSize="small" />
-                <Typography sx={{ pl: "3px" }}>Difficulty</Typography>
-              </Filter>
-              <Filter>
-                <PeopleIcon fontSize="small" />
-                <Typography sx={{ pl: "3px" }}>Peer Impact</Typography>
-              </Filter>
+              {filters.map((filter) => (
+                <SearchFilter
+                  key={filter.title}
+                  title={filter.title}
+                  subtitle={filter.subtitle}
+                  icon={filter.icon}
+                  notification={filter.notification}
+                  choices={filter.choices}
+                />
+              ))}
             </Box>
           </Box>
           <Box width={pageWidth}>

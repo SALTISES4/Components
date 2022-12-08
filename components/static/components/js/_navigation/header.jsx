@@ -1,5 +1,7 @@
 import { h } from "preact";
 
+import { useState } from "preact/hooks";
+
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import HelpIcon from "@mui/icons-material/Help";
@@ -8,10 +10,21 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Box from "@mui/material/Box";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 
 import { HeaderDropdown } from "./headerDropdown";
 
 export const Header = (props) => {
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen((prev) => !prev);
+  };
+
+  const handleClickAway = () => {
+    setOpen(false);
+  };
+
   return (
     <AppBar
       position="fixed"
@@ -29,12 +42,16 @@ export const Header = (props) => {
           <span class="cardo">my</span>
           <span class="montserrat">DALITE</span>
         </Typography>
-        <Box display="flex" justifyContent="center">
-          <IconButton>
-            <AddCircleIcon fontSize="large" />
-          </IconButton>
-          <HeaderDropdown />
-        </Box>
+
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <Box display="flex" justifyContent="center">
+            <IconButton onClick={handleClick}>
+              <AddCircleIcon fontSize="large" />
+            </IconButton>
+            {open ? <HeaderDropdown /> : null}
+          </Box>
+        </ClickAwayListener>
+
         <IconButton>
           <HelpIcon fontSize="large" />
         </IconButton>

@@ -1,33 +1,31 @@
 import { h, render } from "preact";
 export { h, render };
 
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { Link } from "@mui/material";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { Container } from "@mui/system";
-import { Subtitle, SearchBar } from "./styledComponent";
 
-import { AssigmentBis } from "./_localComponents/assigment_bis";
-import { Collection } from "./_localComponents/collection";
-import { Question } from "./_localComponents/question";
-
-//style
-import { prefixer } from "stylis";
 import { ThemeProvider } from "@mui/material/styles";
+import { prefixer } from "stylis";
 import saltise from "./theme.js";
 
-//cache
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-import NetworkCheckIcon from "@mui/icons-material/NetworkCheck";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CategoryIcon from "@mui/icons-material/Category";
-import ScienceIcon from "@mui/icons-material/Science";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import NetworkCheckIcon from "@mui/icons-material/NetworkCheck";
 import PeopleIcon from "@mui/icons-material/People";
+import ScienceIcon from "@mui/icons-material/Science";
 
+import { SearchBar, Subtitle } from "./styledComponent";
+import { AssigmentBis } from "./_localComponents/assigment_bis";
+import { Collection } from "./_localComponents/collection";
+import { Question } from "./_localComponents/question";
 import { SearchFilter } from "./_search/searchFilter";
 
 export const App = (props) => {
@@ -142,11 +140,11 @@ export const App = (props) => {
                 </Typography>
                 <Link variant="h4">{viewAll}</Link>
               </Subtitle>
-              <Grid container spacing="10px">
+              <Stack spacing="10px">
                 {props.questions.map((question) => (
                   <Question key={question.title} question={question} />
                 ))}
-              </Grid>
+              </Stack>
             </Container>
             <Container>
               <Subtitle>
@@ -155,11 +153,11 @@ export const App = (props) => {
                 </Typography>
                 <Link variant="h4">{viewAll}</Link>
               </Subtitle>
-              <Grid container spacing="10px">
+              <Stack spacing="10px">
                 {props.assigments.map((assigment) => (
                   <AssigmentBis key={assigment.title} assigment={assigment} />
                 ))}
-              </Grid>
+              </Stack>
             </Container>
             <Container>
               <Subtitle>

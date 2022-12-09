@@ -2,7 +2,6 @@ import { h } from "preact";
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 import AlarmIcon from "@mui/icons-material/Alarm";
@@ -17,38 +16,36 @@ export const Group = (props) => {
   const { group } = props;
   const progress = 32.4;
   return (
-    <Grid item xs={12} md={12}>
-      <Card sx={{ pr: "62px", pl: "40px", pt: "2px", pb: "2px" }}>
-        <Box display="flex" justifyContent="space-between">
+    <Card sx={{ pr: "62px", pl: "40px", pt: "2px", pb: "2px" }}>
+      <Box display="flex" justifyContent="space-between">
+        <Box display="flex" alignItems="center">
+          <Typography variant="h3">{group.title}</Typography>
+        </Box>
+        <Box display="flex" alignItems="center">
+          <Tag
+            sx={{
+              mr: "10px",
+              color: theme.palette.primaryRed.main,
+              backgroundColor: theme.palette.paleRed.main,
+            }}
+          >
+            <AlarmIcon fontSize="small" sx={{ pr: "6px" }} />
+            <Typography variant="tag"> Due un five days </Typography>
+          </Tag>
           <Box display="flex" alignItems="center">
-            <Typography variant="h3">{group.title}</Typography>
-          </Box>
-          <Box display="flex" alignItems="center">
-            <Tag
-              sx={{
-                mr: "10px",
-                color: theme.palette.primaryRed.main,
-                backgroundColor: theme.palette.paleRed.main,
-              }}
-            >
-              <AlarmIcon fontSize="small" sx={{ pr: "6px" }} />
-              <Typography variant="tag"> Due un five days </Typography>
-            </Tag>
-            <Box display="flex" alignItems="center">
-              <CircularBox>
-                <CircularProgress
-                  variant="determinate"
-                  value={progress}
-                  size="20px"
-                  color="primaryOrange"
-                />
-              </CircularBox>
-              <Typography> {progress}% completed</Typography>
-            </Box>
+            <CircularBox>
+              <CircularProgress
+                variant="determinate"
+                value={progress}
+                size="20px"
+                color="primaryOrange"
+              />
+            </CircularBox>
+            <Typography> {progress}% completed</Typography>
           </Box>
         </Box>
-      </Card>
-    </Grid>
+      </Box>
+    </Card>
   );
 };
 /*   <CardMedia

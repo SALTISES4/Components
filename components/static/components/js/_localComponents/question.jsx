@@ -3,17 +3,20 @@ import { h } from "preact";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-
+import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+
 import Box from "@mui/system/Box";
 
 import BarChartIcon from "@mui/icons-material/BarChart";
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
+import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import CircleIcon from "@mui/icons-material/Circle";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 //import saltise from "../theme.js";
 import { Tag } from "../styledComponent.js";
@@ -22,65 +25,79 @@ export const Question = (props) => {
   const { question } = props;
   // const theme = saltise;
   return (
-    <Grid item xs={12}>
-      <Card>
-        <CardContent>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography variant="h3" sx={{ mb: "5px" }}>
-              {question.title}
-            </Typography>
+    <Card>
+      <CardContent>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Typography variant="h3" sx={{ mb: "5px" }}>
+            {question.title}
+          </Typography>
+          <Box display="flex">
+            <Box display="flex" sx={{ mr: "30px" }}>
+              <CircleIcon
+                color="primaryGreen"
+                fontSize="medium"
+                sx={{ pl: "10px", pr: "10px" }}
+              />
+              <Typography variant="h4">{question.difficulty}</Typography>
+            </Box>
             <Box display="flex">
-              <Box display="flex" sx={{ mr: "30px" }}>
-                <CircleIcon
-                  color="primaryGreen"
-                  fontSize="medium"
-                  sx={{ pl: "10px", pr: "10px" }}
-                />
-                <Typography variant="h4">{question.difficulty}</Typography>
-              </Box>
-              <Box display="flex">
-                <Typography variant="h4">Peer Impact</Typography>
-              </Box>
+              <Typography variant="h4">Peer Impact</Typography>
             </Box>
           </Box>
-          <Typography variant="h6">From {question.autor}</Typography>
-          <Typography sx={{ mb: "10px", mt: "20px" }}>
-            {question.description}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Grid container>
-            {question.tags.map((tag) => (
-              <Tag key={tag} sx={{ marginRight: "5px" }}>
-                <Typography variant="tag"> {tag} </Typography>
-              </Tag>
-            ))}
-            <Tag
-              sx={{
-                bgcolor: "white",
-                borderWidth: "2px",
-                borderStyle: "solid",
-              }}
-            >
-              <BarChartIcon fontSize="small" sx={{ pr: "6px" }} />
-              <Typography variant="tag"> 123 answers </Typography>
+        </Box>
+        <Typography variant="h6">From {question.autor}</Typography>
+        <Typography sx={{ mb: "10px", mt: "20px" }}>
+          {question.description}
+        </Typography>
+      </CardContent>
+      <CardActions sx={{ justifyContent: "space-between" }}>
+        <Stack direction="row" spacing="5px">
+          {question.tags.map((tag) => (
+            <Tag key={tag}>
+              <Typography variant="tag"> {tag} </Typography>
             </Tag>
-          </Grid>
-          <IconButton sx={{ pl: "12px", pr: "12px" }}>
+          ))}
+          <Tag
+            sx={{
+              bgcolor: "white",
+              borderWidth: "2px",
+              borderStyle: "solid",
+            }}
+          >
+            <BarChartIcon fontSize="small" sx={{ pr: "6px" }} />
+            <Typography variant="tag"> 123 answers </Typography>
+          </Tag>
+        </Stack>
+        <Stack
+          direction="row"
+          spacing="15px"
+          sx={{
+            "& .MuiIconButton-root": {
+              marginLeft: "15px",
+            },
+          }}
+        >
+          <IconButton>
             <PlaylistAddIcon fontSize="medium" />
           </IconButton>
-          <IconButton sx={{ pl: "4px", pr: "12px" }}>
+          <IconButton>
             <VisibilityIcon fontSize="medium" />
           </IconButton>
-          <IconButton sx={{ pl: "4px" }}>
+          <Checkbox
+            icon={<BookmarkAddOutlinedIcon />}
+            checkedIcon={<BookmarkAddedIcon />}
+            sx={{
+              color: "primaryBlue.main",
+              "&.Mui-checked": {
+                color: "primaryBlue.main",
+              },
+            }}
+          />
+          <IconButton>
             <MoreHorizIcon fontSize="medium" />
           </IconButton>
-        </CardActions>
-      </Card>
-    </Grid>
+        </Stack>
+      </CardActions>
+    </Card>
   );
 };

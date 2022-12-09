@@ -199,7 +199,6 @@ const saltise = createTheme({
       styleOverrides: {
         root: {
           color: primaryBlue,
-          padding: "0px",
         },
       },
     },

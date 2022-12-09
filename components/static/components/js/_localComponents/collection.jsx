@@ -1,16 +1,18 @@
 import { h } from "preact";
 
 import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
+import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import BookmarksIcon from "@mui/icons-material/Bookmarks";
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
 
 import { Tag } from "../styledComponent.js";
 
@@ -30,10 +32,10 @@ export const Collection = (props) => {
             {collection.description}
           </Typography>
         </CardContent>
-        <CardActions>
-          <Grid container>
+        <CardActions sx={{ justifyContent: "space-between" }}>
+          <Stack direction="row" spacing="5px">
             {collection.tags.map((tag) => (
-              <Tag key={tag} sx={{ marginRight: "5px" }}>
+              <Tag key={tag}>
                 <Typography variant="tag"> {tag} </Typography>
               </Tag>
             ))}
@@ -41,10 +43,17 @@ export const Collection = (props) => {
               <BookmarksIcon fontSize="small" sx={{ pr: "6px" }} />
               <Typography variant="tag"> 123 </Typography>
             </Tag>
-          </Grid>
-          <Box>
-            <BookmarkAddOutlinedIcon fontSize="medium" color="primaryBlue" />
-          </Box>
+          </Stack>
+          <Checkbox
+            icon={<BookmarkAddOutlinedIcon />}
+            checkedIcon={<BookmarkAddedIcon />}
+            sx={{
+              color: "primaryBlue.main",
+              "&.Mui-checked": {
+                color: "primaryBlue.main",
+              },
+            }}
+          />
         </CardActions>
       </Card>
     </Grid>

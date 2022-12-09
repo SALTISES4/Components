@@ -1,21 +1,23 @@
 import { h, render } from "preact";
 export { h, render };
 
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { Divider, Link } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { Container } from "@mui/system";
-import { DashboardBar, Subtitle } from "./styledComponent";
+import Container from "@mui/system/Container";
 
+import { DashboardBar, Subtitle } from "./styledComponent";
 import { Assigment } from "./_localComponents/assigment";
 import { Collection } from "./_localComponents/collection";
 import { Group } from "./_localComponents/group";
 import { Question } from "./_localComponents/question";
 
 //style
-import { prefixer } from "stylis";
 import { ThemeProvider } from "@mui/material/styles";
+import { prefixer } from "stylis";
 import saltise from "./theme.js";
 
 //cache
@@ -57,7 +59,7 @@ export const App = (props) => {
               <Typography variant="h2"> Active Assigments </Typography>
               <Link variant="h4"> See my assigments</Link>
             </Subtitle>
-            <Grid container spacing="10px">
+            <Stack spacing="10px">
               {props.assigments.map((assigment) => (
                 <Assigment key={assigment.title} assigment={assigment} />
               ))}
@@ -65,7 +67,7 @@ export const App = (props) => {
               {props.groups.map((group) => (
                 <Group key={group.title} group={group} />
               ))}
-            </Grid>
+            </Stack>
           </Container>
           <Container>
             <Subtitle>
@@ -83,11 +85,11 @@ export const App = (props) => {
               <Typography variant="h2"> Newly Added Questions </Typography>
               <Link variant="h4">Explore Question</Link>
             </Subtitle>
-            <Grid container spacing="0px">
+            <Stack spacing="10px">
               {props.questions.map((question) => (
                 <Question key={question.title} question={question} />
               ))}
-            </Grid>
+            </Stack>
           </Container>
         </Box>
       </CacheProvider>

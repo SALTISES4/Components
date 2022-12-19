@@ -13,17 +13,16 @@ import Box from "@mui/system/Box";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
-import CircleIcon from "@mui/icons-material/Circle";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 //import saltise from "../theme.js";
-import { Tag } from "../styledComponent.js";
+import { Tag } from "../styledComponents.js";
+import { DifficultyCircleIcon } from "../reusableComponents/difficultyCircleIcon.jsx";
 
 export const Question = (props) => {
   const { question } = props;
-  // const theme = saltise;
   return (
     <Card>
       <CardContent>
@@ -33,11 +32,7 @@ export const Question = (props) => {
           </Typography>
           <Box display="flex">
             <Box display="flex" sx={{ mr: "30px" }}>
-              <CircleIcon
-                color="primaryGreen"
-                fontSize="medium"
-                sx={{ pl: "10px", pr: "10px" }}
-              />
+              <DifficultyCircleIcon difficulty={question.difficulty} />
               <Typography variant="h4">{question.difficulty}</Typography>
             </Box>
             <Box display="flex">

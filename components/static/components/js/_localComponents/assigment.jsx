@@ -6,10 +6,11 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 
 import AddIcon from "@mui/icons-material/Add";
-import CircleIcon from "@mui/icons-material/Circle";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 
-import { Tag } from "../styledComponent.js";
+import { DifficultyCircleIcon } from "../reusableComponents/difficultyCircleIcon.jsx";
+
+import { Tag } from "../styledComponents.js";
 
 export const Assigment = (props) => {
   const { assigment } = props;
@@ -27,12 +28,8 @@ export const Assigment = (props) => {
               {assigment.questions.length} questions
             </Typography>
           </Tag>
-          <CircleIcon
-            color="primaryGreen"
-            fontSize="medium"
-            sx={{ pl: "10px", pr: "10px" }}
-          />
-          <Typography variant="h4">{assigment.DistributionState}</Typography>
+          <DifficultyCircleIcon difficulty={assigment.difficulty} />
+          <Typography variant="h4">{assigment.distributionState}</Typography>
           <IconButton color="primaryBlue" sx={{ ml: "80px" }}>
             <AddIcon fontSize="20px" />
           </IconButton>

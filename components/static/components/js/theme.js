@@ -31,16 +31,16 @@ const saltise = createTheme({
     primaryBlue: {
       main: primaryBlue,
     },
-    primaryRed: {
+    red: {
       main: "#D70000",
     },
-    primaryOrange: {
+    orange: {
       main: "#F09326",
     },
-    primaryYellow: {
+    yellow: {
       main: "#FFC911",
     },
-    primaryGreen: {
+    green: {
       main: "#2BA789",
     },
     paleRed: {

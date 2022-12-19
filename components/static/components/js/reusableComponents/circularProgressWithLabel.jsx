@@ -25,7 +25,7 @@ export const CircularProgressWithLabel = (props) => {
       <CircularProgress
         variant="determinate"
         value={progress}
-        color="primaryOrange"
+        color="orange"
       />
       <Box
         sx={{

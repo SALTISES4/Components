@@ -54,7 +54,7 @@
   <body>
     <div id="navigation-app"></div>
 
-    <div id="search-app"></div>
+    <div id="dashboard-app"></div>
 
     {% csrf_token %}
   </body>
@@ -105,51 +105,53 @@
               autor: "MySelf",
               creationDate: "12 Nov",
               dueDate: "30 Nov",
-              DistributionState: "Distributed",
+              distributionState: "Distributed",
+              difficulty: "Easy",
               questions: [
                 {
                   title: "Question 1",
                   autor: "autor 1",
-                  level: "easy",
+                  difficulty: "Easy",
                   description: "Description 1",
                 },
                 {
                   title: "Question 2",
                   autor: "autor 2",
-                  level: "easy",
+                  difficulty: "Easy",
                   description: "Description 2",
                 },
                 {
                   title: "Question 3",
                   autor: "autor 3",
-                  level: "easy",
+                  difficulty: "Moderate",
                   description: "Description 3",
                 },
               ],
             },
             {
-              title: "Assigment 1",
-              autor: "MySelf",
+              title: "Assigment 2",
+              autor: "Someone",
               creationDate: "12 Nov",
               dueDate: "30 Nov",
-              DistributionState: "Distributed",
+              distributionState: "Distributed",
+              difficulty: "Difficult",
               questions: [
                 {
                   title: "Question 1",
                   autor: "autor 1",
-                  level: "easy",
+                  difficulty: "Difficult",
                   description: "Description 1",
                 },
                 {
                   title: "Question 2",
                   autor: "autor 2",
-                  level: "easy",
+                  difficulty: "Difficult",
                   description: "Description 2",
                 },
                 {
                   title: "Question 3",
                   autor: "autor 3",
-                  level: "easy",
+                  difficult: "Easy",
                   description: "Description 3",
                 },
               ],
@@ -179,6 +181,7 @@
               numberStudent: "30",
               difficulty: "Easy",
               statut: "Active",
+              dueDate: "2022-11-11",
             },
             {
               title: "Group Bio 2",
@@ -187,6 +190,7 @@
               numberStudent: "30",
               difficulty: "Easy",
               statut: "Active",
+              dueDate: "2022-12-12",
             },
           ],
           questions: [
@@ -195,7 +199,7 @@
               autor: "John Peterson",
               description: "",
               tags: ["Biology", "Cohesion"],
-              difficulty: "Easy",
+              difficulty: "Moderate",
               peerImpact: 1,
             },
             {
@@ -204,7 +208,7 @@
               description:
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
               tags: ["Biology", "Cohesion"],
-              difficulty: "Medium",
+              difficulty: "Difficult",
               peerImpact: 2,
             },
           ],
@@ -216,10 +220,10 @@
           }
         });
       };
-   /*   dashboard.render(
+      dashboard.render(
         dashboardApp(),
         document.getElementById("dashboard-app")
-      ); */
+      ); 
 
       const searchApp = () => {
         return search.h(search.App, {
@@ -335,10 +339,10 @@
           nonce: "{{ request.csp_nonce }}",
         });
       };
-      search.render(
+    /*  search.render(
         searchApp(),
         document.getElementById("search-app")
-      );
+      );*/
     });
   </script>
 </html>

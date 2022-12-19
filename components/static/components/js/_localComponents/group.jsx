@@ -4,15 +4,12 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 
-import AlarmIcon from "@mui/icons-material/Alarm";
-
-import saltise from "../theme";
-import { Tag, CircularBox } from "../styledComponent.js";
+import { CircularBox } from "../styledComponents.js";
+import { DueInTag } from "../reusableComponents/dueInTag";
 
 import CircularProgress from "@mui/material/CircularProgress";
 
 export const Group = (props) => {
-  const theme = saltise;
   const { group } = props;
   const progress = 32.4;
   return (
@@ -22,23 +19,14 @@ export const Group = (props) => {
           <Typography variant="h3">{group.title}</Typography>
         </Box>
         <Box display="flex" alignItems="center">
-          <Tag
-            sx={{
-              mr: "10px",
-              color: theme.palette.primaryRed.main,
-              backgroundColor: theme.palette.paleRed.main,
-            }}
-          >
-            <AlarmIcon fontSize="small" sx={{ pr: "6px" }} />
-            <Typography variant="tag"> Due un five days </Typography>
-          </Tag>
+          <DueInTag dueDate={group.dueDate} />
           <Box display="flex" alignItems="center">
             <CircularBox>
               <CircularProgress
                 variant="determinate"
                 value={progress}
                 size="20px"
-                color="primaryOrange"
+                color="orange"
               />
             </CircularBox>
             <Typography> {progress}% completed</Typography>
@@ -48,10 +36,3 @@ export const Group = (props) => {
     </Card>
   );
 };
-/*   <CardMedia
-            component="img"
-            sx={{ width: 160, display: { xs: "none", sm: "block" } }}
-            image={assigment.image}
-            alt={assigment.imageLabel}
-          />
-       */

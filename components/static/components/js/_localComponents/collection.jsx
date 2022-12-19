@@ -14,7 +14,7 @@ import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 
-import { Tag } from "../styledComponent.js";
+import { Tag } from "../styledComponents.js";
 
 export const Collection = (props) => {
   const collection = props.collection;

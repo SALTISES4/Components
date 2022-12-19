@@ -9,7 +9,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/system/Container";
 
-import { DashboardBar, Subtitle } from "./styledComponent";
+import { DashboardBar, Subtitle } from "./styledComponents";
 import { Assigment } from "./_localComponents/assigment";
 import { Collection } from "./_localComponents/collection";
 import { Group } from "./_localComponents/group";

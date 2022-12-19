@@ -20,6 +20,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 //import saltise from "../theme.js";
 import { Tag } from "../styledComponents.js";
 import { DifficultyCircleIcon } from "../reusableComponents/difficultyCircleIcon.jsx";
+import { PeerImpactIcon } from "../reusableComponents/peerImpactIcon.jsx";
 
 export const Question = (props) => {
   const { question } = props;
@@ -36,6 +37,7 @@ export const Question = (props) => {
               <Typography variant="h4">{question.difficulty}</Typography>
             </Box>
             <Box display="flex">
+              <PeerImpactIcon peerImpact={question.peerImpact} />
               <Typography variant="h4">Peer Impact</Typography>
             </Box>
           </Box>

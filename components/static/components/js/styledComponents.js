@@ -5,8 +5,6 @@ export const CircularBox = styled("div")({
   position: "relative",
   display: "inline-flex",
   borderRadius: "100%",
-  backgroundColor: saltise.palette.paleOrange.main,
-  background: saltise.palette.paleOrange.main,
   width: "20px",
   height: "20px",
   margin: "10px",
@@ -38,7 +36,6 @@ export const SearchBar = styled("div")({
 });
 
 export const Subtitle = styled("div")({
-  // width: "100%px",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "flex-end",

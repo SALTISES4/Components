@@ -27,14 +27,14 @@ export const SideBar = (props) => {
       }}
     >
       <Toolbar />
-      <Box sx={{ overflow: "auto" }}>
+      <Box>
         {props.groups.map((group, i) => (
           <Fragment key={i}>
             <List>
               {group.map((entry) => (
                 <ListItem key={entry.title} disablePadding>
                   <ListItemButton>
-                    <ListItemIcon sx={{ color: "#fff", minWidth: 36 }}>
+                    <ListItemIcon sx={{ minWidth: 36 }}>
                       <Icon>{entry.icon}</Icon>
                     </ListItemIcon>
                     <ListItemText primary={entry.title} />

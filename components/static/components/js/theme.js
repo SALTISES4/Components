@@ -1,5 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 
+const primaryBlue = "#1743B3";
+
 const saltise = createTheme({
   palette: {
     background: {
@@ -11,25 +13,34 @@ const saltise = createTheme({
     secondary1: {
       main: "#E9EBF2",
     },
+    secondary2: {
+      main: " #AEAEBF",
+    },
     secondary4: {
       main: "#515159",
+    },
+    secondaryGrey: {
+      main: "#696973",
     },
     neutral: {
       main: "#90929B",
     },
-    primaryBlue: {
-      main: "#1743B3",
+    darkGrey: {
+      main: "#414141",
     },
-    primaryRed: {
+    primaryBlue: {
+      main: primaryBlue,
+    },
+    red: {
       main: "#D70000",
     },
-    primaryOrange: {
+    orange: {
       main: "#F09326",
     },
-    primaryYellow: {
+    yellow: {
       main: "#FFC911",
     },
-    primaryGreen: {
+    green: {
       main: "#2BA789",
     },
     paleRed: {
@@ -76,6 +87,7 @@ const saltise = createTheme({
       fontSize: "14px",
       fontWeight: 400,
       lineHeight: "20px",
+      color: "#515159",
     },
     h5: {
       fontSize: "14px",
@@ -111,6 +123,25 @@ const saltise = createTheme({
           " .MuiAvatar-root": {
             height: 30,
             width: 30,
+          },
+          " .MuiIconButton-root": {
+            marginLeft: "15px",
+            marginRight: "15px",
+            color: "#fff",
+          },
+          " .MuiList-root": {
+            padding: "10px 0px",
+          },
+          " .MuiListItemButton-root": {
+            padding: "3px 17px",
+            color: "rgb(185 208 228)",
+            "&:hover": {
+              backgroundColor: "#E9F5FF",
+            },
+          },
+          " .MuiListItemIcon-root": {
+            minWidth: "0px",
+            marginRight: "10px",
           },
         },
       },
@@ -176,27 +207,38 @@ const saltise = createTheme({
           backgroundColor: "#0D2666",
           color: "#fff",
         },
+        root: {
+          " .MuiListItemButton-root": {
+            borderRadius: 10,
+            padding: "4px 16px",
+            "&:hover": {
+              backgroundColor: "rgb(255, 255, 255, 0.1)",
+            },
+          },
+          " .MuiListItemIcon-root": {
+            color: "#fff",
+          },
+        },
       },
     },
-    MuiListItemButton: {
+
+    MuiIconButton: {
       styleOverrides: {
         root: {
-          borderRadius: 10,
-          padding: "4px 16px",
-          "&:hover": {
-            backgroundColor: "rgb(255, 255, 255, 0.1)",
-          },
+          color: primaryBlue,
         },
       },
     },
     MuiSvgIcon: {
       styleOverrides: {
-        root: {
-          paddingRight: "6px",
-          paddingLeft: "1px",
+        fontSizeSmall: {
+          fontSize: "14px",
         },
         fontSizeMedium: {
-          height: "15px",
+          fontSize: "20px",
+        },
+        fontSizeLarge: {
+          fontSize: "24px",
         },
       },
     },

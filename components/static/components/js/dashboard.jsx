@@ -1,21 +1,23 @@
 import { h, render } from "preact";
 export { h, render };
 
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { Divider, Link } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { Container } from "@mui/system";
-import { DashboardBar, SubtitleBar } from "./styledComponent";
+import Container from "@mui/system/Container";
 
+import { DashboardBar, Subtitle } from "./styledComponents";
 import { Assigment } from "./_localComponents/assigment";
 import { Collection } from "./_localComponents/collection";
 import { Group } from "./_localComponents/group";
 import { Question } from "./_localComponents/question";
 
 //style
-import { prefixer } from "stylis";
 import { ThemeProvider } from "@mui/material/styles";
+import { prefixer } from "stylis";
 import saltise from "./theme.js";
 
 //cache
@@ -53,11 +55,11 @@ export const App = (props) => {
             </DashboardBar>
           </Container>
           <Container>
-            <SubtitleBar>
+            <Subtitle>
               <Typography variant="h2"> Active Assigments </Typography>
               <Link variant="h4"> See my assigments</Link>
-            </SubtitleBar>
-            <Grid container spacing="15px">
+            </Subtitle>
+            <Stack spacing="10px">
               {props.assigments.map((assigment) => (
                 <Assigment key={assigment.title} assigment={assigment} />
               ))}
@@ -65,41 +67,32 @@ export const App = (props) => {
               {props.groups.map((group) => (
                 <Group key={group.title} group={group} />
               ))}
-            </Grid>
+            </Stack>
           </Container>
           <Container>
-            <SubtitleBar>
+            <Subtitle>
               <Typography variant="h2"> Featured Collection </Typography>
               <Link variant="h4"> Explore collections</Link>
-            </SubtitleBar>
-            <Grid container spacing="15px">
+            </Subtitle>
+            <Grid container spacing="20px">
               {props.collections.map((collection) => (
                 <Collection key={collection.title} collection={collection} />
               ))}
             </Grid>
           </Container>
           <Container>
-            <SubtitleBar>
+            <Subtitle>
               <Typography variant="h2"> Newly Added Questions </Typography>
               <Link variant="h4">Explore Question</Link>
-            </SubtitleBar>
-            <Grid container spacing="15px">
+            </Subtitle>
+            <Stack spacing="10px">
               {props.questions.map((question) => (
                 <Question key={question.title} question={question} />
               ))}
-            </Grid>
+            </Stack>
           </Container>
         </Box>
       </CacheProvider>
     </ThemeProvider>
   );
 };
-
-/* <Paper
-        sx={{
-          p: 2,
-          display: "flex",
-          flexDirection: "column",
-          height: 240,
-        }}
-      /> */

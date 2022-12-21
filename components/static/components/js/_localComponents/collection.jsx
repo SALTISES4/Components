@@ -1,28 +1,28 @@
 import { h } from "preact";
 
+import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
-import {
-  CardHeader,
-  Avatar,
-  Typography,
-  CardContent,
-  CardActions,
-} from "@mui/material";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
-import saltise from "../theme";
-import { Tag } from "../styledComponent.js";
-import Box from "@mui/material/Box";
-import BookmarksIcon from "@mui/icons-material/Bookmarks";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
+
+import { Tag } from "../styledComponents.js";
 
 export const Collection = (props) => {
-  const theme = saltise;
   const collection = props.collection;
   return (
     <Grid item xs={6}>
       <Card>
         <CardHeader
-          avatar={<Avatar sx={{ bgcolor: theme.palette.primaryBlue.main }} />}
+          avatar={<Avatar />}
           action={<img src="../static/components/img/logo.gif" height="30" />}
           title={<Typography variant="h3">{collection.title}</Typography>}
           subheader={"From ".concat(collection.autor)}
@@ -31,26 +31,29 @@ export const Collection = (props) => {
           <Typography color="text.secondary">
             {collection.description}
           </Typography>
-          <Box display="flex" />
         </CardContent>
-        <CardActions>
-          <Grid container>
+        <CardActions sx={{ justifyContent: "space-between" }}>
+          <Stack direction="row" spacing="5px">
             {collection.tags.map((tag) => (
               <Tag key={tag}>
                 <Typography variant="tag"> {tag} </Typography>
               </Tag>
             ))}
             <Tag>
-              <BookmarksIcon sx={{ fontSize: 40 }} />
+              <BookmarksIcon fontSize="small" sx={{ pr: "6px" }} />
               <Typography variant="tag"> 123 </Typography>
             </Tag>
-          </Grid>
-          <Box>
-            <BookmarkAddOutlinedIcon
-              sx={{ fontSize: 40 }}
-              color="primaryBlue"
-            />
-          </Box>
+          </Stack>
+          <Checkbox
+            icon={<BookmarkAddOutlinedIcon />}
+            checkedIcon={<BookmarkAddedIcon />}
+            sx={{
+              color: "primaryBlue.main",
+              "&.Mui-checked": {
+                color: "primaryBlue.main",
+              },
+            }}
+          />
         </CardActions>
       </Card>
     </Grid>

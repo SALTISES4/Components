@@ -1,16 +1,39 @@
 import { h } from "preact";
 
+import { useState } from "preact/hooks";
+
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import HelpIcon from "@mui/icons-material/Help";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
-import HelpIcon from "@mui/icons-material/Help";
+import Box from "@mui/material/Box";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
-//import useTheme from "@mui/material/styles/useTheme";
+import { NavigationDropdown } from "./navigationDropdown";
+import { ProfileDropdown } from "./profileDropdown";
 
 export const Header = (props) => {
-  //const theme = useTheme();
+  const [openMore, setOpenMore] = useState(false);
+  const [openAv, setOpenAv] = useState(false);
+
+  const handleClickMore = () => {
+    setOpenMore((prev) => !prev);
+  };
+
+  const handleClickMoreAway = () => {
+    setOpenMore(false);
+  };
+
+  const handleClickAv = () => {
+    setOpenAv((prev) => !prev);
+  };
+
+  const handleClickAvAway = () => {
+    setOpenAv(false);
+  };
 
   return (
     <AppBar
@@ -20,20 +43,41 @@ export const Header = (props) => {
       <Toolbar>
         <img class="logo" src={props.logo} />
         <Typography
-          variant="h5"
           noWrap
           component="div"
-          sx={{ flexGrow: 1, color: "#fff" }}
+          fontSize="16px"
+          color="#fff"
+          sx={{ flexGrow: 1 }}
         >
           <span class="cardo">my</span>
           <span class="montserrat">DALITE</span>
         </Typography>
-        <IconButton sx={{ color: "white" }}>
+
+        <ClickAwayListener onClickAway={handleClickMoreAway}>
+          <Box display="flex" justifyContent="center">
+            <IconButton onClick={handleClickMore}>
+              <AddCircleIcon fontSize="large" />
+            </IconButton>
+            {openMore ? <NavigationDropdown /> : null}
+          </Box>
+        </ClickAwayListener>
+
+        <IconButton>
           <HelpIcon fontSize="large" />
         </IconButton>
-        <IconButton>
-          <Avatar alt={props.username} src={props.avatar} />
-        </IconButton>
+
+        <ClickAwayListener onClickAway={handleClickAvAway}>
+          <Box display="flex" justifyContent="center">
+            <IconButton sx={{ ml: "0px" }} onClick={handleClickAv}>
+              <Avatar
+                alt={props.username}
+                src={props.avatar}
+                fontSize="large"
+              />
+            </IconButton>
+            {openAv ? <ProfileDropdown /> : null}
+          </Box>
+        </ClickAwayListener>
       </Toolbar>
     </AppBar>
   );

@@ -18,12 +18,17 @@ import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 //import saltise from "../theme.js";
-import { Tag } from "../styledComponents.js";
+import { Tag } from "../styledComponents";
 import { DifficultyCircleIcon } from "../_reusableComponents/difficultyCircleIcon.jsx";
 import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon.jsx";
 
-export const Question = (props) => {
-  const { question } = props;
+import { QuestionType } from "./types";
+
+export function Question({
+  question,
+}: {
+  question: QuestionType;
+}): JSX.Element {
   return (
     <Card>
       <CardContent>
@@ -42,16 +47,16 @@ export const Question = (props) => {
             </Box>
           </Box>
         </Box>
-        <Typography variant="h6">From {question.autor}</Typography>
+        <Typography variant="h6">From {question.author}</Typography>
         <Typography sx={{ mb: "10px", mt: "20px" }}>
           {question.description}
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
         <Stack direction="row" spacing="5px">
-          {question.tags.map((tag) => (
-            <Tag key={tag}>
-              <Typography variant="tag"> {tag} </Typography>
+          {question.tags?.map((tag, i) => (
+            <Tag key={i}>
+              <Typography variant="tag">{tag}</Typography>
             </Tag>
           ))}
           <Tag
@@ -62,7 +67,7 @@ export const Question = (props) => {
             }}
           >
             <BarChartIcon fontSize="small" sx={{ pr: "6px" }} />
-            <Typography variant="tag"> 123 answers </Typography>
+            <Typography variant="tag">{question.answerCount}</Typography>
           </Tag>
         </Stack>
         <Stack
@@ -97,4 +102,4 @@ export const Question = (props) => {
       </CardActions>
     </Card>
   );
-};
+}

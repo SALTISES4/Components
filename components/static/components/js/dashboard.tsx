@@ -15,6 +15,8 @@ import { Collection } from "./_localComponents/collection";
 import { Group } from "./_localComponents/group";
 import { Question } from "./_localComponents/question";
 
+import { QuestionType } from "./_localComponents/types";
+
 //style
 import { ThemeProvider } from "@mui/material/styles";
 import { prefixer } from "stylis";
@@ -86,8 +88,8 @@ export const App = (props) => {
               <Link variant="h4">Explore Question</Link>
             </Subtitle>
             <Stack spacing="10px">
-              {props.questions.map((question) => (
-                <Question key={question.title} question={question} />
+              {props.questions.map((question: QuestionType, i: number) => (
+                <Question key={i} question={question} />
               ))}
             </Stack>
           </Container>

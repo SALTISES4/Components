@@ -70,21 +70,24 @@
               questions: [
                 {
                   title: "Question 1",
-                  autor: "autor 1",
+                  author: "autor 1",
                   difficulty: "Easy",
                   description: "Description 1",
+                  tags: ["Biology", "Cohesion"],
                 },
                 {
                   title: "Question 2",
-                  autor: "autor 2",
+                  author: "autor 2",
                   difficulty: "Easy",
                   description: "Description 2",
+                  tags: ["Biology", "Cohesion"],
                 },
                 {
                   title: "Question 3",
-                  autor: "autor 3",
+                  author: "autor 3",
                   difficulty: "Moderate",
                   description: "Description 3",
+                  tags: ["Biology", "Cohesion"],
                 },
               ],
             },
@@ -98,21 +101,24 @@
               questions: [
                 {
                   title: "Question 1",
-                  autor: "autor 1",
+                  author: "autor 1",
                   difficulty: "Difficult",
                   description: "Description 1",
+                  tags: ["Biology", "Cohesion"],
                 },
                 {
                   title: "Question 2",
-                  autor: "autor 2",
+                  author: "autor 2",
                   difficulty: "Difficult",
                   description: "Description 2",
+                  tags: ["Biology", "Cohesion"],
                 },
                 {
                   title: "Question 3",
-                  autor: "autor 3",
+                  author: "autor 3",
                   difficult: "Easy",
                   description: "Description 3",
+                  tags: ["Biology", "Cohesion"],
                 },
               ],
             },
@@ -158,14 +164,14 @@
           questions: [
             {
               title: "Principles of inheritance",
-              autor: "John Peterson",
+              author: "John Peterson",
               tags: ["Biology", "Cohesion"],
               difficulty: "Moderate",
               peerImpact: 1,
             },
             {
               title: "Principles of inheritance",
-              autor: "John Peterson",
+              author: "John Peterson",
               description:
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
               tags: ["Biology", "Cohesion"],
@@ -174,7 +180,7 @@
             },
             {
               title: "Question 2",
-              autor: "Autor 3",
+              author: "Autor 3",
               description:
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
               tags: ["Biology", "Cohesion","tag3"],
@@ -193,125 +199,6 @@
       dashboard.render(
         dashboardApp(),
         document.getElementById("dashboard-app")
-      );
-
-      const searchApp = () => {
-        return search.h(search.App, {
-          assigments: [
-            {
-              title: "Assigment 1",
-              autor: "MySelf",
-              creationDate: "12 Nov",
-              dueDate: "30 Nov",
-              DistributionState: "Distributed",
-              questions: [
-                {
-                  title: "Question 1",
-                  autor: "autor 1",
-                  level: "easy",
-                  description: "Description 1",
-                },
-                {
-                  title: "Question 2",
-                  autor: "autor 2",
-                  level: "easy",
-                  description: "Description 2",
-                },
-                {
-                  title: "Question 3",
-                  autor: "autor 3",
-                  level: "easy",
-                  description: "Description 3",
-                },
-              ],
-            },
-            {
-              title: "Assigment 1",
-              autor: "MySelf",
-              creationDate: "12 Nov",
-              dueDate: "30 Nov",
-              DistributionState: "Distributed",
-              questions: [
-                {
-                  title: "Question 1",
-                  autor: "autor 1",
-                  level: "easy",
-                  description: "Description 1",
-                },
-                {
-                  title: "Question 2",
-                  autor: "autor 2",
-                  level: "easy",
-                  description: "Description 2",
-                },
-                {
-                  title: "Question 3",
-                  autor: "autor 3",
-                  level: "easy",
-                  description: "Description 3",
-                },
-              ],
-            },
-          ],
-          collections: [
-            {
-              title: "A collection title",
-              autor: "Saltise",
-              description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
-              tags: ["Biology"],
-            },
-            {
-              title: "A collection title",
-              autor: "Saltise",
-              description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
-              tags: ["Biology"],
-            },
-          ],
-          groups: [
-            {
-              title: "Group Bio 1",
-              session: "Summer 2022",
-              subject: "Biology",
-              numberStudent: "30",
-              difficulty: "Easy",
-              statut: "Active",
-            },
-            {
-              title: "Group Bio 2",
-              session: "Summer 2022",
-              subject: "Biology",
-              numberStudent: "30",
-              difficulty: "Easy",
-              statut: "Active",
-            },
-          ],
-          questions: [
-            {
-              title: "Principles of inheritance",
-              autor: "John Peterson",
-              description: "",
-              tags: ["Biology", "Cohesion"],
-              difficulty: "Easy",
-              peerImpact: 1,
-            },
-            {
-              title: "Principles of inheritance",
-              autor: "John Peterson",
-              description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
-              tags: ["Biology", "Cohesion"],
-              difficulty: "Moderate",
-              peerImpact: 2,
-            },
-          ],
-          nonce: "{{ request.csp_nonce }}",
-        });
-      };
-      search.render(
-        searchApp(),
-        document.getElementById("search-app")
       );
     });
   </script>

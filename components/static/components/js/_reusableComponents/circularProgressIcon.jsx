@@ -1,6 +1,6 @@
 import { h } from "preact";
 import saltise from "../theme";
-import { CircularBox } from "../styledComponents.js";
+import { CircularBox } from "../styledComponents";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const theme = saltise;

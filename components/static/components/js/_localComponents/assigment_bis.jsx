@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 
-import { Tag } from "../styledComponents.js";
+import { Tag } from "../styledComponents";
 
 export const AssigmentBis = (props) => {
   const { assigment } = props;

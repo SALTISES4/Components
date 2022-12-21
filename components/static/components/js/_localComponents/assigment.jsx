@@ -10,7 +10,7 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 
 import { DifficultyCircleIcon } from "../_reusableComponents/difficultyCircleIcon.jsx";
 
-import { Tag } from "../styledComponents.js";
+import { Tag } from "../styledComponents";
 
 export const Assigment = (props) => {
   const { assigment } = props;

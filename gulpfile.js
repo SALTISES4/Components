@@ -2,6 +2,7 @@
 
 /* Build tools */
 const gulp = require("gulp");
+const { existsSync } = require("fs");
 
 /* Build modules for scripts */
 const commonjs = require("@rollup/plugin-commonjs"); // loader
@@ -33,8 +34,11 @@ function typescript() {
 }
 
 function buildScript(module) {
+  const file = existsSync(`./components/static/components/js/${module}.tsx`)
+    ? `./components/static/components/js/${module}.tsx`
+    : `./components/static/components/js/${module}.jsx`;
   const inputOptions = {
-    input: `./components/static/components/js/${module}.jsx`,
+    input: file,
     plugins: [
       alias({
         entries: [

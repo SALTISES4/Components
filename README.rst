@@ -25,21 +25,19 @@ Quick start
 
 4. Inject components into the DOM, customizing props as needed.  Assuming django-csp is installed, the Navigation components is injected via::
 
-    .. code-block:: javascript
-
-        <script nonce="{{ request.csp_nonce }}">
-            window.addEventListener("load", function () {
-                const nav = () => {
-                    return components.h(components.Navigation, {
-                    nonce: "{{ request.csp_nonce }}",
-                    });
-                };
-                components.render(
-                    nav(),
-                    document.getElementById("navigation-app")
-                );
-            });
-        </script>
+    <script nonce="{{ request.csp_nonce }}">
+        window.addEventListener("load", function () {
+            const nav = () => {
+                return components.h(components.Navigation, {
+                nonce: "{{ request.csp_nonce }}",
+                });
+            };
+            components.render(
+                nav(),
+                document.getElementById("navigation-app")
+            );
+        });
+    </script>
 
 Quick start dev
 ---------------

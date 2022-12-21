@@ -1,6 +1,17 @@
 import saltise from "./theme.js";
 import styled from "@mui/system/styled";
 
+export const BpIcon = styled("span")({
+  borderRadius: "3px",
+  width: "24px",
+  height: "24px",
+  backgroundColor: "white",
+  borderColor: "darkGrey.main",
+  borderStyle: "solid",
+  borderWidth: "1px",
+  boxSizing: "border-box",
+});
+
 export const CircularBox = styled("div")({
   position: "relative",
   display: "inline-flex",

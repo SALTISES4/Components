@@ -54,7 +54,7 @@
   <body>
     <div id="navigation-app"></div>
 
-    <div id="dashboard-app"></div>
+    <div id="search-app"></div>
 
     {% csrf_token %}
   </body>
@@ -191,7 +191,7 @@
               numberStudent: "30",
               difficulty: "Easy",
               statut: "Active",
-              dueDate: "2022-12-12",
+              dueDate: "2022-12-24",
               progress: 4,
             },
           ],
@@ -230,10 +230,10 @@
           }
         });
       };
-      dashboard.render(
+    /*  dashboard.render(
         dashboardApp(),
         document.getElementById("dashboard-app")
-      ); 
+      ); */
 
       const searchApp = () => {
         return search.h(search.App, {
@@ -342,17 +342,17 @@
               description:
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
               tags: ["Biology", "Cohesion"],
-              difficulty: "Medium",
+              difficulty: "Moderate",
               peerImpact: 2,
             },
           ],
           nonce: "{{ request.csp_nonce }}",
         });
       };
-    /*  search.render(
+     search.render(
         searchApp(),
         document.getElementById("search-app")
-      );*/
+      );
     });
   </script>
 </html>

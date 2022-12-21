@@ -2,7 +2,7 @@ import { h } from "preact";
 
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import { Filter, Notification } from "../styledComponent";
+import { Filter, Notification } from "../styledComponents";
 import SvgIcon from "@mui/material/SvgIcon";
 import { SearchDropdown } from "./searchDropdown";
 import { useState } from "preact/hooks";
@@ -18,6 +18,8 @@ export const SearchFilter = (props) => {
   const handleClickAway = () => {
     setOpen(false);
   };
+
+  const displayChoice = props.choices.slice(0, 5);
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
@@ -49,7 +51,7 @@ export const SearchFilter = (props) => {
             ropdown
             title={props.title}
             subtitle={props.subtitle}
-            choices={props.choices}
+            choices={displayChoice}
           />
         ) : null}
       </Box>

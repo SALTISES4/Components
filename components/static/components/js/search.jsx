@@ -22,7 +22,7 @@ import NetworkCheckIcon from "@mui/icons-material/NetworkCheck";
 import PeopleIcon from "@mui/icons-material/People";
 import ScienceIcon from "@mui/icons-material/Science";
 
-import { SearchBar, Subtitle } from "./styledComponent";
+import { SearchBar, Subtitle } from "./styledComponents";
 import { AssigmentBis } from "./_localComponents/assigment_bis";
 import { Collection } from "./_localComponents/collection";
 import { Question } from "./_localComponents/question";

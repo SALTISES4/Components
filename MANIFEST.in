@@ -1,8 +1,7 @@
 include LICENSE
 include README.rst
-recursive-include user_feedback/static *
+include components/static/components/img/*
+include components/static/components/js/build/*.min.js
 exclude components/urls_test.py
 exclude components/views_test.py
 exclude components/settings.py
-exclude components/static/components/js/app.js
-exclude components/static/components/js/*.map

@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 
-import { DifficultyCircleIcon } from "../reusableComponents/difficultyCircleIcon.jsx";
+import { DifficultyCircleIcon } from "../_reusableComponents/difficultyCircleIcon.jsx";
 
 import { Tag } from "../styledComponents.js";
 

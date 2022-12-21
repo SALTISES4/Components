@@ -19,8 +19,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 
 //import saltise from "../theme.js";
 import { Tag } from "../styledComponents.js";
-import { DifficultyCircleIcon } from "../reusableComponents/difficultyCircleIcon.jsx";
-import { PeerImpactIcon } from "../reusableComponents/peerImpactIcon.jsx";
+import { DifficultyCircleIcon } from "../_reusableComponents/difficultyCircleIcon.jsx";
+import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon.jsx";
 
 export const Question = (props) => {
   const { question } = props;

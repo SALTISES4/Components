@@ -4,8 +4,8 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 
-import { DueInTag } from "../reusableComponents/dueInTag";
-import { CircleProgressIcon } from "../reusableComponents/circularProgressIcon";
+import { DueInTag } from "../_reusableComponents/dueInTag";
+import { CircleProgressIcon } from "../_reusableComponents/circularProgressIcon";
 
 export const Group = (props) => {
   const { group } = props;

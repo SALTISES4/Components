@@ -129,6 +129,20 @@ const saltise = createTheme({
             marginRight: "15px",
             color: "#fff",
           },
+          " .MuiList-root": {
+            padding: "10px 0px",
+          },
+          " .MuiListItemButton-root": {
+            padding: "3px 17px",
+            color: "#515159",
+            "&:hover": {
+              backgroundColor: "#E9F5FF",
+            },
+          },
+          " .MuiListItemIcon-root": {
+            minWidth: "0px",
+            marginRight: "10px",
+          },
         },
       },
     },
@@ -193,30 +207,25 @@ const saltise = createTheme({
           backgroundColor: "#0D2666",
           color: "#fff",
         },
-      },
-    },
-    MuiIconButton: {
-      styleOverrides: {
         root: {
-          color: primaryBlue,
-        },
-      },
-    },
-    MuiListItemButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 10,
-          padding: "4px 16px",
-          "&:hover": {
-            backgroundColor: "rgb(255, 255, 255, 0.1)",
+          " .MuiListItemButton-root": {
+            borderRadius: 10,
+            padding: "4px 16px",
+            "&:hover": {
+              backgroundColor: "rgb(255, 255, 255, 0.1)",
+            },
+          },
+          " .MuiListItemIcon-root": {
+            color: "#fff",
           },
         },
       },
     },
-    MuiListItemIcon: {
+
+    MuiIconButton: {
       styleOverrides: {
         root: {
-          color: "#fff",
+          color: primaryBlue,
         },
       },
     },

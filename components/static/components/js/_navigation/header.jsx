@@ -2,27 +2,37 @@ import { h } from "preact";
 
 import { useState } from "preact/hooks";
 
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import HelpIcon from "@mui/icons-material/Help";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
-import HelpIcon from "@mui/icons-material/Help";
+import Box from "@mui/material/Box";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import Box from "@mui/material/Box";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
 
-import { HeaderDropdown } from "./headerDropdown";
+import { NavigationDropdown } from "./navigationDropdown";
+import { ProfileDropdown } from "./profileDropdown";
 
 export const Header = (props) => {
-  const [open, setOpen] = useState(false);
+  const [openMore, setOpenMore] = useState(false);
+  const [openAv, setOpenAv] = useState(false);
 
-  const handleClick = () => {
-    setOpen((prev) => !prev);
+  const handleClickMore = () => {
+    setOpenMore((prev) => !prev);
   };
 
-  const handleClickAway = () => {
-    setOpen(false);
+  const handleClickMoreAway = () => {
+    setOpenMore(false);
+  };
+
+  const handleClickAv = () => {
+    setOpenAv((prev) => !prev);
+  };
+
+  const handleClickAvAway = () => {
+    setOpenAv(false);
   };
 
   return (
@@ -43,21 +53,31 @@ export const Header = (props) => {
           <span class="montserrat">DALITE</span>
         </Typography>
 
-        <ClickAwayListener onClickAway={handleClickAway}>
+        <ClickAwayListener onClickAway={handleClickMoreAway}>
           <Box display="flex" justifyContent="center">
-            <IconButton onClick={handleClick}>
+            <IconButton onClick={handleClickMore}>
               <AddCircleIcon fontSize="large" />
             </IconButton>
-            {open ? <HeaderDropdown /> : null}
+            {openMore ? <NavigationDropdown /> : null}
           </Box>
         </ClickAwayListener>
 
         <IconButton>
           <HelpIcon fontSize="large" />
         </IconButton>
-        <IconButton sx={{ ml: "0px" }}>
-          <Avatar alt={props.username} src={props.avatar} fontSize="large" />
-        </IconButton>
+
+        <ClickAwayListener onClickAway={handleClickAvAway}>
+          <Box display="flex" justifyContent="center">
+            <IconButton sx={{ ml: "0px" }} onClick={handleClickAv}>
+              <Avatar
+                alt={props.username}
+                src={props.avatar}
+                fontSize="large"
+              />
+            </IconButton>
+            {openAv ? <ProfileDropdown /> : null}
+          </Box>
+        </ClickAwayListener>
       </Toolbar>
     </AppBar>
   );

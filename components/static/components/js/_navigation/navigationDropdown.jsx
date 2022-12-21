@@ -26,6 +26,14 @@ const style = {
   top: "55px",
 };
 
+const typographyStyle = {
+  sx: {
+    fontSize: "12px",
+    lineHeight: "16px",
+    color: "secondary4.main",
+  },
+};
+
 export const NavigationDropdown = (props) => {
   const choices = [
     {
@@ -53,13 +61,8 @@ export const NavigationDropdown = (props) => {
     <Box sx={style}>
       <List>
         {choices.map((choice) => (
-          <ListItem
-            disablePadding
-            key={choice.title}
-            display="flex"
-            alignItems="center"
-          >
-            <ListItemButton>
+          <ListItem disablePadding key={choice.title}>
+            <ListItemButton color="red">
               <ListItemIcon>
                 <SvgIcon
                   sx={{
@@ -71,9 +74,7 @@ export const NavigationDropdown = (props) => {
               </ListItemIcon>
               <ListItemText
                 primary={choice.title}
-                primaryTypographyProps={{
-                  sx: { fontSize: "12px", lineHeight: "16px" },
-                }}
+                primaryTypographyProps={typographyStyle}
               />
             </ListItemButton>
           </ListItem>

@@ -18,6 +18,14 @@ const style = {
   right: "6px",
 };
 
+const typographyStyle = {
+  sx: {
+    fontSize: "12px",
+    lineHeight: "16px",
+    color: "secondary4.main",
+  },
+};
+
 export const ProfileDropdown = (props) => {
   return (
     <Box sx={style}>
@@ -27,7 +35,7 @@ export const ProfileDropdown = (props) => {
             <ListItemText
               disableMargin
               primary="Profile"
-              primaryTypographyProps={{ sx: { fontSize: "12px" } }}
+              primaryTypographyProps={typographyStyle}
             />
           </ListItemButton>
         </ListItem>
@@ -35,9 +43,7 @@ export const ProfileDropdown = (props) => {
           <ListItemButton>
             <ListItemText
               primary="Password"
-              primaryTypographyProps={{
-                sx: { fontSize: "12px", lineHeight: "16px" },
-              }}
+              primaryTypographyProps={typographyStyle}
             />
           </ListItemButton>
         </ListItem>
@@ -45,18 +51,18 @@ export const ProfileDropdown = (props) => {
           <ListItemButton>
             <ListItemText
               primary="Notifications Settings"
-              primaryTypographyProps={{ sx: { fontSize: "12px" } }}
+              primaryTypographyProps={typographyStyle}
             />
           </ListItemButton>
         </ListItem>
       </List>
-      <Divider sx={{ backgroundColor: "secondary4.main" }} />
+      <Divider sx={{ backgroundColor: "secondary2.main" }} />
       <List>
         <ListItem disablePadding>
           <ListItemButton>
             <ListItemText
               primary="Go To Courseflow"
-              primaryTypographyProps={{ sx: { fontSize: "12px" } }}
+              primaryTypographyProps={typographyStyle}
             />
           </ListItemButton>
         </ListItem>
@@ -64,7 +70,7 @@ export const ProfileDropdown = (props) => {
           <ListItemButton>
             <ListItemText
               primary="Sign out"
-              primaryTypographyProps={{ sx: { fontSize: "12px" } }}
+              primaryTypographyProps={typographyStyle}
             />
           </ListItemButton>
         </ListItem>

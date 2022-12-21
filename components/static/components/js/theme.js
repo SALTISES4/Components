@@ -134,7 +134,7 @@ const saltise = createTheme({
           },
           " .MuiListItemButton-root": {
             padding: "3px 17px",
-            color: "#515159",
+            color: "rgb(185 208 228)",
             "&:hover": {
               backgroundColor: "#E9F5FF",
             },

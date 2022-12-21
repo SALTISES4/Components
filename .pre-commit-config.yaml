@@ -65,6 +65,34 @@ repos:
           - flake8-no-pep420==2.3.0
           - flake8-tidy-imports==4.8.0
 
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v7.32.0
+    hooks:
+      - id: eslint
+        args: [--fix]
+        additional_dependencies:
+          - eslint@7.32.0
+          - eslint-config-developit@1.2.0
+          - eslint-config-google@0.14.0
+          - eslint-config-preact@1.1.4
+          - eslint-config-prettier@8.3.0
+          - eslint-plugin-prettier@3.4.0
+          - "@babel/eslint-parser@7.14.7"
+          - "@typescript-eslint/parser"
+          - "@typescript-eslint/eslint-plugin"
+        exclude: "^.*\\.min\\..*$"
+        files: \.[jt]sx?$
+        types: [file]
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.7.1
+    hooks:
+      - id: prettier
+        additional_dependencies:
+          - prettier@2.8.1
+        files: \.js$
+        exclude: "^.*\\.min\\..*$"
+
   - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
     rev: v1.3.0
     hooks:

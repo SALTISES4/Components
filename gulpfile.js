@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /* Build tools */
 const gulp = require("gulp");
 
@@ -6,16 +8,29 @@ const commonjs = require("@rollup/plugin-commonjs"); // loader
 const eslint = require("@rollup/plugin-eslint"); // linter
 const { babel } = require("@rollup/plugin-babel"); // transpiler + polyfills
 const resolve = require("@rollup/plugin-node-resolve"); // loader
+const nodeResolve = resolve.default;
 const strip = require("@rollup/plugin-strip"); // remove console.log statements
 const rollup = require("rollup"); // bundler
 const { terser } = require("rollup-plugin-terser"); // minifier
-const nodeResolve = resolve.default;
 const alias = require("@rollup/plugin-alias");
 const replace = require("@rollup/plugin-replace");
+const ts = require("gulp-typescript"); // typescript
+const tsProject = ts.createProject("tsconfig.json");
 
 /* Add new apps to the list */
-const modules = ["dashboard", "navigation","search"];
-//const modules = ["search"];
+const modules = ["dashboard", "navigation", "search"];
+
+function typescript() {
+  const build = gulp
+    .src([
+      "components/static/components/js/**/*.{ts,tsx,js,jsx}",
+      "!**/*.min.js",
+    ])
+    .pipe(tsProject())
+    .on("error", () => {});
+
+  return build;
+}
 
 function buildScript(module) {
   const inputOptions = {
@@ -62,7 +77,7 @@ function buildScript(module) {
     .then((bundle) => bundle.write(outputOptions));
 }
 
-exports.scripts = gulp.parallel(
+const scripts = gulp.parallel(
   ...[].concat(
     ...modules.map((m) => {
       function task() {
@@ -73,3 +88,5 @@ exports.scripts = gulp.parallel(
     }),
   ),
 );
+
+exports.scripts = gulp.series(typescript, scripts);

@@ -112,7 +112,7 @@ ruamel-yaml==0.17.21
     # via safety
 ruamel-yaml-clib==0.2.6
     # via ruamel-yaml
-safety==2.0.0
+safety==2.3.5
     # via -r requirements.in
 six==1.16.0
     # via

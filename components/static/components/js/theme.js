@@ -1,6 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 
 const primaryBlue = "#1743B3";
+const secondary4 = "#515159";
 
 const saltise = createTheme({
   palette: {
@@ -17,7 +18,7 @@ const saltise = createTheme({
       main: " #AEAEBF",
     },
     secondary4: {
-      main: "#515159",
+      main: secondary4,
     },
     secondaryGrey: {
       main: "#696973",
@@ -43,6 +44,9 @@ const saltise = createTheme({
     green: {
       main: "#2BA789",
     },
+    purple: {
+      main: "#872CFF",
+    },
     paleRed: {
       main: "#FFEBE6",
     },
@@ -55,12 +59,15 @@ const saltise = createTheme({
     paleGreen: {
       main: "#E7FFF6",
     },
+    palePurple: {
+      main: "#F2E9FF",
+    },
   },
   typography: {
     fontFamily: ["Open Sans", "sans-serif"].join(","),
     fontSize: 12,
     root: {
-      color: "#515159",
+      color: secondary4,
     },
     h1: {
       fontSize: "36px",
@@ -68,33 +75,33 @@ const saltise = createTheme({
       lineHeight: "49px",
       marginTop: "30px",
       marginBottom: "30px",
-      color: "#515159",
+      color: secondary4,
     },
     h2: {
       fontSize: "20px",
       fontWeight: 600,
       lineHeight: "28px",
-      color: "#515159",
+      color: secondary4,
       marginTop: "50px",
     },
     h3: {
       fontSize: "16px",
       fontWeight: 600,
       lineHeight: "28px",
-      color: "#515159",
+      color: secondary4,
     },
     h4: {
       fontSize: "14px",
       fontWeight: 400,
       lineHeight: "20px",
-      color: "#515159",
+      color: secondary4,
     },
     h5: {
       fontSize: "14px",
       fontWeight: 600,
       lineHeight: "19px",
       padding: "15px",
-      color: "#515159",
+      color: secondary4,
     },
     h6: {
       fontSize: "10px",
@@ -150,11 +157,30 @@ const saltise = createTheme({
       styleOverrides: {
         sizeSmall: {
           padding: "5px",
-          height: "26px",
-          borderRadius: "5px",
+          " .MuiTypography-root": {
+            fontSize: "12px",
+            lineHeight: "16px",
+          },
+        },
+        sizeMedium: {
+          padding: "9px 30px",
+          " .MuiTypography-root": {
+            fontSize: "16px",
+            lineHeight: "22px",
+          },
         },
         root: {
           boxShadow: "none",
+          borderRadius: "4px",
+          textTransform: "none",
+          "&:hover": {
+            boxShadow: "none",
+          },
+        },
+        contained: {
+          " .MuiTypography-root": {
+            color: "#fff",
+          },
         },
       },
     },
@@ -178,6 +204,17 @@ const saltise = createTheme({
       styleOverrides: {
         root: {
           padding: "0px",
+        },
+        title: {
+          fontSize: "16px",
+          fontWeight: "600",
+          lineHeight: "28px",
+          color: secondary4,
+        },
+        subheader: {
+          fontSize: "10px",
+          lineHeight: "20px",
+          color: "#90929B",
         },
       },
     },
@@ -216,6 +253,9 @@ const saltise = createTheme({
             },
           },
           " .MuiListItemIcon-root": {
+            color: "#fff",
+          },
+          " .MuiTypography-root": {
             color: "#fff",
           },
         },

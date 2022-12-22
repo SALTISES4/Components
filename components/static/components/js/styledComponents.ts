@@ -1,6 +1,8 @@
 import saltise from "./theme.js";
 import styled from "@mui/system/styled";
 
+const theme = saltise;
+
 export const BpIcon = styled("span")({
   borderRadius: "3px",
   width: "24px",
@@ -21,21 +23,6 @@ export const CircularBox = styled("div")({
   margin: "10px",
 });
 
-export const DashboardBar = styled("div")({
-  color: saltise.palette.neutral.main,
-  backgroundColor: "#fff",
-  borderRadius: "20px",
-  width: "68%px",
-  minWidth: "250px",
-  maxWidth: "750px",
-  height: "45px",
-  marginTop: "30px",
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-evenly",
-  alignItems: "center",
-});
-
 export const SearchBar = styled("div")({
   backgroundColor: "#fff",
   borderRadius: "4px",
@@ -54,8 +41,8 @@ export const Subtitle = styled("div")({
 });
 
 export const Tag = styled("div")({
-  color: saltise.palette.secondary4.main,
-  backgroundColor: saltise.palette.secondary1.main,
+  color: theme.palette.secondary4.main,
+  backgroundColor: theme.palette.secondary1.main,
   borderRadius: "5px",
   display: "flex",
   padding: "5px",
@@ -63,7 +50,7 @@ export const Tag = styled("div")({
 });
 
 export const Filter = styled("Button")({
-  color: saltise.palette.secondary4.main,
+  color: theme.palette.secondary4.main,
   borderRadius: "10px",
   display: "flex",
   padding: "0px 10px",
@@ -74,12 +61,12 @@ export const Filter = styled("Button")({
   backgroundColor: "inherit",
   "&:active": {
     boxShadow: "none",
-    backgroundColor: saltise.palette.secondary4.main,
+    backgroundColor: theme.palette.secondary4.main,
     color: "#fff",
   },
   "&:hover": {
     boxShadow: "none",
-    backgroundColor: saltise.palette.secondary4.main,
+    backgroundColor: theme.palette.secondary4.main,
     color: "#fff",
   },
 });
@@ -95,4 +82,17 @@ export const Notification = styled("div")({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+});
+
+export const SharedTag = styled("div")({
+  backgroundColor: theme.palette.purple.main,
+  marginLeft: "12px",
+  padding: "4px 20px",
+  borderRadius: "4px 4px 0px 0px",
+  width: "fit-content",
+  " .MuiTypography-root": {
+    fontSize: "12px",
+    lineHeight: "22px",
+    color: theme.palette.palePurple.main,
+  },
 });

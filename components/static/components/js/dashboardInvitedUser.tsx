@@ -8,13 +8,11 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/system/Container";
 
-import { Subtitle } from "./styledComponents";
+import { Subtitle, SharedTag } from "./styledComponents";
 
-import { SuperUserBar } from "./_dashboard/superUserBar";
+import { InvitedUserBar } from "./_dashboard/invitedUserBar";
 
-import { Assigment } from "./_localComponents/assigment";
 import { Collection } from "./_localComponents/collection";
-import { Group } from "./_localComponents/group";
 import { Question } from "./_localComponents/question";
 import { QuestionType } from "./_localComponents/types";
 
@@ -40,25 +38,22 @@ export const App = (props) => {
       <CacheProvider value={cache}>
         <Box width="calc(100% - 200px)" marginLeft="200px">
           <Typography variant="h1" align="center">
-            Good Morning, {props.user.name}
+            Welcome, {props.user.name}
           </Typography>
           <Container align="center">
-            <SuperUserBar />
+            <InvitedUserBar />
           </Container>
           <Container>
-            <Subtitle>
-              <Typography variant="h2"> Active Assigments </Typography>
-              <Link variant="h4"> See my assigments</Link>
-            </Subtitle>
-            <Stack spacing="10px">
-              {props.assigments.map((assigment) => (
-                <Assigment key={assigment.title} assigment={assigment} />
+            <Grid container spacing="20px">
+              {props.collections.map((collection) => (
+                <Grid key={collection.title} item xs={6}>
+                  <SharedTag>
+                    <Typography>Shared By {collection.autor}</Typography>
+                  </SharedTag>
+                  <Collection collection={collection} />
+                </Grid>
               ))}
-
-              {props.groups.map((group) => (
-                <Group key={group.title} group={group} />
-              ))}
-            </Stack>
+            </Grid>
           </Container>
           <Container>
             <Subtitle>
@@ -75,7 +70,9 @@ export const App = (props) => {
           </Container>
           <Container>
             <Subtitle>
-              <Typography variant="h2"> Newly Added Questions </Typography>
+              <Typography variant="h2">
+                You might be interested in...
+              </Typography>
               <Link variant="h4">Explore Question</Link>
             </Subtitle>
             <Stack spacing="10px">

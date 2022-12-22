@@ -19,7 +19,13 @@ const ts = require("gulp-typescript"); // typescript
 const tsProject = ts.createProject("tsconfig.json");
 
 /* Add new apps to the list */
-const modules = ["dashboard", "navigation", "search","dashboardNewUser","dashboardInvitedUser"];
+const modules = [
+  "dashboard",
+  "navigation",
+  "search",
+  "dashboardNewUser",
+  "dashboardInvitedUser",
+];
 
 function typescript() {
   const build = gulp

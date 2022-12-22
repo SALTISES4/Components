@@ -29,7 +29,7 @@ Quick start
         window.addEventListener("load", function () {
             const nav = () => {
                 return components.h(components.Navigation, {
-                nonce: "{{ request.csp_nonce }}",
+                    nonce: "{{ request.csp_nonce }}",
                 });
             };
             components.render(

@@ -69,6 +69,12 @@ Quick start dev
 
     npx gulp scripts
 
+8. To create translations::
+
+    npx gulp scripts
+    python components.py makemessages -d djangojs -l fr -i=node_modules/* -i=venv*
+    python components.py compilemessages -l fr -i=venv*
+
 8. If you wish, remake the package::
 
     tox --recreate

@@ -163,35 +163,35 @@
           ],
           questions: [
             {
-              title: "Principles of inheritance",
+              title: "{% filter capfirst %}{% lorem 5 w random %}{% endfilter %}",
               author: "John Peterson",
+              description:  "{% filter striptags %}{% lorem 1 p random %}{% endfilter %}",
               tags: ["Biology", "Cohesion"],
               difficulty: "Moderate",
               peerImpact: 1,
             },
             {
-              title: "Principles of inheritance",
+              title: "{% filter capfirst %}{% lorem 3 w random %}{% endfilter %}",
               author: "John Peterson",
-              description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
+              description: "{% filter striptags %}{% lorem 1 p random %}{% endfilter %}",
               tags: ["Biology", "Cohesion"],
               difficulty: "Difficult",
               peerImpact: 2,
             },
             {
-              title: "Question 2",
-              author: "Autor 3",
-              description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+              title: "{% filter capfirst %}{% lorem 4 w random %}{% endfilter %}",
+              author: "John Peterson",
+              description: "{% filter striptags %}{% lorem 1 p random %}{% endfilter %}",
               tags: ["Biology", "Cohesion","tag3"],
               difficulty: "Easy",
               peerImpact: 3,
             },
           ],
+          gettext: gettext,
           nonce: "{{ request.csp_nonce }}",
           user: {
             username: "jsumner",
-            name: "John",
+            name: "Jonathon",
             avatar: "../static/components/img/avatar.jpg",
           }
         });

@@ -17,4 +17,9 @@ urlpatterns = [
         views_test.dashboardInvitedUser,
         name="dashboardInvitedUser",
     ),
+    path(
+        "dashboard/student",
+        views_test.dashboardStudent,
+        name="dashboardStudent",
+    ),
 ]

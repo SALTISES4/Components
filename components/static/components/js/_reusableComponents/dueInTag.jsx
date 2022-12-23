@@ -4,14 +4,7 @@ import { Tag } from "../styledComponents";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-const daysDiff = (date) => {
-  const currentDate = new Date();
-  // (YYYY-MM-DD)
-  const dueDate = new Date(date);
-  const millisBetween = dueDate.getTime() - currentDate.getTime();
-  const days = millisBetween / (1000 * 3600 * 24);
-  return Math.round(Math.abs(days));
-};
+import { daysDiff } from "../functions";
 
 export const DueInTag = (props) => {
   const daysDifference = daysDiff(props.dueDate);

@@ -100,7 +100,6 @@ const saltise = createTheme({
       fontSize: "14px",
       fontWeight: 600,
       lineHeight: "19px",
-      padding: "15px",
       color: secondary4,
     },
     h6: {
@@ -187,7 +186,7 @@ const saltise = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          padding: "10px 20px",
+          padding: "20px 20px",
           borderRadius: "10px",
           boxShadow: "none",
         },

@@ -27,3 +27,10 @@ def dashboardInvitedUser(request):
     template = "components/dashboardInvitedUser.html"
     context = {}
     return render(request, template, context)
+
+
+def dashboardStudent(request):
+
+    template = "components/dashboardStudent.html"
+    context = {}
+    return render(request, template, context)

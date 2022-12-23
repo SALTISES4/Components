@@ -25,7 +25,11 @@ const modules = [
   "search",
   "dashboardNewUser",
   "dashboardInvitedUser",
+  "dashboardStudent",
 ];
+/*const modules = [
+  "dashboardStudent",
+];*/
 
 function typescript() {
   const build = gulp

@@ -1,0 +1,250 @@
+{% load static i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<!DOCTYPE html>
+<html lang="{{LANGUAGE_CODE}}">
+  <head>
+    {% include "components/meta.html" %}
+    <script
+      src="{% static 'components/js/build/dashboardStudent.min.js' %}"
+      defer="true"
+    ></script>
+  </head>
+  <body>
+    <div id="navigation-app"></div>
+
+    <div id="dashboard-app"></div>
+
+    {% csrf_token %}
+  </body>
+  <script nonce="{{ request.csp_nonce }}">
+    window.addEventListener("load", function () {
+      const navigationApp = () => {
+        return navigation.h(navigation.App, {
+          groups:[
+            [
+              {title: "Search", icon: "search", url: "/"},
+              {title: "Dashboard", icon: "dashboard", url: "/"},
+            ],
+            [
+              {title: "Questions", icon: "forum", url: "/"},
+              {title: "Assignments", icon: "assignment", url: "/"},
+              {title: "Collections", icon: "collections_bookmark", url: "/"}
+            ],
+            [
+              {title: "Student Activity", icon: "notifications", url: "/"},
+              {title: "Group 1", icon: "groups", url: "/"},
+              {title: "Group 2", icon: "groups", url: "/"},
+              {title: "Group 3", icon: "groups", url: "/"},
+              {title: "Manage groups", icon: "settings", url: "/"},
+            ],
+            [
+              {title: "CourseFlow", icon: "account_tree", url: "/"},
+            ]
+          ],
+          logo: "../static/components/img/logo.png",
+          nonce: "{{ request.csp_nonce }}",
+          user: {
+            username: "jsumner",
+            name: "John",
+            avatar: "../static/components/img/avatar.jpg",
+          }
+        });
+      };
+      navigation.render(
+        navigationApp(),
+        document.getElementById("navigation-app")
+      );
+
+      const dashboardStudentApp = () => {
+        return dashboardStudent.h(dashboardStudent.App, {
+          assigments: [
+            {
+              title: "Assigment 1",
+              autor: "MySelf",
+              dueDate: "2023-01-11",
+              distributionState: "Distributed",
+              difficulty: "Easy",
+              questions: [
+                {
+                  title: "Question 1",
+                  author: "autor 1",
+                  difficulty: "Easy",
+                  description: "Description 1",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 2",
+                  author: "autor 2",
+                  difficulty: "Easy",
+                  description: "Description 2",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 3",
+                  author: "autor 3",
+                  difficulty: "Moderate",
+                  description: "Description 3",
+                  tags: ["Biology", "Cohesion"],
+                },
+              ],
+              progress:0,
+            },
+            {
+              title: "Assigment 2",
+              autor: "Someone",
+              dueDate: "2022-12-26",
+              distributionState: "Distributed",
+              difficulty: "Difficult",
+              questions: [
+                {
+                  title: "Question 1",
+                  author: "autor 1",
+                  difficulty: "Difficult",
+                  description: "Description 1",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 2",
+                  author: "autor 2",
+                  difficulty: "Difficult",
+                  description: "Description 2",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 3",
+                  author: "autor 3",
+                  difficult: "Easy",
+                  description: "Description 3",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 1",
+                  author: "autor 1",
+                  difficulty: "Difficult",
+                  description: "Description 1",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 2",
+                  author: "autor 2",
+                  difficulty: "Difficult",
+                  description: "Description 2",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 3",
+                  author: "autor 3",
+                  difficult: "Easy",
+                  description: "Description 3",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 1",
+                  author: "autor 1",
+                  difficulty: "Difficult",
+                  description: "Description 1",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 2",
+                  author: "autor 2",
+                  difficulty: "Difficult",
+                  description: "Description 2",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 3",
+                  author: "autor 3",
+                  difficult: "Easy",
+                  description: "Description 3",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 1",
+                  author: "autor 1",
+                  difficulty: "Difficult",
+                  description: "Description 1",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 2",
+                  author: "autor 2",
+                  difficulty: "Difficult",
+                  description: "Description 2",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 3",
+                  author: "autor 3",
+                  difficult: "Easy",
+                  description: "Description 3",
+                  tags: ["Biology", "Cohesion"],
+                },
+              ],
+              progress:0,
+            },
+            {
+              title: "Assigment 1",
+              autor: "MySelf",
+              dueDate: "2023-01-15",
+              distributionState: "Distributed",
+              difficulty: "Easy",
+              questions: [
+                {
+                  title: "Question 1",
+                  author: "autor 1",
+                  difficulty: "Easy",
+                  description: "Description 1",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 2",
+                  author: "autor 2",
+                  difficulty: "Easy",
+                  description: "Description 2",
+                  tags: ["Biology", "Cohesion"],
+                },
+                {
+                  title: "Question 3",
+                  author: "autor 3",
+                  difficulty: "Moderate",
+                  description: "Description 3",
+                  tags: ["Biology", "Cohesion"],
+                },
+              ],
+              progress:77,
+            },
+          ],
+          groups: [
+            {
+              title: "Group Bio 1",
+              tags: ["Biology", "Cohesion"],
+              statut: "Active",
+              assigmentsCount: 12,
+              session:"Sumner 2022",
+            },
+            {
+              title: "Group Bio 2",
+              tags:["Biology", "Cohesion"],
+              statut: "Active",
+              assigmentsCount: 2,
+              session:"Sumner 2022",
+            },
+          ],
+          nonce: "{{ request.csp_nonce }}",
+          user: {
+            username: "jsumner",
+            name: "John",
+            avatar: "../static/components/img/avatar.jpg",
+          }
+        });
+      };
+      dashboardStudent.render(
+        dashboardStudentApp(),
+        document.getElementById("dashboard-app")
+      );
+    });
+  </script>
+</html>

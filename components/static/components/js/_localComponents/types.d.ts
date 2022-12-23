@@ -8,4 +8,10 @@ export type QuestionType = {
   title: string;
 };
 
-export type AssignmentType = {};
+export type AssignmentType = {
+  author: string;
+  difficulty: string;
+  distributionState: string;
+  questions: QuestionType[];
+  title: string;
+};

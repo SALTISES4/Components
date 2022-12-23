@@ -73,7 +73,7 @@
       "JSX": "readonly",
       "gettext": "readonly"
     },
-    "parser": "babel-eslint",
+    "parser": "@typescript-eslint/parser",
     "plugins": [
       "prettier"
     ],

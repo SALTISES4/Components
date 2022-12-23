@@ -67,6 +67,7 @@ function buildScript(module) {
       commonjs(),
       babel({
         babelHelpers: "bundled",
+        exclude: "node_modules/**", // Remove for production
         extensions: [".js", ".jsx", ".ts", ".tsx"],
         presets: [
           [
@@ -84,9 +85,9 @@ function buildScript(module) {
           ],
         ],
         plugins: [
-          "@babel/plugin-proposal-class-properties",
-          "@babel/plugin-proposal-optional-chaining",
-          "@babel/plugin-transform-template-literals",
+          // "@babel/plugin-proposal-class-properties", // Add for production
+          // "@babel/plugin-proposal-optional-chaining", // Add for production
+          // "@babel/plugin-transform-template-literals", // Add for production
           [
             "@babel/plugin-transform-react-jsx",
             {
@@ -98,10 +99,6 @@ function buildScript(module) {
       strip(),
     ],
   };
-  /*
-  After running babel, some imported template literals from mui remain, which breaks xgettext.
-  Simple solution is to re-run babel on the output.
-  */
   const outputOptions = {
     extend: true,
     file: `./components/static/components/js/build/${module}.min.js`,

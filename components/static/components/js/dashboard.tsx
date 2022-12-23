@@ -12,7 +12,7 @@ import { Subtitle } from "./styledComponents";
 
 import { SuperUserBar } from "./_dashboard/superUserBar";
 
-import { Assigment } from "./_localComponents/assigment";
+import { Assignment } from "./_localComponents/assigment";
 import { Collection } from "./_localComponents/collection";
 import { Group } from "./_localComponents/group";
 import { Question } from "./_localComponents/question";
@@ -27,10 +27,31 @@ import saltise from "./theme.js";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-export const App = ({ gettext, ...props }) => {
+type User = {
+  name: string;
+};
+
+type AppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+  urls?: {
+    assignments: string;
+    collections: string;
+    questions: string;
+  };
+  user: User;
+};
+
+// type AppState = {
+//   assignments: AssignmentType[];
+//   collections: CollectionType[];
+//   questions: QuestionType[];
+// };
+
+export const App = ({ gettext, nonce, urls, user, ...props }: AppProps) => {
   const cache = createCache({
     key: "nonced",
-    nonce: props.nonce,
+    nonce,
     prepend: true,
     stylisPlugins: [prefixer],
   });
@@ -40,7 +61,7 @@ export const App = ({ gettext, ...props }) => {
       <CacheProvider value={cache}>
         <Box width="calc(100% - 200px)" marginLeft="200px">
           <Typography variant="h1" align="center">
-            {gettext("Good Morning,")} {props.user.name}
+            {gettext("Good Morning,")} {user.name}
           </Typography>
           <Container align="center">
             <SuperUserBar />
@@ -53,8 +74,12 @@ export const App = ({ gettext, ...props }) => {
               <Link variant="h4">{gettext("See my assigments")}</Link>
             </Subtitle>
             <Stack spacing="10px">
-              {props.assigments.map((assigment) => (
-                <Assigment key={assigment.title} assigment={assigment} />
+              {props.assignments.map((assignment, i) => (
+                <Assignment
+                  key={i}
+                  assignment={assignment}
+                  gettext={gettext}
+                />
               ))}
 
               {props.groups.map((group) => (

@@ -29,7 +29,7 @@ Quick start
         window.addEventListener("load", function () {
             const nav = () => {
                 return components.h(components.Navigation, {
-                nonce: "{{ request.csp_nonce }}",
+                    nonce: "{{ request.csp_nonce }}",
                 });
             };
             components.render(
@@ -68,6 +68,12 @@ Quick start dev
 7. Build when you make edits to app.js::
 
     npx gulp scripts
+
+8. To create translations::
+
+    npx gulp scripts
+    python components.py makemessages -d djangojs -l fr -i=node_modules/* -i=venv*
+    python components.py compilemessages -l fr -i=venv*
 
 8. If you wish, remake the package::
 

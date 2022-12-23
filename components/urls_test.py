@@ -1,10 +1,12 @@
+from django.conf.urls.i18n import i18n_patterns
 from django.urls import path
+from django.views.i18n import JavaScriptCatalog
 
 from . import views_test
 
 app_name = "test_components"
 
-urlpatterns = [
+urlpatterns = i18n_patterns(
     path("", views_test.index, name="index"),
     path("search", views_test.search, name="search"),
     path(
@@ -22,4 +24,5 @@ urlpatterns = [
         views_test.dashboardStudent,
         name="dashboardStudent",
     ),
-]
+    path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
+)

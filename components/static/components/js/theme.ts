@@ -1,4 +1,23 @@
+import { CSSProperties } from "preact/compat";
 import { createTheme } from "@mui/material/styles";
+
+// https://mui.com/material-ui/customization/typography/#variants
+declare module "@mui/material/styles" {
+  // eslint-disable-next-line no-unused-vars
+  interface TypographyVariants {
+    tag: CSSProperties;
+  }
+  // eslint-disable-next-line no-unused-vars
+  interface TypographyVariantsOptions {
+    tag?: CSSProperties;
+  }
+}
+declare module "@mui/material/Typography" {
+  // eslint-disable-next-line no-unused-vars
+  interface TypographyPropsVariantOverrides {
+    tag: true;
+  }
+}
 
 const primaryBlue = "#1743B3";
 const secondary4 = "#515159";

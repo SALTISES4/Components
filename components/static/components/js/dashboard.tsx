@@ -12,7 +12,7 @@ import { Subtitle } from "./styledComponents";
 
 import { SuperUserBar } from "./_dashboard/superUserBar";
 
-import { Assigment } from "./_localComponents/assigment";
+import { Assignment } from "./_localComponents/assigment";
 import { Collection } from "./_localComponents/collection";
 import { Group } from "./_localComponents/group";
 import { Question } from "./_localComponents/question";
@@ -27,10 +27,31 @@ import saltise from "./theme.js";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-export const App = (props) => {
+type User = {
+  name: string;
+};
+
+type AppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+  urls?: {
+    assignments: string;
+    collections: string;
+    questions: string;
+  };
+  user: User;
+};
+
+// type AppState = {
+//   assignments: AssignmentType[];
+//   collections: CollectionType[];
+//   questions: QuestionType[];
+// };
+
+export const App = ({ gettext, nonce, urls, user, ...props }: AppProps) => {
   const cache = createCache({
     key: "nonced",
-    nonce: props.nonce,
+    nonce,
     prepend: true,
     stylisPlugins: [prefixer],
   });
@@ -40,19 +61,25 @@ export const App = (props) => {
       <CacheProvider value={cache}>
         <Box width="calc(100% - 200px)" marginLeft="200px">
           <Typography variant="h1" align="center">
-            Good Morning, {props.user.name}
+            {gettext("Good Morning,")} {user.name}
           </Typography>
           <Container align="center">
             <SuperUserBar />
           </Container>
           <Container>
             <Subtitle>
-              <Typography variant="h2"> Active Assigments </Typography>
-              <Link variant="h4"> See my assigments</Link>
+              <Typography variant="h2">
+                {gettext("Active Assigments")}
+              </Typography>
+              <Link variant="h4">{gettext("See my assigments")}</Link>
             </Subtitle>
             <Stack spacing="10px">
-              {props.assigments.map((assigment) => (
-                <Assigment key={assigment.title} assigment={assigment} />
+              {props.assignments.map((assignment, i) => (
+                <Assignment
+                  key={i}
+                  assignment={assignment}
+                  gettext={gettext}
+                />
               ))}
 
               {props.groups.map((group) => (
@@ -62,8 +89,10 @@ export const App = (props) => {
           </Container>
           <Container>
             <Subtitle>
-              <Typography variant="h2"> Featured Collection </Typography>
-              <Link variant="h4"> Explore collections</Link>
+              <Typography variant="h2">
+                {gettext("Featured Collection")}
+              </Typography>
+              <Link variant="h4">{gettext("Explore collections")}</Link>
             </Subtitle>
             <Grid container spacing="20px">
               {props.collections.map((collection) => (
@@ -75,12 +104,14 @@ export const App = (props) => {
           </Container>
           <Container>
             <Subtitle>
-              <Typography variant="h2"> Newly Added Questions </Typography>
-              <Link variant="h4">Explore Question</Link>
+              <Typography variant="h2">
+                {gettext("Newly Added Questions")}
+              </Typography>
+              <Link variant="h4">{gettext("Explore questions")}</Link>
             </Subtitle>
             <Stack spacing="10px">
               {props.questions.map((question: QuestionType, i: number) => (
-                <Question key={i} question={question} />
+                <Question key={i} gettext={gettext} question={question} />
               ))}
             </Stack>
           </Container>

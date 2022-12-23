@@ -20,16 +20,13 @@ const tsProject = ts.createProject("tsconfig.json");
 
 /* Add new apps to the list */
 const modules = [
-  "dashboard",
   "navigation",
+  "dashboard",
   "search",
   "dashboardNewUser",
   "dashboardInvitedUser",
   "dashboardStudent",
 ];
-/*const modules = [
-  "dashboardStudent",
-];*/
 
 function typescript() {
   const build = gulp
@@ -63,17 +60,43 @@ function buildScript(module) {
       eslint({
         fix: true,
       }),
-      // https://github.com/rollup/plugins/tree/master/packages/commonjs#using-with-rollupplugin-node-resolve
+      // https://github.com/rollup/plugins/tree/master/packages/node-resolve#using-with-rollupplugin-commonjs
       nodeResolve({
         extensions: [".js", ".jsx", ".ts", ".tsx"],
         mainFields: ["module", "main", "browser"],
       }),
+      commonjs(),
       babel({
         babelHelpers: "bundled",
-        exclude: "node_modules/**",
+        exclude: "node_modules/**", // Remove for production
         extensions: [".js", ".jsx", ".ts", ".tsx"],
+        presets: [
+          [
+            "@babel/preset-env",
+            {
+              useBuiltIns: "usage",
+              corejs: 3,
+            },
+          ],
+          [
+            "@babel/preset-typescript",
+            {
+              jsxPragma: "h",
+            },
+          ],
+        ],
+        plugins: [
+          // "@babel/plugin-proposal-class-properties", // Add for production
+          // "@babel/plugin-proposal-optional-chaining", // Add for production
+          // "@babel/plugin-transform-template-literals", // Add for production
+          [
+            "@babel/plugin-transform-react-jsx",
+            {
+              pragma: "h",
+            },
+          ],
+        ],
       }),
-      commonjs(),
       strip(),
     ],
   };
@@ -82,7 +105,13 @@ function buildScript(module) {
     file: `./components/static/components/js/build/${module}.min.js`,
     format: "iife",
     name: `${module}`,
-    plugins: [terser()],
+    plugins: [
+      terser({
+        mangle: {
+          reserved: ["gettext"],
+        },
+      }),
+    ],
     sourcemap: true,
   };
 

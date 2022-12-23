@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-23 03:33+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: components/static/components/js/build/dashboard.min.js:7
+#: components/static/components/js/build/dashboardInvitedUser.min.js:7
+#: components/static/components/js/build/dashboardNewUser.min.js:7
+#: components/static/components/js/build/search.min.js:7
+msgid "Peer Impact"
+msgstr ""
+
+#: components/static/components/js/build/dashboard.min.js:7
+#: components/static/components/js/build/dashboardInvitedUser.min.js:7
+#: components/static/components/js/build/dashboardNewUser.min.js:7
+#: components/static/components/js/build/search.min.js:7
+msgid "From"
+msgstr "De"
+
+#: components/static/components/js/build/dashboard.min.js:7
+msgid "Good Morning,"
+msgstr "Bonjour,"
+
+#: components/static/components/js/build/dashboard.min.js:7
+msgid "Active Assigments"
+msgstr "Exercises en cours"
+
+#: components/static/components/js/build/dashboard.min.js:7
+msgid "See my assigments"
+msgstr "Voir tous mes exercises"
+
+#: components/static/components/js/build/dashboard.min.js:7
+msgid "Featured Collection"
+msgstr "Collection étoile"
+
+#: components/static/components/js/build/dashboard.min.js:7
+msgid "Explore collections"
+msgstr "Explorer les collections"
+
+#: components/static/components/js/build/dashboard.min.js:7
+msgid "Newly Added Questions"
+msgstr "Nouvelles questions"
+
+#: components/static/components/js/build/dashboard.min.js:7
+msgid "Explore questions"
+msgstr "Explorer les questions"

@@ -12,8 +12,6 @@
     "@babel/cli": "^7.13.14",
     "@babel/core": "^7.13.15",
     "@babel/eslint-parser": "^7.14.7",
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.14.5",
     "@babel/plugin-transform-react-jsx": "^7.13.12",
     "@babel/preset-env": "^7.13.15",
     "@babel/preset-typescript": "^7.14.5",
@@ -55,34 +53,6 @@
   "optionalDependencies": {
     "fsevents": "^2.3.2"
   },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "useBuiltIns": "usage",
-          "corejs": 3
-        }
-      ],
-      [
-        "@babel/preset-typescript",
-        {
-          "jsxPragma": "h"
-        }
-      ]
-    ],
-    "plugins": [
-      "@babel/plugin-proposal-class-properties",
-      "@babel/plugin-proposal-optional-chaining",
-      "@babel/plugin-transform-template-literals",
-      [
-        "@babel/plugin-transform-react-jsx",
-        {
-          "pragma": "h"
-        }
-      ]
-    ]
-  },
   "prettier": {
     "printWidth": 79,
     "trailingComma": "all"
@@ -103,7 +73,7 @@
       "JSX": "readonly",
       "gettext": "readonly"
     },
-    "parser": "babel-eslint",
+    "parser": "@typescript-eslint/parser",
     "plugins": [
       "prettier"
     ],
@@ -132,9 +102,6 @@
     }
   },
   "browserslist": [
-    "last 5 versions and > 0.1%",
-    "not IE 11",
-    "not IE_Mob 11",
-    "not dead"
+    "defaults"
   ]
 }

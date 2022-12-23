@@ -25,8 +25,10 @@ import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon.jsx";
 import { QuestionType } from "./types";
 
 export function Question({
+  gettext,
   question,
 }: {
+  gettext: (a: string) => string;
   question: QuestionType;
 }): JSX.Element {
   return (
@@ -43,11 +45,13 @@ export function Question({
             </Box>
             <Box display="flex">
               <PeerImpactIcon peerImpact={question.peerImpact} />
-              <Typography variant="h4">Peer Impact</Typography>
+              <Typography variant="h4">{gettext("Peer Impact")}</Typography>
             </Box>
           </Box>
         </Box>
-        <Typography variant="h6">From {question.author}</Typography>
+        <Typography variant="h6">
+          {gettext("From")} {question.author}
+        </Typography>
         <Typography sx={{ mb: "10px", mt: "20px" }}>
           {question.description}
         </Typography>

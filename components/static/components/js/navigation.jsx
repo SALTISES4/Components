@@ -12,7 +12,7 @@ import { SideBar } from "./_navigation/drawer.jsx";
 //style
 import { prefixer } from "stylis";
 import { ThemeProvider } from "@mui/material/styles";
-import saltise from "./theme.js";
+import saltise from "./theme";
 
 //cache
 import createCache from "@emotion/cache";

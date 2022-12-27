@@ -26,7 +26,9 @@ export function Assignment({
       <Box display="flex" justifyContent="space-between">
         <Box>
           <Typography variant="h3">{assignment.title}</Typography>
-          <Typography variant="h6">From {assignment.author}</Typography>
+          <Typography variant="h6">
+            {gettext("From")} {assignment.author}
+          </Typography>
         </Box>
         <Box display="flex" alignItems="center">
           <Tag sx={{ mr: "10px", ml: "10px" }}>

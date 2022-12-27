@@ -1,6 +1,6 @@
-import saltise from "./theme.js";
-import styled from "@mui/system/styled";
-
+import saltise from "./theme";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 const theme = saltise;
 
 export const BpIcon = styled("span")({
@@ -40,7 +40,7 @@ export const Subtitle = styled("div")({
   marginBottom: "20px",
 });
 
-export const Tag = styled("div")({
+export const Tag = styled(Box)({
   color: theme.palette.secondary4.main,
   backgroundColor: theme.palette.secondary1.main,
   borderRadius: "5px",

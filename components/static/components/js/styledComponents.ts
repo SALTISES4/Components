@@ -1,6 +1,7 @@
 import saltise from "./theme";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+
 const theme = saltise;
 
 export const BpIcon = styled("span")({

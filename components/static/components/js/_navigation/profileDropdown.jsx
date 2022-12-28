@@ -26,14 +26,13 @@ const typographyStyle = {
   },
 };
 
-export const ProfileDropdown = (props) => {
+export const ProfileDropdown = () => {
   return (
     <Box sx={style}>
       <List>
         <ListItem disablePadding>
           <ListItemButton>
             <ListItemText
-              disableMargin
               primary="Profile"
               primaryTypographyProps={typographyStyle}
             />

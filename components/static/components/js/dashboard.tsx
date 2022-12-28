@@ -1,6 +1,7 @@
 import { h, render } from "preact";
 export { h, render };
 
+//material ui components
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
@@ -8,6 +9,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/system/Container";
 
+//components
 import { Subtitle } from "./styledComponents";
 
 import { SuperUserBar } from "./_dashboard/superUserBar";
@@ -16,7 +18,10 @@ import { Assignment } from "./_localComponents/assigment";
 import { Collection } from "./_localComponents/collection";
 import { Group } from "./_localComponents/group";
 import { Question } from "./_localComponents/question";
+
+//types
 import { QuestionType } from "./_localComponents/types";
+import { UserType } from "./types";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -27,10 +32,6 @@ import saltise from "./theme";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-type User = {
-  name: string;
-};
-
 type AppProps = {
   gettext: (a: string) => string;
   nonce: string;
@@ -39,7 +40,7 @@ type AppProps = {
     collections: string;
     questions: string;
   };
-  user: User;
+  user: UserType;
 };
 
 // type AppState = {
@@ -61,7 +62,7 @@ export const App = ({ gettext, nonce, urls, user, ...props }: AppProps) => {
       <CacheProvider value={cache}>
         <Box width="calc(100% - 200px)" marginLeft="200px">
           <Typography variant="h1" align="center">
-            {gettext("Good Morning,")} {user.name}
+            {gettext("Good Morning,")} {user.username}
           </Typography>
           <Container align="center">
             <SuperUserBar />

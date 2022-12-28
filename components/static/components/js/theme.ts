@@ -25,7 +25,7 @@ const secondary4 = "#515159";
 const saltise = createTheme({
   palette: {
     background: {
-      paper: "#fff",
+      paper: "#FFF",
     },
     primary: {
       main: "#1743B3",
@@ -168,6 +168,12 @@ const saltise = createTheme({
           " .MuiListItemIcon-root": {
             minWidth: "0px",
             marginRight: "10px",
+          },
+          " span.cardo": {
+            fontFamily: "Cardo",
+          },
+          " span.montserrat": {
+            fontFamily: "Montserrat",
           },
         },
       },

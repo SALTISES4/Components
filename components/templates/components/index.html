@@ -44,10 +44,37 @@
             ]
           ],
           logo: "../static/components/img/logo.png",
+          menuAddItems: [
+            {
+              title: "{% trans 'Question' %}",
+              icon: "question_answer",
+              url: "/"
+            },
+            {
+              title: "{% trans 'Assigment' %}",
+              icon: "assignment",
+              url: "/"
+            },
+            {
+              title: "{% trans 'Collection' %}",
+              icon: "playlist_add",
+              url: "/"
+            },
+            {
+              title: "{% trans 'Group' %}",
+              icon: "groups",
+              url: "/"
+            },
+            {
+              title: "{% trans 'Invite' %}",
+              icon: "person_add",
+              url: "/"
+            },
+          ],
+          menuProfile: {},
           nonce: "{{ request.csp_nonce }}",
           user: {
             username: "jsumner",
-            name: "John",
             avatar: "../static/components/img/avatar.jpg",
           }
         });

@@ -22,7 +22,7 @@
     window.addEventListener("load", function () {
       const navigationApp = () => {
         return navigation.h(navigation.App, {
-          groups:[
+          sidebarGroups:[
             [
               {title: "Search", icon: "search", url: "/"},
               {title: "Dashboard", icon: "dashboard", url: "/"},
@@ -33,7 +33,7 @@
               {title: "Collections", icon: "collections_bookmark", url: "/"}
             ],
             [
-              {title: "Student Activity", icon: "notifications", url: "/"},
+              {title: "Student activity", icon: "mark_unread_chat_alt", url: "/"},
               {title: "Group 1", icon: "groups", url: "/"},
               {title: "Group 2", icon: "groups", url: "/"},
               {title: "Group 3", icon: "groups", url: "/"},
@@ -45,33 +45,65 @@
           ],
           logo: "../static/components/img/logo.png",
           menuAddItems: [
-            {
-              title: "{% trans 'Question' %}",
-              icon: "question_answer",
-              url: "/"
-            },
-            {
-              title: "{% trans 'Assigment' %}",
-              icon: "assignment",
-              url: "/"
-            },
-            {
-              title: "{% trans 'Collection' %}",
-              icon: "playlist_add",
-              url: "/"
-            },
-            {
-              title: "{% trans 'Group' %}",
-              icon: "groups",
-              url: "/"
-            },
-            {
-              title: "{% trans 'Invite' %}",
-              icon: "person_add",
-              url: "/"
-            },
+            [
+              {
+                title: "{% trans 'Question' %}",
+                icon: "question_answer",
+                url: "/"
+              },
+              {
+                title: "{% trans 'Assigment' %}",
+                icon: "assignment",
+                url: "/"
+              },
+              {
+                title: "{% trans 'Collection' %}",
+                icon: "playlist_add",
+                url: "/"
+              },
+              {
+                title: "{% trans 'Group' %}",
+                icon: "groups",
+                url: "/"
+              },
+              {
+                title: "{% trans 'Invite' %}",
+                icon: "person_add",
+                url: "/"
+              },
+            ],
           ],
-          menuProfile: {},
+          menuProfile: [
+            [
+              {
+                title: "{% trans 'Profile' %}",
+                icon: "account_box",
+                url: "/"
+              },
+              {
+                title: "{% trans 'Password' %}",
+                icon: "lock",
+                url: "/"
+              },
+              {
+                title: "{% trans 'Notifications' %}",
+                icon: "notifications",
+                url: "/"
+              },
+            ],
+            [
+              {
+                title: "{% trans 'Go to CourseFlow' %}",
+                icon: "account_tree",
+                url: "/"
+              },
+              {
+                title: "{% trans 'Sign out' %}",
+                icon: "logout",
+                url: "/"
+              },
+            ],
+          ],
           nonce: "{{ request.csp_nonce }}",
           user: {
             username: "jsumner",

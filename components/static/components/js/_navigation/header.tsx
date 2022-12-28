@@ -7,25 +7,12 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import HelpIcon from "@mui/icons-material/Help";
-import Icon from "@mui/material/Icon";
 import IconButton from "@mui/material/IconButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-
-import { URLType, UserType } from "../types";
-
-const typographyStyle = {
-  sx: {
-    fontSize: "12px",
-    lineHeight: "16px",
-    color: "secondary4.main",
-  },
-};
+import { CustomMenu } from "./menu";
+import { LinkType, UserType } from "../types";
 
 export const Header = ({
   logo,
@@ -34,8 +21,8 @@ export const Header = ({
   user,
 }: {
   logo: string;
-  menuAddItems: URLType[];
-  menuProfile: URLType[];
+  menuAddItems: LinkType[][];
+  menuProfile: LinkType[][];
   user: UserType;
 }) => {
   const [{ openMore, anchorElMore }, setOpenMore] = useState<{
@@ -89,55 +76,27 @@ export const Header = ({
           <AddCircleIcon fontSize="large" />
         </IconButton>
 
-        <Menu
+        <CustomMenu
           anchorEl={anchorElMore}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-          }}
+          menuItems={menuAddItems}
           onClose={handleClickMore}
           open={Boolean(openMore)}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "center",
-          }}
-        >
-          {menuAddItems.map((choice, i) => (
-            <MenuItem key={i}>
-              <ListItemIcon>
-                <Icon
-                  sx={{
-                    color: "secondary4.main",
-                    fontSize: "16px!important",
-                  }}
-                >
-                  {choice.icon}
-                </Icon>
-              </ListItemIcon>
-              <ListItemText
-                primary={choice?.title}
-                primaryTypographyProps={typographyStyle}
-              />
-            </MenuItem>
-          ))}
-        </Menu>
+        />
 
         <IconButton>
           <HelpIcon fontSize="large" />
         </IconButton>
 
-        <IconButton sx={{ ml: "0px" }} onClick={handleClickAvatar}>
+        <IconButton onClick={handleClickAvatar}>
           <Avatar alt={user.username} src={user.avatar} fontSize="large" />
         </IconButton>
 
-        <Menu
+        <CustomMenu
           anchorEl={anchorElAvatar}
+          menuItems={menuProfile}
           onClose={handleClickAvatar}
           open={Boolean(openAvatar)}
-        >
-          <MenuItem>Profile</MenuItem>
-          <MenuItem>My account</MenuItem>
-        </Menu>
+        />
       </Toolbar>
     </AppBar>
   );

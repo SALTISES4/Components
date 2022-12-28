@@ -11,9 +11,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 
-import { GroupType } from "../types";
+import { LinkType } from "../types";
 
-export const SideBar = ({ groups }: { groups: GroupType[][] }) => {
+export const SideBar = ({ groups }: { groups: LinkType[][] }) => {
   const drawerWidth = 200;
   return (
     <Drawer

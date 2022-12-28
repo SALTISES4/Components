@@ -22,11 +22,11 @@ import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
 export const App = ({
-  groups,
   logo,
   menuAddItems,
   menuProfile,
   nonce,
+  sidebarGroups,
   user,
 }: NavigationAppProps) => {
   const cache = createCache({
@@ -46,7 +46,7 @@ export const App = ({
             menuProfile={menuProfile}
             user={user}
           />
-          <SideBar groups={groups} />
+          <SideBar groups={sidebarGroups} />
           <Box
             component="main"
             maxWidth="lg"

@@ -3,23 +3,17 @@ export type UserType = {
   username: string;
 };
 
-export type GroupType = {
-  icon: string;
-  title: string;
-  url: string;
-};
-
-type URLType = {
+export type LinkType = {
   icon: string;
   title: string;
   url: string;
 };
 
 export type NavigationAppProps = {
-  groups: GroupType[][];
   logo: string;
-  menuAddItems: URLType[];
-  menuProfile: URLType[];
+  menuAddItems: LinkType[][];
+  menuProfile: LinkType[][];
   nonce: string;
+  sidebarGroups: LinkType[][];
   user: UserType;
 };

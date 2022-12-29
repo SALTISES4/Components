@@ -28,7 +28,7 @@ const saltise = createTheme({
       paper: "#FFF",
     },
     primary: {
-      main: "#1743B3",
+      main: primaryBlue,
     },
     secondary1: {
       main: "#E9EBF2",
@@ -36,11 +36,14 @@ const saltise = createTheme({
     secondary2: {
       main: " #AEAEBF",
     },
+    secondaryGrey: {
+      main: "#696973",
+    },
     secondary4: {
       main: secondary4,
     },
-    secondaryGrey: {
-      main: "#696973",
+    secondary5: {
+      main: "2E2E33",
     },
     neutral: {
       main: "#90929B",

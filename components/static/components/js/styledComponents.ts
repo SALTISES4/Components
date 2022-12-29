@@ -34,7 +34,7 @@ export const SearchBar = styled("div")({
   alignItems: "center",
 });
 
-export const Subtitle = styled("div")({
+export const Subtitle = styled(Box)({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "flex-end",

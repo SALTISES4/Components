@@ -34,7 +34,7 @@ export const assignments = [
         numberStudent: 30,
         difficulty: "Easy",
         statut: "Active",
-        dueDate: "2022-12-24",
+        dueDate: "2022-12-30",
         progress: 4,
       },
     ],
@@ -60,27 +60,30 @@ export const collections = [
 export const questions = [
   {
     answerCount: 40,
-    title: "{% filter capfirst %}{% lorem 5 w random %}{% endfilter %}",
+    title: "Lorem ipsum dolor sit amet",
     author: "John Peterson",
-    description: "{% filter striptags %}{% lorem 1 p random %}{% endfilter %}",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
     tags: ["Biology", "Cohesion"],
     difficulty: "Moderate",
     peerImpact: 1,
   },
   {
     answerCount: 44,
-    title: "{% filter capfirst %}{% lorem 3 w random %}{% endfilter %}",
+    title: "Lorem ipsum dolor sit amet",
     author: "John Peterson",
-    description: "{% filter striptags %}{% lorem 1 p random %}{% endfilter %}",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
     tags: ["Biology", "Cohesion"],
     difficulty: "Difficult",
     peerImpact: 2,
   },
   {
     answerCount: 10,
-    title: "{% filter capfirst %}{% lorem 4 w random %}{% endfilter %}",
+    title: "Lorem ipsum dolor sit amet",
     author: "John Peterson",
-    description: "{% filter striptags %}{% lorem 1 p random %}{% endfilter %}",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
     tags: ["Biology", "Cohesion", "tag3"],
     difficulty: "Easy",
     peerImpact: 3,

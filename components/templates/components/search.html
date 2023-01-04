@@ -20,42 +20,7 @@
   </body>
   <script nonce="{{ request.csp_nonce }}">
     window.addEventListener("load", function () {
-      const navigationApp = () => {
-        return navigation.h(navigation.App, {
-          groups:[
-            [
-              {title: "Search", icon: "search", url: "/"},
-              {title: "Dashboard", icon: "dashboard", url: "/"},
-            ],
-            [
-              {title: "Questions", icon: "forum", url: "/"},
-              {title: "Assignments", icon: "assignment", url: "/"},
-              {title: "Collections", icon: "collections_bookmark", url: "/"}
-            ],
-            [
-              {title: "Student Activity", icon: "notifications", url: "/"},
-              {title: "Group 1", icon: "groups", url: "/"},
-              {title: "Group 2", icon: "groups", url: "/"},
-              {title: "Group 3", icon: "groups", url: "/"},
-              {title: "Manage groups", icon: "settings", url: "/"},
-            ],
-            [
-              {title: "CourseFlow", icon: "account_tree", url: "/"},
-            ]
-          ],
-          logo: "../static/components/img/logo.png",
-          nonce: "{{ request.csp_nonce }}",
-          user: {
-            username: "jsumner",
-            name: "John",
-            avatar: "../static/components/img/avatar.jpg",
-          }
-        });
-      };
-      navigation.render(
-        navigationApp(),
-        document.getElementById("navigation-app")
-      );
+      {% include './navigationJS.html' %}
 
       const searchApp = () => {
         return search.h(search.App, {
@@ -168,6 +133,7 @@
               peerImpact: 2,
             },
           ],
+          gettext: gettext,
           nonce: "{{ request.csp_nonce }}",
         });
       };

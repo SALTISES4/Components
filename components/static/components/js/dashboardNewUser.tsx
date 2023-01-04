@@ -66,7 +66,11 @@ export const App = (props) => {
             </Subtitle>
             <Stack spacing="10px">
               {props.questions.map((question: QuestionType, i: number) => (
-                <Question key={i} question={question} />
+                <Question
+                  key={i}
+                  gettext={props.gettext}
+                  question={question}
+                />
               ))}
             </Stack>
           </Container>

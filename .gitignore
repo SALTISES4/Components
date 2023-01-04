@@ -8,3 +8,4 @@ venv*
 .dccache
 .DS_Store
 *.map
+.vscode

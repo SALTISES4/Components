@@ -1,17 +1,19 @@
+import { faker } from "@faker-js/faker";
+
 export const assignments = [
   {
-    author: "Emma Faurie",
-    creationDate: "12 Nov",
-    difficulty: "Easy",
+    author: faker.name.fullName(),
+    creationDate: faker.date.recent(),
+    difficulty: faker.helpers.arrayElement(["Easy", "Difficult"]),
     distributionState: "Distributed",
-    dueDate: "30 Nov",
+    dueDate: faker.date.soon(),
     groups: [],
-    questionCount: 12,
-    title: "Assignment 1",
+    questionCount: faker.random.numeric(1),
+    title: faker.lorem.sentence(),
   },
   {
     title: "Assignment 2",
-    author: "Jonathon Sumner",
+    author: faker.name.fullName(),
     creationDate: "12 Nov",
     difficulty: "Difficult",
     distributionState: "Distributed",

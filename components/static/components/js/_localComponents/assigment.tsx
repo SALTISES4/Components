@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 
 import { Group } from "../_localComponents/group";
-import { DifficultyCircleIcon } from "../_reusableComponents/difficultyCircleIcon.jsx";
+import { DifficultyCircleIcon } from "../_reusableComponents/difficultyCircleIcon";
 
 import { Tag } from "../styledComponents";
 

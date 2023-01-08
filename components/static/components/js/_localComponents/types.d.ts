@@ -22,11 +22,24 @@ export type CollectionType = {
   title: string;
 };
 
+enum QuestionDifficultyLevels {
+  1,
+  2,
+  3,
+  4,
+}
+
+type QuestionDifficulty = {
+  score: number;
+  value: QuestionDifficultyLevels;
+  label: string;
+};
+
 export type QuestionType = {
   answerCount: number;
   author: string;
   description: string;
-  difficulty: string;
+  difficulty: QuestionDifficulty;
   peerImpact: number;
   tags?: string[];
   title: string;

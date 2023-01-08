@@ -5,10 +5,13 @@ export const assignments = [
     author: faker.name.fullName(),
     creationDate: faker.date.recent(),
     difficulty: faker.helpers.arrayElement(["Easy", "Difficult"]),
-    distributionState: "Distributed",
+    distributionState: faker.helpers.arrayElement([
+      "Distributed",
+      "Not distributed",
+    ]),
     dueDate: faker.date.soon(),
     groups: [],
-    questionCount: faker.random.numeric(1),
+    questionCount: parseInt(faker.random.numeric(1)),
     title: faker.lorem.sentence(),
   },
   {
@@ -67,7 +70,7 @@ export const questions = [
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
     tags: ["Biology", "Cohesion"],
-    difficulty: "Moderate",
+    difficulty: { score: 0.4, value: 2, label: "Avg" },
     peerImpact: 1,
   },
   {
@@ -77,7 +80,7 @@ export const questions = [
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
     tags: ["Biology", "Cohesion"],
-    difficulty: "Difficult",
+    difficulty: { score: 0.7, value: 3, label: "Hard" },
     peerImpact: 2,
   },
   {
@@ -87,7 +90,12 @@ export const questions = [
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
     tags: ["Biology", "Cohesion", "tag3"],
-    difficulty: "Easy",
+    difficulty: { score: 0.1, value: 1, label: "Easy" },
     peerImpact: 3,
   },
 ];
+export const teacher = {
+  activeAssignmentCount: 4,
+  activeGroupCount: 3,
+  createdQuestionCount: 12,
+};

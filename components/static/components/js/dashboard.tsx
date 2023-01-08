@@ -31,7 +31,7 @@ import saltise from "./theme";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-import { assignments, collections, questions } from "./data.js";
+import { assignments, collections, questions, teacher } from "./data.js";
 
 export class App extends Component<DashboardAppProps, DashboardAppState> {
   constructor(props: DashboardAppProps) {
@@ -40,6 +40,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
       assignments,
       collections,
       questions,
+      teacher,
     };
   }
 
@@ -63,7 +64,10 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
               {this.props.gettext("Good Morning,")} {this.props.user.username}
             </Typography>
             <Container align="center">
-              <SuperUserBar />
+              <SuperUserBar
+                {...this.state.teacher}
+                gettext={this.props.gettext}
+              />
             </Container>
             <Container>
               <Subtitle>

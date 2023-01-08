@@ -9,6 +9,12 @@ export type UserType = {
   username: string;
 };
 
+type TeacherType = {
+  activeAssignmentCount: number;
+  activeGroupCount: number;
+  createdQuestionCount: number;
+};
+
 export type LinkType = {
   icon: string;
   title: string;
@@ -22,6 +28,7 @@ export type DashboardAppProps = {
     assignments: string;
     collections: string;
     questions: string;
+    teacher: string;
   };
   user: UserType;
 };
@@ -30,6 +37,7 @@ export type DashboardAppState = {
   assignments: AssignmentType[];
   collections: CollectionType[];
   questions: QuestionType[];
+  teacher: TeacherType;
 };
 
 export type NavigationAppProps = {

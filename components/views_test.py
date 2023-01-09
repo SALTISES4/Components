@@ -34,3 +34,10 @@ def dashboardStudent(request):
     template = "components/dashboardStudent.html"
     context = {}
     return render(request, template, context)
+
+
+def createQuestions1(request):
+
+    template = "components/createQuestions1.html"
+    context = {}
+    return render(request, template, context)

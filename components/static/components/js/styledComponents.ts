@@ -96,3 +96,10 @@ export const SharedTag = styled("div")({
     color: theme.palette.palePurple.main,
   },
 });
+
+export const StepBar = styled("div")({
+  marginTop: "20px",
+  marginBottom: "30px",
+  height: "12px",
+  borderRadius: "4px",
+});

@@ -20,6 +20,8 @@ declare module "@mui/material/Typography" {
 }
 
 const primaryBlue = "#1743B3";
+const secondary1 = "#E9EBF2";
+const secondary2 = "#AEAEBF";
 const secondary4 = "#515159";
 
 const saltise = createTheme({
@@ -31,10 +33,10 @@ const saltise = createTheme({
       main: "#1743B3",
     },
     secondary1: {
-      main: "#E9EBF2",
+      main: secondary1,
     },
     secondary2: {
-      main: " #AEAEBF",
+      main: secondary2,
     },
     secondary4: {
       main: secondary4,
@@ -297,6 +299,119 @@ const saltise = createTheme({
         },
         fontSizeLarge: {
           fontSize: "24px",
+        },
+      },
+    },
+  },
+});
+
+export const formTheme = createTheme(saltise, {
+  components: {
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: "0px",
+          "& .MuiTypography-root": {
+            color: secondary4,
+            fontSize: "12px",
+          },
+        },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          color: secondary4,
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          margin: "4px 0px",
+        },
+      },
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          padding: "0px",
+          marginRight: "6px",
+
+          "& .MuiSvgIcon-root": {
+            fontSize: "28px",
+          },
+        },
+      },
+    },
+    MuiCardHeader: {
+      styleOverrides: {
+        title: {
+          fontSize: "18px",
+          fontWeight: "600",
+          lineHeight: "28px",
+        },
+        subheader: {
+          fontSize: "10px",
+          lineHeight: "20px",
+          color: "#90929B",
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          width: "100%",
+          color: secondary2,
+          "&:hover": {
+            color: secondary4,
+          },
+          "&:active": {
+            color: secondary4,
+          },
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          backgroundColor: secondary1,
+          margin: "20px -20px",
+        },
+      },
+    },
+    MuiRadio: {
+      styleOverrides: {
+        root: {
+          marginRight: "10px",
+          padding: "0px",
+          "& .MuiSvgIcon-root": {
+            fontSize: "24px",
+          },
+        },
+      },
+    },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        root: {
+          marginLeft: "0px",
+          marginRight: "20px",
+        },
+        label: {
+          fontSize: "14px",
+          lineHeight: "19px",
+        },
+      },
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          "& .MuiTypography-root": {
+            fontSize: "12px",
+            fontWeight: "400",
+            lineHeight: "22px",
+            marginBottom: "12px",
+          },
         },
       },
     },

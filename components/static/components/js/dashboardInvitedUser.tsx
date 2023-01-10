@@ -19,7 +19,7 @@ import { QuestionType } from "./_localComponents/types";
 //style
 import { ThemeProvider } from "@mui/material/styles";
 import { prefixer } from "stylis";
-import saltise from "./theme.js";
+import saltise from "./theme";
 
 //cache
 import createCache from "@emotion/cache";
@@ -77,7 +77,11 @@ export const App = (props) => {
             </Subtitle>
             <Stack spacing="10px">
               {props.questions.map((question: QuestionType, i: number) => (
-                <Question key={i} question={question} />
+                <Question
+                  key={i}
+                  gettext={props.gettext}
+                  question={question}
+                />
               ))}
             </Stack>
           </Container>

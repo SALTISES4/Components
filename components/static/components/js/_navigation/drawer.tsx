@@ -11,7 +11,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 
-export const SideBar = (props) => {
+import { LinkType } from "../types";
+
+export const SideBar = ({ groups }: { groups: LinkType[][] }) => {
   const drawerWidth = 200;
   return (
     <Drawer
@@ -28,7 +30,7 @@ export const SideBar = (props) => {
     >
       <Toolbar />
       <Box>
-        {props.groups.map((group, i) => (
+        {groups.map((group, i) => (
           <Fragment key={i}>
             <List>
               {group.map((entry) => (

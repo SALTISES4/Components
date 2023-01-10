@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 
+import { SuperUserBarProps } from "./types";
+
 const style = {
   color: "neutral.main",
   backgroundColor: "#fff",
@@ -19,19 +21,24 @@ const style = {
   alignItems: "center",
 };
 
-export const SuperUserBar = (props) => {
+export const SuperUserBar = ({
+  activeAssignmentCount,
+  activeGroupCount,
+  createdQuestionCount,
+  gettext,
+}: SuperUserBarProps) => {
   return (
     <Box sx={style}>
       <Typography variant="h4" width="100%" align="center">
-        x active assigments
+        {activeAssignmentCount} {gettext("active assigments")}
       </Typography>
       <Divider orientation="vertical" flexItem />
       <Typography variant="h4" width="100%" align="center">
-        x groups
+        {activeGroupCount} {gettext("groups")}
       </Typography>
       <Divider orientation="vertical" flexItem />
       <Typography variant="h4" width="100%" align="center">
-        x questions
+        {createdQuestionCount} {gettext("questions")}
       </Typography>
     </Box>
   );

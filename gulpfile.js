@@ -133,4 +133,5 @@ const scripts = gulp.parallel(
   ),
 );
 
+exports.typing = typescript;
 exports.scripts = gulp.series(typescript, scripts);

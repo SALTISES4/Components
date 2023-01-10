@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 
 import { ThemeProvider } from "@mui/material/styles";
 import { prefixer } from "stylis";
-import saltise from "./theme.js";
+import saltise from "./theme";
 
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
@@ -142,7 +142,11 @@ export const App = (props) => {
               </Subtitle>
               <Stack spacing="10px">
                 {props.questions.map((question) => (
-                  <Question key={question.title} question={question} />
+                  <Question
+                    key={question.title}
+                    gettext={props.gettext}
+                    question={question}
+                  />
                 ))}
               </Stack>
             </Container>

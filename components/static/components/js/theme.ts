@@ -27,10 +27,10 @@ const secondary4 = "#515159";
 const saltise = createTheme({
   palette: {
     background: {
-      paper: "#fff",
+      paper: "#FFF",
     },
     primary: {
-      main: "#1743B3",
+      main: primaryBlue,
     },
     secondary1: {
       main: secondary1,
@@ -38,11 +38,14 @@ const saltise = createTheme({
     secondary2: {
       main: secondary2,
     },
+    secondaryGrey: {
+      main: "#696973",
+    },
     secondary4: {
       main: secondary4,
     },
-    secondaryGrey: {
-      main: "#696973",
+    secondary5: {
+      main: "2E2E33",
     },
     neutral: {
       main: "#90929B",
@@ -169,6 +172,12 @@ const saltise = createTheme({
           " .MuiListItemIcon-root": {
             minWidth: "0px",
             marginRight: "10px",
+          },
+          " span.cardo": {
+            fontFamily: "Cardo",
+          },
+          " span.montserrat": {
+            fontFamily: "Montserrat",
           },
         },
       },

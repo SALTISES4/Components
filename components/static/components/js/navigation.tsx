@@ -6,22 +6,32 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 
 //components
-import { Header } from "./_navigation/header.jsx";
-import { SideBar } from "./_navigation/drawer.jsx";
+import { Header } from "./_navigation/header";
+import { SideBar } from "./_navigation/drawer";
+
+//types
+import { NavigationAppProps } from "./types";
 
 //style
 import { prefixer } from "stylis";
 import { ThemeProvider } from "@mui/material/styles";
-import saltise from "./theme.js";
+import saltise from "./theme";
 
 //cache
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-export const App = (props) => {
+export const App = ({
+  logo,
+  menuAddItems,
+  menuProfile,
+  nonce,
+  sidebarGroups,
+  user,
+}: NavigationAppProps) => {
   const cache = createCache({
     key: "nonced",
-    nonce: props.nonce,
+    nonce,
     prepend: true,
     stylisPlugins: [prefixer],
   });
@@ -31,23 +41,17 @@ export const App = (props) => {
       <CacheProvider value={cache}>
         <Box sx={{ display: "flex" }}>
           <Header
-            logo={props.logo}
-            groups={props.groups}
-            nonce={props.nonce}
-            username={props.user.username}
-            avatar={props.user.avatar}
+            logo={logo}
+            menuAddItems={menuAddItems}
+            menuProfile={menuProfile}
+            user={user}
           />
-          <SideBar
-            logo={props.logo}
-            groups={props.groups}
-            nonce={props.nonce}
-          />
+          <SideBar groups={sidebarGroups} />
           <Box
             component="main"
             maxWidth="lg"
             sx={{
               flexGrow: 1,
-
               overflow: "auto",
               ml: "130px",
               mr: "130px",

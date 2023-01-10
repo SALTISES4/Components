@@ -11,6 +11,45 @@ declare module "@mui/material/styles" {
   interface TypographyVariantsOptions {
     tag?: CSSProperties;
   }
+
+  interface Palette {
+    secondary1: Palette["primary"];
+    secondary2: Palette["primary"];
+    secondary3: Palette["primary"];
+    secondary4: Palette["primary"];
+    neutral: Palette["primary"];
+    darkGrey: Palette["primary"];
+    primaryBlue: Palette["primary"];
+    red: Palette["primary"];
+    orange: Palette["primary"];
+    yellow: Palette["primary"];
+    green: Palette["primary"];
+    purple: Palette["primary"];
+    paleRed: Palette["primary"];
+    paleOrange: Palette["primary"];
+    paleYellow: Palette["primary"];
+    paleGreen: Palette["primary"];
+    palePurple: Palette["primary"];
+  }
+  interface PaletteOptions {
+    secondary1: PaletteOptions["primary"];
+    secondary2: PaletteOptions["primary"];
+    secondary3: PaletteOptions["primary"];
+    secondary4: PaletteOptions["primary"];
+    neutral: PaletteOptions["primary"];
+    darkGrey: PaletteOptions["primary"];
+    primaryBlue: PaletteOptions["primary"];
+    red: PaletteOptions["primary"];
+    orange: PaletteOptions["primary"];
+    yellow: PaletteOptions["primary"];
+    green: PaletteOptions["primary"];
+    purple: PaletteOptions["primary"];
+    paleRed: PaletteOptions["primary"];
+    paleOrange: PaletteOptions["primary"];
+    paleYellow: PaletteOptions["primary"];
+    paleGreen: PaletteOptions["primary"];
+    palePurple: PaletteOptions["primary"];
+  }
 }
 declare module "@mui/material/Typography" {
   // eslint-disable-next-line no-unused-vars
@@ -19,33 +58,48 @@ declare module "@mui/material/Typography" {
   }
 }
 
-const primaryBlue = "#1743B3";
-const secondary1 = "#E9EBF2";
-const secondary2 = "#AEAEBF";
-const secondary4 = "#515159";
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    primaryBlue: true;
+    secondary4: true;
+  }
+}
+declare module "@mui/material/IconButton" {
+  interface IconButtonPropsColorOverrides {
+    primaryBlue: true;
+  }
+}
+
+declare module "@mui/material/SvgIcon" {
+  interface SvgIconPropsColorOverrides {
+    secondary4: true;
+    primaryBlue: true;
+    green: true;
+    yellow: true;
+    orange: true;
+    red: true;
+  }
+}
 
 const saltise = createTheme({
   palette: {
     background: {
-      paper: "#FFF",
+      paper: "#fff",
     },
     primary: {
-      main: primaryBlue,
+      main: "#1743B3",
     },
     secondary1: {
-      main: secondary1,
+      main: "#E9EBF2",
     },
     secondary2: {
-      main: secondary2,
+      main: "#AEAEBF",
     },
-    secondaryGrey: {
+    secondary3: {
       main: "#696973",
     },
     secondary4: {
-      main: secondary4,
-    },
-    secondary5: {
-      main: "2E2E33",
+      main: "#515159",
     },
     neutral: {
       main: "#90929B",
@@ -54,7 +108,7 @@ const saltise = createTheme({
       main: "#414141",
     },
     primaryBlue: {
-      main: primaryBlue,
+      main: "#1743B3",
     },
     red: {
       main: "#D70000",
@@ -90,41 +144,38 @@ const saltise = createTheme({
   typography: {
     fontFamily: ["Open Sans", "sans-serif"].join(","),
     fontSize: 12,
-    root: {
-      color: secondary4,
-    },
     h1: {
       fontSize: "36px",
       fontWeight: 400,
       lineHeight: "49px",
       marginTop: "30px",
       marginBottom: "30px",
-      color: secondary4,
+      color: "#515159",
     },
     h2: {
       fontSize: "20px",
       fontWeight: 600,
       lineHeight: "28px",
-      color: secondary4,
+      color: "#515159",
       marginTop: "50px",
     },
     h3: {
       fontSize: "16px",
       fontWeight: 600,
       lineHeight: "28px",
-      color: secondary4,
+      color: "#515159",
     },
     h4: {
       fontSize: "14px",
       fontWeight: 400,
       lineHeight: "20px",
-      color: secondary4,
+      color: "#515159",
     },
     h5: {
       fontSize: "14px",
       fontWeight: 600,
       lineHeight: "19px",
-      color: secondary4,
+      color: "#515159",
     },
     h6: {
       fontSize: "10px",
@@ -238,7 +289,7 @@ const saltise = createTheme({
           fontSize: "16px",
           fontWeight: "600",
           lineHeight: "28px",
-          color: secondary4,
+          color: "#515159",
         },
         subheader: {
           fontSize: "10px",
@@ -294,7 +345,7 @@ const saltise = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: {
-          color: primaryBlue,
+          color: "#1743B3",
         },
       },
     },
@@ -321,7 +372,7 @@ export const formTheme = createTheme(saltise, {
         root: {
           padding: "0px",
           "& .MuiTypography-root": {
-            color: secondary4,
+            color: "#515159",
             fontSize: "12px",
           },
         },
@@ -330,7 +381,7 @@ export const formTheme = createTheme(saltise, {
     MuiInputBase: {
       styleOverrides: {
         root: {
-          color: secondary4,
+          color: "#515159",
         },
       },
     },
@@ -371,12 +422,12 @@ export const formTheme = createTheme(saltise, {
       styleOverrides: {
         root: {
           width: "100%",
-          color: secondary2,
+          color: "#AEAEBF",
           "&:hover": {
-            color: secondary4,
+            color: "#515159",
           },
           "&:active": {
-            color: secondary4,
+            color: "#515159",
           },
         },
       },
@@ -384,7 +435,7 @@ export const formTheme = createTheme(saltise, {
     MuiDivider: {
       styleOverrides: {
         root: {
-          backgroundColor: secondary1,
+          backgroundColor: "#E9EBF2",
           margin: "20px -20px",
         },
       },

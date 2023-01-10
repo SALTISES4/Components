@@ -89,7 +89,6 @@ export const App = (props) => {
             width="100%"
             display="flex"
             justifyContent="center"
-            flexWrap="noWrap"
             sx={{
               mt: "-8px",
               padding: "15px 15px 16px",

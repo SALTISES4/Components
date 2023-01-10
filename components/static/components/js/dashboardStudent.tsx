@@ -16,7 +16,7 @@ import { GroupStudent } from "./_localComponents/groupStudent";
 
 import { ThemeProvider } from "@mui/material/styles";
 import { prefixer } from "stylis";
-import saltise from "./theme.js";
+import saltise from "./theme";
 
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";

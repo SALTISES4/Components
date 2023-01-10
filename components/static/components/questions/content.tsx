@@ -33,7 +33,7 @@ export function Content({
             <Typography sx={{ marginLeft: "14px" }}>
               {gettext("Title *")}
             </Typography>
-            <TextField required id="title" defaultValue="Question 1" />
+            <TextField required id="title" defaultValue="" />
           </Box>
           <Box>
             <Typography sx={{ marginLeft: "14px" }}>

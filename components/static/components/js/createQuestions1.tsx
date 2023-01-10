@@ -17,6 +17,9 @@ import { CacheProvider } from "@emotion/react";
 import { StepBar } from "./styledComponents";
 import { Content } from "../questions/content";
 import { Settings } from "../questions/settings";
+import { Indexing } from "../questions/indexing";
+import { Collaborators } from "../questions/collaborators";
+import { SaveBar } from "../questions/saveBar";
 
 type User = {
   name: string;
@@ -39,7 +42,7 @@ type AppProps = {
 //   questions: QuestionType[];
 // };
 
-export const App = ({ gettext, nonce, urls, user, ...props }: AppProps) => {
+export const App = ({ gettext, nonce }: AppProps) => {
   const cache = createCache({
     key: "nonced",
     nonce,
@@ -70,9 +73,12 @@ export const App = ({ gettext, nonce, urls, user, ...props }: AppProps) => {
             <Stack spacing={"30px"}>
               <Content gettext={gettext} />
               <Settings gettext={gettext} />
+              <Indexing gettext={gettext} />
+              <Collaborators gettext={gettext} />
             </Stack>
           </Container>
         </Box>
+        <SaveBar gettext={gettext} />
       </CacheProvider>
     </ThemeProvider>
   );

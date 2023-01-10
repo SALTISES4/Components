@@ -19,7 +19,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 
 //import saltise from "../theme.js";
 import { Tag } from "../styledComponents";
-import { DifficultyCircleIcon } from "../_reusableComponents/difficultyCircleIcon";
+import { DifficultyCircleIcon } from "../_reusableComponents/difficultyIconQuestion";
 import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon.jsx";
 
 import { QuestionType } from "./types";

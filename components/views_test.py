@@ -41,3 +41,10 @@ def createQuestions1(request):
     template = "components/createQuestions1.html"
     context = {}
     return render(request, template, context)
+
+
+def createQuestions2(request):
+
+    template = "components/createQuestions2.html"
+    context = {}
+    return render(request, template, context)

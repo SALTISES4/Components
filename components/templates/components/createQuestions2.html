@@ -1,0 +1,37 @@
+{% load static i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<!DOCTYPE html>
+<html lang="{{LANGUAGE_CODE}}">
+  <head>
+    {% include "components/meta.html" %}
+    <script
+      src="{% static 'components/js/build/createQuestions2.min.js' %}"
+      defer="true"
+    ></script>
+  </head>
+  <body>
+    <div id="navigation-app"></div>
+
+    <div id="question-app"></div>
+
+    {% csrf_token %}
+  </body>
+  <script nonce="{{ request.csp_nonce }}">
+    window.addEventListener("load", function () {
+      {% include './navigationJS.html' %}
+
+      const createQuestions2App = () => {
+        return createQuestions2.h(createQuestions2.App, {
+          gettext: gettext,
+          nonce: "{{ request.csp_nonce }}",
+        });
+      };
+      createQuestions2.render(
+        createQuestions2App(),
+        document.getElementById("question-app")
+      );
+    });
+  </script>
+</html>

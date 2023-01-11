@@ -98,6 +98,18 @@ export const SharedTag = styled("div")({
   },
 });
 
+export const CustomAddBox = styled("div")({
+  backgroundColor: theme.palette.secondary1.main,
+  padding: "6px 0px",
+  borderRadius: "0px 4px 4px 0px",
+  display: "flex",
+  flexDirection: "column",
+  position: "relative",
+  bottom: "99px",
+  width: "fit-content",
+  left: "100%",
+});
+
 export const StepBar = styled("div")({
   marginTop: "20px",
   marginBottom: "30px",

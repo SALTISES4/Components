@@ -58,6 +58,13 @@ declare module "@mui/material/Typography" {
   }
 }
 
+declare module "@mui/material/Avatar" {
+  interface AvatarPropsColorOverrides {
+    secondary1: true;
+    secondary4: true;
+  }
+}
+
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
     primaryBlue: true;
@@ -378,6 +385,13 @@ export const formTheme = createTheme(saltise, {
         },
       },
     },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          padding: "4px",
+        },
+      },
+    },
     MuiInputBase: {
       styleOverrides: {
         root: {
@@ -399,7 +413,7 @@ export const formTheme = createTheme(saltise, {
           marginRight: "6px",
 
           "& .MuiSvgIcon-root": {
-            fontSize: "28px",
+            fontSize: "32px",
           },
         },
       },

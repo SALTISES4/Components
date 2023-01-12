@@ -15,12 +15,10 @@ declare module "@mui/material/styles" {
   interface Palette {
     primary1: Palette["primary"];
     primary2: Palette["primary"];
-    primary3: Palette["primary"];
     primary4: Palette["primary"];
     primary5: Palette["primary"];
     secondary1: Palette["primary"];
     secondary2: Palette["primary"];
-    secondary3: Palette["primary"];
     secondary4: Palette["primary"];
     secondary5: Palette["primary"];
     overlayLight: Palette["primary"];
@@ -40,12 +38,10 @@ declare module "@mui/material/styles" {
   interface PaletteOptions {
     primary1: PaletteOptions["primary"];
     primary2: PaletteOptions["primary"];
-    primary3: PaletteOptions["primary"];
     primary4: PaletteOptions["primary"];
     primary5: PaletteOptions["primary"];
     secondary1: PaletteOptions["primary"];
     secondary2: PaletteOptions["primary"];
-    secondary3: PaletteOptions["primary"];
     secondary4: PaletteOptions["primary"];
     secondary5: PaletteOptions["primary"];
     overlayLight: PaletteOptions["primary"];

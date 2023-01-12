@@ -49,7 +49,7 @@ export function Question({
             </Box>
           </Box>
         </Box>
-        <Typography variant="h6">
+        <Typography variant="caption">
           {gettext("From")} {question.author}
         </Typography>
         <Typography sx={{ mb: "10px", mt: "20px" }}>
@@ -60,7 +60,7 @@ export function Question({
         <Stack direction="row" spacing="5px">
           {question.tags?.map((tag, i) => (
             <Tag key={i}>
-              <Typography variant="tag">{tag}</Typography>
+              <Typography>{tag}</Typography>
             </Tag>
           ))}
           <Tag
@@ -70,8 +70,8 @@ export function Question({
               borderStyle: "solid",
             }}
           >
-            <BarChartIcon fontSize="small" sx={{ pr: "6px" }} />
-            <Typography variant="tag">{question.answerCount}</Typography>
+            <BarChartIcon fontSize="small" />
+            <Typography>{question.answerCount}</Typography>
           </Tag>
         </Stack>
         <Stack
@@ -93,9 +93,9 @@ export function Question({
             icon={<BookmarkAddOutlinedIcon />}
             checkedIcon={<BookmarkAddedIcon />}
             sx={{
-              color: "primaryBlue.main",
+              color: "primary.main",
               "&.Mui-checked": {
-                color: "primaryBlue.main",
+                color: "primary.main",
               },
             }}
           />

@@ -31,11 +31,9 @@ export const AssigmentStudent = (props) => {
         >
           {assigment.progress == 0 ? (
             <Tag sx={{ mr: "10px", ml: "10px", width: "100px" }}>
-              <FormatListBulletedIcon sx={{ pr: "6px" }} fontSize="small" />
+              <FormatListBulletedIcon fontSize="small" />
               <Box display="flex">
-                <Typography variant="tag">
-                  {assigment.questions.length} questions
-                </Typography>
+                <Typography>{assigment.questions.length} questions</Typography>
               </Box>
             </Tag>
           ) : (
@@ -53,7 +51,7 @@ export const AssigmentStudent = (props) => {
             ) : (
               <AccessTimeIcon
                 sx={{ fontSize: "24px", margin: "2px" }}
-                color="yellow"
+                color="warning"
               />
             )}
             <Typography variant="h4" sx={{ margin: "0px 10px" }}>

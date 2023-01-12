@@ -24,7 +24,7 @@ export const NewUserBar = ({ gettext }: NewUserBarProps) => {
           "Get started by browsing our infinite database of quality question.",
         )}
       </Typography>
-      <Button variant="contained" color="primaryBlue" sx={{ margin: "15px" }}>
+      <Button variant="contained" color="primary" sx={{ margin: "15px" }}>
         <Typography>{gettext("Explore our database")}</Typography>
       </Button>
     </Box>

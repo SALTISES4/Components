@@ -95,11 +95,13 @@ export const App = (props) => {
               backgroundColor: "#061A4E",
             }}
           >
-            <Box width={pageWidth} color="#fff">
-              <Typography sx={{ ml: "15px" }}>Search</Typography>
+            <Box width={pageWidth}>
+              <Typography sx={{ ml: "15px", color: "#fff" }}>
+                Search
+              </Typography>
               <SearchBar>
                 <Typography variant="h4">Chemistry</Typography>
-                <CancelIcon color="primaryBlue" fontSize="large" />
+                <CancelIcon color="primary" fontSize="large" />
               </SearchBar>
               <Typography sx={{ ml: "15px" }}>111 Results</Typography>
             </Box>
@@ -116,7 +118,10 @@ export const App = (props) => {
               alignItems={"center"}
               flexWrap={"wrap"}
             >
-              <Typography variant="h4" sx={{ margin: "5px 10px" }}>
+              <Typography
+                variant="h4"
+                sx={{ margin: "5px 10px", color: "#fff" }}
+              >
                 Filtred by
               </Typography>
               {filters.map((filter) => (
@@ -134,7 +139,7 @@ export const App = (props) => {
           <Box width={pageWidth}>
             <Container>
               <Subtitle>
-                <Typography variant="h2">
+                <Typography variant="h2" sx={{ color: "#fff" }}>
                   {props.questions.length} results in Questions
                 </Typography>
                 <Link variant="h4">{viewAll}</Link>
@@ -171,7 +176,12 @@ export const App = (props) => {
               </Subtitle>
               <Grid container spacing="20px">
                 {props.collections.map((collection) => (
-                  <Collection key={collection.title} collection={collection} />
+                  <Grid key={collection.title} item xs={12}>
+                    <Collection
+                      key={collection.title}
+                      collection={collection}
+                    />
+                  </Grid>
                 ))}
               </Grid>
             </Container>

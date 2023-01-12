@@ -27,7 +27,9 @@ export const SearchFilter = (props) => {
         <Filter onClick={handleClick}>
           {props.notification > 0 ? (
             <Notification sx={{ top: "-8px", left: "-13px" }}>
-              <Typography fontSize="inherit">{props.notification}</Typography>
+              <Typography fontSize="inherit" sx={{ color: "#fff" }}>
+                {props.notification}
+              </Typography>
             </Notification>
           ) : (
             <Notification

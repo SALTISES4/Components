@@ -29,7 +29,7 @@ export const SearchDropdown = (props) => {
           sx={{
             border: "solid 1px",
             borderColor: "secondary2.main",
-            color: "secondaryGrey.main",
+            color: "secondary.main",
             display: "flex",
             alignItems: "center",
             borderRadius: "4px",
@@ -43,7 +43,6 @@ export const SearchDropdown = (props) => {
         fontSize="10px"
         fontWeight={600}
         textTransform="uppercase"
-        color="secondary4.main"
         margin="5px 0px"
       >
         {props.subtitle}

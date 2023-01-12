@@ -5,7 +5,7 @@ import styled from "@mui/system/styled";
 
 const theme = saltise;
 const color0 = theme.palette.secondary2.main;
-const color1 = theme.palette.yellow.main;
+const color1 = theme.palette.warning.main;
 
 const ImpactRectangle = styled("Box")({
   height: "18px",

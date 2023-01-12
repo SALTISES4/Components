@@ -1,62 +1,74 @@
-import { CSSProperties } from "preact/compat";
+//import { CSSProperties } from "preact/compat";
 import { createTheme } from "@mui/material/styles";
 
 // https://mui.com/material-ui/customization/typography/#variants
 declare module "@mui/material/styles" {
   // eslint-disable-next-line no-unused-vars
-  interface TypographyVariants {
+  /* interface TypographyVariants {
     tag: CSSProperties;
   }
   // eslint-disable-next-line no-unused-vars
   interface TypographyVariantsOptions {
     tag?: CSSProperties;
-  }
+  }*/
 
   interface Palette {
+    primary1: Palette["primary"];
+    primary2: Palette["primary"];
+    primary3: Palette["primary"];
+    primary4: Palette["primary"];
+    primary5: Palette["primary"];
     secondary1: Palette["primary"];
     secondary2: Palette["primary"];
     secondary3: Palette["primary"];
     secondary4: Palette["primary"];
+    secondary5: Palette["primary"];
+    overlayLight: Palette["primary"];
+    overlayDark: Palette["primary"];
+    successTint: Palette["primary"];
+    warningTint: Palette["primary"];
+    errorTint: Palette["primary"];
+    new: Palette["primary"];
+    newTint: Palette["primary"];
+    orange: Palette["primary"];
+    orangeTint: Palette["primary"];
+    inactive: Palette["primary"];
+    inactiveTint: Palette["primary"];
     neutral: Palette["primary"];
     darkGrey: Palette["primary"];
-    primaryBlue: Palette["primary"];
-    red: Palette["primary"];
-    orange: Palette["primary"];
-    yellow: Palette["primary"];
-    green: Palette["primary"];
-    purple: Palette["primary"];
-    paleRed: Palette["primary"];
-    paleOrange: Palette["primary"];
-    paleYellow: Palette["primary"];
-    paleGreen: Palette["primary"];
-    palePurple: Palette["primary"];
   }
   interface PaletteOptions {
+    primary1: PaletteOptions["primary"];
+    primary2: PaletteOptions["primary"];
+    primary3: PaletteOptions["primary"];
+    primary4: PaletteOptions["primary"];
+    primary5: PaletteOptions["primary"];
     secondary1: PaletteOptions["primary"];
     secondary2: PaletteOptions["primary"];
     secondary3: PaletteOptions["primary"];
     secondary4: PaletteOptions["primary"];
+    secondary5: PaletteOptions["primary"];
+    overlayLight: PaletteOptions["primary"];
+    overlayDark: PaletteOptions["primary"];
+    successTint: PaletteOptions["primary"];
+    warningTint: PaletteOptions["primary"];
+    errorTint: PaletteOptions["primary"];
+    new: PaletteOptions["primary"];
+    newTint: PaletteOptions["primary"];
+    orange: PaletteOptions["primary"];
+    orangeTint: PaletteOptions["primary"];
+    inactive: PaletteOptions["primary"];
+    inactiveTint: PaletteOptions["primary"];
     neutral: PaletteOptions["primary"];
     darkGrey: PaletteOptions["primary"];
-    primaryBlue: PaletteOptions["primary"];
-    red: PaletteOptions["primary"];
-    orange: PaletteOptions["primary"];
-    yellow: PaletteOptions["primary"];
-    green: PaletteOptions["primary"];
-    purple: PaletteOptions["primary"];
-    paleRed: PaletteOptions["primary"];
-    paleOrange: PaletteOptions["primary"];
-    paleYellow: PaletteOptions["primary"];
-    paleGreen: PaletteOptions["primary"];
-    palePurple: PaletteOptions["primary"];
   }
 }
-declare module "@mui/material/Typography" {
+/*declare module "@mui/material/Typography" {
   // eslint-disable-next-line no-unused-vars
   interface TypographyPropsVariantOverrides {
     tag: true;
   }
-}
+}*/
 
 declare module "@mui/material/Avatar" {
   interface AvatarPropsColorOverrides {
@@ -67,24 +79,16 @@ declare module "@mui/material/Avatar" {
 
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
-    primaryBlue: true;
     secondary4: true;
   }
 }
 declare module "@mui/material/IconButton" {
-  interface IconButtonPropsColorOverrides {
-    primaryBlue: true;
-  }
+  interface IconButtonPropsColorOverrides {}
 }
 
 declare module "@mui/material/SvgIcon" {
   interface SvgIconPropsColorOverrides {
     secondary4: true;
-    primaryBlue: true;
-    green: true;
-    yellow: true;
-    orange: true;
-    red: true;
   }
 }
 
@@ -93,8 +97,24 @@ const saltise = createTheme({
     background: {
       paper: "#fff",
     },
+    //primaryBlue
     primary: {
       main: "#1743B3",
+    },
+    primary1: {
+      main: "#E9F5FF",
+    },
+    primary2: {
+      main: "#6691FF",
+    },
+    primary4: {
+      main: "#0D2666",
+    },
+    primary5: {
+      main: "#000B26",
+    },
+    secondary: {
+      main: "#696973",
     },
     secondary1: {
       main: "#E9EBF2",
@@ -102,99 +122,98 @@ const saltise = createTheme({
     secondary2: {
       main: "#AEAEBF",
     },
-    secondary3: {
-      main: "#696973",
-    },
     secondary4: {
       main: "#515159",
     },
-    neutral: {
-      main: "#90929B",
+    secondary5: {
+      main: "#2E2E33",
     },
-    darkGrey: {
-      main: "#414141",
+    overlayDark: {
+      main: "#E9F5FF",
     },
-    primaryBlue: {
-      main: "#1743B3",
+    overlayLight: {
+      main: "#F4F4F480",
     },
-    red: {
+    success: {
+      main: "#2BA789",
+    },
+    successTint: {
+      main: "#E7FFF6",
+    },
+    warning: {
+      main: "#FFC911",
+    },
+    warningTint: {
+      main: "#FFF2C4",
+    },
+    error: {
       main: "#D70000",
+    },
+    errorTint: {
+      main: "#FFEBE6",
+    },
+    new: {
+      main: "#872CFF",
+    },
+    newTint: {
+      main: "#F2E9FF",
     },
     orange: {
       main: "#F09326",
     },
-    yellow: {
-      main: "#FFC911",
-    },
-    green: {
-      main: "#2BA789",
-    },
-    purple: {
-      main: "#872CFF",
-    },
-    paleRed: {
-      main: "#FFEBE6",
-    },
-    paleYellow: {
-      main: "#FFF2C4",
-    },
-    paleOrange: {
+    orangeTint: {
       main: "#FFEBD4",
     },
-    paleGreen: {
-      main: "#E7FFF6",
+    inactive: {
+      main: "#AEAEBF",
     },
-    palePurple: {
-      main: "#F2E9FF",
+    inactiveTint: {
+      main: "#E9EBF2",
+    },
+    neutral: {
+      main: "#90929B", //neutral
+    },
+    darkGrey: {
+      main: "#414141",
     },
   },
   typography: {
     fontFamily: ["Open Sans", "sans-serif"].join(","),
     fontSize: 12,
+    allVariants: {
+      color: "#515159",
+      fontWeight: 400,
+    },
     h1: {
       fontSize: "36px",
-      fontWeight: 400,
       lineHeight: "49px",
       marginTop: "30px",
       marginBottom: "30px",
-      color: "#515159",
     },
     h2: {
       fontSize: "20px",
       fontWeight: 600,
       lineHeight: "28px",
-      color: "#515159",
       marginTop: "50px",
     },
     h3: {
       fontSize: "16px",
       fontWeight: 600,
       lineHeight: "28px",
-      color: "#515159",
     },
     h4: {
       fontSize: "14px",
-      fontWeight: 400,
       lineHeight: "20px",
-      color: "#515159",
     },
     h5: {
       fontSize: "14px",
       fontWeight: 600,
       lineHeight: "19px",
-      color: "#515159",
     },
-    h6: {
+    caption: {
       fontSize: "10px",
-      fontWeight: 400,
       lineHeight: "22px",
       color: "#90929B",
-    },
-    tag: {
-      fontSize: "12px",
-      fontWeight: 400,
-      lineHeight: "16px",
-      fontFamily: ["Open Sans", "sans-serif"].join(","),
     },
   },
   components: {

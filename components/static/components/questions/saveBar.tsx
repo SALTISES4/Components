@@ -23,7 +23,7 @@ export function SaveBar({
       <Button variant="outlined" color="secondary4" sx={{ margin: "15px" }}>
         <Typography>{gettext("Cancel")}</Typography>
       </Button>
-      <Button variant="contained" color="primaryBlue" sx={{ margin: "15px" }}>
+      <Button variant="contained" color="primary" sx={{ margin: "15px" }}>
         <Typography>{gettext("Save and continue")}</Typography>
       </Button>
     </Box>

@@ -17,7 +17,7 @@ export const AssigmentStudentCompleted = (props) => {
         <Box display="flex" alignItems="center">
           <CheckCircleIcon
             sx={{ fontSize: "24px", margin: "2px" }}
-            color="green"
+            color="success"
           />
           <Typography variant="h4" sx={{ padding: "0px 77px 0px 10px" }}>
             7/8

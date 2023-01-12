@@ -48,6 +48,16 @@ export const Tag = styled(Box)({
   display: "flex",
   padding: "5px",
   alignItems: "center",
+  " .MuiTypography-root": {
+    fontSize: "12px",
+    lineHeight: "16px",
+  },
+  " .MuiSvgIcon-root": {
+    paddingRight: "6px",
+  },
+  contained: {
+    backgroundColor: "#fff",
+  },
 });
 
 export const Filter = styled("Button")({
@@ -86,7 +96,7 @@ export const Notification = styled("div")({
 });
 
 export const SharedTag = styled("div")({
-  backgroundColor: theme.palette.purple.main,
+  backgroundColor: theme.palette.new.main,
   marginLeft: "12px",
   padding: "4px 20px",
   borderRadius: "4px 4px 0px 0px",
@@ -94,7 +104,7 @@ export const SharedTag = styled("div")({
   " .MuiTypography-root": {
     fontSize: "12px",
     lineHeight: "22px",
-    color: theme.palette.palePurple.main,
+    color: theme.palette.newTint.main,
   },
 });
 

@@ -68,7 +68,7 @@ export function Content({
           </Box>
           <Box>
             <Typography>{gettext("Question image")}</Typography>
-            <Button variant="outlined" component="label" color="secondary4">
+            <Button variant="outlined" color="secondary4">
               <Typography>{gettext("Choose File")}</Typography>
               <input hidden accept="image/*" multiple type="file" />
             </Button>

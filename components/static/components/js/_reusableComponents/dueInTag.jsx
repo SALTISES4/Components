@@ -18,8 +18,8 @@ export const DueInTag = (props) => {
             backgroundColor: "paleRed.main",
           }}
         >
-          <AlarmIcon fontSize="small" sx={{ pr: "6px" }} />
-          <Typography variant="tag"> Due un {daysDifference} days </Typography>
+          <AlarmIcon fontSize="small" />
+          <Typography> Due un {daysDifference} days </Typography>
         </Tag>
       ) : null}
     </Box>

@@ -17,20 +17,18 @@ export const AssigmentBis = (props) => {
       <Box display="flex" justifyContent="space-between">
         <Box>
           <Typography variant="h3">{assigment.title}</Typography>
-          <Typography variant="h6">From {assigment.autor}</Typography>
+          <Typography variant="caption">From {assigment.autor}</Typography>
         </Box>
         <Box display="flex" alignItems="center">
           <Tag sx={{ mr: "10px", ml: "10px" }}>
-            <FormatListBulletedIcon sx={{ pr: "6px" }} fontSize="small" />
-            <Typography variant="tag">
-              {assigment.questions.length} questions
-            </Typography>
+            <FormatListBulletedIcon fontSize="small" />
+            <Typography>{assigment.questions.length} questions</Typography>
           </Tag>
           <Tag sx={{ mr: "10px", ml: "10px" }}>
-            <FormatListBulletedIcon sx={{ pr: "6px" }} fontSize="small" />
-            <Typography variant="tag">123 answers</Typography>
+            <FormatListBulletedIcon fontSize="small" />
+            <Typography>123 answers</Typography>
           </Tag>
-          <IconButton color="primaryBlue" sx={{ ml: "80px" }}>
+          <IconButton sx={{ ml: "80px" }}>
             <BookmarkAddOutlinedIcon fontSize="medium" />
           </IconButton>
         </Box>

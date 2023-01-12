@@ -26,29 +26,27 @@ export const Collection = (props) => {
         subheader={"From ".concat(collection.autor)}
       />
       <CardContent>
-        <Typography color="text.secondary">
-          {collection.description}
-        </Typography>
+        <Typography>{collection.description}</Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
         <Stack direction="row" spacing="5px">
           {collection.tags.map((tag) => (
             <Tag key={tag}>
-              <Typography variant="tag"> {tag} </Typography>
+              <Typography> {tag} </Typography>
             </Tag>
           ))}
           <Tag>
-            <BookmarksIcon fontSize="small" sx={{ pr: "6px" }} />
-            <Typography variant="tag"> 123 </Typography>
+            <BookmarksIcon fontSize="small" />
+            <Typography> 123 answers</Typography>
           </Tag>
         </Stack>
         <Checkbox
           icon={<BookmarkAddOutlinedIcon />}
           checkedIcon={<BookmarkAddedIcon />}
           sx={{
-            color: "primaryBlue.main",
+            color: "primary",
             "&.Mui-checked": {
-              color: "primaryBlue.main",
+              color: "primary",
             },
           }}
         />

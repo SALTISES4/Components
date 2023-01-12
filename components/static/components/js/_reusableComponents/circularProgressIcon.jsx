@@ -6,22 +6,19 @@ import CircularProgress from "@mui/material/CircularProgress";
 const theme = saltise;
 
 const colorPicker = (progress) => {
-  const colorSet = [
-    theme.palette.primaryBlue.main,
-    theme.palette.primaryBlue.main,
-  ];
+  const colorSet = [theme.palette.primary.main, theme.palette.primary.main];
   if (progress < 25) {
-    colorSet[0] = theme.palette.paleRed.main;
-    colorSet[1] = theme.palette.red.main;
+    colorSet[0] = theme.palette.errorTint.main;
+    colorSet[1] = theme.palette.error.main;
   } else if (progress < 50) {
-    colorSet[0] = theme.palette.paleOrange.main;
+    colorSet[0] = theme.palette.orangeTint.main;
     colorSet[1] = theme.palette.orange.main;
   } else if (progress < 75) {
-    colorSet[0] = theme.palette.paleYellow.main;
-    colorSet[1] = theme.palette.yellow.main;
+    colorSet[0] = theme.palette.warningTint.main;
+    colorSet[1] = theme.palette.warning.main;
   } else if (progress <= 100) {
-    colorSet[0] = theme.palette.paleGreen.main;
-    colorSet[1] = theme.palette.green.main;
+    colorSet[0] = theme.palette.successTint.main;
+    colorSet[1] = theme.palette.success.main;
   }
   return colorSet;
 };

@@ -9,13 +9,13 @@ import { DifficultyCircleIconProps } from "./types";
 const theme = saltise;
 
 const colorPicker = (difficulty: QuestionDifficulty) => {
-  let color = theme.palette.primaryBlue.main;
+  let color = theme.palette.primary.main;
   if (difficulty.value == 1) {
-    color = theme.palette.green.main;
+    color = theme.palette.success.main;
   } else if (difficulty.value == 2) {
-    color = theme.palette.yellow.main;
+    color = theme.palette.warning.main;
   } else if (difficulty.value == 3) {
-    color = theme.palette.red.main;
+    color = theme.palette.error.main;
   }
   return color;
 };

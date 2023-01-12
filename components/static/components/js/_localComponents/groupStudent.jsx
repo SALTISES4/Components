@@ -23,7 +23,7 @@ export const GroupStudent = (props) => {
         />
         <Box paddingTop="4px" display="flex">
           <CircleIcon
-            color="green"
+            color="success"
             sx={{ padding: "0px 10px", fontSize: "20px" }}
           />
           <Typography>Active</Typography>
@@ -33,15 +33,12 @@ export const GroupStudent = (props) => {
         <Stack direction="row" spacing="5px">
           {group.tags.map((tag) => (
             <Tag key={tag}>
-              <Typography variant="tag"> {tag} </Typography>
+              <Typography> {tag} </Typography>
             </Tag>
           ))}
           <Tag>
-            <LibraryBooksIcon fontSize="small" sx={{ pr: "6px" }} />
-            <Typography variant="tag">
-              {" "}
-              {group.assigmentsCount} assigments{" "}
-            </Typography>
+            <LibraryBooksIcon fontSize="small" />
+            <Typography> {group.assigmentsCount} assigments </Typography>
           </Tag>
         </Stack>
       </CardActions>

@@ -27,14 +27,14 @@ export function Assignment({
         <Box display="flex" justifyContent="space-between">
           <Box>
             <Typography variant="h3">{assignment.title}</Typography>
-            <Typography variant="h6">
+            <Typography variant="caption">
               {gettext("By")} {assignment.author}
             </Typography>
           </Box>
           <Box display="flex" alignItems="center">
             <Tag sx={{ mr: "10px", ml: "10px" }}>
-              <FormatListBulletedIcon sx={{ pr: "6px" }} fontSize="small" />
-              <Typography variant="tag">
+              <FormatListBulletedIcon fontSize="small" />
+              <Typography>
                 {assignment.questionCount} {gettext("questions")}
               </Typography>
             </Tag>
@@ -42,7 +42,7 @@ export function Assignment({
             <Typography variant="h4">
               {assignment.distributionState}
             </Typography>
-            <IconButton color="primaryBlue" sx={{ ml: "80px" }} size="medium">
+            <IconButton sx={{ ml: "80px" }} size="medium">
               <AddIcon fontSize="medium" />
             </IconButton>
           </Box>

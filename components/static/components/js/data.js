@@ -5,10 +5,7 @@ export const assignments = [
     author: faker.name.fullName(),
     creationDate: faker.date.recent(),
     difficulty: faker.helpers.arrayElement(["Easy", "Difficult"]),
-    distributionState: faker.helpers.arrayElement([
-      "Distributed",
-      "Not distributed",
-    ]),
+    distributionState: faker.helpers.arrayElement(["Distributed", "Draft"]),
     dueDate: faker.date.soon(),
     groups: [],
     questionCount: parseInt(faker.random.numeric(1)),

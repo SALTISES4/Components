@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 
 import { Group } from "../_localComponents/group";
-import { DifficultyCircleIcon } from "../_reusableComponents/difficultyIconAssigment";
+import { AssigmentStateIcon } from "../_reusableComponents/assigmentStateIcon";
 
 import { Tag } from "../styledComponents";
 
@@ -32,19 +32,35 @@ export function Assignment({
             </Typography>
           </Box>
           <Box display="flex" alignItems="center">
-            <Tag sx={{ mr: "10px", ml: "10px" }}>
-              <FormatListBulletedIcon fontSize="small" />
-              <Typography>
-                {assignment.questionCount} {gettext("questions")}
+            <Box>
+              <Tag
+                sx={{
+                  mx: "10px",
+                  minWidth: "102px",
+                  boxSizing: "border-box",
+                  display: "flex",
+                  justifyContent: "space-around",
+                }}
+              >
+                <FormatListBulletedIcon fontSize="small" />
+                <Typography>
+                  {assignment.questionCount} {gettext("questions")}
+                </Typography>
+              </Tag>
+            </Box>
+            <Box display="flex" sx={{ width: "190px" }}>
+              <AssigmentStateIcon state={assignment.distributionState} />
+              <Typography variant="h4">
+                {assignment.distributionState}
               </Typography>
-            </Tag>
-            <DifficultyCircleIcon difficulty={assignment.difficulty} />
-            <Typography variant="h4">
-              {assignment.distributionState}
-            </Typography>
-            <IconButton sx={{ ml: "80px" }} size="medium">
-              <AddIcon fontSize="medium" />
-            </IconButton>
+            </Box>
+            <Box display="flex" justifyContent="center" sx={{ width: "24px" }}>
+              {assignment.distributionState == "Distributed" ? (
+                <IconButton size="medium">
+                  <AddIcon fontSize="medium" />
+                </IconButton>
+              ) : null}
+            </Box>
           </Box>
         </Box>
       </Card>

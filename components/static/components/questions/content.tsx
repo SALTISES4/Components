@@ -9,14 +9,13 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import TextField from "@mui/material/TextField";
-
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
 
 import Button from "@mui/material/Button";
+import { TextInputBox } from "../js/_reusableComponents/textInputBox";
 
 export function Content({
   gettext,
@@ -29,18 +28,21 @@ export function Content({
       <Divider />
       <CardContent>
         <Stack spacing={"20px"}>
-          <Box>
-            <Typography sx={{ marginLeft: "14px" }}>
-              {gettext("Title *")}
-            </Typography>
-            <TextField required id="title" defaultValue="" />
-          </Box>
-          <Box>
-            <Typography sx={{ marginLeft: "14px" }}>
-              {gettext("Text *")}
-            </Typography>
-            <TextField required id="text" multiline rows={6} defaultValue="" />
-          </Box>
+          <TextInputBox
+            id="title"
+            title="Title *"
+            rows={1}
+            defaultValue=""
+            gettext={gettext}
+          />
+          <TextInputBox
+            id="text"
+            title="Text *"
+            rows={6}
+            defaultValue=""
+            gettext={gettext}
+          />
+
           <Box>
             <FormLabel id="type">
               <Typography sx={{ marginBottom: "12px" }}>

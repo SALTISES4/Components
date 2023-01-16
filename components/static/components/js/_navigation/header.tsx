@@ -12,19 +12,14 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
 import { CustomMenu } from "./menu";
-import { LinkType, UserType } from "../types";
+import { headerProps } from "./types";
 
 export const Header = ({
   logo,
   menuAddItems,
   menuProfile,
   user,
-}: {
-  logo: string;
-  menuAddItems: LinkType[][];
-  menuProfile: LinkType[][];
-  user: UserType;
-}) => {
+}: headerProps) => {
   const [{ openMore, anchorElMore }, setOpenMore] = useState<{
     openMore: boolean;
     anchorElMore: null | HTMLElement;

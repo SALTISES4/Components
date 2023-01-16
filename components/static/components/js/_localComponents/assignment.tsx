@@ -7,20 +7,17 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 
-import { Group } from "../_localComponents/group";
-import { AssigmentStateIcon } from "../_reusableComponents/assigmentStateIcon";
+import { Group } from "./group";
+import { AssignmentStateIcon } from "../_reusableComponents/assignmentStateIcon";
 
 import { Tag } from "../styledComponents";
 
-import { AssignmentType } from "./types";
+import { AssignmentProps } from "./types";
 
 export function Assignment({
   gettext,
   assignment,
-}: {
-  gettext: (a: string) => string;
-  assignment: AssignmentType;
-}): JSX.Element {
+}: AssignmentProps): JSX.Element {
   return (
     <Fragment>
       <Card>
@@ -49,7 +46,7 @@ export function Assignment({
               </Tag>
             </Box>
             <Box display="flex" sx={{ width: "190px" }}>
-              <AssigmentStateIcon state={assignment.distributionState} />
+              <AssignmentStateIcon state={assignment.distributionState} />
               <Typography variant="h4">
                 {assignment.distributionState}
               </Typography>
@@ -65,7 +62,7 @@ export function Assignment({
         </Box>
       </Card>
       {assignment.groups.map((group) => (
-        <Group key={group.title} group={group} />
+        <Group key={group.title} gettext={gettext} group={group} />
       ))}
     </Fragment>
   );

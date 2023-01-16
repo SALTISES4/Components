@@ -14,16 +14,19 @@ import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 
 import { Tag } from "../styledComponents";
+import { CollectionProps } from "./types";
 
-export const Collection = (props) => {
-  const collection = props.collection;
+export function Collection({
+  gettext,
+  collection,
+}: CollectionProps): JSX.Element {
   return (
     <Card>
       <CardHeader
         avatar={<Avatar />}
         action={<img src="../static/components/img/logo.gif" height="30" />}
         title={collection.title}
-        subheader={"From ".concat(collection.autor)}
+        subheader={gettext("From ".concat(collection.author))}
       />
       <CardContent>
         <Typography>{collection.description}</Typography>
@@ -37,7 +40,16 @@ export const Collection = (props) => {
           ))}
           <Tag>
             <BookmarksIcon fontSize="small" />
-            <Typography> 123 answers</Typography>
+            {collection.answerCount > 0 ? (
+              <Typography>
+                {" "}
+                gettext{`${collection.answerCount} answers`}{" "}
+              </Typography>
+            ) : (
+              <Typography>
+                {gettext(`${collection.answerCount} answer`)}{" "}
+              </Typography>
+            )}
           </Tag>
         </Stack>
         <Checkbox
@@ -53,4 +65,4 @@ export const Collection = (props) => {
       </CardActions>
     </Card>
   );
-};
+}

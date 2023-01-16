@@ -20,17 +20,11 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 //import saltise from "../theme.js";
 import { Tag } from "../styledComponents";
 import { DifficultyCircleIcon } from "../_reusableComponents/difficultyIconQuestion";
-import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon.jsx";
+import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon";
 
-import { QuestionType } from "./types";
+import { QuestionProps } from "./types";
 
-export function Question({
-  gettext,
-  question,
-}: {
-  gettext: (a: string) => string;
-  question: QuestionType;
-}): JSX.Element {
+export function Question({ gettext, question }: QuestionProps): JSX.Element {
   return (
     <Card>
       <CardContent>
@@ -41,7 +35,7 @@ export function Question({
           <Box display="flex">
             <Box display="flex" sx={{ mr: "30px" }}>
               <DifficultyCircleIcon difficulty={question.difficulty} />
-              <Typography variant="h4">{question.difficulty}</Typography>
+              <Typography variant="h4">{question.difficulty.label}</Typography>
             </Box>
             <Box display="flex">
               <PeerImpactIcon peerImpact={question.peerImpact} />

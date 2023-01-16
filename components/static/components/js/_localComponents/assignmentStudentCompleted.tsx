@@ -6,13 +6,20 @@ import Typography from "@mui/material/Typography";
 
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-export const AssigmentStudentCompleted = (props) => {
-  const { assigment } = props;
+import { AssignmentType } from "./types";
+
+export function AssignmentStudentCompleted({
+  gettext,
+  assignment,
+}: {
+  gettext: (a: string) => string;
+  assignment: AssignmentType;
+}): JSX.Element {
   return (
     <Card>
       <Box display="flex" justifyContent="space-between">
         <Box>
-          <Typography variant="h3">{assigment.title}</Typography>
+          <Typography variant="h3">{assignment.title}</Typography>
         </Box>
         <Box display="flex" alignItems="center">
           <CheckCircleIcon
@@ -20,10 +27,10 @@ export const AssigmentStudentCompleted = (props) => {
             color="success"
           />
           <Typography variant="h4" sx={{ padding: "0px 77px 0px 10px" }}>
-            7/8
+            7 {gettext("/")} 8
           </Typography>
         </Box>
       </Box>
     </Card>
   );
-};
+}

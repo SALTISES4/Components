@@ -12,15 +12,18 @@ import { CircleProgressIcon } from "../_reusableComponents/circularProgressIcon"
 import { Tag } from "../styledComponents";
 
 import { daysDiff } from "../functions";
+import { AssignmentStudentProps } from "./types";
 
-export const AssigmentStudent = (props) => {
-  const { assigment } = props;
-  const daysDifference = daysDiff(assigment.dueDate);
+export function AssignmentStudent({
+  gettext,
+  assignment,
+}: AssignmentStudentProps): JSX.Element {
+  const daysDifference = daysDiff(assignment.dueDate);
   return (
     <Card>
       <Box display="flex" justifyContent="space-between">
         <Box>
-          <Typography variant="h3">{assigment.title}</Typography>
+          <Typography variant="h3">{assignment.title}</Typography>
         </Box>
         <Box
           display="flex"
@@ -29,17 +32,22 @@ export const AssigmentStudent = (props) => {
           minWidth="270px"
           justifyContent="space-between"
         >
-          {assigment.progress == 0 ? (
+          {assignment.progress == 0 ? (
             <Tag sx={{ mr: "10px", ml: "10px", width: "100px" }}>
               <FormatListBulletedIcon fontSize="small" />
               <Box display="flex">
-                <Typography>{assigment.questions.length} questions</Typography>
+                <Typography>
+                  {assignment.questionCount} {gettext("questions")}
+                </Typography>
               </Box>
             </Tag>
           ) : (
             <Box display="flex" alignItems="center">
-              <CircleProgressIcon progress={assigment.progress} />
-              <Typography> {assigment.progress}% completed</Typography>
+              <CircleProgressIcon progress={assignment.progress} />
+              <Typography>
+                {" "}
+                {assignment.progress} {gettext("% completed")}
+              </Typography>
             </Box>
           )}
           <Box display="flex" alignItems="center">
@@ -55,11 +63,11 @@ export const AssigmentStudent = (props) => {
               />
             )}
             <Typography variant="h4" sx={{ margin: "0px 10px" }}>
-              Due In {daysDifference} days
+              {gettext("Due In")} {daysDifference} {gettext("days")}
             </Typography>
           </Box>
         </Box>
       </Box>
     </Card>
   );
-};
+}

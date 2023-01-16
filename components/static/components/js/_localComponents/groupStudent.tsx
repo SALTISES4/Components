@@ -12,21 +12,25 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 
 import CardHeader from "@mui/material/CardHeader";
 
-export const GroupStudent = (props) => {
-  const { group } = props;
+import { GroupStudentProps } from "./types";
+
+export function GroupStudent({
+  gettext,
+  group,
+}: GroupStudentProps): JSX.Element {
   return (
     <Card>
       <Box display="flex" justifyContent="space-between">
         <CardHeader
           title={group.title}
-          subheader={"From ".concat(group.autor)}
+          subheader={"From ".concat(group.author)}
         />
         <Box paddingTop="4px" display="flex">
           <CircleIcon
             color="success"
             sx={{ padding: "0px 10px", fontSize: "20px" }}
           />
-          <Typography>Active</Typography>
+          <Typography>{gettext("Active")}</Typography>
         </Box>
       </Box>
       <CardActions sx={{ justifyContent: "space-between", mt: "10px" }}>
@@ -38,10 +42,10 @@ export const GroupStudent = (props) => {
           ))}
           <Tag>
             <LibraryBooksIcon fontSize="small" />
-            <Typography> {group.assigmentsCount} assigments </Typography>
+            <Typography> ? {gettext("assignments")} </Typography>
           </Tag>
         </Stack>
       </CardActions>
     </Card>
   );
-};
+}

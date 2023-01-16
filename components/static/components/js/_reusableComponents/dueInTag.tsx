@@ -5,9 +5,10 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
 import { daysDiff } from "../functions";
+import { DueInTagProps } from "./types";
 
-export const DueInTag = (props) => {
-  const daysDifference = daysDiff(props.dueDate);
+export const DueInTag = ({ dueDate }: DueInTagProps) => {
+  const daysDifference = daysDiff(dueDate);
   return (
     <Box>
       {daysDifference < 5 ? (

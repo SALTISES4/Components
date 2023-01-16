@@ -2,6 +2,7 @@ import { h } from "preact";
 import saltise from "../theme";
 
 import CircleIcon from "@mui/icons-material/Circle";
+import { DifficultyCircleAssignmentProps } from "./types";
 
 const theme = saltise;
 
@@ -19,9 +20,7 @@ const colorPicker = (difficulty: string) => {
 
 export const DifficultyCircleIcon = ({
   difficulty,
-}: {
-  difficulty: string;
-}) => {
+}: DifficultyCircleAssignmentProps) => {
   const color = colorPicker(difficulty);
   return (
     <CircleIcon

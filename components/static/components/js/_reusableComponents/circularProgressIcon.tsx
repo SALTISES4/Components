@@ -2,10 +2,11 @@ import { h } from "preact";
 import saltise from "../theme";
 import { CircularBox } from "../styledComponents";
 import CircularProgress from "@mui/material/CircularProgress";
+import { CircleProgressionIconProps } from "./types";
 
 const theme = saltise;
 
-const colorPicker = (progress) => {
+const colorPicker = (progress: number) => {
   const colorSet = [theme.palette.primary.main, theme.palette.primary.main];
   if (progress < 25) {
     colorSet[0] = theme.palette.errorTint.main;
@@ -23,13 +24,15 @@ const colorPicker = (progress) => {
   return colorSet;
 };
 
-export const CircleProgressIcon = (props) => {
-  const colorSet = colorPicker(props.progress);
+export const CircleProgressIcon = ({
+  progress,
+}: CircleProgressionIconProps) => {
+  const colorSet = colorPicker(progress);
   return (
     <CircularBox sx={{ backgroundColor: colorSet[0] }}>
       <CircularProgress
         variant="determinate"
-        value={props.progress}
+        value={progress}
         size="20px"
         sx={{ color: colorSet[1] }}
       />

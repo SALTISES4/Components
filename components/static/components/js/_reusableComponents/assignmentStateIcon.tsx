@@ -2,6 +2,7 @@ import { h } from "preact";
 import saltise from "../theme";
 
 import CircleIcon from "@mui/icons-material/Circle";
+import { AssignmentStateIconProps } from "./types";
 
 const theme = saltise;
 
@@ -15,7 +16,7 @@ const colorPicker = (state: string) => {
   return color;
 };
 
-export const AssigmentStateIcon = ({ state }: { state: string }) => {
+export const AssignmentStateIcon = ({ state }: AssignmentStateIconProps) => {
   const color = colorPicker(state);
   return (
     <CircleIcon

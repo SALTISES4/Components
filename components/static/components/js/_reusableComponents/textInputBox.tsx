@@ -2,6 +2,7 @@ import { Box, TextField, Typography } from "@mui/material";
 import { h } from "preact";
 import { styled } from "@mui/material/styles";
 import { StyledToggleBar } from "./toggleBar";
+import { TextInputBoxProps } from "./types";
 
 const StyledTextField = styled(TextField)(() => ({
   "& .MuiOutlinedInput-root": {
@@ -15,13 +16,7 @@ export const TextInputBox = ({
   rows,
   defaultValue,
   gettext,
-}: {
-  id: string;
-  title: string;
-  rows: number;
-  defaultValue: string;
-  gettext: (a: string) => string;
-}) => {
+}: TextInputBoxProps) => {
   return (
     <Box>
       <Typography sx={{ marginLeft: "14px" }}>{gettext(title)}</Typography>

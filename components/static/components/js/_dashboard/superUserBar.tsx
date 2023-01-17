@@ -30,7 +30,7 @@ export const SuperUserBar = ({
   return (
     <Box sx={style}>
       <Typography variant="h4" width="100%" align="center">
-        {activeAssignmentCount} {gettext("active assigments")}
+        {activeAssignmentCount} {gettext("active assignments")}
       </Typography>
       <Divider orientation="vertical" flexItem />
       <Typography variant="h4" width="100%" align="center">

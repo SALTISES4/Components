@@ -37,11 +37,11 @@ msgid "Good Morning,"
 msgstr "Bonjour,"
 
 #: components/static/components/js/build/dashboard.min.js:7
-msgid "Active Assigments"
+msgid "Active Assignments"
 msgstr "Exercises en cours"
 
 #: components/static/components/js/build/dashboard.min.js:7
-msgid "See my assigments"
+msgid "See my assignments"
 msgstr "Voir tous mes exercises"
 
 #: components/static/components/js/build/dashboard.min.js:7

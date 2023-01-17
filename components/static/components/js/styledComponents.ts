@@ -1,10 +1,11 @@
 import saltise from "./theme";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import { Button } from "@mui/material";
 
 const theme = saltise;
 
-export const BpIcon = styled("span")({
+export const BpIcon = styled(Box)({
   borderRadius: "3px",
   width: "24px",
   height: "24px",
@@ -15,7 +16,7 @@ export const BpIcon = styled("span")({
   boxSizing: "border-box",
 });
 
-export const CircularBox = styled("div")({
+export const CircularBox = styled(Box)({
   position: "relative",
   display: "inline-flex",
   borderRadius: "100%",
@@ -24,7 +25,7 @@ export const CircularBox = styled("div")({
   margin: "10px",
 });
 
-export const SearchBar = styled("div")({
+export const SearchBar = styled(Box)({
   backgroundColor: "#fff",
   borderRadius: "4px",
   padding: "15px",
@@ -60,7 +61,7 @@ export const Tag = styled(Box)({
   },
 });
 
-export const Filter = styled("Button")({
+export const Filter = styled(Button)({
   color: theme.palette.secondary4.main,
   borderRadius: "10px",
   display: "flex",
@@ -82,7 +83,7 @@ export const Filter = styled("Button")({
   },
 });
 
-export const Notification = styled("div")({
+export const Notification = styled(Box)({
   backgroundColor: "#D70000",
   height: "13px",
   width: "13px",
@@ -95,7 +96,7 @@ export const Notification = styled("div")({
   alignItems: "center",
 });
 
-export const SharedTag = styled("div")({
+export const SharedTag = styled(Box)({
   backgroundColor: theme.palette.new.main,
   marginLeft: "12px",
   padding: "4px 20px",

@@ -14,12 +14,16 @@ import { Subtitle } from "./styledComponents";
 
 import { SuperUserBar } from "./_dashboard/superUserBar";
 
-import { Assignment } from "./_localComponents/assigment";
+import { Assignment } from "./_localComponents/assignment";
 import { Collection } from "./_localComponents/collection";
 import { Question } from "./_localComponents/question";
 
 //types
-import { QuestionType } from "./_localComponents/types";
+import {
+  AssignmentType,
+  CollectionType,
+  QuestionType,
+} from "./_localComponents/types";
 import { DashboardAppProps, DashboardAppState } from "./types";
 
 //style
@@ -31,7 +35,7 @@ import saltise from "./theme";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-import { assignments, collections, questions, teacher } from "./data.js";
+import { assignments, collections, questions, teacher } from "./data";
 
 export class App extends Component<DashboardAppProps, DashboardAppState> {
   constructor(props: DashboardAppProps) {
@@ -72,20 +76,22 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
             <Container>
               <Subtitle>
                 <Typography variant="h2">
-                  {this.props.gettext("Active Assigments")}
+                  {this.props.gettext("Active Assignments")}
                 </Typography>
                 <Link variant="h4">
-                  {this.props.gettext("See my assigments")}
+                  {this.props.gettext("See my assignments")}
                 </Link>
               </Subtitle>
               <Stack spacing="10px">
-                {this.state.assignments.map((assignment, i) => (
-                  <Assignment
-                    key={i}
-                    assignment={assignment}
-                    gettext={this.props.gettext}
-                  />
-                ))}
+                {this.state.assignments.map(
+                  (assignment: AssignmentType, i: number) => (
+                    <Assignment
+                      key={i}
+                      assignment={assignment}
+                      gettext={this.props.gettext}
+                    />
+                  ),
+                )}
               </Stack>
             </Container>
             <Container>
@@ -98,11 +104,16 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                 </Link>
               </Subtitle>
               <Grid container spacing="20px">
-                {this.state.collections.map((collection) => (
-                  <Grid key={collection.title} item xs={6}>
-                    <Collection collection={collection} />
-                  </Grid>
-                ))}
+                {this.state.collections.map(
+                  (collection: CollectionType, i: number) => (
+                    <Grid key={i} item xs={6}>
+                      <Collection
+                        gettext={this.props.gettext}
+                        collection={collection}
+                      />
+                    </Grid>
+                  ),
+                )}
               </Grid>
             </Container>
             <Container>

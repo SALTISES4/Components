@@ -34,8 +34,10 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
           </Typography>
           <Box display="flex">
             <Box display="flex" sx={{ mr: "30px" }}>
-              <DifficultyCircleIcon difficulty={question.difficulty} />
-              <Typography variant="h4">{question.difficulty.label}</Typography>
+              <DifficultyCircleIcon difficulty={question.questionDifficulty} />
+              <Typography variant="h4">
+                {question.questionDifficulty.label}
+              </Typography>
             </Box>
             <Box display="flex">
               <PeerImpactIcon peerImpact={question.peerImpact} />

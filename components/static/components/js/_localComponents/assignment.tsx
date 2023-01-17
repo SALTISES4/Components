@@ -12,7 +12,7 @@ import { AssignmentStateIcon } from "../_reusableComponents/assignmentStateIcon"
 
 import { Tag } from "../styledComponents";
 
-import { AssignmentProps } from "./types";
+import { AssignmentProps, GroupType } from "./types";
 
 export function Assignment({
   gettext,
@@ -61,8 +61,8 @@ export function Assignment({
           </Box>
         </Box>
       </Card>
-      {assignment.groups.map((group) => (
-        <Group key={group.title} gettext={gettext} group={group} />
+      {assignment.groups.map((group: GroupType, i: number) => (
+        <Group key={i} gettext={gettext} group={group} />
       ))}
     </Fragment>
   );

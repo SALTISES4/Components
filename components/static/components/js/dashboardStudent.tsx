@@ -1,4 +1,4 @@
-import { h, render } from "preact";
+import { Component, h, render } from "preact";
 export { h, render };
 
 import Box from "@mui/material/Box";
@@ -10,8 +10,8 @@ import Typography from "@mui/material/Typography";
 
 import { Subtitle } from "./styledComponents";
 
-import { AssigmentStudent } from "./_localComponents/assigmentStudent";
-import { AssigmentStudentCompleted } from "./_localComponents/assigmentStudentCompleted";
+import { AssignmentStudent } from "./_localComponents/assignmentStudent";
+import { AssignmentStudentCompleted } from "./_localComponents/assignmentStudentCompleted";
 import { GroupStudent } from "./_localComponents/groupStudent";
 
 import { ThemeProvider } from "@mui/material/styles";
@@ -20,64 +20,97 @@ import saltise from "./theme";
 
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
+import { assignments, collections, questions, teacher } from "./data.js";
+import { DashboardAppProps, DashboardAppState } from "./types";
+import { AssignmentType, GroupType } from "./_localComponents/types";
 
-export const App = (props) => {
-  const cache = createCache({
+export class App extends Component<DashboardAppProps, DashboardAppState> {
+  constructor(props: DashboardAppProps) {
+    super(props);
+    this.state = {
+      assignments,
+      collections,
+      questions,
+      teacher,
+    };
+  }
+
+  componentDidMount(): void {
+    // Fetch data from db to overwrite placeholders
+  }
+
+  cache = createCache({
     key: "nonced",
-    nonce: props.nonce,
+    nonce: this.props.nonce,
     prepend: true,
     stylisPlugins: [prefixer],
   });
 
-  return (
-    <ThemeProvider theme={saltise}>
-      <CacheProvider value={cache}>
-        <Box width="calc(100% - 200px)" marginLeft="200px">
-          <Typography variant="h1" align="center">
-            Good Morning, {props.user.name}
-          </Typography>
-          <Container align="center" />
-          <Container>
-            <Subtitle>
-              <Typography variant="h2"> Assigments due</Typography>
-            </Subtitle>
-            <Stack spacing="10px">
-              {props.assigments.map((assigment) => (
-                <AssigmentStudent
-                  key={assigment.title}
-                  assigment={assigment}
-                />
-              ))}
-            </Stack>
-          </Container>
-          <Container>
-            <Subtitle>
-              <Typography variant="h2"> Recently completed</Typography>
-              <Link variant="h4"> See all my assigments</Link>
-            </Subtitle>
-            <Stack spacing="10px">
-              {props.assigments.map((assigment) => (
-                <AssigmentStudentCompleted
-                  key={assigment.title}
-                  assigment={assigment}
-                />
-              ))}
-            </Stack>
-          </Container>
-          <Container>
-            <Subtitle>
-              <Typography variant="h2"> Active groups </Typography>
-            </Subtitle>
-            <Grid container spacing="20px">
-              {props.groups.map((group) => (
-                <Grid key={group.title} item xs={6}>
-                  <GroupStudent key={group.title} group={group} />
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </Box>
-      </CacheProvider>
-    </ThemeProvider>
-  );
-};
+  render() {
+    return (
+      <ThemeProvider theme={saltise}>
+        <CacheProvider value={this.cache}>
+          <Box width="calc(100% - 200px)" marginLeft="200px">
+            <Typography variant="h1" align="center">
+              {this.props.gettext("Good Morning, ")} {this.props.user.username}
+            </Typography>
+            <Container align="center" />
+            <Container>
+              <Subtitle>
+                <Typography variant="h2">
+                  {this.props.gettext("Assignments due")}
+                </Typography>
+              </Subtitle>
+              <Stack spacing="10px">
+                {this.state.assignments.map(
+                  (assignment: AssignmentType, i: number) => (
+                    <AssignmentStudent
+                      key={i}
+                      assignment={assignment}
+                      gettext={this.props.gettext}
+                    />
+                  ),
+                )}
+              </Stack>
+            </Container>
+            <Container>
+              <Subtitle>
+                <Typography variant="h2">
+                  {this.props.gettext("Recently completed")}
+                </Typography>
+                <Link variant="h4">
+                  {this.props.gettext("See all my assignments")}
+                </Link>
+              </Subtitle>
+              <Stack spacing="10px">
+                {this.state.assignments.map(
+                  (assignment: AssignmentType, i: number) => (
+                    <AssignmentStudentCompleted
+                      key={i}
+                      assignment={assignment}
+                      gettext={this.props.gettext}
+                    />
+                  ),
+                )}
+              </Stack>
+            </Container>
+            <Container>
+              <Subtitle>
+                <Typography variant="h2">
+                  {this.props.gettext("Active groups")}
+                </Typography>
+              </Subtitle>
+              <Grid container spacing="20px">
+                {this.state.groups.map((group: GroupType, i: number) => (
+                  <Grid key={i} item xs={6}>
+                    <GroupStudent group={group} gettext={this.props.gettext} />
+                  </Grid>
+                ))}
+              </Grid>
+            </Container>
+          </Box>
+        </CacheProvider>
+      </ThemeProvider>
+    );
+  }
+}

@@ -9,9 +9,16 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 import SearchIcon from "@mui/icons-material/Search";
 
+import { SearchDropdownProps } from "./types";
+
 import { BpIcon } from "../styledComponents";
 
-export const SearchDropdown = (props) => {
+export const SearchDropdown = ({
+  gettext,
+  title,
+  subtitle,
+  choices,
+}: SearchDropdownProps) => {
   return (
     <Box
       position="absolute"
@@ -24,7 +31,7 @@ export const SearchDropdown = (props) => {
         boxSizing: "border-box",
       }}
     >
-      {props.choices.length > 5 ? (
+      {choices.length > 5 ? (
         <Box
           sx={{
             border: "solid 1px",
@@ -36,7 +43,10 @@ export const SearchDropdown = (props) => {
           }}
         >
           <SearchIcon sx={{ margin: "10px" }} />
-          <Typography fontSize="14px"> Find {props.title}...</Typography>
+          <Typography fontSize="14px">
+            {" "}
+            {gettext("Find")} {title}...
+          </Typography>
         </Box>
       ) : null}
       <Typography
@@ -45,12 +55,12 @@ export const SearchDropdown = (props) => {
         textTransform="uppercase"
         margin="5px 0px"
       >
-        {props.subtitle}
+        {subtitle}
       </Typography>
       <FormGroup>
-        {props.choices.map((choice) => (
+        {choices.map((choice: string, i: number) => (
           <FormControlLabel
-            key={choice.title}
+            key={i}
             control={
               <Checkbox
                 icon={<BpIcon />}

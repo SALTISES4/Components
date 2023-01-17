@@ -9,10 +9,17 @@
   title: string;
 };*/
 
+import {
+  DistributionState,
+  PeerImpactLevels,
+  QuestionDifficultyLabels,
+  QuestionDifficultyLevels,
+} from "./enum";
+
 export type AssignmentType = {
   author: string;
   difficulty: string;
-  distributionState: string;
+  distributionState: DistributionState;
   groups: GroupType[];
   questionCount: number;
   answerCount: number;
@@ -30,31 +37,17 @@ export type CollectionType = {
   answerCount: number;
 };
 
-enum QuestionDifficultyLevels {
-  1,
-  2,
-  3,
-  4,
-}
-
 type QuestionDifficulty = {
   score: number;
   value: QuestionDifficultyLevels;
-  label: string;
+  label: QuestionDifficultyLabels;
 };
-
-enum PeerImpactLevels {
-  0,
-  1,
-  2,
-  3,
-}
 
 export type QuestionType = {
   answerCount: number;
   author: string;
   description: string;
-  difficulty: QuestionDifficulty;
+  questionDifficulty: QuestionDifficulty;
   peerImpact: PeerImpactLevels;
   tags?: string[];
   title: string;
@@ -70,6 +63,7 @@ export type GroupType = {
   subject?: string[];
   dueDate: Date;
   progress: number;
+  tags?: string[];
 };
 
 export type AssignmentBisProps = {
@@ -102,7 +96,6 @@ export type CollectionProps = {
 export type GroupProps = {
   gettext: (a: string) => string;
   group: GroupType;
-  ng;
 };
 
 export type GroupStudentProps = {

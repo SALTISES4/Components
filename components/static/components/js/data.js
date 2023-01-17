@@ -12,7 +12,7 @@ import {
   QuestionDifficultyLevels,
 } from "./_localComponents/enum";
 
-import { ExerciceLabel } from "./_search/enum";
+import { ExerciceLabels } from "./_search/enum";
 
 export const assignments = [
   {
@@ -176,10 +176,10 @@ export const typeFilters = {
   icon: CategoryIcon,
   notification: parseInt(faker.random.numeric(1)),
   choices: [
-    ExerciceLabel.assignment,
-    ExerciceLabel.collection,
-    ExerciceLabel.group,
-    ExerciceLabel.question,
+    ExerciceLabels.assignment,
+    ExerciceLabels.collection,
+    ExerciceLabels.group,
+    ExerciceLabels.question,
   ],
 };
 export const disciplineFilters = {

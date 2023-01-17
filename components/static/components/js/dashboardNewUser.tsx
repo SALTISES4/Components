@@ -1,4 +1,4 @@
-import { h, render } from "preact";
+import { Component, h, render } from "preact";
 export { h, render };
 
 import Box from "@mui/material/Box";
@@ -14,7 +14,10 @@ import { NewUserBar } from "./_dashboard/newUserBar";
 
 import { Collection } from "./_localComponents/collection";
 import { Question } from "./_localComponents/question";
-import { QuestionType } from "./_localComponents/types";
+
+//types
+import { CollectionType, QuestionType } from "./_localComponents/types";
+import { DashboardAppProps, DashboardAppState } from "./types";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -25,57 +28,90 @@ import saltise from "./theme";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-export const App = (props) => {
-  const cache = createCache({
+import { assignments, collections, questions, teacher } from "./data";
+
+export class App extends Component<DashboardAppProps, DashboardAppState> {
+  constructor(props: DashboardAppProps) {
+    super(props);
+    this.state = {
+      assignments,
+      collections,
+      questions,
+      teacher,
+    };
+  }
+
+  componentDidMount(): void {
+    // Fetch data from db to overwrite placeholders
+  }
+
+  cache = createCache({
     key: "nonced",
-    nonce: props.nonce,
+    nonce: this.props.nonce,
     prepend: true,
     stylisPlugins: [prefixer],
   });
 
-  return (
-    <ThemeProvider theme={saltise}>
-      <CacheProvider value={cache}>
-        <Box width="calc(100% - 200px)" marginLeft="200px">
-          <Typography variant="h1" align="center">
-            Welcome, {props.user.name}
-          </Typography>
-          <Container align="center">
-            <NewUserBar />
-          </Container>
-          <Container>
-            <Subtitle>
-              <Typography variant="h2"> Featured Collection </Typography>
-              <Link variant="h4"> Explore collections</Link>
-            </Subtitle>
-            <Grid container spacing="20px">
-              {props.collections.map((collection) => (
-                <Grid key={collection.title} item xs={6}>
-                  <Collection collection={collection} />
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-          <Container>
-            <Subtitle>
-              <Typography variant="h2">
-                {" "}
-                You might be interested in...
-              </Typography>
-              <Link variant="h4">Explore Question</Link>
-            </Subtitle>
-            <Stack spacing="10px">
-              {props.questions.map((question: QuestionType, i: number) => (
-                <Question
-                  key={i}
-                  gettext={props.gettext}
-                  question={question}
-                />
-              ))}
-            </Stack>
-          </Container>
-        </Box>
-      </CacheProvider>
-    </ThemeProvider>
-  );
-};
+  render() {
+    return (
+      <ThemeProvider theme={saltise}>
+        <CacheProvider value={this.cache}>
+          <Box width="calc(100% - 200px)" marginLeft="200px">
+            <Typography variant="h1" align="center">
+              {this.props.gettext("Welcome,")} {this.props.user.username}
+            </Typography>
+            <Container align="center">
+              <NewUserBar gettext={this.props.gettext} />
+            </Container>
+            <Container>
+              <Subtitle>
+                <Typography variant="h2">
+                  {" "}
+                  {this.props.gettext("Featured Collection")}{" "}
+                </Typography>
+                <Link variant="h4">
+                  {" "}
+                  {this.props.gettext("Explore collections")}
+                </Link>
+              </Subtitle>
+              <Grid container spacing="20px">
+                {this.state.collections.map(
+                  (collection: CollectionType, i: number) => (
+                    <Grid key={i} item xs={6}>
+                      <Collection
+                        gettext={this.props.gettext}
+                        collection={collection}
+                      />
+                    </Grid>
+                  ),
+                )}
+              </Grid>
+            </Container>
+            <Container>
+              <Subtitle>
+                <Typography variant="h2">
+                  {" "}
+                  {this.props.gettext("You might be interested in...")}
+                </Typography>
+                <Link variant="h4">
+                  {this.props.gettext("Explore Question")}
+                </Link>
+              </Subtitle>
+              <Stack spacing="10px">
+                {this.state.questions.map(
+                  (question: QuestionType, i: number) => (
+                    <Question
+                      key={i}
+                      gettext={this.props.gettext}
+                      question={question}
+                    />
+                  ),
+                )}
+              </Stack>
+            </Container>
+          </Box>
+        </CacheProvider>
+      </ThemeProvider>
+    );
+  }
+}

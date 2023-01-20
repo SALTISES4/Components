@@ -18,7 +18,7 @@ export function AssignmentStudent({
   gettext,
   assignment,
 }: AssignmentStudentProps): JSX.Element {
-  const daysDifference = daysDiff(assignment.dueDate);
+  const daysDifference: number = daysDiff(assignment.dueDate);
   return (
     <Card>
       <Box display="flex" justifyContent="space-between">

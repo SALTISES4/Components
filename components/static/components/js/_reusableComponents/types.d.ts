@@ -18,6 +18,7 @@ export type DifficultyCircleIconProps = {
 
 export type DueInTagProps = {
   dueDate: Date;
+  gettext: (a: string) => string;
 };
 
 export type PeerImpactIconProps = {

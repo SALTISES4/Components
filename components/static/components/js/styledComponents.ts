@@ -109,7 +109,7 @@ export const SharedTag = styled(Box)({
   },
 });
 
-export const CustomAddBox = styled("div")({
+export const CustomAddBox = styled(Box)({
   backgroundColor: theme.palette.secondary1.main,
   padding: "6px 0px",
   borderRadius: "0px 4px 4px 0px",
@@ -121,7 +121,7 @@ export const CustomAddBox = styled("div")({
   left: "100%",
 });
 
-export const StepBar = styled("div")({
+export const StepBar = styled(Box)({
   marginTop: "20px",
   marginBottom: "30px",
   height: "12px",

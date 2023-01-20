@@ -7,12 +7,11 @@ import PeopleIcon from "@mui/icons-material/People";
 import ScienceIcon from "@mui/icons-material/Science";
 import {
   DistributionState,
-  PeerImpactLevels,
   QuestionDifficultyLabels,
   QuestionDifficultyLevels,
 } from "./_localComponents/enum";
 
-import { ExerciceLabels } from "./_search/enum";
+import { ExerciceLabels, PeerImpactLabels } from "./_search/enum";
 
 export const assignments = [
   {
@@ -214,9 +213,9 @@ export const peerImpactFilters = {
   icon: PeopleIcon,
   notification: parseInt(faker.random.numeric(2)),
   choices: [
-    PeerImpactLevels.zero.toString,
-    PeerImpactLevels.un.toString,
-    PeerImpactLevels.deux.toString,
-    PeerImpactLevels.trois.toString,
+    PeerImpactLabels.zero,
+    PeerImpactLabels.un,
+    PeerImpactLabels.deux,
+    PeerImpactLabels.trois,
   ],
 };

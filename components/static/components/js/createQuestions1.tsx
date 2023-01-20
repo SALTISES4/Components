@@ -1,4 +1,4 @@
-import { h, render } from "preact";
+import { Component, h, render } from "preact";
 export { h, render };
 
 import Box from "@mui/material/Box";
@@ -20,66 +20,60 @@ import { Settings } from "../questions/settings";
 import { Indexing } from "../questions/indexing";
 import { Collaborators } from "../questions/collaborators";
 import { SaveBar } from "../questions/saveBar";
+import { CreateQuestions1AppProps, CreateQuestions1AppState } from "./types";
 
-type User = {
-  name: string;
-};
+export class App extends Component<
+  CreateQuestions1AppProps,
+  CreateQuestions1AppState
+> {
+  constructor(props: CreateQuestions1AppProps) {
+    super(props);
+    this.state = {};
+  }
 
-type AppProps = {
-  gettext: (a: string) => string;
-  nonce: string;
-  urls?: {
-    assignments: string;
-    collections: string;
-    questions: string;
-  };
-  user: User;
-};
+  componentDidMount(): void {
+    // Fetch data from db to overwrite placeholders
+  }
 
-// type AppState = {
-//   assignments: AssignmentType[];
-//   collections: CollectionType[];
-//   questions: QuestionType[];
-// };
-
-export const App = ({ gettext, nonce }: AppProps) => {
-  const cache = createCache({
+  cache = createCache({
     key: "nonced",
-    nonce,
+    nonce: this.props.nonce,
     prepend: true,
     stylisPlugins: [prefixer],
   });
 
-  return (
-    <ThemeProvider theme={formTheme}>
-      <CacheProvider value={cache}>
-        <Box width="calc(100% - 200px)" marginLeft="200px">
-          <Container sx={{ width: "80%" }}>
-            <Typography variant="h1" align="left">
-              {gettext("Create Question")}
-            </Typography>
-            <Typography variant="h2" sx={{ marginTop: "30px" }}>
-              {gettext("Step 1/2")}
-            </Typography>
-            <Typography fontSize="16px" lineHeight="22px">
-              {gettext("Question parameters")}
-            </Typography>
-            <StepBar
-              sx={{
-                background:
-                  "linear-gradient(to right, #1743B3 50%, #AEAEBF 50%)",
-              }}
-            />
-            <Stack spacing={"30px"}>
-              <Content gettext={gettext} />
-              <Settings gettext={gettext} />
-              <Indexing gettext={gettext} />
-              <Collaborators gettext={gettext} />
-            </Stack>
-          </Container>
-        </Box>
-        <SaveBar gettext={gettext} />
-      </CacheProvider>
-    </ThemeProvider>
-  );
-};
+  render() {
+    return (
+      <ThemeProvider theme={formTheme}>
+        <CacheProvider value={this.cache}>
+          <Box width="calc(100% - 200px)" marginLeft="200px">
+            <Container sx={{ width: "80%" }}>
+              <Typography variant="h1" align="left">
+                {this.props.gettext("Create Question")}
+              </Typography>
+              <Typography variant="h2" sx={{ marginTop: "30px" }}>
+                {this.props.gettext("Step 1/2")}
+              </Typography>
+              <Typography fontSize="16px" lineHeight="22px">
+                {this.props.gettext("Question parameters")}
+              </Typography>
+              <StepBar
+                sx={{
+                  background:
+                    "linear-gradient(to right, #1743B3 50%, #AEAEBF 50%)",
+                }}
+              />
+              <Stack spacing={"30px"}>
+                <Content gettext={this.props.gettext} />
+                <Settings gettext={this.props.gettext} />
+                <Indexing gettext={this.props.gettext} />
+                <Collaborators gettext={this.props.gettext} />
+              </Stack>
+            </Container>
+          </Box>
+          <SaveBar gettext={this.props.gettext} />
+        </CacheProvider>
+      </ThemeProvider>
+    );
+  }
+}

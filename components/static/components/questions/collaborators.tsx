@@ -20,7 +20,11 @@ export function Collaborators({
 }: {
   gettext: (a: string) => string;
 }): JSX.Element {
-  const [discipline, setDiscipline] = useState("");
+  const [{ discipline }, setDiscipline] = useState<{
+    discipline: string;
+  }>({
+    discipline: "",
+  });
 
   const handleChange = (event: SelectChangeEvent) => {
     setDiscipline(event.target.value as string);

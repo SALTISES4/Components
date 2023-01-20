@@ -24,9 +24,19 @@ export function Answer({
 }: {
   gettext: (a: string) => string;
 }): JSX.Element {
-  const [check, setChecked] = useState(false);
-  const handleChange = () => {
-    setChecked((prev) => !prev);
+  const [{ check, anchorElChange }, setChecked] = useState<{
+    check: boolean;
+    anchorElChange: null | HTMLElement;
+  }>({
+    check: false,
+    anchorElChange: null,
+  });
+
+  const handleChange = (event: MouseEvent | TouchEvent) => {
+    setChecked((prevState) => ({
+      check: !prevState.check,
+      anchorElChange: !prevState.check ? (event.target as HTMLElement) : null,
+    }));
   };
 
   return (
@@ -47,6 +57,7 @@ export function Answer({
             control={<Checkbox />}
             onChange={handleChange}
             label={gettext("Correct Answer")}
+            anchorEl={anchorElChange}
           />
         </Box>
         <Divider />

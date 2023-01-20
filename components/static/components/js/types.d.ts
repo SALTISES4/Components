@@ -55,7 +55,6 @@ export type SearchAppProps = {
     collections: string;
     questions: string;
   };
-  user: UserType;
 };
 
 export type SearchAppState = {
@@ -79,3 +78,17 @@ export type NavigationAppProps = {
 };
 
 export type NavigationAppState = {};
+
+export type CreateQuestions1AppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+};
+
+export type CreateQuestions1AppState = {};
+
+export type CreateQuestions2AppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+};
+
+export type CreateQuestions2AppState = {};

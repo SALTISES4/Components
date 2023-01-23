@@ -65,12 +65,16 @@ export const Filter = styled(Button)({
   color: theme.palette.secondary4.main,
   borderRadius: "10px",
   display: "flex",
+  justifyContent: "space-between",
   padding: "0px 10px",
   margin: "5px 5px",
   alignItems: "center",
   borderStyle: "solid",
   borderWidth: "1px",
   backgroundColor: "inherit",
+  " .MuiTypography-root": {
+    fontSize: "12px",
+  },
   "&:active": {
     boxShadow: "none",
     backgroundColor: theme.palette.secondary4.main,
@@ -89,11 +93,14 @@ export const Notification = styled(Box)({
   width: "13px",
   position: "relative",
   borderRadius: "50%",
-  color: "#fff",
-  fontSize: "7px",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  " .MuiTypography-root": {
+    fontSize: "8px",
+    lineHeight: "8px",
+    color: "#fff",
+  },
 });
 
 export const SharedTag = styled(Box)({

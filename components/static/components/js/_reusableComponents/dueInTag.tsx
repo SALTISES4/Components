@@ -15,15 +15,20 @@ export const DueInTag = ({ gettext, dueDate }: DueInTagProps) => {
         <Tag
           sx={{
             mr: "10px",
-            color: "warning",
-            backgroundColor: "warningTint.main",
+            color: "error.main",
+            backgroundColor: "errorTint.main",
           }}
         >
           <AlarmIcon fontSize="small" />
-          <Typography>
-            {" "}
-            {gettext("Due un ")} {daysDifference} {gettext(" days")}{" "}
-          </Typography>
+          {daysDifference < 2 ? (
+            <Typography color="inherit">
+              {gettext("Due in ")} {daysDifference} {gettext(" day")}
+            </Typography>
+          ) : (
+            <Typography color="inherit">
+              {gettext("Due in ")} {daysDifference} {gettext(" days")}
+            </Typography>
+          )}
         </Tag>
       ) : null}
     </Box>

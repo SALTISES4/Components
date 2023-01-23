@@ -35,7 +35,7 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
           <Box display="flex">
             <Box display="flex" sx={{ mr: "30px" }}>
               <DifficultyCircleIcon difficulty={question.questionDifficulty} />
-              <Typography variant="h4">
+              <Typography variant="h4" sx={{ width: "64px" }}>
                 {question.questionDifficulty.label}
               </Typography>
             </Box>
@@ -64,10 +64,14 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
               bgcolor: "white",
               borderWidth: "2px",
               borderStyle: "solid",
+              paddingTop: "3px",
+              paddingBottom: "3px",
             }}
           >
             <BarChartIcon fontSize="small" />
-            <Typography>{question.answerCount}</Typography>
+            <Typography>
+              {question.answerCount} {gettext("questions")}
+            </Typography>
           </Tag>
         </Stack>
         <Stack

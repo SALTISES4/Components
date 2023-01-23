@@ -129,7 +129,7 @@ export const questions = [
     peerImpact: faker.helpers.arrayElement([0, 1, 2, 3]),
   },
   {
-    answerCount: parseInt(faker.random.numeric(1)),
+    answerCount: parseInt(faker.random.numeric(2)),
     title: faker.lorem.sentence(),
     author: faker.name.fullName(),
     description: faker.lorem.sentence(),

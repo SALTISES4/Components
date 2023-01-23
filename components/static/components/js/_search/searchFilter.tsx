@@ -28,9 +28,7 @@ export const SearchFilter = ({ gettext, filter }: SearchFilterProps) => {
         <Filter onClick={handleClick}>
           {filter.notification > 0 ? (
             <Notification sx={{ top: "-8px", left: "-13px" }}>
-              <Typography fontSize="inherit" sx={{ color: "#fff" }}>
-                {filter.notification}
-              </Typography>
+              <Typography>{filter.notification}</Typography>
             </Notification>
           ) : (
             <Notification

@@ -40,25 +40,16 @@ export function Collection({
           ))}
           <Tag>
             <BookmarksIcon fontSize="small" />
-            {collection.answerCount > 0 ? (
-              <Typography>
-                {" "}
-                gettext{`${collection.answerCount} answers`}{" "}
-              </Typography>
-            ) : (
-              <Typography>
-                {gettext(`${collection.answerCount} answer`)}{" "}
-              </Typography>
-            )}
+            <Typography>{collection.answerCount}</Typography>
           </Tag>
         </Stack>
         <Checkbox
           icon={<BookmarkAddOutlinedIcon />}
           checkedIcon={<BookmarkAddedIcon />}
           sx={{
-            color: "primary",
+            color: "primary.main",
             "&.Mui-checked": {
-              color: "primary",
+              color: "primary.main",
             },
           }}
         />

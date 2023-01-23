@@ -88,19 +88,23 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 backgroundColor: "#061A4E",
               }}
             >
-              <Box width={this.pageWidth}>
-                <Typography sx={{ ml: "15px", color: "#fff" }}>
-                  Search
-                </Typography>
+              <Box
+                width={this.pageWidth}
+                sx={{
+                  " .MuiTypography-body1": {
+                    ml: "15px",
+                    color: "#fff",
+                  },
+                }}
+              >
+                <Typography>Search</Typography>
                 <SearchBar>
                   <Typography variant="h4">
                     {this.props.gettext("Chemistry")}
                   </Typography>
                   <CancelIcon color="primary" fontSize="large" />
                 </SearchBar>
-                <Typography sx={{ ml: "15px" }}>
-                  111 {this.props.gettext("Results")}
-                </Typography>
+                <Typography> XX {this.props.gettext("Results")}</Typography>
               </Box>
             </Box>
             <Box
@@ -115,10 +119,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 alignItems={"center"}
                 flexWrap={"wrap"}
               >
-                <Typography
-                  variant="h4"
-                  sx={{ margin: "5px 10px", color: "#fff" }}
-                >
+                <Typography variant="h4" sx={{ margin: "5px 10px" }}>
                   {this.props.gettext("Filtred by")}
                 </Typography>
                 <SearchFilter
@@ -139,14 +140,14 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 />
                 <SearchFilter
                   gettext={this.props.gettext}
-                  filter={typeFilters}
+                  filter={peerImpactFilters}
                 />
               </Box>
             </Box>
             <Box width={this.pageWidth}>
               <Container>
                 <Subtitle>
-                  <Typography variant="h2" sx={{ color: "#fff" }}>
+                  <Typography variant="h2">
                     {this.state.questions.length}
                     {this.props.gettext(" results in Questions")}
                   </Typography>

@@ -6,7 +6,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { LinkType } from "../types";
+import { CustomMenuProps } from "./types";
 
 const typographyStyle = {
   sx: {
@@ -21,12 +21,7 @@ export const CustomMenu = ({
   menuItems,
   onClose,
   open,
-}: {
-  anchorEl: null | HTMLElement;
-  menuItems: LinkType[][];
-  onClose: (a: MouseEvent | TouchEvent) => void;
-  open: boolean;
-}) => {
+}: CustomMenuProps) => {
   return (
     <Menu
       anchorEl={anchorEl}

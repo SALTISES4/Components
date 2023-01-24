@@ -1,10 +1,11 @@
 import saltise from "./theme";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import { Button } from "@mui/material";
 
 const theme = saltise;
 
-export const BpIcon = styled("span")({
+export const BpIcon = styled(Box)({
   borderRadius: "3px",
   width: "24px",
   height: "24px",
@@ -15,7 +16,7 @@ export const BpIcon = styled("span")({
   boxSizing: "border-box",
 });
 
-export const CircularBox = styled("div")({
+export const CircularBox = styled(Box)({
   position: "relative",
   display: "inline-flex",
   borderRadius: "100%",
@@ -24,7 +25,7 @@ export const CircularBox = styled("div")({
   margin: "10px",
 });
 
-export const SearchBar = styled("div")({
+export const SearchBar = styled(Box)({
   backgroundColor: "#fff",
   borderRadius: "4px",
   padding: "15px",
@@ -48,18 +49,32 @@ export const Tag = styled(Box)({
   display: "flex",
   padding: "5px",
   alignItems: "center",
+  " .MuiTypography-root": {
+    fontSize: "12px",
+    lineHeight: "16px",
+  },
+  " .MuiSvgIcon-root": {
+    paddingRight: "6px",
+  },
+  contained: {
+    backgroundColor: "#fff",
+  },
 });
 
-export const Filter = styled("Button")({
+export const Filter = styled(Button)({
   color: theme.palette.secondary4.main,
   borderRadius: "10px",
   display: "flex",
+  justifyContent: "space-between",
   padding: "0px 10px",
   margin: "5px 5px",
   alignItems: "center",
   borderStyle: "solid",
   borderWidth: "1px",
   backgroundColor: "inherit",
+  " .MuiTypography-root": {
+    fontSize: "12px",
+  },
   "&:active": {
     boxShadow: "none",
     backgroundColor: theme.palette.secondary4.main,
@@ -72,21 +87,24 @@ export const Filter = styled("Button")({
   },
 });
 
-export const Notification = styled("div")({
+export const Notification = styled(Box)({
   backgroundColor: "#D70000",
   height: "13px",
   width: "13px",
   position: "relative",
   borderRadius: "50%",
-  color: "#fff",
-  fontSize: "7px",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  " .MuiTypography-root": {
+    fontSize: "8px",
+    lineHeight: "8px",
+    color: "#fff",
+  },
 });
 
-export const SharedTag = styled("div")({
-  backgroundColor: theme.palette.purple.main,
+export const SharedTag = styled(Box)({
+  backgroundColor: theme.palette.new.main,
   marginLeft: "12px",
   padding: "4px 20px",
   borderRadius: "4px 4px 0px 0px",
@@ -94,6 +112,25 @@ export const SharedTag = styled("div")({
   " .MuiTypography-root": {
     fontSize: "12px",
     lineHeight: "22px",
-    color: theme.palette.palePurple.main,
+    color: theme.palette.newTint.main,
   },
+});
+
+export const CustomAddBox = styled(Box)({
+  backgroundColor: theme.palette.secondary1.main,
+  padding: "6px 0px",
+  borderRadius: "0px 4px 4px 0px",
+  display: "flex",
+  flexDirection: "column",
+  position: "relative",
+  bottom: "99px",
+  width: "fit-content",
+  left: "100%",
+});
+
+export const StepBar = styled(Box)({
+  marginTop: "20px",
+  marginBottom: "30px",
+  height: "12px",
+  borderRadius: "4px",
 });

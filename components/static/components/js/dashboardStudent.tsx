@@ -2,33 +2,27 @@ import { Component, h, render } from "preact";
 export { h, render };
 
 import Box from "@mui/material/Box";
+import Container from "@mui/system/Container";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/system/Container";
 
 import { Subtitle } from "./styledComponents";
 
-import { NewUserBar } from "./_dashboard/newUserBar";
+import { AssignmentStudent } from "./_localComponents/assignmentStudent";
+import { AssignmentStudentCompleted } from "./_localComponents/assignmentStudentCompleted";
+import { GroupStudent } from "./_localComponents/groupStudent";
 
-import { Collection } from "./_localComponents/collection";
-import { Question } from "./_localComponents/question";
-
-//types
-import { CollectionType, QuestionType } from "./_localComponents/types";
-import { DashboardAppProps, DashboardAppState } from "./types";
-
-//style
 import { ThemeProvider } from "@mui/material/styles";
 import { prefixer } from "stylis";
 import saltise from "./theme";
 
-//cache
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-
-import { assignments, collections, questions, teacher } from "./data";
+import { assignments, collections, questions, teacher } from "./data.js";
+import { DashboardAppProps, DashboardAppState } from "./types";
+import { AssignmentType, GroupType } from "./_localComponents/types";
 
 export class App extends Component<DashboardAppProps, DashboardAppState> {
   constructor(props: DashboardAppProps) {
@@ -58,56 +52,61 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
         <CacheProvider value={this.cache}>
           <Box width="calc(100% - 200px)" marginLeft="200px">
             <Typography variant="h1" align="center">
-              {this.props.gettext("Welcome,")} {this.props.user.username}
+              {this.props.gettext("Good Morning, ")} {this.props.user.username}
             </Typography>
-            <Container align="center">
-              <NewUserBar gettext={this.props.gettext} />
-            </Container>
+            <Container align="center" />
             <Container>
               <Subtitle>
                 <Typography variant="h2">
-                  {" "}
-                  {this.props.gettext("Featured Collection")}{" "}
+                  {this.props.gettext("Assignments due")}
                 </Typography>
-                <Link variant="h4">
-                  {" "}
-                  {this.props.gettext("Explore collections")}
-                </Link>
-              </Subtitle>
-              <Grid container spacing="20px">
-                {this.state.collections.map(
-                  (collection: CollectionType, i: number) => (
-                    <Grid key={i} item xs={6}>
-                      <Collection
-                        gettext={this.props.gettext}
-                        collection={collection}
-                      />
-                    </Grid>
-                  ),
-                )}
-              </Grid>
-            </Container>
-            <Container>
-              <Subtitle>
-                <Typography variant="h2">
-                  {" "}
-                  {this.props.gettext("You might be interested in...")}
-                </Typography>
-                <Link variant="h4">
-                  {this.props.gettext("Explore Question")}
-                </Link>
               </Subtitle>
               <Stack spacing="10px">
-                {this.state.questions.map(
-                  (question: QuestionType, i: number) => (
-                    <Question
+                {this.state.assignments.map(
+                  (assignment: AssignmentType, i: number) => (
+                    <AssignmentStudent
                       key={i}
+                      assignment={assignment}
                       gettext={this.props.gettext}
-                      question={question}
                     />
                   ),
                 )}
               </Stack>
+            </Container>
+            <Container>
+              <Subtitle>
+                <Typography variant="h2">
+                  {this.props.gettext("Recently completed")}
+                </Typography>
+                <Link variant="h4">
+                  {this.props.gettext("See all my assignments")}
+                </Link>
+              </Subtitle>
+              <Stack spacing="10px">
+                {this.state.assignments.map(
+                  (assignment: AssignmentType, i: number) => (
+                    <AssignmentStudentCompleted
+                      key={i}
+                      assignment={assignment}
+                      gettext={this.props.gettext}
+                    />
+                  ),
+                )}
+              </Stack>
+            </Container>
+            <Container>
+              <Subtitle>
+                <Typography variant="h2">
+                  {this.props.gettext("Active groups")}
+                </Typography>
+              </Subtitle>
+              <Grid container spacing="20px">
+                {this.state.groups.map((group: GroupType, i: number) => (
+                  <Grid key={i} item xs={6}>
+                    <GroupStudent group={group} gettext={this.props.gettext} />
+                  </Grid>
+                ))}
+              </Grid>
             </Container>
           </Box>
         </CacheProvider>

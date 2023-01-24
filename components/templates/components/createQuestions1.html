@@ -7,14 +7,14 @@
   <head>
     {% include "components/meta.html" %}
     <script
-      src="{% static 'components/js/build/search.min.js' %}"
+      src="{% static 'components/js/build/createQuestions1.min.js' %}"
       defer="true"
     ></script>
   </head>
   <body>
     <div id="navigation-app"></div>
 
-    <div id="search-app"></div>
+    <div id="question-app"></div>
 
     {% csrf_token %}
   </body>
@@ -22,15 +22,15 @@
     window.addEventListener("load", function () {
       {% include './navigationJS.html' %}
 
-      const searchApp = () => {
-        return search.h(search.App, {
+      const createQuestions1App = () => {
+        return createQuestions1.h(createQuestions1.App, {
           gettext: gettext,
           nonce: "{{ request.csp_nonce }}",
         });
       };
-      search.render(
-        searchApp(),
-        document.getElementById("search-app")
+      createQuestions1.render(
+        createQuestions1App(),
+        document.getElementById("question-app")
       );
     });
   </script>

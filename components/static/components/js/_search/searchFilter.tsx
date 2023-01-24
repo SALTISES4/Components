@@ -8,8 +8,9 @@ import { SearchDropdown } from "./searchDropdown";
 import { useState } from "preact/hooks";
 
 import ClickAwayListener from "@mui/material/ClickAwayListener";
+import { SearchFilterProps } from "./types";
 
-export const SearchFilter = (props) => {
+export const SearchFilter = ({ gettext, filter }: SearchFilterProps) => {
   const [open, setOpen] = useState(false);
   const handleClick = () => {
     setOpen((prev) => !prev);
@@ -19,15 +20,15 @@ export const SearchFilter = (props) => {
     setOpen(false);
   };
 
-  const displayChoice = props.choices.slice(0, 5);
+  const displayChoice = filter.choices.slice(0, 5);
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <Box>
         <Filter onClick={handleClick}>
-          {props.notification > 0 ? (
+          {filter.notification > 0 ? (
             <Notification sx={{ top: "-8px", left: "-13px" }}>
-              <Typography fontSize="inherit">{props.notification}</Typography>
+              <Typography>{filter.notification}</Typography>
             </Notification>
           ) : (
             <Notification
@@ -40,18 +41,18 @@ export const SearchFilter = (props) => {
           )}
           <SvgIcon
             sx={{ position: "absolute", fontSize: "14px" }}
-            component={props.icon}
+            component={filter.icon}
           />
           <Typography color="inherit" sx={{ pl: "6px" }}>
-            {props.title}
+            {filter.title}
           </Typography>
         </Filter>
         {open ? (
           <SearchDropdown
-            ropdown
-            title={props.title}
-            subtitle={props.subtitle}
+            title={filter.title}
+            subtitle={filter.subtitle}
             choices={displayChoice}
+            gettext={gettext}
           />
         ) : null}
       </Box>

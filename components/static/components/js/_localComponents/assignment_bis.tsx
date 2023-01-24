@@ -9,32 +9,39 @@ import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 
 import { Tag } from "../styledComponents";
+import { AssignmentBisProps } from "./types";
 
-export const AssigmentBis = (props) => {
-  const { assigment } = props;
+export function AssignmentBis({
+  gettext,
+  assignment,
+}: AssignmentBisProps): JSX.Element {
   return (
     <Card>
       <Box display="flex" justifyContent="space-between">
         <Box>
-          <Typography variant="h3">{assigment.title}</Typography>
-          <Typography variant="h6">From {assigment.autor}</Typography>
+          <Typography variant="h3">{assignment.title}</Typography>
+          <Typography variant="caption">
+            {gettext("From")} {assignment.author}
+          </Typography>
         </Box>
         <Box display="flex" alignItems="center">
           <Tag sx={{ mr: "10px", ml: "10px" }}>
-            <FormatListBulletedIcon sx={{ pr: "6px" }} fontSize="small" />
-            <Typography variant="tag">
-              {assigment.questions.length} questions
+            <FormatListBulletedIcon fontSize="small" />
+            <Typography>
+              {assignment.questionCount} {gettext("questions")}
             </Typography>
           </Tag>
           <Tag sx={{ mr: "10px", ml: "10px" }}>
-            <FormatListBulletedIcon sx={{ pr: "6px" }} fontSize="small" />
-            <Typography variant="tag">123 answers</Typography>
+            <FormatListBulletedIcon fontSize="small" />
+            <Typography>
+              {assignment.answerCount} {gettext("answers")}
+            </Typography>
           </Tag>
-          <IconButton color="primaryBlue" sx={{ ml: "80px" }}>
+          <IconButton sx={{ ml: "80px" }}>
             <BookmarkAddOutlinedIcon fontSize="medium" />
           </IconButton>
         </Box>
       </Box>
     </Card>
   );
-};
+}

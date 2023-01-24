@@ -1,4 +1,4 @@
-import { h, render } from "preact";
+import { Component, h, render } from "preact";
 export { h, render };
 
 //material ui components
@@ -10,7 +10,7 @@ import { Header } from "./_navigation/header";
 import { SideBar } from "./_navigation/drawer";
 
 //types
-import { NavigationAppProps } from "./types";
+import { NavigationAppProps, NavigationAppState } from "./types";
 
 //style
 import { prefixer } from "stylis";
@@ -21,46 +21,50 @@ import saltise from "./theme";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-export const App = ({
-  logo,
-  menuAddItems,
-  menuProfile,
-  nonce,
-  sidebarGroups,
-  user,
-}: NavigationAppProps) => {
-  const cache = createCache({
+export class App extends Component<NavigationAppProps, NavigationAppState> {
+  constructor(props: NavigationAppProps) {
+    super(props);
+    this.state = {};
+  }
+
+  componentDidMount(): void {
+    // Fetch data from db to overwrite placeholders
+  }
+
+  cache = createCache({
     key: "nonced",
-    nonce,
+    nonce: this.props.nonce,
     prepend: true,
     stylisPlugins: [prefixer],
   });
 
-  return (
-    <ThemeProvider theme={saltise}>
-      <CacheProvider value={cache}>
-        <Box sx={{ display: "flex" }}>
-          <Header
-            logo={logo}
-            menuAddItems={menuAddItems}
-            menuProfile={menuProfile}
-            user={user}
-          />
-          <SideBar groups={sidebarGroups} />
-          <Box
-            component="main"
-            maxWidth="lg"
-            sx={{
-              flexGrow: 1,
-              overflow: "auto",
-              ml: "130px",
-              mr: "130px",
-            }}
-          >
-            <Toolbar />
+  render() {
+    return (
+      <ThemeProvider theme={saltise}>
+        <CacheProvider value={this.cache}>
+          <Box sx={{ display: "flex" }}>
+            <Header
+              logo={this.props.logo}
+              menuAddItems={this.props.menuAddItems}
+              menuProfile={this.props.menuProfile}
+              user={this.props.user}
+            />
+            <SideBar groups={this.props.sidebarGroups} />
+            <Box
+              component="main"
+              maxWidth="lg"
+              sx={{
+                flexGrow: 1,
+                overflow: "auto",
+                ml: "130px",
+                mr: "130px",
+              }}
+            >
+              <Toolbar />
+            </Box>
           </Box>
-        </Box>
-      </CacheProvider>
-    </ThemeProvider>
-  );
-};
+        </CacheProvider>
+      </ThemeProvider>
+    );
+  }
+}

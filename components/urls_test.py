@@ -19,5 +19,20 @@ urlpatterns = i18n_patterns(
         views_test.dashboardInvitedUser,
         name="dashboardInvitedUser",
     ),
+    path(
+        "dashboard/student",
+        views_test.dashboardStudent,
+        name="dashboardStudent",
+    ),
+    path(
+        "createQuestions1",
+        views_test.createQuestions1,
+        name="createQuestions1",
+    ),
+    path(
+        "createQuestions2",
+        views_test.createQuestions2,
+        name="createQuestions2",
+    ),
     path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
 )

@@ -19,18 +19,12 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 
 //import saltise from "../theme.js";
 import { Tag } from "../styledComponents";
-import { DifficultyCircleIcon } from "../_reusableComponents/difficultyCircleIcon";
-import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon.jsx";
+import { DifficultyCircleIcon } from "../_reusableComponents/difficultyIconQuestion";
+import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon";
 
-import { QuestionType } from "./types";
+import { QuestionProps } from "./types";
 
-export function Question({
-  gettext,
-  question,
-}: {
-  gettext: (a: string) => string;
-  question: QuestionType;
-}): JSX.Element {
+export function Question({ gettext, question }: QuestionProps): JSX.Element {
   return (
     <Card>
       <CardContent>
@@ -40,8 +34,10 @@ export function Question({
           </Typography>
           <Box display="flex">
             <Box display="flex" sx={{ mr: "30px" }}>
-              <DifficultyCircleIcon difficulty={question.difficulty} />
-              <Typography variant="h4">{question.difficulty}</Typography>
+              <DifficultyCircleIcon difficulty={question.questionDifficulty} />
+              <Typography variant="h4" sx={{ width: "64px" }}>
+                {question.questionDifficulty.label}
+              </Typography>
             </Box>
             <Box display="flex">
               <PeerImpactIcon peerImpact={question.peerImpact} />
@@ -49,7 +45,7 @@ export function Question({
             </Box>
           </Box>
         </Box>
-        <Typography variant="h6">
+        <Typography variant="caption">
           {gettext("From")} {question.author}
         </Typography>
         <Typography sx={{ mb: "10px", mt: "20px" }}>
@@ -60,7 +56,7 @@ export function Question({
         <Stack direction="row" spacing="5px">
           {question.tags?.map((tag, i) => (
             <Tag key={i}>
-              <Typography variant="tag">{tag}</Typography>
+              <Typography>{tag}</Typography>
             </Tag>
           ))}
           <Tag
@@ -68,10 +64,14 @@ export function Question({
               bgcolor: "white",
               borderWidth: "2px",
               borderStyle: "solid",
+              paddingTop: "3px",
+              paddingBottom: "3px",
             }}
           >
-            <BarChartIcon fontSize="small" sx={{ pr: "6px" }} />
-            <Typography variant="tag">{question.answerCount}</Typography>
+            <BarChartIcon fontSize="small" />
+            <Typography>
+              {question.answerCount} {gettext("questions")}
+            </Typography>
           </Tag>
         </Stack>
         <Stack
@@ -93,9 +93,9 @@ export function Question({
             icon={<BookmarkAddOutlinedIcon />}
             checkedIcon={<BookmarkAddedIcon />}
             sx={{
-              color: "primaryBlue.main",
+              color: "primary.main",
               "&.Mui-checked": {
-                color: "primaryBlue.main",
+                color: "primary.main",
               },
             }}
           />

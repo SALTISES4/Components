@@ -7,7 +7,7 @@
   <head>
     {% include "components/meta.html" %}
     <script
-      src="{% static 'components/js/build/dashboardInvitedUser.min.js' %}"
+      src="{% static 'components/js/build/dashboardStudent.min.js' %}"
       defer="true"
     ></script>
   </head>
@@ -20,24 +20,22 @@
   </body>
   <script nonce="{{ request.csp_nonce }}">
     window.addEventListener("load", function () {
+
       {% include './navigationJS.html' %}
 
-      const dashboardInvitedUserApp = () => {
-        return dashboardInvitedUser.h(dashboardInvitedUser.App, {gettext: gettext,
+      const dashboardStudentApp = () => {
+        return dashboardStudent.h(dashboardStudent.App, {
+          gettext: gettext,
           nonce: "{{ request.csp_nonce }}",
-          urls: {
-            assignments: "/",
-            collections: "/",
-            questions: "/",
-          },
           user: {
             username: "jsumner",
+            name: "John",
             avatar: "../static/components/img/avatar.jpg",
           }
         });
       };
-      dashboardInvitedUser.render(
-        dashboardInvitedUserApp(),
+      dashboardStudent.render(
+        dashboardStudentApp(),
         document.getElementById("dashboard-app")
       );
     });

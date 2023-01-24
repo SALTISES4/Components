@@ -24,140 +24,15 @@
 
       const dashboardNewUserApp = () => {
         return dashboardNewUser.h(dashboardNewUser.App, {
-          assigments: [
-            {
-              title: "Assigment 1",
-              autor: "MySelf",
-              creationDate: "12 Nov",
-              dueDate: "30 Nov",
-              distributionState: "Distributed",
-              difficulty: "Easy",
-              questions: [
-                {
-                  title: "Question 1",
-                  author: "autor 1",
-                  difficulty: "Easy",
-                  description: "Description 1",
-                  tags: ["Biology", "Cohesion"],
-                },
-                {
-                  title: "Question 2",
-                  author: "autor 2",
-                  difficulty: "Easy",
-                  description: "Description 2",
-                  tags: ["Biology", "Cohesion"],
-                },
-                {
-                  title: "Question 3",
-                  author: "autor 3",
-                  difficulty: "Moderate",
-                  description: "Description 3",
-                  tags: ["Biology", "Cohesion"],
-                },
-              ],
-            },
-            {
-              title: "Assigment 2",
-              autor: "Someone",
-              creationDate: "12 Nov",
-              dueDate: "30 Nov",
-              distributionState: "Distributed",
-              difficulty: "Difficult",
-              questions: [
-                {
-                  title: "Question 1",
-                  author: "autor 1",
-                  difficulty: "Difficult",
-                  description: "Description 1",
-                  tags: ["Biology", "Cohesion"],
-                },
-                {
-                  title: "Question 2",
-                  author: "autor 2",
-                  difficulty: "Difficult",
-                  description: "Description 2",
-                  tags: ["Biology", "Cohesion"],
-                },
-                {
-                  title: "Question 3",
-                  author: "autor 3",
-                  difficult: "Easy",
-                  description: "Description 3",
-                  tags: ["Biology", "Cohesion"],
-                },
-              ],
-            },
-          ],
-          collections: [
-            {
-              title: "A collection title",
-              autor: "Saltise",
-              description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
-              tags: ["Biology"],
-            },
-            {
-              title: "A collection title",
-              autor: "Saltise",
-              description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
-              tags: ["Biology"],
-            },
-          ],
-          groups: [
-            {
-              title: "Group Bio 1",
-              session: "Summer 2022",
-              subject: "Biology",
-              numberStudent: "30",
-              difficulty: "Easy",
-              statut: "Active",
-              dueDate: "2022-11-11",
-              progress: 53,
-            },
-            {
-              title: "Group Bio 2",
-              session: "Summer 2022",
-              subject: "Biology",
-              numberStudent: "30",
-              difficulty: "Easy",
-              statut: "Active",
-              dueDate: "2022-12-24",
-              progress: 4,
-            },
-          ],
-          questions: [
-            {
-              title: "Principles of inheritance",
-              author: "John Peterson",
-              tags: ["Biology", "Cohesion"],
-              difficulty: "Moderate",
-              peerImpact: 1,
-            },
-            {
-              title: "Principles of inheritance",
-              author: "John Peterson",
-              description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.",
-              tags: ["Biology", "Cohesion"],
-              difficulty: "Difficult",
-              peerImpact: 2,
-            },
-            {
-              title: "Question 2",
-              author: "Autor 3",
-              description:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-              tags: ["Biology", "Cohesion","tag3"],
-              difficulty: "Easy",
-              peerImpact: 3,
-            },
-          ],
           gettext: gettext,
           nonce: "{{ request.csp_nonce }}",
+          urls: {
+            assignments: "/",
+            collections: "/",
+            questions: "/",
+          },
           user: {
             username: "jsumner",
-            name: "John",
             avatar: "../static/components/img/avatar.jpg",
           }
         });

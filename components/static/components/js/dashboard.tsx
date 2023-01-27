@@ -1,6 +1,8 @@
 import { Component, h, render } from "preact";
 export { h, render };
 
+import { get } from "./ajax";
+
 //material ui components
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -24,7 +26,7 @@ import {
   CollectionType,
   QuestionType,
 } from "./_localComponents/types";
-import { DashboardAppProps, DashboardAppState } from "./types";
+import { DashboardAppProps, DashboardAppState, TeacherType } from "./types";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -48,8 +50,33 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     };
   }
 
+  sync = async (): Promise<void> => {
+    try {
+      const assignments = (await get(
+        this.props.urls.assignments,
+      )) as AssignmentType[];
+      const collections = (await get(
+        this.props.urls.collections,
+      )) as CollectionType[];
+      const questions = (await get(
+        this.props.urls.questions,
+      )) as QuestionType[];
+      const teacher = (await get(this.props.urls.teacher)) as TeacherType;
+
+      this.setState({
+        assignments,
+        collections,
+        questions,
+        teacher,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   componentDidMount(): void {
     // Fetch data from db to overwrite placeholders
+    this.sync();
   }
 
   cache = createCache({

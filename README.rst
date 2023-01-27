@@ -82,3 +82,11 @@ Quick start dev
 9. To publish, e.g.::
 
     twine upload .tox/dist/SALTISE_components-0.1.zip --verbose
+
+
+To do in myDALITE
+-----------------
+
+1. Align question difficulty serializer
+
+2. Define assignment difficulty in serializer

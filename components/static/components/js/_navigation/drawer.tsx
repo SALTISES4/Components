@@ -15,6 +15,11 @@ import { drawerProps } from "./types";
 
 export const SideBar = ({ groups }: drawerProps) => {
   const drawerWidth = 200;
+
+  const handleClick = (url: string) => {
+    window.location.href = url;
+  };
+
   return (
     <Drawer
       anchor="left"
@@ -34,7 +39,11 @@ export const SideBar = ({ groups }: drawerProps) => {
           <Fragment key={i}>
             <List>
               {group.map((entry) => (
-                <ListItem key={entry.title} disablePadding>
+                <ListItem
+                  key={entry.title}
+                  disablePadding
+                  onClick={() => handleClick(entry.url)}
+                >
                   <ListItemButton>
                     <ListItemIcon sx={{ minWidth: 36 }}>
                       <Icon>{entry.icon}</Icon>

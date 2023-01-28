@@ -22,6 +22,10 @@ export const CustomMenu = ({
   onClose,
   open,
 }: CustomMenuProps) => {
+  const handleClick = (url: string) => {
+    window.location.href = url;
+  };
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -39,7 +43,7 @@ export const CustomMenu = ({
       {menuItems.map((group, i) => (
         <Fragment key={i}>
           {group.map((choice, j) => (
-            <MenuItem key={j}>
+            <MenuItem key={j} onClick={() => handleClick(choice.url)}>
               <ListItemIcon>
                 <Icon
                   sx={{

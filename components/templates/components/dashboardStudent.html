@@ -1,4 +1,4 @@
-{% load static i18n %}
+{% load i18n static %}
 
 {% get_current_language as LANGUAGE_CODE %}
 
@@ -17,27 +17,27 @@
     <div id="dashboard-app"></div>
 
     {% csrf_token %}
+
+    {% include './navigationJS.html' %}
+
+    <script nonce="{{ request.csp_nonce }}">
+      window.addEventListener("load", function () {
+        const dashboardStudentApp = () => {
+          return dashboardStudent.h(dashboardStudent.App, {
+            gettext: gettext,
+            nonce: "{{ request.csp_nonce }}",
+            user: {
+              username: "jsumner",
+              name: "John",
+              avatar: "{% static 'components/img/avatar.jpg' %}",
+            }
+          });
+        };
+        dashboardStudent.render(
+          dashboardStudentApp(),
+          document.getElementById("dashboard-app")
+        );
+      });
+    </script>
   </body>
-  <script nonce="{{ request.csp_nonce }}">
-    window.addEventListener("load", function () {
-
-      {% include './navigationJS.html' %}
-
-      const dashboardStudentApp = () => {
-        return dashboardStudent.h(dashboardStudent.App, {
-          gettext: gettext,
-          nonce: "{{ request.csp_nonce }}",
-          user: {
-            username: "jsumner",
-            name: "John",
-            avatar: "../static/components/img/avatar.jpg",
-          }
-        });
-      };
-      dashboardStudent.render(
-        dashboardStudentApp(),
-        document.getElementById("dashboard-app")
-      );
-    });
-  </script>
 </html>

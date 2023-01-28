@@ -17,21 +17,22 @@
     <div id="search-app"></div>
 
     {% csrf_token %}
-  </body>
-  <script nonce="{{ request.csp_nonce }}">
-    window.addEventListener("load", function () {
-      {% include './navigationJS.html' %}
 
-      const searchApp = () => {
-        return search.h(search.App, {
-          gettext: gettext,
-          nonce: "{{ request.csp_nonce }}",
-        });
-      };
-      search.render(
-        searchApp(),
-        document.getElementById("search-app")
-      );
-    });
-  </script>
+    {% include './navigationJS.html' %}
+
+    <script nonce="{{ request.csp_nonce }}">
+      window.addEventListener("load", function () {
+        const searchApp = () => {
+          return search.h(search.App, {
+            gettext: gettext,
+            nonce: "{{ request.csp_nonce }}",
+          });
+        };
+        search.render(
+          searchApp(),
+          document.getElementById("search-app")
+        );
+      });
+    </script>
+  </body>
 </html>

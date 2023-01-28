@@ -54,7 +54,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     try {
       const assignments = (await get(
         this.props.urls.assignments,
-      )) as AssignmentType[];
+      )) as AssignmentType[]; // Can we do a live type assertion and throw error?
       const collections = (await get(
         this.props.urls.collections,
       )) as CollectionType[];

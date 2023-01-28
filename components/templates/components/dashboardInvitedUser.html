@@ -1,4 +1,4 @@
-{% load static i18n %}
+{% load i18n static %}
 
 {% get_current_language as LANGUAGE_CODE %}
 
@@ -17,29 +17,30 @@
     <div id="dashboard-app"></div>
 
     {% csrf_token %}
-  </body>
-  <script nonce="{{ request.csp_nonce }}">
-    window.addEventListener("load", function () {
-      {% include './navigationJS.html' %}
 
-      const dashboardInvitedUserApp = () => {
-        return dashboardInvitedUser.h(dashboardInvitedUser.App, {gettext: gettext,
-          nonce: "{{ request.csp_nonce }}",
-          urls: {
-            assignments: "/",
-            collections: "/",
-            questions: "/",
-          },
-          user: {
-            username: "jsumner",
-            avatar: "../static/components/img/avatar.jpg",
-          }
-        });
-      };
-      dashboardInvitedUser.render(
-        dashboardInvitedUserApp(),
-        document.getElementById("dashboard-app")
-      );
-    });
-  </script>
+    {% include './navigationJS.html' %}
+
+    <script nonce="{{ request.csp_nonce }}">
+      window.addEventListener("load", function () {
+        const dashboardInvitedUserApp = () => {
+          return dashboardInvitedUser.h(dashboardInvitedUser.App, {gettext: gettext,
+            nonce: "{{ request.csp_nonce }}",
+            urls: {
+              assignments: "/",
+              collections: "/",
+              questions: "/",
+            },
+            user: {
+              username: "jsumner",
+              avatar: "{% static 'components/img/avatar.jpg' %}",
+            }
+          });
+        };
+        dashboardInvitedUser.render(
+          dashboardInvitedUserApp(),
+          document.getElementById("dashboard-app")
+        );
+      });
+    </script>
+  </body>
 </html>

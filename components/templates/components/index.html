@@ -17,30 +17,32 @@
     <div id="dashboard-app"></div>
 
     {% csrf_token %}
-  </body>
-  <script nonce="{{ request.csp_nonce }}">
-    window.addEventListener("load", function () {
-      {% include './navigationJS.html' %}
 
-      const dashboardApp = () => {
-        return dashboard.h(dashboard.App, {
-          gettext: gettext,
-          nonce: "{{ request.csp_nonce }}",
-          urls: {
-            assignments: "/",
-            collections: "/",
-            questions: "/",
-          },
-          user: {
-            username: "jsumner",
-            avatar: "../static/components/img/avatar.jpg",
-          }
-        });
-      };
-      dashboard.render(
-        dashboardApp(),
-        document.getElementById("dashboard-app")
-      );
-    });
-  </script>
+    {% include './navigationJS.html' %}
+
+    <script nonce="{{ request.csp_nonce }}">
+      window.addEventListener("load", function () {
+        const dashboardApp = () => {
+          return dashboard.h(dashboard.App, {
+            gettext: gettext,
+            nonce: "{{ request.csp_nonce }}",
+            urls: {
+              assignments: "/",
+              collections: "/",
+              questions: "/",
+            },
+            user: {
+              username: "jsumner",
+              avatar: "{% static 'components/img/avatar.jpg' %}",
+            }
+          });
+        };
+        dashboard.render(
+          dashboardApp(),
+          document.getElementById("dashboard-app")
+        );
+      });
+    </script>
+
+  </body>
 </html>

@@ -1,4 +1,4 @@
-{% load static i18n %}
+{% load i18n static %}
 
 {% get_current_language as LANGUAGE_CODE %}
 
@@ -17,21 +17,22 @@
     <div id="question-app"></div>
 
     {% csrf_token %}
-  </body>
-  <script nonce="{{ request.csp_nonce }}">
-    window.addEventListener("load", function () {
-      {% include './navigationJS.html' %}
 
-      const createQuestions2App = () => {
-        return createQuestions2.h(createQuestions2.App, {
-          gettext: gettext,
-          nonce: "{{ request.csp_nonce }}",
-        });
-      };
-      createQuestions2.render(
-        createQuestions2App(),
-        document.getElementById("question-app")
-      );
-    });
-  </script>
+    {% include './navigationJS.html' %}
+
+    <script nonce="{{ request.csp_nonce }}">
+      window.addEventListener("load", function () {
+        const createQuestions2App = () => {
+          return createQuestions2.h(createQuestions2.App, {
+            gettext: gettext,
+            nonce: "{{ request.csp_nonce }}",
+          });
+        };
+        createQuestions2.render(
+          createQuestions2App(),
+          document.getElementById("question-app")
+        );
+      });
+    </script>
+  </body>
 </html>

@@ -97,6 +97,7 @@ export type AssignmentStudentCompletedProps = {
 
 export type CollectionProps = {
   gettext: (a: string) => string;
+  logo: string;
   collection: CollectionType;
 };
 

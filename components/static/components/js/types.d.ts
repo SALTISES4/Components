@@ -26,6 +26,7 @@ export type LinkType = {
 
 export type DashboardAppProps = {
   gettext: (a: string) => string;
+  logo: string;
   nonce: string;
   urls: {
     assignments: string;

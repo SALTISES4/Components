@@ -147,6 +147,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                     <Grid key={i} item xs={6}>
                       <Collection
                         gettext={this.props.gettext}
+                        logo={this.props.logo}
                         collection={collection}
                       />
                     </Grid>

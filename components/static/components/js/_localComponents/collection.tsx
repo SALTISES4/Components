@@ -18,13 +18,14 @@ import { CollectionProps } from "./types";
 
 export function Collection({
   gettext,
+  logo,
   collection,
 }: CollectionProps): JSX.Element {
   return (
     <Card>
       <CardHeader
         avatar={<Avatar />}
-        action={<img src="../static/components/img/logo.gif" height="30" />}
+        action={<img src={logo} height="30" />}
         title={collection.title}
         subheader={gettext("From ".concat(collection.author))}
       />
@@ -33,7 +34,7 @@ export function Collection({
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
         <Stack direction="row" spacing="5px">
-          {collection.tags.map((tag) => (
+          {collection.tags?.map((tag) => (
             <Tag key={tag}>
               <Typography> {tag} </Typography>
             </Tag>

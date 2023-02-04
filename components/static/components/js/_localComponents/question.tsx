@@ -34,19 +34,19 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
           </Typography>
           <Box display="flex">
             <Box display="flex" sx={{ mr: "30px" }}>
-              <DifficultyCircleIcon difficulty={question.questionDifficulty} />
+              <DifficultyCircleIcon difficulty={question.difficulty} />
               <Typography variant="h4" sx={{ width: "64px" }}>
-                {question.questionDifficulty.label}
+                {question.difficulty.label}
               </Typography>
             </Box>
             <Box display="flex">
-              <PeerImpactIcon peerImpact={question.peerImpact} />
+              <PeerImpactIcon peerImpact={question.peer_impact} />
               <Typography variant="h4">{gettext("Peer Impact")}</Typography>
             </Box>
           </Box>
         </Box>
         <Typography variant="caption">
-          {gettext("From")} {question.author}
+          {gettext("From")} {question.user.username}
         </Typography>
         <Typography sx={{ mb: "10px", mt: "20px" }}>
           {question.description}

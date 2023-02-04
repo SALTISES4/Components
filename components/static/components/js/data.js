@@ -114,32 +114,32 @@ export const questions = [
   {
     answerCount: parseInt(faker.random.numeric(1)),
     title: faker.lorem.sentence(),
-    author: faker.name.fullName(),
+    user: { username: faker.name.fullName() },
     description: faker.lorem.sentence(),
     tags: faker.helpers.arrayElement([
       ["Biology"],
       ["Biology", "Cohesion"],
       ["Mechanic", "Programming", "Thermodynamic"],
     ]),
-    questionDifficulty: {
+    difficulty: {
       score: 0.4,
       value: QuestionDifficultyLevels.deux,
       label: QuestionDifficultyLabels.moderate,
     },
-    peerImpact: faker.helpers.arrayElement([0, 1, 2, 3]),
+    peer_impact: faker.helpers.arrayElement([0, 1, 2, 3]),
   },
   {
     answerCount: parseInt(faker.random.numeric(2)),
     title: faker.lorem.sentence(),
-    author: faker.name.fullName(),
+    user: { username: faker.name.fullName() },
     description: faker.lorem.sentence(),
     tags: faker.helpers.arrayElement([
       ["Biology"],
       ["Biology", "Cohesion"],
       ["Mechanic", "Programming", "Thermodynamic"],
     ]),
-    peerImpact: faker.helpers.arrayElement([0, 1, 2, 3]),
-    questionDifficulty: {
+    peer_impact: faker.helpers.arrayElement([0, 1, 2, 3]),
+    difficulty: {
       score: 0.7,
       value: QuestionDifficultyLevels.trois,
       label: QuestionDifficultyLabels.difficult,
@@ -148,15 +148,15 @@ export const questions = [
   {
     answerCount: parseInt(faker.random.numeric(1)),
     title: faker.lorem.sentence(),
-    author: faker.name.fullName(),
+    user: { username: faker.name.fullName() },
     description: faker.lorem.sentence(),
     tags: faker.helpers.arrayElement([
       ["Biology"],
       ["Biology", "Cohesion"],
       ["Mechanic", "Programming", "Thermodynamic"],
     ]),
-    peerImpact: faker.helpers.arrayElement([0, 1, 2, 3]),
-    questionDifficulty: {
+    peer_impact: faker.helpers.arrayElement([0, 1, 2, 3]),
+    difficulty: {
       score: 0.1,
       value: QuestionDifficultyLevels.un,
       label: QuestionDifficultyLabels.easy,

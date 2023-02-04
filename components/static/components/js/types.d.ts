@@ -2,6 +2,7 @@ import {
   AssignmentType,
   CollectionType,
   QuestionType,
+  UserType,
 } from "./_localComponents/types";
 import {
   CategoryFilterType,
@@ -10,11 +11,6 @@ import {
   PeerImpactFilterType,
   TypeFilterType,
 } from "./_search/types";
-
-export type UserType = {
-  avatar: string;
-  username: string;
-};
 
 type TeacherType = {
   activeAssignmentCount: number;

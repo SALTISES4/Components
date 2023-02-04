@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 /*type GroupProgressType = {
   dueDate: string;
   difficulty: string;
@@ -15,6 +17,11 @@ import {
   QuestionDifficultyLabels,
   QuestionDifficultyLevels,
 } from "./enum";
+
+export type UserType = {
+  avatar?: string;
+  username: string;
+};
 
 export type AssignmentType = {
   author: string;
@@ -45,12 +52,12 @@ type QuestionDifficulty = {
 
 export type QuestionType = {
   answerCount: number;
-  author: string;
   description: string;
-  questionDifficulty: QuestionDifficulty;
-  peerImpact: PeerImpactLevels;
+  difficulty: QuestionDifficulty;
+  peer_impact: PeerImpactLevels;
   tags?: string[];
   title: string;
+  user: UserType;
 };
 
 export type GroupType = {

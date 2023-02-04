@@ -50,11 +50,39 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     };
   }
 
+  assignments = () => {
+    if (this.state.assignments.length > 0) {
+      return (
+        <Container>
+          <Subtitle>
+            <Typography variant="h2">
+              {this.props.gettext("Active Assignments")}
+            </Typography>
+            <Link variant="h4">
+              {this.props.gettext("See my assignments")}
+            </Link>
+          </Subtitle>
+          <Stack spacing="10px">
+            {this.state.assignments.map(
+              (assignment: AssignmentType, i: number) => (
+                <Assignment
+                  key={i}
+                  assignment={assignment}
+                  gettext={this.props.gettext}
+                />
+              ),
+            )}
+          </Stack>
+        </Container>
+      );
+    }
+  };
+
   sync = async (): Promise<void> => {
     try {
       const assignments = (await get(
         this.props.urls.assignments,
-      )) as AssignmentType[]; // Can we do a live type assertion and throw error?
+      )) as AssignmentType[];
       const collections = (await get(
         this.props.urls.collections,
       )) as CollectionType[];
@@ -63,12 +91,15 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
       )) as QuestionType[];
       const teacher = (await get(this.props.urls.teacher)) as TeacherType;
 
-      this.setState({
-        assignments,
-        collections,
-        questions,
-        teacher,
-      });
+      this.setState(
+        {
+          assignments,
+          collections,
+          questions,
+          teacher,
+        },
+        () => console.info(this.state),
+      );
     } catch (error) {
       console.error(error);
     }
@@ -100,31 +131,11 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                 gettext={this.props.gettext}
               />
             </Container>
+            {this.assignments()}
             <Container>
               <Subtitle>
                 <Typography variant="h2">
-                  {this.props.gettext("Active Assignments")}
-                </Typography>
-                <Link variant="h4">
-                  {this.props.gettext("See my assignments")}
-                </Link>
-              </Subtitle>
-              <Stack spacing="10px">
-                {this.state.assignments.map(
-                  (assignment: AssignmentType, i: number) => (
-                    <Assignment
-                      key={i}
-                      assignment={assignment}
-                      gettext={this.props.gettext}
-                    />
-                  ),
-                )}
-              </Stack>
-            </Container>
-            <Container>
-              <Subtitle>
-                <Typography variant="h2">
-                  {this.props.gettext("Featured Collection")}
+                  {this.props.gettext("Featured Collections")}
                 </Typography>
                 <Link variant="h4">
                   {this.props.gettext("Explore collections")}

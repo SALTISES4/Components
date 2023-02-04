@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
-import BookmarksIcon from "@mui/icons-material/Bookmarks";
+import ChatIcon from "@mui/icons-material/Chat";
 
 import { Tag } from "../styledComponents";
 import { CollectionProps } from "./types";
@@ -40,7 +40,7 @@ export function Collection({
             </Tag>
           ))}
           <Tag>
-            <BookmarksIcon fontSize="small" />
+            <ChatIcon fontSize="small" />
             <Typography>{collection.answerCount}</Typography>
           </Tag>
         </Stack>

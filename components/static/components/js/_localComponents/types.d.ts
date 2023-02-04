@@ -42,6 +42,7 @@ export type CollectionType = {
   description: string;
   tags?: string[];
   answerCount: number;
+  url: string;
 };
 
 type QuestionDifficulty = {

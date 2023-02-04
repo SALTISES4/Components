@@ -26,8 +26,10 @@ export function Collection({
       <CardHeader
         avatar={<Avatar />}
         action={<img src={logo} height="30" />}
+        onClick={() => (window.location.href = collection.url)}
         title={collection.title}
         subheader={gettext("From ".concat(collection.author))}
+        sx={{ cursor: "pointer" }}
       />
       <CardContent>
         <Typography>{collection.description}</Typography>

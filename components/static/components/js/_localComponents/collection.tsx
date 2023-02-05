@@ -25,7 +25,9 @@ export function Collection({
     <Card>
       <CardHeader
         avatar={<Avatar />}
-        action={<img src={logo} height="30" />}
+        action={() =>
+          collection.featured ? <img src={logo} height="30" /> : ""
+        }
         onClick={() => (window.location.href = collection.url)}
         title={collection.title}
         subheader={gettext("From ".concat(collection.author))}

@@ -78,6 +78,21 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     }
   };
 
+  collectionsTitle = () => {
+    if (this.state.collections.every((collection) => collection.featured)) {
+      return (
+        <Typography variant="h2">
+          {this.props.gettext("Featured Collections")}
+        </Typography>
+      );
+    }
+    return (
+      <Typography variant="h2">
+        {this.props.gettext("Sample Collections")}
+      </Typography>
+    );
+  };
+
   sync = async (): Promise<void> => {
     try {
       const assignments = (await get(
@@ -134,9 +149,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
             {this.assignments()}
             <Container>
               <Subtitle>
-                <Typography variant="h2">
-                  {this.props.gettext("Featured Collections")}
-                </Typography>
+                {this.collectionsTitle()}
                 <Link variant="h4" href={this.props.urls.collectionsLink}>
                   {this.props.gettext("Explore collections")}
                 </Link>

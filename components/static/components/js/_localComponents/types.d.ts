@@ -24,24 +24,25 @@ export type UserType = {
 };
 
 export type AssignmentType = {
+  answerCount: number;
   author: string;
   difficulty: string;
   distributionState: DistributionState;
-  groups: GroupType[];
-  questionCount: number;
-  answerCount: number;
-  title: string;
   dueDate: Date;
+  groups: GroupType[];
   issueCount: number;
   progress: number;
+  questionCount: number;
+  title: string;
 };
 
 export type CollectionType = {
-  title: string;
+  answerCount: number;
   author: string;
   description: string;
+  featured?: boolean;
   tags?: string[];
-  answerCount: number;
+  title: string;
   url: string;
 };
 

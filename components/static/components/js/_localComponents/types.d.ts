@@ -53,11 +53,11 @@ type QuestionDifficulty = {
 };
 
 export type QuestionType = {
-  answerCount: number;
-  description: string;
+  answer_count: number;
   difficulty: QuestionDifficulty;
   peer_impact: PeerImpactLevels;
   tags?: string[];
+  text: string;
   title: string;
   user: UserType;
 };

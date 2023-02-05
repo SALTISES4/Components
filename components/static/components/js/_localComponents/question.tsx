@@ -48,9 +48,10 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
         <Typography variant="caption">
           {gettext("From")} {question.user.username}
         </Typography>
-        <Typography sx={{ mb: "10px", mt: "20px" }}>
-          {question.description}
-        </Typography>
+        <Typography
+          sx={{ mb: "10px", mt: "20px" }}
+          dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer
+        />
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
         <Stack direction="row" spacing="5px">
@@ -70,7 +71,10 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
           >
             <BarChartIcon fontSize="small" />
             <Typography>
-              {question.answerCount} {gettext("questions")}
+              {question.answer_count}{" "}
+              {question.answer_count == 1
+                ? gettext("answer")
+                : gettext("answers")}
             </Typography>
           </Tag>
         </Stack>

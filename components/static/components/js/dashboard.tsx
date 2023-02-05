@@ -58,7 +58,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
             <Typography variant="h2">
               {this.props.gettext("Active Assignments")}
             </Typography>
-            <Link variant="h4">
+            <Link variant="h4" href={this.props.urls.assignmentsLink}>
               {this.props.gettext("See my assignments")}
             </Link>
           </Subtitle>
@@ -137,7 +137,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                 <Typography variant="h2">
                   {this.props.gettext("Featured Collections")}
                 </Typography>
-                <Link variant="h4">
+                <Link variant="h4" href={this.props.urls.collectionsLink}>
                   {this.props.gettext("Explore collections")}
                 </Link>
               </Subtitle>
@@ -160,7 +160,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                 <Typography variant="h2">
                   {this.props.gettext("Newly Added Questions")}
                 </Typography>
-                <Link variant="h4">
+                <Link variant="h4" href={this.props.urls.questionsLink}>
                   {this.props.gettext("Explore questions")}
                 </Link>
               </Subtitle>

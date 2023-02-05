@@ -30,8 +30,11 @@ export type DashboardAppProps = {
   nonce: string;
   urls: {
     assignments: string;
+    assignmentsLink: string;
     collections: string;
+    collectionsLink: string;
     questions: string;
+    questionsLink: string;
     teacher: string;
   };
   user: UserType;

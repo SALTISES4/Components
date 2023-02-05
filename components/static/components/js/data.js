@@ -97,6 +97,7 @@ export const collections = [
       ["Biology", "Cohesion"],
       ["Mechanic", "Programming", "Thermodynamic"],
     ]),
+    url: "/",
   },
   {
     title: faker.lorem.sentence(),
@@ -108,6 +109,7 @@ export const collections = [
       ["Biology", "Cohesion"],
       ["Mechanic", "Programming", "Thermodynamic"],
     ]),
+    url: "/",
   },
 ];
 export const questions = [

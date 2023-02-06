@@ -9,12 +9,15 @@ import Checkbox from "@mui/material/Checkbox";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
+import BarChartIcon from "@mui/icons-material/BarChart";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
-import ChatIcon from "@mui/icons-material/Chat";
 
+import saltise from "../theme";
 import { Tag } from "../styledComponents";
 import { CollectionProps } from "./types";
+
+const theme = saltise;
 
 export function Collection({
   gettext,
@@ -38,14 +41,30 @@ export function Collection({
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
         <Stack direction="row" spacing="5px">
+          <Tag sx={{ backgroundColor: theme.palette.primary1.main }}>
+            <Typography>{collection.discipline?.title}</Typography>
+          </Tag>
           {collection.tags?.map((tag) => (
             <Tag key={tag}>
               <Typography> {tag} </Typography>
             </Tag>
           ))}
-          <Tag>
-            <ChatIcon fontSize="small" />
-            <Typography>{collection.answerCount}</Typography>
+          <Tag
+            sx={{
+              bgcolor: "white",
+              borderWidth: "2px",
+              borderStyle: "solid",
+              paddingTop: "3px",
+              paddingBottom: "3px",
+            }}
+          >
+            <BarChartIcon fontSize="small" />
+            <Typography>
+              {collection.answerCount}{" "}
+              {collection.answerCount == 1
+                ? gettext("answer")
+                : gettext("answers")}
+            </Typography>
           </Tag>
         </Stack>
         <Checkbox

@@ -36,10 +36,13 @@ export type AssignmentType = {
   title: string;
 };
 
+type DisciplineType = { pk: number; title: string };
+
 export type CollectionType = {
   answerCount: number;
   author: string;
   description: string;
+  discipline?: DisciplineType;
   featured?: boolean;
   tags?: string[];
   title: string;
@@ -61,7 +64,7 @@ export type QuestionType = {
   answer_count: number;
   category?: { title: string }[];
   difficulty: QuestionDifficulty;
-  discipline?: { pk: number; title: string };
+  discipline?: DisciplineType;
   peer_impact: QuestionPeerImpact;
   text: string;
   title: string;

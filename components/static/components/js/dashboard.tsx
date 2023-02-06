@@ -98,9 +98,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
       const assignments = (await get(
         this.props.urls.assignments,
       )) as AssignmentType[];
-      const collections = (await get(
-        this.props.urls.collections,
-      )) as CollectionType[];
+      const collections = await get(this.props.urls.collections);
       const questions = (await get(
         this.props.urls.questions,
       )) as QuestionType[];
@@ -109,7 +107,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
       this.setState(
         {
           assignments,
-          collections,
+          collections: collections.results as CollectionType[],
           questions,
           teacher,
         },

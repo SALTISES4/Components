@@ -17,12 +17,14 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
-//import saltise from "../theme.js";
+import saltise from "../theme";
 import { Tag } from "../styledComponents";
 import { DifficultyCircleIcon } from "../_reusableComponents/difficultyIconQuestion";
 import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon";
 
 import { QuestionProps } from "./types";
+
+const theme = saltise;
 
 export function Question({ gettext, question }: QuestionProps): JSX.Element {
   return (
@@ -55,9 +57,12 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
         <Stack direction="row" spacing="5px">
-          {question.tags?.map((tag, i) => (
+          <Tag sx={{ backgroundColor: theme.palette.primary1.main }}>
+            <Typography>{question.discipline?.title}</Typography>
+          </Tag>
+          {question.category?.map((category, i) => (
             <Tag key={i}>
-              <Typography>{tag}</Typography>
+              <Typography>{category.title}</Typography>
             </Tag>
           ))}
           <Tag

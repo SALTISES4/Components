@@ -54,9 +54,10 @@ type QuestionDifficulty = {
 
 export type QuestionType = {
   answer_count: number;
+  category?: { title: string }[];
   difficulty: QuestionDifficulty;
+  discipline?: { pk: number; title: string };
   peer_impact: PeerImpactLevels;
-  tags?: string[];
   text: string;
   title: string;
   user: UserType;

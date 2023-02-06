@@ -114,14 +114,19 @@ export const collections = [
 ];
 export const questions = [
   {
-    answerCount: parseInt(faker.random.numeric(1)),
+    answer_count: parseInt(faker.random.numeric(1)),
     title: faker.lorem.sentence(),
     user: { username: faker.name.fullName() },
-    description: faker.lorem.sentence(),
-    tags: faker.helpers.arrayElement([
-      ["Biology"],
-      ["Biology", "Cohesion"],
-      ["Mechanic", "Programming", "Thermodynamic"],
+    text: faker.lorem.sentence(),
+    discipline: { pk: 1, title: "Physics" },
+    category: faker.helpers.arrayElement([
+      [{ title: "Biology" }],
+      [{ title: "Biology" }, { title: "Cohesion" }],
+      [
+        { title: "Mechanic" },
+        { title: "Programming" },
+        { title: "Thermodynamic" },
+      ],
     ]),
     difficulty: {
       score: 0.4,
@@ -131,14 +136,19 @@ export const questions = [
     peer_impact: faker.helpers.arrayElement([0, 1, 2, 3]),
   },
   {
-    answerCount: parseInt(faker.random.numeric(2)),
+    answer_count: parseInt(faker.random.numeric(2)),
     title: faker.lorem.sentence(),
     user: { username: faker.name.fullName() },
-    description: faker.lorem.sentence(),
-    tags: faker.helpers.arrayElement([
-      ["Biology"],
-      ["Biology", "Cohesion"],
-      ["Mechanic", "Programming", "Thermodynamic"],
+    text: faker.lorem.sentence(),
+    discipline: { pk: 1, title: "Physics" },
+    category: faker.helpers.arrayElement([
+      [{ title: "Biology" }],
+      [{ title: "Biology" }, { title: "Cohesion" }],
+      [
+        { title: "Mechanic" },
+        { title: "Programming" },
+        { title: "Thermodynamic" },
+      ],
     ]),
     peer_impact: faker.helpers.arrayElement([0, 1, 2, 3]),
     difficulty: {
@@ -148,14 +158,19 @@ export const questions = [
     },
   },
   {
-    answerCount: parseInt(faker.random.numeric(1)),
+    answer_count: parseInt(faker.random.numeric(1)),
     title: faker.lorem.sentence(),
     user: { username: faker.name.fullName() },
-    description: faker.lorem.sentence(),
-    tags: faker.helpers.arrayElement([
-      ["Biology"],
-      ["Biology", "Cohesion"],
-      ["Mechanic", "Programming", "Thermodynamic"],
+    text: faker.lorem.sentence(),
+    discipline: { pk: 1, title: "Physics" },
+    category: faker.helpers.arrayElement([
+      [{ title: "Biology" }],
+      [{ title: "Biology" }, { title: "Cohesion" }],
+      [
+        { title: "Mechanic" },
+        { title: "Programming" },
+        { title: "Thermodynamic" },
+      ],
     ]),
     peer_impact: faker.helpers.arrayElement([0, 1, 2, 3]),
     difficulty: {

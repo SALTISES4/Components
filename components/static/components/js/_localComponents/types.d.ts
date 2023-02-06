@@ -52,12 +52,17 @@ type QuestionDifficulty = {
   label: QuestionDifficultyLabels;
 };
 
+type QuestionPeerImpact = {
+  score: number;
+  label: PeerImpactLevels;
+};
+
 export type QuestionType = {
   answer_count: number;
   category?: { title: string }[];
   difficulty: QuestionDifficulty;
   discipline?: { pk: number; title: string };
-  peer_impact: PeerImpactLevels;
+  peer_impact: QuestionPeerImpact;
   text: string;
   title: string;
   user: UserType;

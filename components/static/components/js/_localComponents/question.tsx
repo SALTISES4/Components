@@ -27,6 +27,29 @@ import { QuestionProps } from "./types";
 const theme = saltise;
 
 export function Question({ gettext, question }: QuestionProps): JSX.Element {
+  const difficulty = () => {
+    if (parseInt(question.difficulty.label) < 4) {
+      return (
+        <Box display="flex" sx={{ mr: "30px" }}>
+          <DifficultyCircleIcon difficulty={question.difficulty} />
+          <Typography variant="h4" sx={{ width: "64px" }}>
+            {question.difficulty.value}
+          </Typography>
+        </Box>
+      );
+    }
+  };
+
+  const peerImpact = () => {
+    if (question.peer_impact.label < 4) {
+      return (
+        <Box display="flex">
+          <PeerImpactIcon peerImpact={question.peer_impact.label} />
+          <Typography variant="h4">{gettext("Peer Impact")}</Typography>
+        </Box>
+      );
+    }
+  };
   return (
     <Card>
       <CardContent>
@@ -35,16 +58,8 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
             {question.title}
           </Typography>
           <Box display="flex">
-            <Box display="flex" sx={{ mr: "30px" }}>
-              <DifficultyCircleIcon difficulty={question.difficulty} />
-              <Typography variant="h4" sx={{ width: "64px" }}>
-                {question.difficulty.label}
-              </Typography>
-            </Box>
-            <Box display="flex">
-              <PeerImpactIcon peerImpact={question.peer_impact} />
-              <Typography variant="h4">{gettext("Peer Impact")}</Typography>
-            </Box>
+            {difficulty()}
+            {peerImpact()}
           </Box>
         </Box>
         <Typography variant="caption">

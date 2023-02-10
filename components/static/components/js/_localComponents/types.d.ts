@@ -23,7 +23,8 @@ export type UserType = {
   username: string;
 };
 
-export type AssignmentType = {
+export type GroupAssignmentType = {
+  active: boolean;
   answerCount: number;
   author: string;
   difficulty: string;
@@ -31,6 +32,7 @@ export type AssignmentType = {
   dueDate: Date;
   groups: GroupType[];
   issueCount: number;
+  pk: number;
   progress: number;
   questionCount: number;
   title: string;
@@ -79,24 +81,24 @@ export type GroupType = {
   assignmentCount: number;
   active: boolean;
   subject?: string[];
-  dueDate: Date;
+  due_date: Date;
   progress: number;
   tags?: string[];
 };
 
 export type AssignmentBisProps = {
-  assignment: AssignmentType;
+  assignment: GroupAssignmentType;
   gettext: (a: string) => string;
 };
 
-export type AssignmentProps = {
+export type GroupAssignmentProps = {
   gettext: (a: string) => string;
-  assignment: AssignmentType;
+  assignment: GroupAssignmentType;
 };
 
 export type AssignmentStudentProps = {
   gettext: (a: string) => string;
-  assignment: AssignmentType;
+  assignment: GroupAssignmentType;
 };
 
 export type AssignmentStudentCompletedProps = {

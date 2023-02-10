@@ -16,13 +16,13 @@ import { Subtitle } from "./styledComponents";
 
 import { SuperUserBar } from "./_dashboard/superUserBar";
 
-import { Assignment } from "./_localComponents/assignment";
+import { GroupAssignment } from "./_localComponents/assignment";
 import { Collection } from "./_localComponents/collection";
 import { Question } from "./_localComponents/question";
 
 //types
 import {
-  AssignmentType,
+  GroupAssignmentType,
   CollectionType,
   QuestionType,
 } from "./_localComponents/types";
@@ -51,31 +51,26 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
   }
 
   assignments = () => {
-    if (this.state.assignments.length > 0) {
+    if (this.state.assignments?.length > 0) {
       return (
-        <Container>
-          <Subtitle>
-            <Typography variant="h2">
-              {this.props.gettext("Active Assignments")}
-            </Typography>
-            <Link variant="h4" href={this.props.urls.assignmentsLink}>
-              {this.props.gettext("See my assignments")}
-            </Link>
-          </Subtitle>
-          <Stack spacing="10px">
-            {this.state.assignments.map(
-              (assignment: AssignmentType, i: number) => (
-                <Assignment
-                  key={i}
-                  assignment={assignment}
-                  gettext={this.props.gettext}
-                />
-              ),
-            )}
-          </Stack>
-        </Container>
+        <Stack spacing="10px">
+          {this.state.assignments.map(
+            (assignment: GroupAssignmentType, i: number) => (
+              <GroupAssignment
+                key={i}
+                assignment={assignment}
+                gettext={this.props.gettext}
+              />
+            ),
+          )}
+        </Stack>
       );
     }
+    return (
+      <Typography>
+        {this.props.gettext("You have no recently due assignments.")}
+      </Typography>
+    );
   };
 
   collectionsTitle = () => {
@@ -95,18 +90,25 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
 
   sync = async (): Promise<void> => {
     try {
-      const assignments = (await get(
-        this.props.urls.assignments,
-      )) as AssignmentType[];
+      const assignments = await get(this.props.urls.assignments);
       const collections = await get(this.props.urls.collections);
       const questions = (await get(
         this.props.urls.questions,
       )) as QuestionType[];
       const teacher = (await get(this.props.urls.teacher)) as TeacherType;
 
+      // Groupby operation on studentgroupassignments by pk
+      // Temporary solution here so it renders something
+      assignments.forEach(
+        (a) =>
+          (a.groups = [
+            { due_date: a.due_date, title: a.group, progress: a.progress },
+          ]),
+      );
+
       this.setState(
         {
-          assignments,
+          assignments: assignments as GroupAssignmentType[],
           collections: collections.results as CollectionType[],
           questions,
           teacher,
@@ -144,7 +146,17 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                 gettext={this.props.gettext}
               />
             </Container>
-            {this.assignments()}
+            <Container>
+              <Subtitle>
+                <Typography variant="h2">
+                  {this.props.gettext("Recent Assignments")}
+                </Typography>
+                <Link variant="h4" href={this.props.urls.assignmentsLink}>
+                  {this.props.gettext("See my assignments")}
+                </Link>
+              </Subtitle>
+              {this.assignments()}
+            </Container>
             <Container>
               <Subtitle>
                 {this.collectionsTitle()}

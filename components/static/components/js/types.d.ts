@@ -1,6 +1,6 @@
 import {
-  AssignmentType,
   CollectionType,
+  GroupAssignmentType,
   QuestionType,
   UserType,
 } from "./_localComponents/types";
@@ -41,7 +41,7 @@ export type DashboardAppProps = {
 };
 
 export type DashboardAppState = {
-  assignments: AssignmentType[];
+  assignments: GroupAssignmentType[];
   collections: CollectionType[];
   questions: QuestionType[];
   teacher: TeacherType;
@@ -58,7 +58,7 @@ export type SearchAppProps = {
 };
 
 export type SearchAppState = {
-  assignments: AssignmentType[];
+  assignments: GroupAssignmentType[];
   collections: CollectionType[];
   questions: QuestionType[];
   typeFilters: TypeFilterType;

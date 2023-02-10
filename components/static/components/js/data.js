@@ -15,6 +15,7 @@ import { ExerciceLabels, PeerImpactLabels } from "./_search/enum";
 
 export const assignments = [
   {
+    active: true,
     author: faker.name.fullName(),
     creationDate: faker.date.recent(),
     difficulty: faker.helpers.arrayElement([
@@ -27,7 +28,7 @@ export const assignments = [
       DistributionState.distributed,
     ]),
     dueDate: faker.date.soon(),
-    groups: [],
+    group: {},
     questionCount: parseInt(faker.random.numeric(1)),
     title: faker.lorem.sentence(),
     issueCount: parseInt(faker.random.numeric(1)),
@@ -35,6 +36,7 @@ export const assignments = [
     answerCount: parseInt(faker.random.numeric(1)),
   },
   {
+    active: true,
     author: faker.name.fullName(),
     creationDate: faker.date.recent(),
     difficulty: faker.helpers.arrayElement([
@@ -47,38 +49,21 @@ export const assignments = [
       DistributionState.distributed,
     ]),
     dueDate: faker.date.soon(),
-    groups: [
-      {
-        title: faker.lorem.sentence(),
-        author: faker.name.fullName(),
-        session: faker.helpers.arrayElement(["Summer 2022", "Winter 2023"]),
-        studentCount: parseInt(faker.random.numeric(1)),
-        assignmentCount: parseInt(faker.random.numeric(1)),
-        active: faker.datatype.boolean(),
-        subject: faker.helpers.arrayElement([
-          ["Biology"],
-          ["Biology", "Cohesion"],
-          ["Mechanic", "Programming", "Thermodynamic"],
-        ]),
-        dueDate: faker.date.soon(),
-        progress: parseInt(faker.random.numeric(2)),
-      },
-      {
-        title: faker.lorem.sentence(),
-        author: faker.name.fullName(),
-        session: faker.helpers.arrayElement(["Summer 2022", "Winter 2023"]),
-        studentCount: parseInt(faker.random.numeric(1)),
-        assignmentCount: parseInt(faker.random.numeric(1)),
-        active: faker.datatype.boolean(),
-        subject: faker.helpers.arrayElement([
-          ["Biology"],
-          ["Biology", "Cohesion"],
-          ["Mechanic", "Programming", "Thermodynamic"],
-        ]),
-        dueDate: faker.date.soon(),
-        progress: parseInt(faker.random.numeric(2)),
-      },
-    ],
+    group: {
+      title: faker.lorem.sentence(),
+      author: faker.name.fullName(),
+      session: faker.helpers.arrayElement(["Summer 2022", "Winter 2023"]),
+      studentCount: parseInt(faker.random.numeric(1)),
+      assignmentCount: parseInt(faker.random.numeric(1)),
+      active: faker.datatype.boolean(),
+      subject: faker.helpers.arrayElement([
+        ["Biology"],
+        ["Biology", "Cohesion"],
+        ["Mechanic", "Programming", "Thermodynamic"],
+      ]),
+      dueDate: faker.date.soon(),
+      progress: parseInt(faker.random.numeric(2)),
+    },
     questionCount: parseInt(faker.random.numeric(1)),
     title: faker.lorem.sentence(),
     issueCount: parseInt(faker.random.numeric(1)),
@@ -221,7 +206,7 @@ export const difficultyFilters = {
     QuestionDifficultyLabels.easy,
     QuestionDifficultyLabels.moderate,
     QuestionDifficultyLabels.difficult,
-    QuestionDifficultyLabels.extreme,
+    QuestionDifficultyLabels.unknown,
   ],
 };
 export const peerImpactFilters = {

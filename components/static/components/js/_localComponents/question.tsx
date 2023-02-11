@@ -1,5 +1,7 @@
 import { h } from "preact";
 
+import { useState } from "preact/hooks";
+
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -13,9 +15,11 @@ import Box from "@mui/system/Box";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import saltise from "../theme";
 import { Tag } from "../styledComponents";
@@ -27,6 +31,88 @@ import { QuestionProps } from "./types";
 const theme = saltise;
 
 export function Question({ gettext, question }: QuestionProps): JSX.Element {
+  const [{ showAnswerChoices }, setShowAnswerChoices] = useState<{
+    showAnswerChoices: boolean;
+  }>({ showAnswerChoices: false });
+
+  const handleChange = () => {
+    setShowAnswerChoices((prevState) => ({
+      showAnswerChoices: !prevState.showAnswerChoices,
+    }));
+  };
+
+  const answerchoices = () => {
+    if (question.answerchoice_set?.length > 0 && showAnswerChoices) {
+      return (
+        <Box>
+          {question.answerchoice_set.map((answerchoice, i) => {
+            return (
+              <Box
+                key={i}
+                display={"flex"}
+                alignItems={"baseline"}
+                sx={{ pb: "4px" }}
+              >
+                <Box
+                  sx={{
+                    height: "18px",
+                    minWidth: "26px",
+                    position: "relative",
+                    top: "4px",
+                  }}
+                >
+                  {answerchoice.correct ? (
+                    <CheckCircleIcon color={"success"} sx={{ fontSize: 18 }} />
+                  ) : null}
+                </Box>
+                <Box sx={{ marginRight: "4px" }}>
+                  <Typography>{answerchoice.label}.</Typography>
+                </Box>
+                <Box>
+                  <Typography
+                    component={"div"}
+                    dangerouslySetInnerHTML={{
+                      __html: answerchoice.text,
+                    }} // Bleached in serializer
+                    sx={{
+                      "> p": { mt: 0, mb: "4px" },
+                    }}
+                    variant={"body1"}
+                  />
+                </Box>
+              </Box>
+            );
+          })}
+        </Box>
+      );
+    }
+  };
+
+  const showAnswerChoicesIcon = () => {
+    if (question.answerchoice_set?.length > 0) {
+      return (
+        <Checkbox
+          checked={showAnswerChoices}
+          onChange={handleChange}
+          inputProps={{ "aria-label": gettext("Show/hide answer choices") }}
+          icon={<VisibilityIcon fontSize="medium" />}
+          checkedIcon={<VisibilityOffIcon fontSize="medium" />}
+          sx={{
+            color: "primary.main",
+            "&.Mui-checked": {
+              color: "primary.main",
+            },
+          }}
+          title={
+            showAnswerChoices
+              ? gettext("Hide answer choices")
+              : gettext("Show answer choices")
+          }
+        />
+      );
+    }
+  };
+
   const difficulty = () => {
     if (parseInt(question.difficulty.label) < 4) {
       return (
@@ -69,6 +155,7 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
           sx={{ mb: "10px", mt: "20px" }}
           dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer
         />
+        {answerchoices()}
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
         <Stack direction="row" spacing="5px">
@@ -107,11 +194,9 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
             },
           }}
         >
+          {showAnswerChoicesIcon()}
           <IconButton>
             <PlaylistAddIcon fontSize="medium" />
-          </IconButton>
-          <IconButton>
-            <VisibilityIcon fontSize="medium" />
           </IconButton>
           <Checkbox
             icon={<BookmarkAddOutlinedIcon />}

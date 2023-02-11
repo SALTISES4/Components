@@ -62,8 +62,15 @@ type QuestionPeerImpact = {
   label: PeerImpactLevels;
 };
 
+type AnswerChoiceType = {
+  correct: boolean;
+  label: string;
+  text: string;
+};
+
 export type QuestionType = {
   answer_count: number;
+  answerchoice_set: AnswerChoiceType[];
   category?: { title: string }[];
   difficulty: QuestionDifficulty;
   discipline?: DisciplineType;

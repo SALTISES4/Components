@@ -97,18 +97,35 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
       )) as QuestionType[];
       const teacher = (await get(this.props.urls.teacher)) as TeacherType;
 
-      // Groupby operation on studentgroupassignments by pk
-      // Temporary solution here so it renders something
-      assignments.forEach(
-        (a) =>
-          (a.groups = [
-            { due_date: a.due_date, title: a.group, progress: a.progress },
-          ]),
+      // Groupby operation on assignment by pk
+      const groupedAssignments = assignments.reduce(
+        (accumulator: {}, currentValue: {}) => {
+          if (
+            !Object.prototype.hasOwnProperty.call(
+              accumulator,
+              currentValue.assignment_pk,
+            )
+          ) {
+            console.info(accumulator);
+            accumulator[currentValue.assignment_pk] = { ...currentValue };
+            delete accumulator[currentValue.assignment_pk].group;
+            accumulator[currentValue.assignment_pk].groups = [];
+          }
+          accumulator[currentValue.assignment_pk].groups.unshift({
+            title: currentValue.group,
+            due_date: currentValue.due_date,
+            progress: currentValue.progress,
+          });
+          return accumulator;
+        },
+        {},
       );
 
       this.setState(
         {
-          assignments: assignments as GroupAssignmentType[],
+          assignments: Object.values(
+            groupedAssignments,
+          ) as GroupAssignmentType[],
           collections: collections.results as CollectionType[],
           questions,
           teacher,

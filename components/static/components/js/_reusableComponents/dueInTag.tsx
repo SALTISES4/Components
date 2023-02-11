@@ -12,27 +12,41 @@ export const DueInTag = ({ gettext, dueDate }: DueInTagProps) => {
   if (daysDifference && daysDifference > -1) {
     return (
       <Box>
-        {daysDifference < 5 ? (
-          <Tag
-            sx={{
-              mr: "10px",
-              color: "error.main",
-              backgroundColor: "errorTint.main",
-            }}
-          >
-            <AlarmIcon fontSize="small" />
-            {daysDifference < 2 ? (
-              <Typography color="inherit">
-                {gettext("Due in ")} {daysDifference} {gettext(" day")}
-              </Typography>
-            ) : (
-              <Typography color="inherit">
-                {gettext("Due in ")} {daysDifference} {gettext(" days")}
-              </Typography>
-            )}
-          </Tag>
-        ) : null}
+        <Tag
+          sx={{
+            mr: "10px",
+            color: "error.main",
+            backgroundColor: "errorTint.main",
+          }}
+        >
+          <AlarmIcon fontSize="small" />
+          {daysDifference < 2 ? (
+            <Typography color="inherit">
+              {gettext("Due in ")} {daysDifference} {gettext(" day")}
+            </Typography>
+          ) : (
+            <Typography color="inherit">
+              {gettext("Due in ")} {daysDifference} {gettext(" days")}
+            </Typography>
+          )}
+        </Tag>
       </Box>
     );
   }
+  return (
+    <Box>
+      <Tag
+        sx={{
+          mr: "10px",
+          color: "inactive.main",
+          backgroundColor: "inactiveTint.main",
+        }}
+      >
+        <AlarmIcon fontSize="small" />
+        <Typography color="inherit">
+          {gettext("Ended")} {dueDate.toLocaleDateString()}
+        </Typography>
+      </Tag>
+    </Box>
+  );
 };

@@ -17,8 +17,8 @@ export function Group({ gettext, group }: GroupProps): JSX.Element {
           <Typography
             variant="h3"
             onClick={() => (window.location.href = group.url)}
+            sx={{ cursor: "pointer" }}
           >
-            {" "}
             {group.title}
           </Typography>
         </Box>
@@ -26,7 +26,9 @@ export function Group({ gettext, group }: GroupProps): JSX.Element {
           <DueInTag dueDate={new Date(group.due_date)} gettext={gettext} />
           <Box display="flex" alignItems="center">
             <CircleProgressIcon progress={group.progress} />
-            <Typography>{gettext(`${group.progress}% completed`)}</Typography>
+            <Typography>
+              {group.progress}% {gettext("completed")}
+            </Typography>
           </Box>
         </Box>
       </Box>

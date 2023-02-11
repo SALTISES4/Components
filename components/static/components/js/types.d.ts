@@ -31,6 +31,7 @@ export type DashboardAppProps = {
   urls: {
     assignments: string;
     assignmentsLink: string;
+    assignmentDetail: string;
     collections: string;
     collectionsLink: string;
     questions: string;

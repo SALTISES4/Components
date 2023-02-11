@@ -106,16 +106,17 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
               currentValue.assignment_pk,
             )
           ) {
-            console.info(accumulator);
             accumulator[currentValue.assignment_pk] = { ...currentValue };
-            delete accumulator[currentValue.assignment_pk].group;
             accumulator[currentValue.assignment_pk].groups = [];
           }
           accumulator[currentValue.assignment_pk].groups.unshift({
             title: currentValue.group,
             due_date: currentValue.due_date,
             progress: currentValue.progress,
+            url: this.props.urls.assignmentDetail + currentValue.hash,
           });
+          delete accumulator[currentValue.assignment_pk].group;
+          delete accumulator[currentValue.assignment_pk].hash;
           return accumulator;
         },
         {},

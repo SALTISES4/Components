@@ -84,6 +84,7 @@ export type GroupType = {
   due_date: Date;
   progress: number;
   tags?: string[];
+  url: string;
 };
 
 export type AssignmentBisProps = {

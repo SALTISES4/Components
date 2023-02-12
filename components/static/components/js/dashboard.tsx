@@ -113,10 +113,12 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
             title: currentValue.group,
             due_date: currentValue.due_date,
             progress: currentValue.progress,
-            url: this.props.urls.assignmentDetail + currentValue.hash,
+            url: currentValue.url,
           });
+          delete accumulator[currentValue.assignment_pk].due_date;
           delete accumulator[currentValue.assignment_pk].group;
-          delete accumulator[currentValue.assignment_pk].hash;
+          delete accumulator[currentValue.assignment_pk].progress;
+          delete accumulator[currentValue.assignment_pk].url;
           return accumulator;
         },
         {},

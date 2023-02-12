@@ -74,10 +74,13 @@ export type QuestionType = {
   category?: { title: string }[];
   difficulty: QuestionDifficulty;
   discipline?: DisciplineType;
+  image: string;
+  image_alt_text: string;
   peer_impact: QuestionPeerImpact;
   text: string;
   title: string;
   user: UserType;
+  video_url: string;
 };
 
 export type GroupType = {

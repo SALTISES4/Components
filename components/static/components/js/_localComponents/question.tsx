@@ -22,6 +22,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import saltise from "../theme";
+
 import { Tag } from "../styledComponents";
 import { DifficultyCircleIcon } from "../_reusableComponents/difficultyIconQuestion";
 import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon";
@@ -31,18 +32,18 @@ import { QuestionProps } from "./types";
 const theme = saltise;
 
 export function Question({ gettext, question }: QuestionProps): JSX.Element {
-  const [{ showAnswerChoices }, setShowAnswerChoices] = useState<{
-    showAnswerChoices: boolean;
-  }>({ showAnswerChoices: false });
+  const [{ showDetails }, setShowDetails] = useState<{
+    showDetails: boolean;
+  }>({ showDetails: false });
 
   const handleChange = () => {
-    setShowAnswerChoices((prevState) => ({
-      showAnswerChoices: !prevState.showAnswerChoices,
+    setShowDetails((prevState) => ({
+      showDetails: !prevState.showDetails,
     }));
   };
 
   const answerchoices = () => {
-    if (question.answerchoice_set?.length > 0 && showAnswerChoices) {
+    if (question.answerchoice_set?.length > 0 && showDetails) {
       return (
         <Box>
           {question.answerchoice_set.map((answerchoice, i) => {
@@ -88,13 +89,50 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
     }
   };
 
-  const showAnswerChoicesIcon = () => {
-    if (question.answerchoice_set?.length > 0) {
+  const image = () => {
+    if (showDetails && question.image) {
+      return (
+        <img
+          src={question.image}
+          alt={question.image_alt_text}
+          title={gettext("Question image")}
+          style={{
+            display: "block",
+            margin: "auto",
+            maxHeight: "300px",
+            maxWidth: "80%",
+            padding: "12px 0px",
+            width: "auto",
+          }}
+        />
+      );
+    }
+  };
+
+  const video = () => {
+    if (showDetails && question.video_url) {
+      return (
+        <object
+          data={question.video_url}
+          height={390}
+          style={{
+            display: "block",
+            margin: "auto",
+            padding: "12px 0px",
+          }}
+          width={640}
+        />
+      );
+    }
+  };
+
+  const showDetailsIcon = () => {
+    if (question.answerchoice_set?.length > 0 || question.image) {
       return (
         <Checkbox
-          checked={showAnswerChoices}
+          checked={showDetails}
           onChange={handleChange}
-          inputProps={{ "aria-label": gettext("Show/hide answer choices") }}
+          inputProps={{ "aria-label": gettext("Show/hide details") }}
           icon={<VisibilityIcon fontSize="medium" />}
           checkedIcon={<VisibilityOffIcon fontSize="medium" />}
           sx={{
@@ -104,11 +142,22 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
             },
           }}
           title={
-            showAnswerChoices
-              ? gettext("Hide answer choices")
-              : gettext("Show answer choices")
+            showDetails ? gettext("Hide details") : gettext("Show details")
           }
         />
+      );
+    }
+  };
+
+  const discipline = () => {
+    if (question?.discipline) {
+      return (
+        <Tag
+          sx={{ backgroundColor: theme.palette.primary1.main }}
+          title={gettext("Discipline")}
+        >
+          <Typography>{question.discipline.title}</Typography>
+        </Tag>
       );
     }
   };
@@ -116,7 +165,7 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
   const difficulty = () => {
     if (parseInt(question.difficulty.label) < 4) {
       return (
-        <Box display="flex" sx={{ mr: "30px" }}>
+        <Box display="flex">
           <DifficultyCircleIcon difficulty={question.difficulty} />
           <Typography variant="h4" sx={{ width: "64px" }}>
             {question.difficulty.value}
@@ -136,6 +185,7 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
       );
     }
   };
+
   return (
     <Card>
       <CardContent>
@@ -155,15 +205,15 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
           sx={{ mb: "10px", mt: "20px" }}
           dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer
         />
+        {image()}
+        {video()}
         {answerchoices()}
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
         <Stack direction="row" spacing="5px">
-          <Tag sx={{ backgroundColor: theme.palette.primary1.main }}>
-            <Typography>{question.discipline?.title}</Typography>
-          </Tag>
+          {discipline()}
           {question.category?.map((category, i) => (
-            <Tag key={i}>
+            <Tag key={i} title={gettext("Category")}>
               <Typography>{category.title}</Typography>
             </Tag>
           ))}
@@ -194,7 +244,7 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
             },
           }}
         >
-          {showAnswerChoicesIcon()}
+          {showDetailsIcon()}
           <IconButton>
             <PlaylistAddIcon fontSize="medium" />
           </IconButton>

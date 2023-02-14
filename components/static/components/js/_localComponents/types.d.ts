@@ -77,6 +77,7 @@ export type QuestionType = {
   image: string;
   image_alt_text: string;
   peer_impact: QuestionPeerImpact;
+  pk: number;
   text: string;
   title: string;
   user: UserType;
@@ -137,5 +138,7 @@ export type GroupStudentProps = {
 
 export type QuestionProps = {
   gettext: (a: string) => string;
+  bookmarked?: boolean;
   question: QuestionType;
+  toggleBookmarked: () => void;
 };

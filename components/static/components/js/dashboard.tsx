@@ -1,7 +1,7 @@
 import { Component, h, render } from "preact";
 export { h, render };
 
-import { get } from "./ajax";
+import { get, submitData } from "./ajax";
 
 //material ui components
 import Box from "@mui/material/Box";
@@ -145,6 +145,32 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     this.sync();
   }
 
+  handleBookmarkClick = async (pk: number): Promise<void> => {
+    const index = this.state.teacher.favourite_questions.indexOf(pk);
+    const newFavouriteQuestions = [...this.state.teacher.favourite_questions];
+    if (index >= 0) {
+      newFavouriteQuestions.splice(index, 1);
+    } else {
+      newFavouriteQuestions.unshift(pk);
+    }
+    try {
+      const teacher = (await submitData(
+        this.props.urls.teacher,
+        { favourite_questions: newFavouriteQuestions },
+        "PUT",
+      )) as TeacherType;
+
+      this.setState(
+        {
+          teacher,
+        },
+        () => console.info(this.state),
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   cache = createCache({
     key: "nonced",
     nonce: this.props.nonce,
@@ -212,8 +238,14 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                   (question: QuestionType, i: number) => (
                     <Question
                       key={i}
+                      bookmarked={this.state.teacher.favourite_questions?.includes(
+                        question.pk,
+                      )}
                       gettext={this.props.gettext}
                       question={question}
+                      toggleBookmarked={() =>
+                        this.handleBookmarkClick(question.pk)
+                      }
                     />
                   ),
                 )}

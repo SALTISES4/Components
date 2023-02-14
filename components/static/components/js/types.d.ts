@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import {
   CollectionType,
   GroupAssignmentType,
@@ -16,6 +18,7 @@ type TeacherType = {
   activeAssignmentCount: number;
   activeGroupCount: number;
   createdQuestionCount: number;
+  favourite_questions: number[];
 };
 
 export type LinkType = {

@@ -31,7 +31,12 @@ import { QuestionProps } from "./types";
 
 const theme = saltise;
 
-export function Question({ gettext, question }: QuestionProps): JSX.Element {
+export function Question({
+  gettext,
+  bookmarked,
+  question,
+  toggleBookmarked,
+}: QuestionProps): JSX.Element {
   const [{ showDetails }, setShowDetails] = useState<{
     showDetails: boolean;
   }>({ showDetails: false });
@@ -149,6 +154,25 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
     }
   };
 
+  const bookmarkIcon = () => {
+    if (bookmarked !== undefined) {
+      return (
+        <Checkbox
+          checked={bookmarked}
+          icon={<BookmarkAddOutlinedIcon />}
+          checkedIcon={<BookmarkAddedIcon />}
+          onChange={toggleBookmarked}
+          sx={{
+            color: "primary.main",
+            "&.Mui-checked": {
+              color: "primary.main",
+            },
+          }}
+        />
+      );
+    }
+  };
+
   const discipline = () => {
     if (question?.discipline) {
       return (
@@ -248,16 +272,7 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
           <IconButton>
             <PlaylistAddIcon fontSize="medium" />
           </IconButton>
-          <Checkbox
-            icon={<BookmarkAddOutlinedIcon />}
-            checkedIcon={<BookmarkAddedIcon />}
-            sx={{
-              color: "primary.main",
-              "&.Mui-checked": {
-                color: "primary.main",
-              },
-            }}
-          />
+          {bookmarkIcon()}
           <IconButton>
             <MoreHorizIcon fontSize="medium" />
           </IconButton>

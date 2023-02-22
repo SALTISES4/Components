@@ -145,7 +145,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     this.sync();
   }
 
-  handleBookmarkClick = async (pk: number): Promise<void> => {
+  handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
     const index = this.state.teacher.favourite_questions.indexOf(pk);
     const newFavouriteQuestions = [...this.state.teacher.favourite_questions];
     if (index >= 0) {
@@ -166,6 +166,20 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
         },
         () => console.info(this.state),
       );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  handleCollectionBookmarkClick = async (url: string): Promise<void> => {
+    // Can we avoid re-sync?
+    try {
+      await submitData(url, {}, "PUT");
+
+      const collections = await get(this.props.urls.collections);
+      this.setState({
+        collections: collections.results as CollectionType[],
+      });
     } catch (error) {
       console.error(error);
     }
@@ -218,6 +232,11 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                         gettext={this.props.gettext}
                         logo={this.props.logo}
                         collection={collection}
+                        toggleBookmarked={() =>
+                          this.handleCollectionBookmarkClick(
+                            collection.follow_url,
+                          )
+                        }
                       />
                     </Grid>
                   ),
@@ -244,7 +263,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                       gettext={this.props.gettext}
                       question={question}
                       toggleBookmarked={() =>
-                        this.handleBookmarkClick(question.pk)
+                        this.handleQuestionBookmarkClick(question.pk)
                       }
                     />
                   ),

@@ -46,7 +46,9 @@ export type CollectionType = {
   description: string;
   discipline?: DisciplineType;
   featured?: boolean;
-  tags?: string[];
+  followed_by_user?: boolean;
+  follow_url?: string;
+  pk: number;
   title: string;
   url: string;
 };
@@ -124,6 +126,7 @@ export type CollectionProps = {
   gettext: (a: string) => string;
   logo: string;
   collection: CollectionType;
+  toggleBookmarked: () => void;
 };
 
 export type GroupProps = {

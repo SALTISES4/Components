@@ -17,6 +17,7 @@ import { headerProps } from "./types";
 export const Header = ({
   logo,
   menuAddItems,
+  menuHelpItems,
   menuProfile,
   user,
 }: headerProps) => {
@@ -33,6 +34,11 @@ export const Header = ({
     anchorElAvatar: null | HTMLElement;
   }>({ openAvatar: false, anchorElAvatar: null });
 
+  const [{ openHelp, anchorElHelp }, setOpenHelp] = useState<{
+    openHelp: boolean;
+    anchorElHelp: null | HTMLElement;
+  }>({ openHelp: false, anchorElHelp: null });
+
   const handleClickMore = (event: MouseEvent | TouchEvent) => {
     setOpenMore((prevState) => ({
       openMore: !prevState.openMore,
@@ -46,6 +52,13 @@ export const Header = ({
       anchorElAvatar: !prevState.openAvatar
         ? (event.target as HTMLElement)
         : null,
+    }));
+  };
+
+  const handleClickHelp = (event: MouseEvent | TouchEvent) => {
+    setOpenHelp((prevState) => ({
+      openHelp: !prevState.openHelp,
+      anchorElHelp: !prevState.openHelp ? (event.target as HTMLElement) : null,
     }));
   };
 
@@ -78,9 +91,16 @@ export const Header = ({
           open={Boolean(openMore)}
         />
 
-        <IconButton>
+        <IconButton onClick={handleClickHelp}>
           <HelpIcon fontSize="large" />
         </IconButton>
+
+        <CustomMenu
+          anchorEl={anchorElHelp}
+          menuItems={menuHelpItems}
+          onClose={handleClickHelp}
+          open={Boolean(openHelp)}
+        />
 
         <IconButton onClick={handleClickAvatar}>
           <Avatar alt={user.username} src={user.avatar} fontSize="large" />

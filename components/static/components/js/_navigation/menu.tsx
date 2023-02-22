@@ -1,6 +1,6 @@
 import { Fragment, h } from "preact";
 
-import { Divider } from "@mui/material";
+import Divider from "@mui/material/Divider";
 import Icon from "@mui/material/Icon";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -22,8 +22,18 @@ export const CustomMenu = ({
   onClose,
   open,
 }: CustomMenuProps) => {
-  const handleClick = (url: string) => {
-    window.location.href = url;
+  const handleClick = (url: string, target: string | undefined) => {
+    if (target) {
+      window.open(url, target);
+    } else {
+      window.location.href = url;
+    }
+  };
+
+  const text = (title: string) => {
+    return (
+      <ListItemText primary={title} primaryTypographyProps={typographyStyle} />
+    );
   };
 
   return (
@@ -43,7 +53,11 @@ export const CustomMenu = ({
       {menuItems.map((group, i) => (
         <Fragment key={i}>
           {group.map((choice, j) => (
-            <MenuItem key={j} onClick={() => handleClick(choice.url)}>
+            <MenuItem
+              key={j}
+              disabled={!!choice?.disabled}
+              onClick={() => handleClick(choice.url, choice?.target)}
+            >
               <ListItemIcon>
                 <Icon
                   sx={{
@@ -54,10 +68,7 @@ export const CustomMenu = ({
                   {choice.icon}
                 </Icon>
               </ListItemIcon>
-              <ListItemText
-                primary={choice.title}
-                primaryTypographyProps={typographyStyle}
-              />
+              {text(choice.title)}
             </MenuItem>
           ))}
           <Divider

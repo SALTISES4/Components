@@ -23,7 +23,30 @@ export function Collection({
   gettext,
   logo,
   collection,
+  toggleBookmarked,
 }: CollectionProps): JSX.Element {
+  const bookmarkIcon = () => {
+    if (
+      collection.followed_by_user !== undefined &&
+      collection.follow_url !== undefined
+    ) {
+      return (
+        <Checkbox
+          checked={collection.followed_by_user}
+          icon={<BookmarkAddOutlinedIcon />}
+          checkedIcon={<BookmarkAddedIcon />}
+          onChange={toggleBookmarked}
+          sx={{
+            color: "primary.main",
+            "&.Mui-checked": {
+              color: "primary.main",
+            },
+          }}
+        />
+      );
+    }
+  };
+
   return (
     <Card>
       <CardHeader
@@ -44,11 +67,6 @@ export function Collection({
           <Tag sx={{ backgroundColor: theme.palette.primary1.main }}>
             <Typography>{collection.discipline?.title}</Typography>
           </Tag>
-          {collection.tags?.map((tag) => (
-            <Tag key={tag}>
-              <Typography> {tag} </Typography>
-            </Tag>
-          ))}
           <Tag
             sx={{
               bgcolor: "white",
@@ -67,16 +85,7 @@ export function Collection({
             </Typography>
           </Tag>
         </Stack>
-        <Checkbox
-          icon={<BookmarkAddOutlinedIcon />}
-          checkedIcon={<BookmarkAddedIcon />}
-          sx={{
-            color: "primary.main",
-            "&.Mui-checked": {
-              color: "primary.main",
-            },
-          }}
-        />
+        {bookmarkIcon()}
       </CardActions>
     </Card>
   );

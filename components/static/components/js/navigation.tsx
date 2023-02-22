@@ -46,6 +46,7 @@ export class App extends Component<NavigationAppProps, NavigationAppState> {
             <Header
               logo={this.props.logo}
               menuAddItems={this.props.menuAddItems}
+              menuHelpItems={this.props.menuHelpItems}
               menuProfile={this.props.menuProfile}
               user={this.props.user}
             />

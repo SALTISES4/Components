@@ -22,7 +22,9 @@ type TeacherType = {
 };
 
 export type LinkType = {
+  disabled?: boolean;
   icon: string;
+  target?: string;
   title: string;
   url: string;
 };
@@ -74,6 +76,7 @@ export type SearchAppState = {
 export type NavigationAppProps = {
   logo: string;
   menuAddItems: LinkType[][];
+  menuHelpItems: LinkType[][];
   menuProfile: LinkType[][];
   nonce: string;
   sidebarGroups: LinkType[][];

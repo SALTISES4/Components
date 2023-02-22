@@ -3,6 +3,7 @@ import { LinkType, UserType } from "../types";
 export type headerProps = {
   logo: string;
   menuAddItems: LinkType[][];
+  menuHelpItems: LinkType[][];
   menuProfile: LinkType[][];
   user: UserType;
 };

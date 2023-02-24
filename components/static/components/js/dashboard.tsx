@@ -129,7 +129,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
           assignments: Object.values(
             groupedAssignments,
           ) as GroupAssignmentType[],
-          collections: collections.results as CollectionType[],
+          collections: (collections as any).results as CollectionType[],
           questions,
           teacher,
         },
@@ -171,17 +171,20 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     }
   };
 
-  handleCollectionBookmarkClick = async (url: string): Promise<void> => {
-    // Can we avoid re-sync?
-    try {
-      await submitData(url, {}, "PUT");
+  handleCollectionBookmarkClick = async (
+    url: string | undefined,
+  ): Promise<void> => {
+    if (url) {
+      try {
+        await submitData(url, {}, "PUT");
 
-      const collections = await get(this.props.urls.collections);
-      this.setState({
-        collections: collections.results as CollectionType[],
-      });
-    } catch (error) {
-      console.error(error);
+        const collections = await get(this.props.urls.collections);
+        this.setState({
+          collections: (collections as any).results as CollectionType[],
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 

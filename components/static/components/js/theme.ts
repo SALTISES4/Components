@@ -216,17 +216,23 @@ const saltise = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "#000B26",
-          color: "#fff",
+          backgroundColor: "#FFF",
+          color: "#1743B3",
           paddingLeft: 2,
           " .MuiAvatar-root": {
             height: 30,
             width: 30,
+            "&:hover": {
+              backgroundColor: "#1743B320",
+            },
           },
           " .MuiIconButton-root": {
             marginLeft: "15px",
             marginRight: "15px",
-            color: "#fff",
+            color: "#1743B3",
+            "&:hover": {
+              backgroundColor: "#1743B320",
+            },
           },
           " .MuiList-root": {
             padding: "10px 0px",

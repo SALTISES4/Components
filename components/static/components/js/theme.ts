@@ -361,6 +361,7 @@ const saltise = createTheme({
           },
           " .MuiTypography-root": {
             color: "#fff",
+            fontSize: "0.9rem",
           },
         },
       },

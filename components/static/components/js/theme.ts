@@ -188,13 +188,13 @@ const saltise = createTheme({
     },
     h2: {
       fontSize: "20px",
-      fontWeight: 600,
+      fontWeight: 500,
       lineHeight: "28px",
       marginTop: "50px",
     },
     h3: {
       fontSize: "16px",
-      fontWeight: 600,
+      fontWeight: 500,
       lineHeight: "28px",
     },
     h4: {
@@ -203,7 +203,7 @@ const saltise = createTheme({
     },
     h5: {
       fontSize: "14px",
-      fontWeight: 600,
+      fontWeight: 500,
       lineHeight: "19px",
     },
     caption: {
@@ -309,7 +309,7 @@ const saltise = createTheme({
         },
         title: {
           fontSize: "16px",
-          fontWeight: "600",
+          fontWeight: 500,
           lineHeight: "28px",
           color: "#515159",
         },
@@ -437,7 +437,7 @@ export const formTheme = createTheme(saltise, {
       styleOverrides: {
         title: {
           fontSize: "18px",
-          fontWeight: "600",
+          fontWeight: 500,
           lineHeight: "28px",
         },
         subheader: {

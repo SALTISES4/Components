@@ -47,6 +47,7 @@ export const Tag = styled(Box)({
   cursor: "default",
   backgroundColor: theme.palette.secondary1.main,
   borderRadius: "5px",
+  borderWidth: "1px",
   display: "flex",
   padding: "5px",
   alignItems: "center",

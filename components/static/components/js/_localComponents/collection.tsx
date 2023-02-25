@@ -70,7 +70,6 @@ export function Collection({
           <Tag
             sx={{
               bgcolor: "white",
-              borderWidth: "2px",
               borderStyle: "solid",
               paddingTop: "3px",
               paddingBottom: "3px",

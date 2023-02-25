@@ -66,6 +66,7 @@ export type SearchAppState = {
   assignments: GroupAssignmentType[];
   collections: CollectionType[];
   questions: QuestionType[];
+  searchTerm: string;
   typeFilters: TypeFilterType;
   disciplineFilters: DisciplineFilterType;
   categoryFilters: CategoryFilterType;

@@ -67,7 +67,7 @@ export const Header = ({
       position="fixed"
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
-      <Toolbar>
+      <Toolbar variant="dense">
         <img class="logo" src={logo} />
         <Typography
           noWrap

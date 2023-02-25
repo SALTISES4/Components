@@ -67,7 +67,9 @@ export const SideBar = ({ groups, logo }: DrawerProps) => {
                 </ListItem>
               ))}
             </List>
-            <Divider />
+            <Divider
+              sx={{ display: i == groups.length - 1 ? "none" : "block" }}
+            />
           </Fragment>
         ))}
       </Box>

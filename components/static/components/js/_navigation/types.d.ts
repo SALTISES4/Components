@@ -1,7 +1,6 @@
 import { LinkType, UserType } from "../types";
 
 export type headerProps = {
-  logo: string;
   menuAddItems: LinkType[][];
   menuHelpItems: LinkType[][];
   menuProfile: LinkType[][];
@@ -16,5 +15,6 @@ export type CustomMenuProps = {
 };
 
 export type DrawerProps = {
+  logo: string;
   groups: LinkType[][];
 };

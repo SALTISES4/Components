@@ -219,10 +219,6 @@ const saltise = createTheme({
           backgroundColor: "#000B26",
           color: "#fff",
           paddingLeft: 2,
-          " img.logo": {
-            height: 40,
-            marginRight: 10,
-          },
           " .MuiAvatar-root": {
             height: 30,
             width: 30,
@@ -245,12 +241,6 @@ const saltise = createTheme({
           " .MuiListItemIcon-root": {
             minWidth: "0px",
             marginRight: "10px",
-          },
-          " span.cardo": {
-            fontFamily: "Cardo",
-          },
-          " span.montserrat": {
-            fontFamily: "Montserrat",
           },
         },
       },
@@ -347,6 +337,18 @@ const saltise = createTheme({
           color: "#fff",
         },
         root: {
+          " img.logo": {
+            height: 40,
+            marginLeft: 8,
+            marginRight: 10,
+            width: 40,
+          },
+          " span.cardo": {
+            fontFamily: "Cardo",
+          },
+          " span.montserrat": {
+            fontFamily: "Montserrat",
+          },
           " .MuiListItemButton-root": {
             borderRadius: 10,
             marginBottom: 2,

@@ -11,9 +11,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 
-import { drawerProps } from "./types";
+import { DrawerProps } from "./types";
 
-export const SideBar = ({ groups }: drawerProps) => {
+export const SideBar = ({ groups }: DrawerProps) => {
   const drawerWidth = 200;
 
   const handleClick = (url: string) => {
@@ -42,9 +42,15 @@ export const SideBar = ({ groups }: drawerProps) => {
                 <ListItem
                   key={entry.title}
                   disablePadding
-                  onClick={() => handleClick(entry.url)}
+                  onClick={() =>
+                    !entry.selected ? handleClick(entry.url) : null
+                  }
+                  sx={{ pointerEvents: entry.selected ? "none" : "auto" }}
                 >
-                  <ListItemButton>
+                  <ListItemButton
+                    disabled={entry.disabled}
+                    selected={entry.selected}
+                  >
                     <ListItemIcon sx={{ minWidth: 36 }}>
                       <Icon>{entry.icon}</Icon>
                     </ListItemIcon>

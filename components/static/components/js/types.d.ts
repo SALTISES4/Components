@@ -24,6 +24,7 @@ type TeacherType = {
 export type LinkType = {
   disabled?: boolean;
   icon: string;
+  selected?: boolean;
   target?: string;
   title: string;
   url: string;

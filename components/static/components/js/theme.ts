@@ -349,7 +349,9 @@ const saltise = createTheme({
         root: {
           " .MuiListItemButton-root": {
             borderRadius: 10,
+            marginBottom: 2,
             padding: "4px 16px",
+            "&.Mui-selected": { backgroundColor: "rgb(255, 255, 255, 0.1)" },
             "&:hover": {
               backgroundColor: "rgb(255, 255, 255, 0.1)",
             },
@@ -363,7 +365,6 @@ const saltise = createTheme({
         },
       },
     },
-
     MuiIconButton: {
       styleOverrides: {
         root: {

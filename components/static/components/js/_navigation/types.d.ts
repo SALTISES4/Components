@@ -15,6 +15,6 @@ export type CustomMenuProps = {
   open: boolean;
 };
 
-export type drawerProps = {
+export type DrawerProps = {
   groups: LinkType[][];
 };

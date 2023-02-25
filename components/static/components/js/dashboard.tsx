@@ -45,6 +45,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     this.state = {
       assignments,
       collections,
+      height: 0,
       questions,
       teacher,
     };
@@ -188,6 +189,12 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     }
   };
 
+  getHeight = (height: number) => {
+    if (height > this.state.height) {
+      this.setState({ height });
+    }
+  };
+
   cache = createCache({
     key: "nonced",
     nonce: this.props.nonce,
@@ -233,7 +240,9 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                     <Grid key={i} item xs={6}>
                       <Collection
                         gettext={this.props.gettext}
+                        getHeight={this.getHeight}
                         logo={this.props.logo}
+                        minHeight={this.state.height}
                         collection={collection}
                         toggleBookmarked={() =>
                           this.handleCollectionBookmarkClick(

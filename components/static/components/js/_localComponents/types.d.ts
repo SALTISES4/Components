@@ -124,6 +124,8 @@ export type AssignmentStudentCompletedProps = {
 
 export type CollectionProps = {
   gettext: (a: string) => string;
+  getHeight: (height: number) => void;
+  minHeight: number;
   logo: string;
   collection: CollectionType;
   toggleBookmarked: () => void;

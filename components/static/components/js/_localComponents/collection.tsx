@@ -1,4 +1,4 @@
-import { h } from "preact";
+import { Component, createRef, h } from "preact";
 
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
@@ -19,23 +19,26 @@ import { CollectionProps } from "./types";
 
 const theme = saltise;
 
-export function Collection({
-  gettext,
-  logo,
-  collection,
-  toggleBookmarked,
-}: CollectionProps): JSX.Element {
-  const bookmarkIcon = () => {
+export class Collection extends Component<CollectionProps> {
+  ref = createRef();
+
+  componentDidMount(): void {
+    if (this.ref.current) {
+      this.props.getHeight(this.ref.current.getBoundingClientRect().height);
+    }
+  }
+
+  bookmarkIcon = () => {
     if (
-      collection.followed_by_user !== undefined &&
-      collection.follow_url !== undefined
+      this.props.collection.followed_by_user !== undefined &&
+      this.props.collection.follow_url !== undefined
     ) {
       return (
         <Checkbox
-          checked={collection.followed_by_user}
+          checked={this.props.collection.followed_by_user}
           icon={<BookmarkAddOutlinedIcon />}
           checkedIcon={<BookmarkAddedIcon />}
-          onChange={toggleBookmarked}
+          onChange={this.props.toggleBookmarked}
           sx={{
             color: "primary.main",
             "&.Mui-checked": {
@@ -47,45 +50,55 @@ export function Collection({
     }
   };
 
-  return (
-    <Card>
-      <CardHeader
-        avatar={<Avatar />}
-        action={() =>
-          collection.featured ? <img src={logo} height="30" /> : ""
-        }
-        onClick={() => (window.location.href = collection.url)}
-        title={collection.title}
-        subheader={gettext("From ".concat(collection.author))}
-        sx={{ cursor: "pointer" }}
-      />
-      <CardContent>
-        <Typography>{collection.description}</Typography>
-      </CardContent>
-      <CardActions sx={{ justifyContent: "space-between" }}>
-        <Stack direction="row" spacing="5px">
-          <Tag sx={{ backgroundColor: theme.palette.primary1.main }}>
-            <Typography>{collection.discipline?.title}</Typography>
-          </Tag>
-          <Tag
-            sx={{
-              bgcolor: "white",
-              borderStyle: "solid",
-              paddingTop: "3px",
-              paddingBottom: "3px",
-            }}
-          >
-            <BarChartIcon fontSize="small" />
-            <Typography>
-              {collection.answerCount}{" "}
-              {collection.answerCount == 1
-                ? gettext("answer")
-                : gettext("answers")}
-            </Typography>
-          </Tag>
-        </Stack>
-        {bookmarkIcon()}
-      </CardActions>
-    </Card>
-  );
+  render() {
+    return (
+      <Card>
+        <CardHeader
+          avatar={<Avatar />}
+          action={() =>
+            this.props.collection.featured ? (
+              <img src={this.props.logo} height="30" />
+            ) : (
+              ""
+            )
+          }
+          onClick={() => (window.location.href = this.props.collection.url)}
+          title={this.props.collection.title}
+          subheader={this.props.gettext(
+            "From ".concat(this.props.collection.author),
+          )}
+          sx={{ cursor: "pointer" }}
+        />
+        <CardContent ref={this.ref} sx={{ minHeight: this.props.minHeight }}>
+          <Typography>{this.props.collection.description}</Typography>
+        </CardContent>
+        <CardActions sx={{ justifyContent: "space-between" }}>
+          <Stack direction="row" spacing="5px">
+            <Tag sx={{ backgroundColor: theme.palette.primary1.main }}>
+              <Typography>
+                {this.props.collection.discipline?.title}
+              </Typography>
+            </Tag>
+            <Tag
+              sx={{
+                bgcolor: "white",
+                borderStyle: "solid",
+                paddingTop: "3px",
+                paddingBottom: "3px",
+              }}
+            >
+              <BarChartIcon fontSize="small" />
+              <Typography>
+                {this.props.collection.answerCount}{" "}
+                {this.props.collection.answerCount == 1
+                  ? this.props.gettext("answer")
+                  : this.props.gettext("answers")}
+              </Typography>
+            </Tag>
+          </Stack>
+          {this.bookmarkIcon()}
+        </CardActions>
+      </Card>
+    );
+  }
 }

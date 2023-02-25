@@ -48,6 +48,7 @@ export type DashboardAppProps = {
 export type DashboardAppState = {
   assignments: GroupAssignmentType[];
   collections: CollectionType[];
+  height: number;
   questions: QuestionType[];
   teacher: TeacherType;
 };

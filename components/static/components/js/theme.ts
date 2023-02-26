@@ -285,7 +285,6 @@ const saltise = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          padding: "20px 20px",
           borderRadius: "10px",
           boxShadow: "none",
         },
@@ -294,14 +293,14 @@ const saltise = createTheme({
     MuiCardContent: {
       styleOverrides: {
         root: {
-          padding: "10px 0px 10px 0px",
+          padding: "0px 20px",
         },
       },
     },
     MuiCardHeader: {
       styleOverrides: {
         root: {
-          padding: "0px",
+          padding: "20px",
         },
         title: {
           fontSize: "16px",
@@ -319,7 +318,9 @@ const saltise = createTheme({
     MuiCardActions: {
       styleOverrides: {
         root: {
-          padding: "0px",
+          height: "26px",
+          justifyContent: "space-between",
+          padding: "20px",
         },
       },
     },

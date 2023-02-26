@@ -3,6 +3,7 @@ import { h } from "preact";
 import { useState } from "preact/hooks";
 
 import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Checkbox from "@mui/material/Checkbox";
@@ -132,11 +133,10 @@ export function Question({
   };
 
   const showDetailsIcon = () => {
-    if (question.answerchoice_set?.length > 0 || question.image) {
+    if (showDetails) {
       return (
         <Checkbox
-          checked={showDetails}
-          onChange={handleChange}
+          checked={false}
           inputProps={{ "aria-label": gettext("Show/hide details") }}
           icon={<VisibilityIcon fontSize="medium" />}
           checkedIcon={<VisibilityOffIcon fontSize="medium" />}
@@ -154,8 +154,18 @@ export function Question({
     }
   };
 
+  const addToAssignmentIcon = () => {
+    if (showDetails) {
+      return (
+        <IconButton>
+          <PlaylistAddIcon fontSize="medium" />
+        </IconButton>
+      );
+    }
+  };
+
   const bookmarkIcon = () => {
-    if (bookmarked !== undefined) {
+    if (bookmarked !== undefined && showDetails) {
       return (
         <Checkbox
           checked={bookmarked}
@@ -169,6 +179,16 @@ export function Question({
             },
           }}
         />
+      );
+    }
+  };
+
+  const moreIcon = () => {
+    if (showDetails) {
+      return (
+        <IconButton>
+          <MoreHorizIcon fontSize="medium" />
+        </IconButton>
       );
     }
   };
@@ -212,28 +232,34 @@ export function Question({
 
   return (
     <Card>
-      <CardContent>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h3" sx={{ mb: "5px" }}>
-            {question.title}
-          </Typography>
-          <Box display="flex">
-            {difficulty()}
-            {peerImpact()}
+      <CardActionArea onClick={handleChange}>
+        <CardContent sx={{ pt: "20px" }}>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography variant="h3" sx={{ mb: "5px" }}>
+              {question.title}
+            </Typography>
+            <Box display="flex">
+              {difficulty()}
+              {peerImpact()}
+            </Box>
           </Box>
-        </Box>
-        <Typography variant="caption">
-          {gettext("From")} {question.user.username}
-        </Typography>
-        <Typography
-          sx={{ mb: "10px", mt: "20px" }}
-          dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer
-        />
-        {image()}
-        {video()}
-        {answerchoices()}
-      </CardContent>
-      <CardActions sx={{ justifyContent: "space-between" }}>
+          <Typography variant="caption">
+            {gettext("From")} {question.user.username}
+          </Typography>
+          <Typography
+            sx={{ mb: "10px", mt: "20px" }}
+            dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer
+          />
+          {image()}
+          {video()}
+          {answerchoices()}
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
         <Stack direction="row" spacing="5px">
           {discipline()}
           {question.category?.map((category, i) => (
@@ -268,13 +294,9 @@ export function Question({
           }}
         >
           {showDetailsIcon()}
-          <IconButton>
-            <PlaylistAddIcon fontSize="medium" />
-          </IconButton>
+          {addToAssignmentIcon()}
           {bookmarkIcon()}
-          <IconButton>
-            <MoreHorizIcon fontSize="medium" />
-          </IconButton>
+          {moreIcon()}
         </Stack>
       </CardActions>
     </Card>

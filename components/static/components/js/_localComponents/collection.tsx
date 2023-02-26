@@ -2,6 +2,7 @@ import { Component, createRef, h } from "preact";
 
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
@@ -148,6 +149,16 @@ export class Collection extends Component<CollectionProps> {
     );
   };
 
+  discipline = () => {
+    if (this.props.collection.discipline) {
+      return (
+        <Tag sx={{ backgroundColor: theme.palette.primary1.main }}>
+          <Typography>{this.props.collection.discipline?.title}</Typography>
+        </Tag>
+      );
+    }
+  };
+
   bookmarkIcon = () => {
     if (
       this.props.collection.followed_by_user !== undefined &&
@@ -173,32 +184,33 @@ export class Collection extends Component<CollectionProps> {
   render() {
     return (
       <Card>
-        <CardHeader
-          avatar={this.avatar()}
-          action={() =>
-            this.props.collection.featured ? (
-              <img src={this.props.logo} height="30" />
-            ) : (
-              ""
-            )
-          }
+        <CardActionArea
           onClick={() => (window.location.href = this.props.collection.url)}
-          title={this.props.collection.title}
-          subheader={this.props.gettext(
-            "From ".concat(this.props.collection.author),
-          )}
-          sx={{ cursor: "pointer" }}
-        />
-        <CardContent ref={this.ref} sx={{ minHeight: this.props.minHeight }}>
-          <Typography>{this.props.collection.description}</Typography>
-        </CardContent>
+        >
+          <CardHeader
+            avatar={this.avatar()}
+            action={() =>
+              this.props.collection.featured ? (
+                <img src={this.props.logo} height="30" />
+              ) : (
+                ""
+              )
+            }
+            title={this.props.collection.title}
+            subheader={this.props.gettext(
+              "From ".concat(this.props.collection.author),
+            )}
+            sx={{ cursor: "pointer" }}
+          />
+          <CardContent ref={this.ref} sx={{ minHeight: this.props.minHeight }}>
+            <Typography tag="p">
+              {this.props.collection.description}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
         <CardActions sx={{ justifyContent: "space-between" }}>
           <Stack direction="row" spacing="5px">
-            <Tag sx={{ backgroundColor: theme.palette.primary1.main }}>
-              <Typography>
-                {this.props.collection.discipline?.title}
-              </Typography>
-            </Tag>
+            {this.discipline()}
             <Tag
               sx={{
                 bgcolor: "white",

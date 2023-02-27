@@ -30,5 +30,4 @@ export type TextInputBoxProps = {
   title: string;
   rows: number;
   defaultValue: string;
-  gettext: (a: string) => string;
 };

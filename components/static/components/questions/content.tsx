@@ -28,20 +28,8 @@ export function Content({
       <Divider />
       <CardContent>
         <Stack spacing={"20px"}>
-          <TextInputBox
-            id="title"
-            title="Title *"
-            rows={1}
-            defaultValue=""
-            gettext={gettext}
-          />
-          <TextInputBox
-            id="text"
-            title="Text *"
-            rows={6}
-            defaultValue=""
-            gettext={gettext}
-          />
+          <TextInputBox id="title" title="Title *" rows={1} defaultValue="" />
+          <TextInputBox id="text" title="Text *" rows={6} defaultValue="" />
 
           <Box>
             <FormLabel id="type">

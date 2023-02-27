@@ -15,11 +15,10 @@ export const TextInputBox = ({
   title,
   rows,
   defaultValue,
-  gettext,
 }: TextInputBoxProps) => {
   return (
     <Box>
-      <Typography sx={{ marginLeft: "14px" }}>{gettext(title)}</Typography>
+      <Typography sx={{ marginLeft: "14px" }}>{title}</Typography>
       <StyledToggleBar />
       <StyledTextField
         required

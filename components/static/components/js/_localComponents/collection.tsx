@@ -26,7 +26,7 @@ export function Collection({
         avatar={<Avatar />}
         action={<img src="../static/components/img/logo.gif" height="30" />}
         title={collection.title}
-        subheader={gettext("From ".concat(collection.author))}
+        subheader={gettext("From ").concat(collection.author)}
       />
       <CardContent>
         <Typography>{collection.description}</Typography>

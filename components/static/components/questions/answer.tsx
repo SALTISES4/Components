@@ -68,7 +68,6 @@ export function Answer({
               title="Text *"
               rows={6}
               defaultValue=""
-              gettext={gettext}
             />
 
             {check ? (
@@ -77,7 +76,6 @@ export function Answer({
                 title="Rationale *"
                 rows={6}
                 defaultValue=""
-                gettext={gettext}
               />
             ) : null}
           </Stack>

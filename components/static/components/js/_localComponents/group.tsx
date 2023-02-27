@@ -20,7 +20,9 @@ export function Group({ gettext, group }: GroupProps): JSX.Element {
           <DueInTag dueDate={group.dueDate} gettext={gettext} />
           <Box display="flex" alignItems="center">
             <CircleProgressIcon progress={group.progress} />
-            <Typography>{gettext(`${group.progress}% completed`)}</Typography>
+            <Typography>
+              {group.progress} {gettext("% completed")}
+            </Typography>
           </Box>
         </Box>
       </Box>

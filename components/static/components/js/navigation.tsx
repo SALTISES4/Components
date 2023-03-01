@@ -44,12 +44,15 @@ export class App extends Component<NavigationAppProps, NavigationAppState> {
         <CacheProvider value={this.cache}>
           <Box sx={{ display: "flex" }}>
             <Header
-              logo={this.props.logo}
               menuAddItems={this.props.menuAddItems}
+              menuHelpItems={this.props.menuHelpItems}
               menuProfile={this.props.menuProfile}
               user={this.props.user}
             />
-            <SideBar groups={this.props.sidebarGroups} />
+            <SideBar
+              groups={this.props.sidebarGroups}
+              logo={this.props.logo}
+            />
             <Box
               component="main"
               maxWidth="lg"

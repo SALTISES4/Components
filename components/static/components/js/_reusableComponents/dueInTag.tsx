@@ -8,10 +8,10 @@ import { daysDiff } from "../functions";
 import { DueInTagProps } from "./types";
 
 export const DueInTag = ({ gettext, dueDate }: DueInTagProps) => {
-  const daysDifference: number = daysDiff(dueDate);
-  return (
-    <Box>
-      {daysDifference < 5 ? (
+  const daysDifference: number | undefined = daysDiff(dueDate);
+  if (daysDifference && daysDifference > -1) {
+    return (
+      <Box>
         <Tag
           sx={{
             mr: "10px",
@@ -30,7 +30,23 @@ export const DueInTag = ({ gettext, dueDate }: DueInTagProps) => {
             </Typography>
           )}
         </Tag>
-      ) : null}
+      </Box>
+    );
+  }
+  return (
+    <Box>
+      <Tag
+        sx={{
+          mr: "10px",
+          color: "inactive.main",
+          backgroundColor: "inactiveTint.main",
+        }}
+      >
+        <AlarmIcon fontSize="small" />
+        <Typography color="inherit">
+          {gettext("Ended")} {dueDate.toLocaleDateString()}
+        </Typography>
+      </Tag>
     </Box>
   );
 };

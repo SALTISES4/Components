@@ -1,7 +1,10 @@
+/* eslint-disable camelcase */
+
 import {
-  AssignmentType,
   CollectionType,
+  GroupAssignmentType,
   QuestionType,
+  UserType,
 } from "./_localComponents/types";
 import {
   CategoryFilterType,
@@ -11,38 +14,42 @@ import {
   TypeFilterType,
 } from "./_search/types";
 
-export type UserType = {
-  avatar: string;
-  username: string;
-};
-
 type TeacherType = {
   activeAssignmentCount: number;
   activeGroupCount: number;
   createdQuestionCount: number;
+  favourite_questions: number[];
 };
 
 export type LinkType = {
+  disabled?: boolean;
   icon: string;
+  selected?: boolean;
+  target?: string;
   title: string;
   url: string;
 };
 
 export type DashboardAppProps = {
   gettext: (a: string) => string;
+  logo: string;
   nonce: string;
   urls: {
     assignments: string;
+    assignmentsLink: string;
     collections: string;
+    collectionsLink: string;
     questions: string;
+    questionsLink: string;
     teacher: string;
   };
   user: UserType;
 };
 
 export type DashboardAppState = {
-  assignments: AssignmentType[];
+  assignments: GroupAssignmentType[];
   collections: CollectionType[];
+  height: number;
   questions: QuestionType[];
   teacher: TeacherType;
 };
@@ -58,9 +65,10 @@ export type SearchAppProps = {
 };
 
 export type SearchAppState = {
-  assignments: AssignmentType[];
+  assignments: GroupAssignmentType[];
   collections: CollectionType[];
   questions: QuestionType[];
+  searchTerm: string;
   typeFilters: TypeFilterType;
   disciplineFilters: DisciplineFilterType;
   categoryFilters: CategoryFilterType;
@@ -71,6 +79,7 @@ export type SearchAppState = {
 export type NavigationAppProps = {
   logo: string;
   menuAddItems: LinkType[][];
+  menuHelpItems: LinkType[][];
   menuProfile: LinkType[][];
   nonce: string;
   sidebarGroups: LinkType[][];

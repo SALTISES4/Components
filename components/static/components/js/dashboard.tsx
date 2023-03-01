@@ -1,7 +1,7 @@
 import { Component, h, render } from "preact";
 export { h, render };
 
-import { get } from "./ajax";
+import { get, submitData } from "./ajax";
 
 //material ui components
 import Box from "@mui/material/Box";
@@ -16,13 +16,13 @@ import { Subtitle } from "./styledComponents";
 
 import { SuperUserBar } from "./_dashboard/superUserBar";
 
-import { Assignment } from "./_localComponents/assignment";
+import { GroupAssignment } from "./_localComponents/assignment";
 import { Collection } from "./_localComponents/collection";
 import { Question } from "./_localComponents/question";
 
 //types
 import {
-  AssignmentType,
+  GroupAssignmentType,
   CollectionType,
   QuestionType,
 } from "./_localComponents/types";
@@ -45,30 +45,97 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     this.state = {
       assignments,
       collections,
+      height: 0,
       questions,
       teacher,
     };
   }
 
+  assignments = () => {
+    if (this.state.assignments?.length > 0) {
+      return (
+        <Stack spacing="10px">
+          {this.state.assignments.map(
+            (assignment: GroupAssignmentType, i: number) => (
+              <GroupAssignment
+                key={i}
+                assignment={assignment}
+                gettext={this.props.gettext}
+              />
+            ),
+          )}
+        </Stack>
+      );
+    }
+    return (
+      <Typography>
+        {this.props.gettext("You have no recently due assignments.")}
+      </Typography>
+    );
+  };
+
+  collectionsTitle = () => {
+    if (this.state.collections.every((collection) => collection.featured)) {
+      return (
+        <Typography variant="h2">
+          {this.props.gettext("Featured Collections")}
+        </Typography>
+      );
+    }
+    return (
+      <Typography variant="h2">
+        {this.props.gettext("Sample Collections")}
+      </Typography>
+    );
+  };
+
   sync = async (): Promise<void> => {
     try {
-      const assignments = (await get(
-        this.props.urls.assignments,
-      )) as AssignmentType[]; // Can we do a live type assertion and throw error?
-      const collections = (await get(
-        this.props.urls.collections,
-      )) as CollectionType[];
+      const assignments = await get(this.props.urls.assignments);
+      const collections = await get(this.props.urls.collections);
       const questions = (await get(
         this.props.urls.questions,
       )) as QuestionType[];
       const teacher = (await get(this.props.urls.teacher)) as TeacherType;
 
-      this.setState({
-        assignments,
-        collections,
-        questions,
-        teacher,
-      });
+      // Groupby operation on assignment by pk
+      const groupedAssignments = assignments.reduce(
+        (accumulator: {}, currentValue: {}) => {
+          if (
+            !Object.prototype.hasOwnProperty.call(
+              accumulator,
+              currentValue.assignment_pk,
+            )
+          ) {
+            accumulator[currentValue.assignment_pk] = { ...currentValue };
+            accumulator[currentValue.assignment_pk].groups = [];
+          }
+          accumulator[currentValue.assignment_pk].groups.unshift({
+            title: currentValue.group,
+            due_date: currentValue.due_date,
+            progress: currentValue.progress,
+            url: currentValue.url,
+          });
+          delete accumulator[currentValue.assignment_pk].due_date;
+          delete accumulator[currentValue.assignment_pk].group;
+          delete accumulator[currentValue.assignment_pk].progress;
+          delete accumulator[currentValue.assignment_pk].url;
+          return accumulator;
+        },
+        {},
+      );
+
+      this.setState(
+        {
+          assignments: Object.values(
+            groupedAssignments,
+          ) as GroupAssignmentType[],
+          collections: (collections as any).results as CollectionType[],
+          questions,
+          teacher,
+        },
+        () => console.info(this.state),
+      );
     } catch (error) {
       console.error(error);
     }
@@ -78,6 +145,55 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     // Fetch data from db to overwrite placeholders
     this.sync();
   }
+
+  handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
+    const index = this.state.teacher.favourite_questions.indexOf(pk);
+    const newFavouriteQuestions = [...this.state.teacher.favourite_questions];
+    if (index >= 0) {
+      newFavouriteQuestions.splice(index, 1);
+    } else {
+      newFavouriteQuestions.unshift(pk);
+    }
+    try {
+      const teacher = (await submitData(
+        this.props.urls.teacher,
+        { favourite_questions: newFavouriteQuestions },
+        "PUT",
+      )) as TeacherType;
+
+      this.setState(
+        {
+          teacher,
+        },
+        () => console.info(this.state),
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  handleCollectionBookmarkClick = async (
+    url: string | undefined,
+  ): Promise<void> => {
+    if (url) {
+      try {
+        await submitData(url, {}, "PUT");
+
+        const collections = await get(this.props.urls.collections);
+        this.setState({
+          collections: (collections as any).results as CollectionType[],
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  getHeight = (height: number) => {
+    if (height > this.state.height) {
+      this.setState({ height });
+    }
+  };
 
   cache = createCache({
     key: "nonced",
@@ -103,30 +219,18 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
             <Container>
               <Subtitle>
                 <Typography variant="h2">
-                  {this.props.gettext("Active Assignments")}
+                  {this.props.gettext("Recent Assignments")}
                 </Typography>
-                <Link variant="h4">
+                <Link variant="h4" href={this.props.urls.assignmentsLink}>
                   {this.props.gettext("See my assignments")}
                 </Link>
               </Subtitle>
-              <Stack spacing="10px">
-                {this.state.assignments.map(
-                  (assignment: AssignmentType, i: number) => (
-                    <Assignment
-                      key={i}
-                      assignment={assignment}
-                      gettext={this.props.gettext}
-                    />
-                  ),
-                )}
-              </Stack>
+              {this.assignments()}
             </Container>
             <Container>
               <Subtitle>
-                <Typography variant="h2">
-                  {this.props.gettext("Featured Collection")}
-                </Typography>
-                <Link variant="h4">
+                {this.collectionsTitle()}
+                <Link variant="h4" href={this.props.urls.collectionsLink}>
                   {this.props.gettext("Explore collections")}
                 </Link>
               </Subtitle>
@@ -136,7 +240,15 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                     <Grid key={i} item xs={6}>
                       <Collection
                         gettext={this.props.gettext}
+                        getHeight={this.getHeight}
+                        logo={this.props.logo}
+                        minHeight={this.state.height}
                         collection={collection}
+                        toggleBookmarked={() =>
+                          this.handleCollectionBookmarkClick(
+                            collection.follow_url,
+                          )
+                        }
                       />
                     </Grid>
                   ),
@@ -148,7 +260,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                 <Typography variant="h2">
                   {this.props.gettext("Newly Added Questions")}
                 </Typography>
-                <Link variant="h4">
+                <Link variant="h4" href={this.props.urls.questionsLink}>
                   {this.props.gettext("Explore questions")}
                 </Link>
               </Subtitle>
@@ -157,8 +269,14 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                   (question: QuestionType, i: number) => (
                     <Question
                       key={i}
+                      bookmarked={this.state.teacher.favourite_questions?.includes(
+                        question.pk,
+                      )}
                       gettext={this.props.gettext}
                       question={question}
+                      toggleBookmarked={() =>
+                        this.handleQuestionBookmarkClick(question.pk)
+                      }
                     />
                   ),
                 )}

@@ -7,16 +7,16 @@ export enum QuestionDifficultyLevels {
 
 export enum QuestionDifficultyLabels {
   easy = "Easy",
-  moderate = "Moderate",
-  difficult = "Difficult",
-  extreme = "Extreme",
+  moderate = "Avg",
+  difficult = "Hard",
+  unknown = "Not enough data",
 }
 
 export enum PeerImpactLevels {
-  zero = 0,
   un = 1,
   deux = 2,
   trois = 3,
+  quatre = 4,
 }
 
 export enum DistributionState {

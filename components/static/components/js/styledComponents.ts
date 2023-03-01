@@ -44,8 +44,10 @@ export const Subtitle = styled(Box)({
 
 export const Tag = styled(Box)({
   color: theme.palette.secondary4.main,
+  cursor: "default",
   backgroundColor: theme.palette.secondary1.main,
   borderRadius: "5px",
+  borderWidth: "1px",
   display: "flex",
   padding: "5px",
   alignItems: "center",

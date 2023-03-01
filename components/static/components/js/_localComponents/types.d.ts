@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 /*type GroupProgressType = {
   dueDate: string;
   difficulty: string;
@@ -16,25 +18,39 @@ import {
   QuestionDifficultyLevels,
 } from "./enum";
 
-export type AssignmentType = {
+export type UserType = {
+  avatar?: string;
+  username: string;
+};
+
+export type GroupAssignmentType = {
+  active: boolean;
+  answerCount: number;
   author: string;
   difficulty: string;
   distributionState: DistributionState;
-  groups: GroupType[];
-  questionCount: number;
-  answerCount: number;
-  title: string;
   dueDate: Date;
+  groups: GroupType[];
   issueCount: number;
+  pk: number;
   progress: number;
+  questionCount: number;
+  title: string;
 };
 
+type DisciplineType = { pk: number; title: string };
+
 export type CollectionType = {
-  title: string;
+  answerCount: number;
   author: string;
   description: string;
-  tags?: string[];
-  answerCount: number;
+  discipline?: DisciplineType;
+  featured?: boolean;
+  followed_by_user?: boolean;
+  follow_url?: string;
+  pk: number;
+  title: string;
+  url: string;
 };
 
 type QuestionDifficulty = {
@@ -43,14 +59,31 @@ type QuestionDifficulty = {
   label: QuestionDifficultyLabels;
 };
 
+type QuestionPeerImpact = {
+  score: number;
+  label: PeerImpactLevels;
+};
+
+type AnswerChoiceType = {
+  correct: boolean;
+  label: string;
+  text: string;
+};
+
 export type QuestionType = {
-  answerCount: number;
-  author: string;
-  description: string;
-  questionDifficulty: QuestionDifficulty;
-  peerImpact: PeerImpactLevels;
-  tags?: string[];
+  answer_count: number;
+  answerchoice_set: AnswerChoiceType[];
+  category?: { title: string }[];
+  difficulty: QuestionDifficulty;
+  discipline?: DisciplineType;
+  image: string;
+  image_alt_text: string;
+  peer_impact: QuestionPeerImpact;
+  pk: number;
+  text: string;
   title: string;
+  user: UserType;
+  video_url: string;
 };
 
 export type GroupType = {
@@ -61,24 +94,25 @@ export type GroupType = {
   assignmentCount: number;
   active: boolean;
   subject?: string[];
-  dueDate: Date;
+  due_date: Date;
   progress: number;
   tags?: string[];
+  url: string;
 };
 
 export type AssignmentBisProps = {
-  assignment: AssignmentType;
+  assignment: GroupAssignmentType;
   gettext: (a: string) => string;
 };
 
-export type AssignmentProps = {
+export type GroupAssignmentProps = {
   gettext: (a: string) => string;
-  assignment: AssignmentType;
+  assignment: GroupAssignmentType;
 };
 
 export type AssignmentStudentProps = {
   gettext: (a: string) => string;
-  assignment: AssignmentType;
+  assignment: GroupAssignmentType;
 };
 
 export type AssignmentStudentCompletedProps = {
@@ -90,7 +124,11 @@ export type AssignmentStudentCompletedProps = {
 
 export type CollectionProps = {
   gettext: (a: string) => string;
+  getHeight: (height: number) => void;
+  logo: string;
+  minHeight: number;
   collection: CollectionType;
+  toggleBookmarked: () => void;
 };
 
 export type GroupProps = {
@@ -105,5 +143,7 @@ export type GroupStudentProps = {
 
 export type QuestionProps = {
   gettext: (a: string) => string;
+  bookmarked?: boolean;
   question: QuestionType;
+  toggleBookmarked: () => void;
 };

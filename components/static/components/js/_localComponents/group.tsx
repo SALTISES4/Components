@@ -14,14 +14,20 @@ export function Group({ gettext, group }: GroupProps): JSX.Element {
     <Card sx={{ pr: "62px", pl: "40px", pt: "2px", pb: "2px" }}>
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" alignItems="center">
-          <Typography variant="h3"> {group.title}</Typography>
+          <Typography
+            variant="h3"
+            onClick={() => (window.location.href = group.url)}
+            sx={{ cursor: "pointer" }}
+          >
+            {group.title}
+          </Typography>
         </Box>
         <Box display="flex" alignItems="center">
-          <DueInTag dueDate={group.dueDate} gettext={gettext} />
+          <DueInTag dueDate={new Date(group.due_date)} gettext={gettext} />
           <Box display="flex" alignItems="center">
             <CircleProgressIcon progress={group.progress} />
             <Typography>
-              {group.progress} {gettext("% completed")}
+              {group.progress}% {gettext("completed")}
             </Typography>
           </Box>
         </Box>

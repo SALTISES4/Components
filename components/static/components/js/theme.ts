@@ -188,13 +188,13 @@ const saltise = createTheme({
     },
     h2: {
       fontSize: "20px",
-      fontWeight: 600,
+      fontWeight: 500,
       lineHeight: "28px",
       marginTop: "50px",
     },
     h3: {
       fontSize: "16px",
-      fontWeight: 600,
+      fontWeight: 500,
       lineHeight: "28px",
     },
     h4: {
@@ -203,7 +203,7 @@ const saltise = createTheme({
     },
     h5: {
       fontSize: "14px",
-      fontWeight: 600,
+      fontWeight: 500,
       lineHeight: "19px",
     },
     caption: {
@@ -216,21 +216,23 @@ const saltise = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "#000B26",
-          color: "#fff",
+          backgroundColor: "#FFF",
+          color: "#1743B3",
           paddingLeft: 2,
-          " img.logo": {
-            height: 40,
-            marginRight: 10,
-          },
           " .MuiAvatar-root": {
             height: 30,
             width: 30,
+            "&:hover": {
+              backgroundColor: "#1743B320",
+            },
           },
           " .MuiIconButton-root": {
             marginLeft: "15px",
             marginRight: "15px",
-            color: "#fff",
+            color: "#1743B3",
+            "&:hover": {
+              backgroundColor: "#1743B320",
+            },
           },
           " .MuiList-root": {
             padding: "10px 0px",
@@ -245,12 +247,6 @@ const saltise = createTheme({
           " .MuiListItemIcon-root": {
             minWidth: "0px",
             marginRight: "10px",
-          },
-          " span.cardo": {
-            fontFamily: "Cardo",
-          },
-          " span.montserrat": {
-            fontFamily: "Montserrat",
           },
         },
       },
@@ -289,7 +285,6 @@ const saltise = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          padding: "20px 20px",
           borderRadius: "10px",
           boxShadow: "none",
         },
@@ -298,18 +293,18 @@ const saltise = createTheme({
     MuiCardContent: {
       styleOverrides: {
         root: {
-          padding: "10px 0px 10px 0px",
+          padding: "0px 20px",
         },
       },
     },
     MuiCardHeader: {
       styleOverrides: {
         root: {
-          padding: "0px",
+          padding: "20px",
         },
         title: {
           fontSize: "16px",
-          fontWeight: "600",
+          fontWeight: 500,
           lineHeight: "28px",
           color: "#515159",
         },
@@ -323,7 +318,9 @@ const saltise = createTheme({
     MuiCardActions: {
       styleOverrides: {
         root: {
-          padding: "0px",
+          height: "26px",
+          justifyContent: "space-between",
+          padding: "20px",
         },
       },
     },
@@ -347,9 +344,23 @@ const saltise = createTheme({
           color: "#fff",
         },
         root: {
+          " img.logo": {
+            height: 40,
+            marginLeft: 8,
+            marginRight: 10,
+            width: 40,
+          },
+          " span.cardo": {
+            fontFamily: "Cardo",
+          },
+          " span.montserrat": {
+            fontFamily: "Montserrat",
+          },
           " .MuiListItemButton-root": {
             borderRadius: 10,
+            marginBottom: 2,
             padding: "4px 16px",
+            "&.Mui-selected": { backgroundColor: "rgb(255, 255, 255, 0.1)" },
             "&:hover": {
               backgroundColor: "rgb(255, 255, 255, 0.1)",
             },
@@ -359,11 +370,11 @@ const saltise = createTheme({
           },
           " .MuiTypography-root": {
             color: "#fff",
+            fontSize: "0.9rem",
           },
         },
       },
     },
-
     MuiIconButton: {
       styleOverrides: {
         root: {
@@ -437,7 +448,7 @@ export const formTheme = createTheme(saltise, {
       styleOverrides: {
         title: {
           fontSize: "18px",
-          fontWeight: "600",
+          fontWeight: 500,
           lineHeight: "28px",
         },
         subheader: {

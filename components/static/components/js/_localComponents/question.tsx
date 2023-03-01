@@ -1,6 +1,9 @@
 import { h } from "preact";
 
+import { useState } from "preact/hooks";
+
 import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Checkbox from "@mui/material/Checkbox";
@@ -13,56 +16,260 @@ import Box from "@mui/system/Box";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-//import saltise from "../theme.js";
+import saltise from "../theme";
+
 import { Tag } from "../styledComponents";
 import { DifficultyCircleIcon } from "../_reusableComponents/difficultyIconQuestion";
 import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon";
 
 import { QuestionProps } from "./types";
 
-export function Question({ gettext, question }: QuestionProps): JSX.Element {
+const theme = saltise;
+
+export function Question({
+  gettext,
+  bookmarked,
+  question,
+  toggleBookmarked,
+}: QuestionProps): JSX.Element {
+  const [{ showDetails }, setShowDetails] = useState<{
+    showDetails: boolean;
+  }>({ showDetails: false });
+
+  const handleChange = () => {
+    setShowDetails((prevState) => ({
+      showDetails: !prevState.showDetails,
+    }));
+  };
+
+  const answerchoices = () => {
+    if (question.answerchoice_set?.length > 0 && showDetails) {
+      return (
+        <Box>
+          {question.answerchoice_set.map((answerchoice, i) => {
+            return (
+              <Box
+                key={i}
+                display={"flex"}
+                alignItems={"baseline"}
+                sx={{ pb: "4px" }}
+              >
+                <Box
+                  sx={{
+                    height: "18px",
+                    minWidth: "26px",
+                    position: "relative",
+                    top: "4px",
+                  }}
+                >
+                  {answerchoice.correct ? (
+                    <CheckCircleIcon color={"success"} sx={{ fontSize: 18 }} />
+                  ) : null}
+                </Box>
+                <Box sx={{ marginRight: "4px" }}>
+                  <Typography>{answerchoice.label}.</Typography>
+                </Box>
+                <Box>
+                  <Typography
+                    component={"div"}
+                    dangerouslySetInnerHTML={{
+                      __html: answerchoice.text,
+                    }} // Bleached in serializer
+                    sx={{
+                      "> p": { mt: 0, mb: "4px" },
+                    }}
+                    variant={"body1"}
+                  />
+                </Box>
+              </Box>
+            );
+          })}
+        </Box>
+      );
+    }
+  };
+
+  const image = () => {
+    if (showDetails && question.image) {
+      return (
+        <img
+          src={question.image}
+          alt={question.image_alt_text}
+          title={gettext("Question image")}
+          style={{
+            display: "block",
+            margin: "auto",
+            maxHeight: "300px",
+            maxWidth: "80%",
+            padding: "12px 0px",
+            width: "auto",
+          }}
+        />
+      );
+    }
+  };
+
+  const video = () => {
+    if (showDetails && question.video_url) {
+      return (
+        <object
+          data={question.video_url}
+          height={390}
+          style={{
+            display: "block",
+            margin: "auto",
+            padding: "12px 0px",
+          }}
+          width={640}
+        />
+      );
+    }
+  };
+
+  const showDetailsIcon = () => {
+    if (showDetails) {
+      return (
+        <Checkbox
+          checked={false}
+          inputProps={{ "aria-label": gettext("Show/hide details") }}
+          icon={<VisibilityIcon fontSize="medium" />}
+          checkedIcon={<VisibilityOffIcon fontSize="medium" />}
+          sx={{
+            color: "primary.main",
+            "&.Mui-checked": {
+              color: "primary.main",
+            },
+          }}
+          title={
+            showDetails ? gettext("Hide details") : gettext("Show details")
+          }
+        />
+      );
+    }
+  };
+
+  const addToAssignmentIcon = () => {
+    if (showDetails) {
+      return (
+        <IconButton>
+          <PlaylistAddIcon fontSize="medium" />
+        </IconButton>
+      );
+    }
+  };
+
+  const bookmarkIcon = () => {
+    if (bookmarked !== undefined && showDetails) {
+      return (
+        <Checkbox
+          checked={bookmarked}
+          icon={<BookmarkAddOutlinedIcon />}
+          checkedIcon={<BookmarkAddedIcon />}
+          onChange={toggleBookmarked}
+          sx={{
+            color: "primary.main",
+            "&.Mui-checked": {
+              color: "primary.main",
+            },
+          }}
+        />
+      );
+    }
+  };
+
+  const moreIcon = () => {
+    if (showDetails) {
+      return (
+        <IconButton>
+          <MoreHorizIcon fontSize="medium" />
+        </IconButton>
+      );
+    }
+  };
+
+  const discipline = () => {
+    if (question?.discipline) {
+      return (
+        <Tag
+          sx={{ backgroundColor: theme.palette.primary1.main }}
+          title={gettext("Discipline")}
+        >
+          <Typography>{question.discipline.title}</Typography>
+        </Tag>
+      );
+    }
+  };
+
+  const difficulty = () => {
+    if (parseInt(question.difficulty.label) < 4) {
+      return (
+        <Box display="flex">
+          <DifficultyCircleIcon difficulty={question.difficulty} />
+          <Typography variant="h4" sx={{ width: "64px" }}>
+            {question.difficulty.value}
+          </Typography>
+        </Box>
+      );
+    }
+  };
+
+  const peerImpact = () => {
+    if (question.peer_impact.label < 4) {
+      return (
+        <Box display="flex">
+          <PeerImpactIcon peerImpact={question.peer_impact.label} />
+          <Typography variant="h4">{gettext("Peer Impact")}</Typography>
+        </Box>
+      );
+    }
+  };
+
   return (
     <Card>
-      <CardContent>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h3" sx={{ mb: "5px" }}>
-            {question.title}
-          </Typography>
-          <Box display="flex">
-            <Box display="flex" sx={{ mr: "30px" }}>
-              <DifficultyCircleIcon difficulty={question.questionDifficulty} />
-              <Typography variant="h4" sx={{ width: "64px" }}>
-                {question.questionDifficulty.label}
-              </Typography>
-            </Box>
+      <CardActionArea onClick={handleChange}>
+        <CardContent sx={{ pt: "20px" }}>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography variant="h3" sx={{ mb: "5px" }}>
+              {question.title}
+            </Typography>
             <Box display="flex">
-              <PeerImpactIcon peerImpact={question.peerImpact} />
-              <Typography variant="h4">{gettext("Peer Impact")}</Typography>
+              {difficulty()}
+              {peerImpact()}
             </Box>
           </Box>
-        </Box>
-        <Typography variant="caption">
-          {gettext("From")} {question.author}
-        </Typography>
-        <Typography sx={{ mb: "10px", mt: "20px" }}>
-          {question.description}
-        </Typography>
-      </CardContent>
-      <CardActions sx={{ justifyContent: "space-between" }}>
+          <Typography variant="caption">
+            {gettext("From")} {question.user.username}
+          </Typography>
+          <Typography
+            sx={{ mb: "10px", mt: "20px" }}
+            dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer
+          />
+          {image()}
+          {video()}
+          {answerchoices()}
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
         <Stack direction="row" spacing="5px">
-          {question.tags?.map((tag, i) => (
-            <Tag key={i}>
-              <Typography>{tag}</Typography>
+          {discipline()}
+          {question.category?.map((category, i) => (
+            <Tag key={i} title={gettext("Category")}>
+              <Typography>{category.title}</Typography>
             </Tag>
           ))}
           <Tag
             sx={{
               bgcolor: "white",
-              borderWidth: "2px",
               borderStyle: "solid",
               paddingTop: "3px",
               paddingBottom: "3px",
@@ -70,7 +277,10 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
           >
             <BarChartIcon fontSize="small" />
             <Typography>
-              {question.answerCount} {gettext("questions")}
+              {question.answer_count}{" "}
+              {question.answer_count == 1
+                ? gettext("answer")
+                : gettext("answers")}
             </Typography>
           </Tag>
         </Stack>
@@ -83,25 +293,10 @@ export function Question({ gettext, question }: QuestionProps): JSX.Element {
             },
           }}
         >
-          <IconButton>
-            <PlaylistAddIcon fontSize="medium" />
-          </IconButton>
-          <IconButton>
-            <VisibilityIcon fontSize="medium" />
-          </IconButton>
-          <Checkbox
-            icon={<BookmarkAddOutlinedIcon />}
-            checkedIcon={<BookmarkAddedIcon />}
-            sx={{
-              color: "primary.main",
-              "&.Mui-checked": {
-                color: "primary.main",
-              },
-            }}
-          />
-          <IconButton>
-            <MoreHorizIcon fontSize="medium" />
-          </IconButton>
+          {showDetailsIcon()}
+          {addToAssignmentIcon()}
+          {bookmarkIcon()}
+          {moreIcon()}
         </Stack>
       </CardActions>
     </Card>

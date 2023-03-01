@@ -47,6 +47,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       assignments,
       collections,
       questions,
+      searchTerm: "",
       typeFilters,
       disciplineFilters,
       categoryFilters,
@@ -97,10 +98,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   },
                 }}
               >
-                <Typography>Search</Typography>
+                <Typography>{this.props.gettext("Search")}</Typography>
                 <SearchBar>
                   <Typography variant="h4">
-                    {this.props.gettext("Chemistry")}
+                    {this.state.searchTerm || this.props.gettext("Search")}
                   </Typography>
                   <CancelIcon color="primary" fontSize="large" />
                 </SearchBar>

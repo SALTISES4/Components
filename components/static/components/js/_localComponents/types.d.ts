@@ -13,6 +13,7 @@
 
 import {
   DistributionState,
+  PeerImpactLabels,
   PeerImpactLevels,
   QuestionDifficultyLabels,
   QuestionDifficultyLevels,
@@ -54,14 +55,15 @@ export type CollectionType = {
 };
 
 type QuestionDifficulty = {
+  label: QuestionDifficultyLevels;
   score: number;
-  value: QuestionDifficultyLevels;
-  label: QuestionDifficultyLabels;
+  value: QuestionDifficultyLabels;
 };
 
 type QuestionPeerImpact = {
-  score: number;
   label: PeerImpactLevels;
+  score: number;
+  value: PeerImpactLabels;
 };
 
 type AnswerChoiceType = {

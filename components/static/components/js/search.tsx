@@ -1,6 +1,8 @@
 import { Component, h, render } from "preact";
 export { h, render };
 
+import { get, submitData } from "./ajax";
+
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -46,6 +48,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     this.state = {
       assignments,
       collections,
+      height: 0,
       questions,
       searchTerm: "",
       typeFilters,
@@ -56,9 +59,47 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     };
   }
 
+  sync = async (): Promise<void> => {
+    try {
+      // Temp to populate during dev
+      const collections = await get(this.props.urls.collections);
+
+      this.setState(
+        { collections: (collections as any).results as CollectionType[] },
+        () => console.info(this.state),
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   componentDidMount(): void {
     // Fetch data from db to overwrite placeholders
+    this.sync();
   }
+
+  handleCollectionBookmarkClick = async (
+    url: string | undefined,
+  ): Promise<void> => {
+    if (url) {
+      try {
+        await submitData(url, {}, "PUT");
+
+        const collections = await get(this.props.urls.collections);
+        this.setState({
+          collections: (collections as any).results as CollectionType[],
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  getHeight = (height: number) => {
+    if (height > this.state.height) {
+      this.setState({ height });
+    }
+  };
 
   cache = createCache({
     key: "nonced",
@@ -203,11 +244,18 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 <Grid container spacing="20px">
                   {this.state.collections.map(
                     (collection: CollectionType, i: number) => (
-                      <Grid key={collection.title} item xs={12}>
+                      <Grid key={i} item xs={6}>
                         <Collection
-                          key={i}
                           collection={collection}
                           gettext={this.props.gettext}
+                          getHeight={this.getHeight}
+                          logo={this.props.logo}
+                          minHeight={this.state.height}
+                          toggleBookmarked={() =>
+                            this.handleCollectionBookmarkClick(
+                              collection.follow_url,
+                            )
+                          }
                         />
                       </Grid>
                     ),

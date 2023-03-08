@@ -19,6 +19,13 @@ export enum PeerImpactLevels {
   quatre = 4,
 }
 
+export enum PeerImpactLabels {
+  low = "Low",
+  med = "Med",
+  high = "High",
+  unknown = "Not enough data",
+}
+
 export enum DistributionState {
   draft = "Draft",
   distributed = "Distributed",

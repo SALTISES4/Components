@@ -56,6 +56,7 @@ export type DashboardAppState = {
 
 export type SearchAppProps = {
   gettext: (a: string) => string;
+  logo: string;
   nonce: string;
   urls: {
     assignments: string;
@@ -66,14 +67,15 @@ export type SearchAppProps = {
 
 export type SearchAppState = {
   assignments: GroupAssignmentType[];
+  categoryFilters: CategoryFilterType;
   collections: CollectionType[];
+  difficultyFilters: DifficultyFilterType;
+  disciplineFilters: DisciplineFilterType;
+  height: number;
+  peerImpactFilters: PeerImpactFilterType;
   questions: QuestionType[];
   searchTerm: string;
   typeFilters: TypeFilterType;
-  disciplineFilters: DisciplineFilterType;
-  categoryFilters: CategoryFilterType;
-  peerImpactFilters: PeerImpactFilterType;
-  difficultyFilters: DifficultyFilterType;
 };
 
 export type NavigationAppProps = {

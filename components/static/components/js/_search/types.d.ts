@@ -1,7 +1,8 @@
 import { SvgIconTypeMap } from "@mui/material";
 import { OverridableComponent } from "@mui/types";
 import { QuestionDifficultyLabels } from "../_localComponents/types";
-import { ExerciceLabels, PeerImpactLabels } from "./enum";
+import { ExerciceLabels } from "./enum";
+import { PeerImpactLabels } from "../_localComponents/enum";
 
 export type SearchFilterProps = {
   gettext: (a: string) => string;

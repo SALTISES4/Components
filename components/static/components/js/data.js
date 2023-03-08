@@ -7,11 +7,13 @@ import PeopleIcon from "@mui/icons-material/People";
 import ScienceIcon from "@mui/icons-material/Science";
 import {
   DistributionState,
+  PeerImpactLabels,
+  PeerImpactLevels,
   QuestionDifficultyLabels,
   QuestionDifficultyLevels,
 } from "./_localComponents/enum";
 
-import { ExerciceLabels, PeerImpactLabels } from "./_search/enum";
+import { ExerciceLabels } from "./_search/enum";
 
 export const assignments = [
   {
@@ -115,10 +117,13 @@ export const questions = [
     ]),
     difficulty: {
       score: 0.4,
-      value: QuestionDifficultyLevels.deux,
-      label: QuestionDifficultyLabels.moderate,
+      value: QuestionDifficultyLabels.moderate,
+      label: QuestionDifficultyLevels.deux,
     },
-    peer_impact: faker.helpers.arrayElement([0, 1, 2, 3]),
+    peer_impact: {
+      value: PeerImpactLabels.med,
+      label: PeerImpactLevels.deux,
+    },
   },
   {
     answer_count: parseInt(faker.random.numeric(2)),
@@ -135,11 +140,14 @@ export const questions = [
         { title: "Thermodynamic" },
       ],
     ]),
-    peer_impact: faker.helpers.arrayElement([0, 1, 2, 3]),
+    peer_impact: {
+      value: PeerImpactLabels.high,
+      label: PeerImpactLevels.trois,
+    },
     difficulty: {
       score: 0.7,
-      value: QuestionDifficultyLevels.trois,
-      label: QuestionDifficultyLabels.difficult,
+      value: QuestionDifficultyLabels.difficult,
+      label: QuestionDifficultyLevels.trois,
     },
   },
   {
@@ -157,11 +165,14 @@ export const questions = [
         { title: "Thermodynamic" },
       ],
     ]),
-    peer_impact: faker.helpers.arrayElement([0, 1, 2, 3]),
+    peer_impact: {
+      value: PeerImpactLabels.low,
+      label: PeerImpactLevels.un,
+    },
     difficulty: {
       score: 0.1,
-      value: QuestionDifficultyLevels.un,
-      label: QuestionDifficultyLabels.easy,
+      value: QuestionDifficultyLabels.easy,
+      label: QuestionDifficultyLevels.un,
     },
   },
 ];

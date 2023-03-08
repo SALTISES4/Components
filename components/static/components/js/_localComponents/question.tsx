@@ -207,7 +207,7 @@ export function Question({
   };
 
   const difficulty = () => {
-    if (parseInt(question.difficulty.label) < 4) {
+    if (question.difficulty.label < 4) {
       return (
         <Box display="flex">
           <DifficultyCircleIcon difficulty={question.difficulty} />
@@ -223,8 +223,10 @@ export function Question({
     if (question.peer_impact.label < 4) {
       return (
         <Box display="flex">
-          <PeerImpactIcon peerImpact={question.peer_impact.label} />
-          <Typography variant="h4">{gettext("Peer Impact")}</Typography>
+          <PeerImpactIcon peerImpact={question.peer_impact} />
+          <Typography variant="h4" sx={{ width: "80px" }}>
+            {gettext("Peer Impact")}
+          </Typography>
         </Box>
       );
     }
@@ -234,15 +236,11 @@ export function Question({
     <Card>
       <CardActionArea onClick={handleChange}>
         <CardContent sx={{ pt: "20px" }}>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography variant="h3" sx={{ mb: "5px" }}>
+          <Box display="flex" justifyContent="space-between">
+            <Typography variant="h3" sx={{ m: "0px" }}>
               {question.title}
             </Typography>
-            <Box display="flex">
+            <Box display="flex" sx={{ mt: "5px" }}>
               {difficulty()}
               {peerImpact()}
             </Box>

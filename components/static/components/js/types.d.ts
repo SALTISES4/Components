@@ -54,6 +54,17 @@ export type DashboardAppState = {
   teacher: TeacherType;
 };
 
+type SearchData = {
+  // To do: replace with native types
+  meta: {
+    categories: string[];
+    difficulties: [number, string][];
+    disciplines: string[];
+    impacts: [number, string][];
+  };
+  results: QuestionType[];
+};
+
 export type SearchAppProps = {
   gettext: (a: string) => string;
   logo: string;
@@ -62,6 +73,7 @@ export type SearchAppProps = {
     assignments: string;
     collections: string;
     questions: string;
+    teacher: string;
   };
 };
 
@@ -72,9 +84,15 @@ export type SearchAppState = {
   difficultyFilters: DifficultyFilterType;
   disciplineFilters: DisciplineFilterType;
   height: number;
+  hitCount: number;
+  lastKeyStroke: number;
   peerImpactFilters: PeerImpactFilterType;
+  questionLimit: number;
   questions: QuestionType[];
+  searching: boolean;
   searchTerm: string;
+  teacher: TeacherType;
+  timeoutID: number;
   typeFilters: TypeFilterType;
 };
 

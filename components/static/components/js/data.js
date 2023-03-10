@@ -226,9 +226,9 @@ export const peerImpactFilters = {
   icon: PeopleIcon,
   notification: parseInt(faker.random.numeric(2)),
   choices: [
-    PeerImpactLabels.zero,
-    PeerImpactLabels.un,
-    PeerImpactLabels.deux,
-    PeerImpactLabels.trois,
+    PeerImpactLevels.un,
+    PeerImpactLevels.deux,
+    PeerImpactLevels.trois,
+    PeerImpactLevels.quatre,
   ],
 };

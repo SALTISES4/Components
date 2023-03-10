@@ -42,6 +42,8 @@ export function Question({
     showDetails: boolean;
   }>({ showDetails: false });
 
+  const maxCategoriesShown = 3;
+
   const handleChange = () => {
     setShowDetails((prevState) => ({
       showDetails: !prevState.showDetails,
@@ -206,6 +208,38 @@ export function Question({
     }
   };
 
+  const categories = () => {
+    return question.category
+      ?.slice(0, maxCategoriesShown)
+      .map((category, i) => (
+        <Tag key={i} title={gettext("Category")}>
+          <Typography>{category.title}</Typography>
+        </Tag>
+      ));
+  };
+
+  const extraCategories = () => {
+    if (
+      question.category !== undefined &&
+      question.category.length > maxCategoriesShown
+    ) {
+      const list = question.category
+        .slice(maxCategoriesShown)
+        .reduce(
+          (acc, curr, i, arr) =>
+            `${acc}${curr.title}${i < arr.length - 1 ? "\n" : ""}`,
+          "",
+        );
+      return (
+        <Tag title={list}>
+          <Typography>{`+${
+            question.category.length - maxCategoriesShown
+          } ${gettext("more")}`}</Typography>
+        </Tag>
+      );
+    }
+  };
+
   const difficulty = () => {
     if (question.difficulty.label < 4) {
       return (
@@ -246,11 +280,12 @@ export function Question({
             </Box>
           </Box>
           <Typography variant="caption">
-            {gettext("From")} {question.user.username}
+            {question.user.username ? gettext("From") : ""}{" "}
+            {question.user.username}
           </Typography>
           <Typography
             sx={{ mb: "10px", mt: "20px" }}
-            dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer
+            dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer and elastic doc
           />
           {image()}
           {video()}
@@ -260,11 +295,8 @@ export function Question({
       <CardActions>
         <Stack direction="row" spacing="5px">
           {discipline()}
-          {question.category?.map((category, i) => (
-            <Tag key={i} title={gettext("Category")}>
-              <Typography>{category.title}</Typography>
-            </Tag>
-          ))}
+          {categories()}
+          {extraCategories()}
           <Tag
             sx={{
               bgcolor: "white",

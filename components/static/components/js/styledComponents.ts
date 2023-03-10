@@ -25,16 +25,6 @@ export const CircularBox = styled(Box)({
   margin: "10px",
 });
 
-export const SearchBar = styled(Box)({
-  backgroundColor: "#fff",
-  borderRadius: "4px",
-  padding: "15px",
-  margin: "1px 0px 5px 0px",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-});
-
 export const Subtitle = styled(Box)({
   display: "flex",
   justifyContent: "space-between",

@@ -6,7 +6,7 @@ import {
   QuestionType,
   UserType,
 } from "./_localComponents/types";
-import { PeerImpactFilterType, TypeFilterType } from "./_search/types";
+import { TypeFilterType } from "./_search/types";
 
 type TeacherType = {
   activeAssignmentCount: number;
@@ -81,7 +81,8 @@ export type SearchAppState = {
   height: number;
   hitCount: number;
   lastKeyStroke: number;
-  peerImpactFilters: PeerImpactFilterType;
+  peerImpactFilters: string[];
+  peerImpactFilterLabels: Record<string, string>;
   questionLimit: number;
   questions: QuestionType[];
   searching: boolean;
@@ -89,7 +90,7 @@ export type SearchAppState = {
   selectedCategories: string[];
   selectedDifficulty: string[];
   selectedDisciplines: string[];
-  selectedImpact: number[];
+  selectedImpact: string[];
   teacher: TeacherType;
   timeoutID: number;
   typeFilters: TypeFilterType;

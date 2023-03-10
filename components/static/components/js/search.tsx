@@ -10,6 +10,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import NetworkCheckIcon from "@mui/icons-material/NetworkCheck";
+import PeopleIcon from "@mui/icons-material/People";
 import ScienceIcon from "@mui/icons-material/Science";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -39,7 +40,6 @@ import {
   collections,
   questions,
   typeFilters,
-  peerImpactFilters,
   teacher,
 } from "./data";
 import {
@@ -55,13 +55,14 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       assignments,
       categoryFilters: [],
       collections,
-      difficultyFilters: [],
       difficultyFilterLabels: {},
+      difficultyFilters: [],
       disciplineFilters: [],
       height: 0,
       hitCount: 0,
       lastKeyStroke: 0,
-      peerImpactFilters,
+      peerImpactFilterLabels: {},
+      peerImpactFilters: [],
       questionLimit: 10,
       questions,
       searching: false,
@@ -118,6 +119,13 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         )} ${searchString}`;
       }
 
+      if (this.state.selectedImpact.length > 0) {
+        searchString = `${this.state.selectedImpact.reduce(
+          (acc, curr) => `${acc} peer_impact.label::${curr}`,
+          "",
+        )} ${searchString}`;
+      }
+
       const queryString = new URLSearchParams();
       queryString.append("search_string", searchString);
       const url = new URL(this.props.urls.questions, window.location.origin);
@@ -131,7 +139,6 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           this.setState(
             {
               categoryFilters: data.meta.categories,
-              difficultyFilters: data.meta.difficulties.map((d) => `${d[0]}`),
               difficultyFilterLabels: data.meta.difficulties.reduce(
                 (acc, curr) => {
                   acc[curr[0]] = curr[1];
@@ -139,8 +146,13 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 },
                 {},
               ),
+              difficultyFilters: data.meta.difficulties.map((d) => `${d[0]}`),
               disciplineFilters: data.meta.disciplines,
-              peerImpactFilters: data.meta.impacts,
+              peerImpactFilterLabels: data.meta.impacts.reduce((acc, curr) => {
+                acc[curr[0]] = curr[1];
+                return acc;
+              }, {}),
+              peerImpactFilters: data.meta.impacts.map((d) => `${d[0]}`),
               hitCount: data.meta.hit_count,
               questions: data.results,
               searching: false,
@@ -168,9 +180,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           questions: [],
           questionLimit: 10,
           categoryFilters: [],
-          difficultyFilters: [],
           difficultyFilterLabels: {},
+          difficultyFilters: [],
           disciplineFilters: [],
+          peerImpactFilterLabels: {},
           peerImpactFilters: [],
           selectedCategories: [],
           selectedDifficulty: [],
@@ -471,7 +484,23 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 />
                 <SearchFilter
                   gettext={this.props.gettext}
-                  filter={peerImpactFilters}
+                  callback={(selections) => {
+                    this.setState(
+                      {
+                        selectedImpact: selections,
+                      },
+                      this.handleSubmit,
+                    );
+                  }}
+                  filter={{
+                    choices: this.state.peerImpactFilters,
+                    icon: PeopleIcon,
+                    notification: this.state.peerImpactFilters.length,
+                    subtitle: this.props.gettext("Impact levels"),
+                    title: this.props.gettext("Peer impact"),
+                  }}
+                  labels={this.state.peerImpactFilterLabels}
+                  selected={this.state.selectedImpact}
                 />
               </Box>
             </Box>

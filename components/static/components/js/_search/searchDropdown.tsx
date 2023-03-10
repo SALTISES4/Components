@@ -19,6 +19,7 @@ export const SearchDropdown = ({
   gettext,
   callback,
   choices,
+  labels,
   subtitle,
   selected,
   title,
@@ -101,7 +102,7 @@ export const SearchDropdown = ({
                   sx={{ marginRight: "10px", padding: "0px" }}
                 />
               }
-              label={choice}
+              label={labels ? labels[choice] : choice}
               onChange={() => handleChange(choice)}
               sx={{
                 margin: "5px 0px",

@@ -9,6 +9,7 @@ import Container from "@mui/material/Container";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
+import NetworkCheckIcon from "@mui/icons-material/NetworkCheck";
 import ScienceIcon from "@mui/icons-material/Science";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -39,7 +40,6 @@ import {
   questions,
   typeFilters,
   peerImpactFilters,
-  difficultyFilters,
   teacher,
 } from "./data";
 import {
@@ -55,7 +55,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       assignments,
       categoryFilters: [],
       collections,
-      difficultyFilters,
+      difficultyFilters: [],
+      difficultyFilterLabels: {},
       disciplineFilters: [],
       height: 0,
       hitCount: 0,
@@ -110,6 +111,13 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         )} ${searchString}`;
       }
 
+      if (this.state.selectedDifficulty.length > 0) {
+        searchString = `${this.state.selectedDifficulty.reduce(
+          (acc, curr) => `${acc} difficulty.label::${curr}`,
+          "",
+        )} ${searchString}`;
+      }
+
       const queryString = new URLSearchParams();
       queryString.append("search_string", searchString);
       const url = new URL(this.props.urls.questions, window.location.origin);
@@ -123,7 +131,14 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           this.setState(
             {
               categoryFilters: data.meta.categories,
-              difficultyFilters: data.meta.difficulties,
+              difficultyFilters: data.meta.difficulties.map((d) => `${d[0]}`),
+              difficultyFilterLabels: data.meta.difficulties.reduce(
+                (acc, curr) => {
+                  acc[curr[0]] = curr[1];
+                  return acc;
+                },
+                {},
+              ),
               disciplineFilters: data.meta.disciplines,
               peerImpactFilters: data.meta.impacts,
               hitCount: data.meta.hit_count,
@@ -154,6 +169,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           questionLimit: 10,
           categoryFilters: [],
           difficultyFilters: [],
+          difficultyFilterLabels: {},
           disciplineFilters: [],
           peerImpactFilters: [],
           selectedCategories: [],
@@ -435,7 +451,23 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 />
                 <SearchFilter
                   gettext={this.props.gettext}
-                  filter={difficultyFilters}
+                  callback={(selections) => {
+                    this.setState(
+                      {
+                        selectedDifficulty: selections,
+                      },
+                      this.handleSubmit,
+                    );
+                  }}
+                  filter={{
+                    choices: this.state.difficultyFilters,
+                    icon: NetworkCheckIcon,
+                    notification: this.state.difficultyFilters.length,
+                    subtitle: this.props.gettext("Difficulty levels"),
+                    title: this.props.gettext("Difficulty"),
+                  }}
+                  labels={this.state.difficultyFilterLabels}
+                  selected={this.state.selectedDifficulty}
                 />
                 <SearchFilter
                   gettext={this.props.gettext}

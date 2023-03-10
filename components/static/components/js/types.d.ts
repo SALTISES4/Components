@@ -6,11 +6,7 @@ import {
   QuestionType,
   UserType,
 } from "./_localComponents/types";
-import {
-  DifficultyFilterType,
-  PeerImpactFilterType,
-  TypeFilterType,
-} from "./_search/types";
+import { PeerImpactFilterType, TypeFilterType } from "./_search/types";
 
 type TeacherType = {
   activeAssignmentCount: number;
@@ -79,7 +75,8 @@ export type SearchAppState = {
   assignments: GroupAssignmentType[];
   categoryFilters: string[];
   collections: CollectionType[];
-  difficultyFilters: DifficultyFilterType;
+  difficultyFilters: string[];
+  difficultyFilterLabels: Record<string, string>;
   disciplineFilters: string[];
   height: number;
   hitCount: number;
@@ -90,7 +87,7 @@ export type SearchAppState = {
   searching: boolean;
   searchTerm: string;
   selectedCategories: string[];
-  selectedDifficulty: number[];
+  selectedDifficulty: string[];
   selectedDisciplines: string[];
   selectedImpact: number[];
   teacher: TeacherType;

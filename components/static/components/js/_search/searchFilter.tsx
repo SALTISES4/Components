@@ -14,6 +14,7 @@ export const SearchFilter = ({
   gettext,
   callback,
   filter,
+  labels,
   selected,
 }: SearchFilterProps) => {
   const [open, setOpen] = useState(false);
@@ -52,12 +53,13 @@ export const SearchFilter = ({
         </Filter>
         {open ? (
           <SearchDropdown
-            callback={callback}
-            title={filter.title}
-            subtitle={filter.subtitle}
-            choices={filter.choices}
             gettext={gettext}
+            callback={callback}
+            choices={filter.choices}
+            labels={labels}
             selected={selected}
+            subtitle={filter.subtitle}
+            title={filter.title}
           />
         ) : null}
       </Box>

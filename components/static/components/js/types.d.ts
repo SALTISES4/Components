@@ -8,7 +8,6 @@ import {
 } from "./_localComponents/types";
 import {
   DifficultyFilterType,
-  DisciplineFilterType,
   PeerImpactFilterType,
   TypeFilterType,
 } from "./_search/types";
@@ -81,7 +80,7 @@ export type SearchAppState = {
   categoryFilters: string[];
   collections: CollectionType[];
   difficultyFilters: DifficultyFilterType;
-  disciplineFilters: DisciplineFilterType;
+  disciplineFilters: string[];
   height: number;
   hitCount: number;
   lastKeyStroke: number;
@@ -92,7 +91,7 @@ export type SearchAppState = {
   searchTerm: string;
   selectedCategories: string[];
   selectedDifficulty: number[];
-  selectedDiscipline: string[];
+  selectedDisciplines: string[];
   selectedImpact: number[];
   teacher: TeacherType;
   timeoutID: number;

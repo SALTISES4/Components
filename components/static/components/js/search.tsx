@@ -9,6 +9,7 @@ import Container from "@mui/material/Container";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
+import ScienceIcon from "@mui/icons-material/Science";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -37,7 +38,6 @@ import {
   collections,
   questions,
   typeFilters,
-  disciplineFilters,
   peerImpactFilters,
   difficultyFilters,
   teacher,
@@ -56,7 +56,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       categoryFilters: [],
       collections,
       difficultyFilters,
-      disciplineFilters,
+      disciplineFilters: [],
       height: 0,
       hitCount: 0,
       lastKeyStroke: 0,
@@ -70,7 +70,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       typeFilters,
       selectedCategories: [],
       selectedDifficulty: [],
-      selectedDiscipline: [],
+      selectedDisciplines: [],
       selectedImpact: [],
     };
   }
@@ -93,6 +93,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
 
       // Build query url for questions
       let searchString = this.state.searchTerm;
+
       if (this.state.selectedCategories.length > 0) {
         searchString = `${this.state.selectedCategories.reduce(
           (acc, curr) =>
@@ -100,6 +101,15 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           "",
         )} ${searchString}`;
       }
+
+      if (this.state.selectedDisciplines.length > 0) {
+        searchString = `${this.state.selectedDisciplines.reduce(
+          (acc, curr) =>
+            `${acc} discipline.title::${curr.replaceAll(" ", "_")}`,
+          "",
+        )} ${searchString}`;
+      }
+
       const queryString = new URLSearchParams();
       queryString.append("search_string", searchString);
       const url = new URL(this.props.urls.questions, window.location.origin);
@@ -148,7 +158,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           peerImpactFilters: [],
           selectedCategories: [],
           selectedDifficulty: [],
-          selectedDiscipline: [],
+          selectedDisciplines: [],
           selectedImpact: [],
         });
       }
@@ -387,7 +397,22 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 />
                 <SearchFilter
                   gettext={this.props.gettext}
-                  filter={disciplineFilters}
+                  callback={(selections) => {
+                    this.setState(
+                      {
+                        selectedDisciplines: selections,
+                      },
+                      this.handleSubmit,
+                    );
+                  }}
+                  filter={{
+                    choices: this.state.disciplineFilters,
+                    icon: ScienceIcon,
+                    notification: this.state.disciplineFilters.length,
+                    subtitle: this.props.gettext("Disciplines"),
+                    title: this.props.gettext("Discipline"),
+                  }}
+                  selected={this.state.selectedDisciplines}
                 />
                 <SearchFilter
                   gettext={this.props.gettext}

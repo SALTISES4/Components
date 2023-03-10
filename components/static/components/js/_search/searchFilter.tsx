@@ -10,7 +10,12 @@ import { useState } from "preact/hooks";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { SearchFilterProps } from "./types";
 
-export const SearchFilter = ({ gettext, filter }: SearchFilterProps) => {
+export const SearchFilter = ({
+  gettext,
+  callback,
+  filter,
+  selected,
+}: SearchFilterProps) => {
   const [open, setOpen] = useState(false);
   const handleClick = () => {
     setOpen((prev) => !prev);
@@ -19,8 +24,6 @@ export const SearchFilter = ({ gettext, filter }: SearchFilterProps) => {
   const handleClickAway = () => {
     setOpen(false);
   };
-
-  const displayChoice = filter.choices.slice(0, 5);
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
@@ -49,10 +52,12 @@ export const SearchFilter = ({ gettext, filter }: SearchFilterProps) => {
         </Filter>
         {open ? (
           <SearchDropdown
+            callback={callback}
             title={filter.title}
             subtitle={filter.subtitle}
-            choices={displayChoice}
+            choices={filter.choices}
             gettext={gettext}
+            selected={selected}
           />
         ) : null}
       </Box>

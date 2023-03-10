@@ -6,6 +6,7 @@ import { get, submitData } from "./ajax";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
@@ -37,7 +38,6 @@ import {
   questions,
   typeFilters,
   disciplineFilters,
-  categoryFilters,
   peerImpactFilters,
   difficultyFilters,
   teacher,
@@ -53,7 +53,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     super(props);
     this.state = {
       assignments,
-      categoryFilters,
+      categoryFilters: [],
       collections,
       difficultyFilters,
       disciplineFilters,
@@ -68,12 +68,15 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       teacher,
       timeoutID: 0,
       typeFilters,
+      selectedCategories: [],
+      selectedDifficulty: [],
+      selectedDiscipline: [],
+      selectedImpact: [],
     };
   }
 
   handleSubmit = async (): Promise<void> => {
     console.debug("handleSubmit called");
-
     /* Prevent searches from being submitted faster than once per DT ms */
     const DT = 500;
     const startTime = performance.now();
@@ -89,8 +92,16 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       );
 
       // Build query url for questions
+      let searchString = this.state.searchTerm;
+      if (this.state.selectedCategories.length > 0) {
+        searchString = `${this.state.selectedCategories.reduce(
+          (acc, curr) =>
+            `${acc} category__title::${curr.replaceAll(" ", "_")}`,
+          "",
+        )} ${searchString}`;
+      }
       const queryString = new URLSearchParams();
-      queryString.append("search_string", this.state.searchTerm);
+      queryString.append("search_string", searchString);
       const url = new URL(this.props.urls.questions, window.location.origin);
       url.search = queryString.toString();
 
@@ -136,9 +147,9 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           disciplineFilters: [],
           peerImpactFilters: [],
           selectedCategories: [],
-          selectedDifficulty: 0,
-          selectedDiscipline: "",
-          selectedImpact: 0,
+          selectedDifficulty: [],
+          selectedDiscipline: [],
+          selectedImpact: [],
         });
       }
     } else {
@@ -380,7 +391,22 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 />
                 <SearchFilter
                   gettext={this.props.gettext}
-                  filter={categoryFilters}
+                  callback={(selections) => {
+                    this.setState(
+                      {
+                        selectedCategories: selections,
+                      },
+                      this.handleSubmit,
+                    );
+                  }}
+                  filter={{
+                    choices: this.state.categoryFilters,
+                    icon: FilterAltIcon,
+                    notification: this.state.categoryFilters.length,
+                    subtitle: this.props.gettext("Categories"),
+                    title: this.props.gettext("Category"),
+                  }}
+                  selected={this.state.selectedCategories}
                 />
                 <SearchFilter
                   gettext={this.props.gettext}

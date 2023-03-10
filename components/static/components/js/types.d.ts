@@ -7,7 +7,6 @@ import {
   UserType,
 } from "./_localComponents/types";
 import {
-  CategoryFilterType,
   DifficultyFilterType,
   DisciplineFilterType,
   PeerImpactFilterType,
@@ -79,7 +78,7 @@ export type SearchAppProps = {
 
 export type SearchAppState = {
   assignments: GroupAssignmentType[];
-  categoryFilters: CategoryFilterType;
+  categoryFilters: string[];
   collections: CollectionType[];
   difficultyFilters: DifficultyFilterType;
   disciplineFilters: DisciplineFilterType;
@@ -91,6 +90,10 @@ export type SearchAppState = {
   questions: QuestionType[];
   searching: boolean;
   searchTerm: string;
+  selectedCategories: string[];
+  selectedDifficulty: number[];
+  selectedDiscipline: string[];
+  selectedImpact: number[];
   teacher: TeacherType;
   timeoutID: number;
   typeFilters: TypeFilterType;

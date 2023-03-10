@@ -6,7 +6,18 @@ import { PeerImpactLabels } from "../_localComponents/enum";
 
 export type SearchFilterProps = {
   gettext: (a: string) => string;
+  callback: (a: string[]) => void;
   filter: FilterType;
+  selected: string[];
+};
+
+export type SearchDropdownProps = {
+  gettext: (a: string) => string;
+  callback: (a: string[]) => void;
+  choices: string[];
+  selected: string[];
+  subtitle: string;
+  title: string;
 };
 
 export type FilterType = {
@@ -66,12 +77,5 @@ export type DisciplineFilterType = {
     muiName: string;
   };
   notification: number;
-  choices: string[];
-};
-
-export type SearchDropdownProps = {
-  gettext: (a: string) => string;
-  title: string;
-  subtitle: string;
   choices: string[];
 };

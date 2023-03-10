@@ -203,7 +203,7 @@ export const disciplineFilters = {
 };
 export const categoryFilters = {
   title: "Category",
-  subtitle: "categories",
+  subtitle: "Categories",
   icon: FilterAltIcon,
   notification: parseInt(faker.random.numeric(2)),
   choices: ["Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6"],

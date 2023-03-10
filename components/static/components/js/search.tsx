@@ -5,6 +5,7 @@ export { h, render };
 import { get, submitData } from "./ajax";
 
 import Box from "@mui/material/Box";
+import CategoryIcon from "@mui/icons-material/Category";
 import Container from "@mui/material/Container";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Grid from "@mui/material/Grid";
@@ -35,13 +36,7 @@ import {
   TeacherType,
 } from "./types";
 
-import {
-  assignments,
-  collections,
-  questions,
-  typeFilters,
-  teacher,
-} from "./data";
+import { assignments, collections, questions, teacher } from "./data";
 import {
   AssignmentType,
   CollectionType,
@@ -69,13 +64,21 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       searchTerm: "",
       teacher,
       timeoutID: 0,
-      typeFilters,
       selectedCategories: [],
       selectedDifficulty: [],
       selectedDisciplines: [],
       selectedImpact: [],
+      selectedTypes: ["Question", "Assignment", "Collection"],
     };
   }
+
+  typeFilterLabels = {
+    Question: this.props.gettext("Question"),
+    Assignment: this.props.gettext("Assigment"),
+    Collection: this.props.gettext("Collection"),
+  };
+
+  typeFilters = ["Question", "Assignment", "Collection"];
 
   handleSubmit = async (): Promise<void> => {
     console.debug("handleSubmit called");
@@ -422,7 +425,23 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 </Typography>
                 <SearchFilter
                   gettext={this.props.gettext}
-                  filter={typeFilters}
+                  callback={(selections) => {
+                    this.setState(
+                      {
+                        selectedTypes: selections,
+                      },
+                      this.handleSubmit,
+                    );
+                  }}
+                  filter={{
+                    choices: this.typeFilters,
+                    icon: CategoryIcon,
+                    notification: this.typeFilters.length,
+                    subtitle: this.props.gettext("Types"),
+                    title: this.props.gettext("Type"),
+                  }}
+                  labels={this.typeFilterLabels}
+                  selected={this.state.selectedTypes}
                 />
                 <SearchFilter
                   gettext={this.props.gettext}

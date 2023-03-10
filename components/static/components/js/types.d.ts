@@ -6,7 +6,6 @@ import {
   QuestionType,
   UserType,
 } from "./_localComponents/types";
-import { TypeFilterType } from "./_search/types";
 
 type TeacherType = {
   activeAssignmentCount: number;
@@ -51,6 +50,7 @@ export type DashboardAppState = {
 type SearchData = {
   // To do: replace with native types
   meta: {
+    hit_count: number | undefined;
     categories: string[];
     difficulties: [number, string][];
     disciplines: string[];
@@ -91,9 +91,9 @@ export type SearchAppState = {
   selectedDifficulty: string[];
   selectedDisciplines: string[];
   selectedImpact: string[];
+  selectedTypes: string[];
   teacher: TeacherType;
   timeoutID: number;
-  typeFilters: TypeFilterType;
 };
 
 export type NavigationAppProps = {

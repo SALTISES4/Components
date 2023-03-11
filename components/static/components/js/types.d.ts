@@ -6,13 +6,6 @@ import {
   QuestionType,
   UserType,
 } from "./_localComponents/types";
-import {
-  CategoryFilterType,
-  DifficultyFilterType,
-  DisciplineFilterType,
-  PeerImpactFilterType,
-  TypeFilterType,
-} from "./_search/types";
 
 type TeacherType = {
   activeAssignmentCount: number;
@@ -54,26 +47,53 @@ export type DashboardAppState = {
   teacher: TeacherType;
 };
 
+type SearchData = {
+  // To do: replace with native types
+  meta: {
+    hit_count: number | undefined;
+    categories: string[];
+    difficulties: [number, string][];
+    disciplines: string[];
+    impacts: [number, string][];
+  };
+  results: QuestionType[];
+};
+
 export type SearchAppProps = {
   gettext: (a: string) => string;
+  logo: string;
   nonce: string;
   urls: {
     assignments: string;
     collections: string;
     questions: string;
+    teacher: string;
   };
 };
 
 export type SearchAppState = {
   assignments: GroupAssignmentType[];
+  categoryFilters: string[];
   collections: CollectionType[];
+  difficultyFilters: string[];
+  difficultyFilterLabels: Record<string, string>;
+  disciplineFilters: string[];
+  height: number;
+  hitCount: number;
+  lastKeyStroke: number;
+  peerImpactFilters: string[];
+  peerImpactFilterLabels: Record<string, string>;
+  questionLimit: number;
   questions: QuestionType[];
+  searching: boolean;
   searchTerm: string;
-  typeFilters: TypeFilterType;
-  disciplineFilters: DisciplineFilterType;
-  categoryFilters: CategoryFilterType;
-  peerImpactFilters: PeerImpactFilterType;
-  difficultyFilters: DifficultyFilterType;
+  selectedCategories: string[];
+  selectedDifficulty: string[];
+  selectedDisciplines: string[];
+  selectedImpact: string[];
+  selectedTypes: string[];
+  teacher: TeacherType;
+  timeoutID: number;
 };
 
 export type NavigationAppProps = {

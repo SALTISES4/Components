@@ -1,4 +1,7 @@
-import { QuestionDifficulty } from "../_localComponents/types";
+import {
+  QuestionDifficulty,
+  QuestionPeerImpact,
+} from "../_localComponents/types";
 
 export type AssignmentStateIconProps = {
   state: string;
@@ -22,7 +25,7 @@ export type DueInTagProps = {
 };
 
 export type PeerImpactIconProps = {
-  peerImpact: number;
+  peerImpact: QuestionPeerImpact;
 };
 
 export type TextInputBoxProps = {

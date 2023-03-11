@@ -2,7 +2,10 @@ import { Box } from "@mui/material";
 import { h } from "preact";
 import saltise from "../theme";
 import styled from "@mui/system/styled";
+
+import { QuestionPeerImpact } from "../_localComponents/types";
 import { PeerImpactIconProps } from "./types";
+import { PeerImpactLevels } from "../_localComponents/enum";
 
 const theme = saltise;
 const color0 = theme.palette.secondary2.main;
@@ -15,15 +18,15 @@ const ImpactRectangle = styled(Box)({
   margin: "0.5px",
 });
 
-const colorPicker = (peerImpact: number) => {
+const colorPicker = (peerImpact: QuestionPeerImpact) => {
   const color = [color0, color0, color0];
-  if (peerImpact >= 1) {
+  if (peerImpact.label >= PeerImpactLevels.un) {
     color[0] = color1;
   }
-  if (peerImpact >= 2) {
+  if (peerImpact.label >= PeerImpactLevels.deux) {
     color[1] = color1;
   }
-  if (peerImpact >= 3) {
+  if (peerImpact.label >= PeerImpactLevels.trois) {
     color[2] = color1;
   }
   return color;

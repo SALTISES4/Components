@@ -318,6 +318,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   bookmarked={this.state.teacher.favourite_questions?.includes(
                     question.pk,
                   )}
+                  difficultyLabels={this.state.difficultyFilterLabels}
                   gettext={this.props.gettext}
                   question={question}
                   toggleBookmarked={() =>

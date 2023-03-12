@@ -35,6 +35,7 @@ const theme = saltise;
 export function Question({
   gettext,
   bookmarked,
+  difficultyLabels,
   question,
   toggleBookmarked,
 }: QuestionProps): JSX.Element {
@@ -246,7 +247,11 @@ export function Question({
         <Box display="flex">
           <DifficultyCircleIcon difficulty={question.difficulty} />
           <Typography variant="h4" sx={{ width: "64px" }}>
-            {question.difficulty.value}
+            {question.difficulty.value
+              ? question.difficulty.value
+              : difficultyLabels
+              ? difficultyLabels[question.difficulty.label]
+              : ""}
           </Typography>
         </Box>
       );

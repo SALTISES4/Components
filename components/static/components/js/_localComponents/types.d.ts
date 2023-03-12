@@ -57,13 +57,13 @@ export type CollectionType = {
 type QuestionDifficulty = {
   label: QuestionDifficultyLevels;
   score: number;
-  value: QuestionDifficultyLabels;
+  value?: QuestionDifficultyLabels;
 };
 
 type QuestionPeerImpact = {
   label: PeerImpactLevels;
   score: number;
-  value: PeerImpactLabels;
+  value?: PeerImpactLabels;
 };
 
 type AnswerChoiceType = {
@@ -146,6 +146,7 @@ export type GroupStudentProps = {
 export type QuestionProps = {
   gettext: (a: string) => string;
   bookmarked?: boolean;
+  difficultyLabels?: Record<string, string>;
   question: QuestionType;
   toggleBookmarked: () => void;
 };

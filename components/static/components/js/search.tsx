@@ -6,13 +6,16 @@ import { get, submitData } from "./ajax";
 
 import Box from "@mui/material/Box";
 import CategoryIcon from "@mui/icons-material/Category";
+import CloseIcon from "@mui/icons-material/Close";
 import Container from "@mui/material/Container";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import NetworkCheckIcon from "@mui/icons-material/NetworkCheck";
 import PeopleIcon from "@mui/icons-material/People";
 import ScienceIcon from "@mui/icons-material/Science";
+import Snackbar from "@mui/material/Snackbar";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -62,13 +65,15 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       questions,
       searching: false,
       searchTerm: "",
-      teacher,
-      timeoutID: 0,
       selectedCategories: [],
       selectedDifficulty: [],
       selectedDisciplines: [],
       selectedImpact: [],
       selectedTypes: ["Question", "Assignment", "Collection"],
+      snackbarIsOpen: false,
+      snackbarMessage: "",
+      teacher,
+      timeoutID: 0,
     };
   }
 
@@ -349,6 +354,20 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     return <span>{this.props.gettext("No results")}</span>;
   };
 
+  action = () => (
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={() =>
+        this.setState({ snackbarIsOpen: false, snackbarMessage: "" })
+      }
+      sx={{ color: "#fff" }}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  );
+
   cache = createCache({
     key: "nonced",
     nonce: this.props.nonce,
@@ -580,6 +599,15 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               </Container>
             </Box>
           </Box>
+          <Snackbar
+            action={this.action()}
+            autoHideDuration={6000}
+            message={this.state.snackbarMessage}
+            onClose={() =>
+              this.setState({ snackbarIsOpen: false, snackbarMessage: "" })
+            }
+            open={this.state.snackbarIsOpen}
+          />
         </CacheProvider>
       </ThemeProvider>
     );

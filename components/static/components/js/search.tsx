@@ -496,6 +496,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                     title: this.props.gettext("Type"),
                   }}
                   labels={this.typeFilterLabels}
+                  minimum={1}
                   selected={this.state.selectedTypes}
                 />
                 <SearchFilter

@@ -9,6 +9,7 @@ export type SearchFilterProps = {
   callback: (a: string[]) => void;
   filter: FilterType;
   labels?: Record<string, string>;
+  minimum?: number;
   selected: string[];
 };
 
@@ -17,6 +18,7 @@ export type SearchDropdownProps = {
   callback: (a: string[]) => void;
   choices: string[];
   labels?: Record<string, string>;
+  minimum?: number;
   selected: string[];
   subtitle: string;
   title: string;

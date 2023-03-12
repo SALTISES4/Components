@@ -20,6 +20,7 @@ export const SearchDropdown = ({
   callback,
   choices,
   labels,
+  minimum,
   subtitle,
   selected,
   title,
@@ -101,6 +102,12 @@ export const SearchDropdown = ({
                   }
                   sx={{ marginRight: "10px", padding: "0px" }}
                 />
+              }
+              disabled={
+                (minimum &&
+                  selected.length == minimum &&
+                  selected.indexOf(choice) >= 0) ||
+                false
               }
               label={labels ? labels[choice] : choice}
               onChange={() => handleChange(choice)}

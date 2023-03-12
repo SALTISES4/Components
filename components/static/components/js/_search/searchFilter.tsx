@@ -15,6 +15,7 @@ export const SearchFilter = ({
   callback,
   filter,
   labels,
+  minimum,
   selected,
 }: SearchFilterProps) => {
   const [open, setOpen] = useState(false);
@@ -57,6 +58,7 @@ export const SearchFilter = ({
             callback={callback}
             choices={filter.choices}
             labels={labels}
+            minimum={minimum}
             selected={selected}
             subtitle={filter.subtitle}
             title={filter.title}

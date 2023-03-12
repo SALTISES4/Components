@@ -219,6 +219,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         }
       } else {
         this.setState({
+          assignments: [],
           hitCount: 0,
           questions: [],
           questionLimit: 10,
@@ -316,8 +317,77 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     }
   };
 
+  assignmentResults = () => {
+    if (
+      this.state.assignments.length > 0 &&
+      this.state.selectedTypes.includes("Assignment")
+    ) {
+      return (
+        <Fragment>
+          <Subtitle>
+            <Typography variant="h2">
+              {this.state.assignments.length}
+              {this.props.gettext(" results in Assignments")}
+            </Typography>
+          </Subtitle>
+          <Stack spacing="10px">
+            {this.state.assignments.map(
+              (assignment: AssignmentType, i: number) => (
+                <AssignmentBis
+                  key={i}
+                  assignment={assignment}
+                  gettext={this.props.gettext}
+                />
+              ),
+            )}
+          </Stack>
+        </Fragment>
+      );
+    }
+  };
+
+  collectionResults = () => {
+    if (
+      this.state.collections.length > 0 &&
+      this.state.selectedTypes.includes("Collection")
+    ) {
+      return (
+        <Fragment>
+          <Subtitle>
+            <Typography variant="h2">
+              {this.state.collections.length}
+              {this.props.gettext(" results in Collections")}
+            </Typography>
+            <Link variant="h4">{this.props.gettext("View All Results")}</Link>
+          </Subtitle>
+          <Grid container spacing="20px">
+            {this.state.collections.map(
+              (collection: CollectionType, i: number) => (
+                <Grid key={i} item xs={6}>
+                  <Collection
+                    collection={collection}
+                    gettext={this.props.gettext}
+                    getHeight={this.getHeight}
+                    logo={this.props.logo}
+                    minHeight={this.state.height}
+                    toggleBookmarked={() =>
+                      this.handleCollectionBookmarkClick(collection.follow_url)
+                    }
+                  />
+                </Grid>
+              ),
+            )}
+          </Grid>
+        </Fragment>
+      );
+    }
+  };
+
   questionResults = () => {
-    if (this.state.questions.length > 0) {
+    if (
+      this.state.questions.length > 0 &&
+      this.state.selectedTypes.includes("Question")
+    ) {
       return (
         <Fragment>
           <Subtitle>
@@ -581,59 +651,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             </Box>
             <Box width={this.pageWidth}>
               <Container>{this.questionResults()}</Container>
-              <Container>
-                <Subtitle>
-                  <Typography variant="h2">
-                    {this.state.assignments.length}
-                    {this.props.gettext(" results in Assignments")}
-                  </Typography>
-                  <Link variant="h4">
-                    {this.props.gettext("View All Results")}
-                  </Link>
-                </Subtitle>
-                <Stack spacing="10px">
-                  {this.state.assignments.map(
-                    (assignment: AssignmentType, i: number) => (
-                      <AssignmentBis
-                        key={i}
-                        assignment={assignment}
-                        gettext={this.props.gettext}
-                      />
-                    ),
-                  )}
-                </Stack>
-              </Container>
-              <Container>
-                <Subtitle>
-                  <Typography variant="h2">
-                    {this.state.collections.length}
-                    {this.props.gettext(" results in Collections")}
-                  </Typography>
-                  <Link variant="h4">
-                    {this.props.gettext("View All Results")}
-                  </Link>
-                </Subtitle>
-                <Grid container spacing="20px">
-                  {this.state.collections.map(
-                    (collection: CollectionType, i: number) => (
-                      <Grid key={i} item xs={6}>
-                        <Collection
-                          collection={collection}
-                          gettext={this.props.gettext}
-                          getHeight={this.getHeight}
-                          logo={this.props.logo}
-                          minHeight={this.state.height}
-                          toggleBookmarked={() =>
-                            this.handleCollectionBookmarkClick(
-                              collection.follow_url,
-                            )
-                          }
-                        />
-                      </Grid>
-                    ),
-                  )}
-                </Grid>
-              </Container>
+              <Container>{this.assignmentResults()}</Container>
+              <Container>{this.collectionResults()}</Container>
             </Box>
           </Box>
           <Snackbar

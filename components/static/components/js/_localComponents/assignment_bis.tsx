@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 
 import { Tag } from "../styledComponents";
 import { AssignmentBisProps } from "./types";
@@ -16,25 +17,41 @@ export function AssignmentBis({
   assignment,
 }: AssignmentBisProps): JSX.Element {
   return (
-    <Card>
+    <Card sx={{ padding: "10px 20px" }}>
       <Box display="flex" justifyContent="space-between">
         <Box>
           <Typography variant="h3">{assignment.title}</Typography>
           <Typography variant="caption">
-            {gettext("From")} {assignment.author}
+            {gettext("By")} {assignment.owner}
           </Typography>
         </Box>
         <Box display="flex" alignItems="center">
-          <Tag sx={{ mr: "10px", ml: "10px" }}>
+          <Tag
+            sx={{
+              mx: "10px",
+              minWidth: "102px",
+              boxSizing: "border-box",
+              display: "flex",
+              justifyContent: "space-around",
+            }}
+          >
             <FormatListBulletedIcon fontSize="small" />
             <Typography>
-              {assignment.questionCount} {gettext("questions")}
+              {assignment.question_count} {gettext("questions")}
             </Typography>
           </Tag>
-          <Tag sx={{ mr: "10px", ml: "10px" }}>
-            <FormatListBulletedIcon fontSize="small" />
+          <Tag
+            sx={{
+              mx: "10px",
+              minWidth: "102px",
+              boxSizing: "border-box",
+              display: "flex",
+              justifyContent: "space-around",
+            }}
+          >
+            <QuestionAnswerIcon fontSize="small" />
             <Typography>
-              {assignment.answerCount} {gettext("answers")}
+              {assignment.answer_count} {gettext("answers")}
             </Typography>
           </Tag>
           <IconButton sx={{ ml: "80px" }}>

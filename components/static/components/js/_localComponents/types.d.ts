@@ -24,6 +24,14 @@ export type UserType = {
   username: string;
 };
 
+export type AssignmentType = {
+  answer_count: number;
+  owner: string;
+  pk: string;
+  question_count: number;
+  title: string;
+};
+
 export type GroupAssignmentType = {
   active: boolean;
   answerCount: number;
@@ -103,7 +111,7 @@ export type GroupType = {
 };
 
 export type AssignmentBisProps = {
-  assignment: GroupAssignmentType;
+  assignment: AssignmentType;
   gettext: (a: string) => string;
 };
 

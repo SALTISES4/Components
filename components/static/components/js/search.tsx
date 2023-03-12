@@ -134,45 +134,80 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         )} ${searchString}`;
       }
 
-      const queryString = new URLSearchParams();
-      queryString.append("search_string", searchString);
-      const url = new URL(this.props.urls.questions, window.location.origin);
-      url.search = queryString.toString();
-
       if (this.state.searchTerm.length > 2) {
         try {
           this.setState({ searching: true });
-          const data = (await get(url.toString())) as SearchData;
-          console.debug(data);
-          this.setState(
-            {
-              categoryFilters: data.meta.categories,
-              difficultyFilterLabels: data.meta.difficulties.reduce(
-                (acc, curr) => {
-                  acc[curr[0]] = curr[1];
-                  return acc;
-                },
-                {},
-              ),
-              difficultyFilters: data.meta.difficulties.map((d) => `${d[0]}`),
-              disciplineFilters: data.meta.disciplines,
-              peerImpactFilterLabels: data.meta.impacts.reduce((acc, curr) => {
-                acc[curr[0]] = curr[1];
-                return acc;
-              }, {}),
-              peerImpactFilters: data.meta.impacts.map((d) => `${d[0]}`),
-              hitCount: data.meta.hit_count,
-              questions: data.results,
-              searching: false,
-            },
-            () =>
-              console.debug(
-                `Search time: ${(
-                  (performance.now() - startTime) /
-                  1000
-                ).toExponential(3)}s`,
-              ),
-          );
+
+          if (this.state.selectedTypes.includes("Question")) {
+            const queryString = new URLSearchParams();
+            queryString.append("search_string", searchString);
+            const url = new URL(
+              this.props.urls.questions,
+              window.location.origin,
+            );
+            url.search = queryString.toString();
+            const data = (await get(url.toString())) as SearchData;
+            console.debug(data);
+            this.setState(
+              {
+                categoryFilters: data.meta.categories,
+                difficultyFilterLabels: data.meta.difficulties.reduce(
+                  (acc, curr) => {
+                    acc[curr[0]] = curr[1];
+                    return acc;
+                  },
+                  {},
+                ),
+                difficultyFilters: data.meta.difficulties.map(
+                  (d) => `${d[0]}`,
+                ),
+                disciplineFilters: data.meta.disciplines,
+                peerImpactFilterLabels: data.meta.impacts.reduce(
+                  (acc, curr) => {
+                    acc[curr[0]] = curr[1];
+                    return acc;
+                  },
+                  {},
+                ),
+                peerImpactFilters: data.meta.impacts.map((d) => `${d[0]}`),
+                hitCount: data.meta.hit_count,
+                questions: data.results,
+                searching: false,
+              },
+              () =>
+                console.debug(
+                  `Search time: ${(
+                    (performance.now() - startTime) /
+                    1000
+                  ).toExponential(3)}s`,
+                ),
+            );
+          }
+
+          if (this.state.selectedTypes.includes("Assignment")) {
+            const queryString = new URLSearchParams();
+            queryString.append("search_string", searchString);
+            const url = new URL(
+              this.props.urls.assignments,
+              window.location.origin,
+            );
+            url.search = queryString.toString();
+            const data = (await get(url.toString())) as SearchData;
+            console.debug(data);
+            this.setState(
+              {
+                assignments: data.results,
+                searching: false,
+              },
+              () =>
+                console.debug(
+                  `Search time: ${(
+                    (performance.now() - startTime) /
+                    1000
+                  ).toExponential(3)}s`,
+                ),
+            );
+          }
         } catch (error) {
           console.debug(error);
           this.setState({

@@ -182,6 +182,23 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   ).toExponential(3)}s`,
                 ),
             );
+          } else {
+            // Clear out question results
+            this.setState({
+              hitCount: 0,
+              questions: [],
+              questionLimit: 10,
+              categoryFilters: [],
+              difficultyFilterLabels: {},
+              difficultyFilters: [],
+              disciplineFilters: [],
+              peerImpactFilterLabels: {},
+              peerImpactFilters: [],
+              selectedCategories: [],
+              selectedDifficulty: [],
+              selectedDisciplines: [],
+              selectedImpact: [],
+            });
           }
 
           if (this.state.selectedTypes.includes("Assignment")) {
@@ -358,7 +375,6 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               {this.state.collections.length}
               {this.props.gettext(" results in Collections")}
             </Typography>
-            <Link variant="h4">{this.props.gettext("View All Results")}</Link>
           </Subtitle>
           <Grid container spacing="20px">
             {this.state.collections.map(

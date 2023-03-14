@@ -176,6 +176,46 @@ export const questions = [
     },
   },
 ];
+export const groups = [
+  {
+    title: faker.lorem.sentence(),
+    author: faker.name.fullName(),
+    session: faker.helpers.arrayElement([
+      "Summer 2022",
+      "Winter 2023",
+      "Spring 2023",
+    ]),
+    studentCount: parseInt(faker.random.numeric(1)),
+    assignmentCount: parseInt(faker.random.numeric(1)),
+    active: faker.datatype.boolean(),
+    subject: faker.helpers.arrayElement([
+      ["Biology"],
+      ["Biology", "Cohesion"],
+      ["Mechanic", "Programming", "Thermodynamic"],
+    ]),
+    dueDate: faker.date.soon(),
+    progress: parseInt(faker.random.numeric(2)),
+  },
+  {
+    title: faker.lorem.sentence(),
+    author: faker.name.fullName(),
+    session: faker.helpers.arrayElement([
+      "Summer 2022",
+      "Winter 2023",
+      "Spring 2023",
+    ]),
+    studentCount: parseInt(faker.random.numeric(1)),
+    assignmentCount: parseInt(faker.random.numeric(1)),
+    active: faker.datatype.boolean(),
+    subject: faker.helpers.arrayElement([
+      ["Biology"],
+      ["Biology", "Cohesion"],
+      ["Mechanic", "Programming", "Thermodynamic"],
+    ]),
+    dueDate: faker.date.soon(),
+    progress: parseInt(faker.random.numeric(2)),
+  },
+];
 export const teacher = {
   activeAssignmentCount: 4,
   activeGroupCount: 3,

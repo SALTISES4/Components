@@ -3,6 +3,7 @@
 import {
   CollectionType,
   GroupAssignmentType,
+  GroupType,
   QuestionType,
   UserType,
 } from "./_localComponents/types";
@@ -45,6 +46,7 @@ export type DashboardAppState = {
   height: number;
   questions: QuestionType[];
   teacher: TeacherType;
+  groups: GroupType[];
 };
 
 type SearchData = {

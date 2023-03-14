@@ -400,6 +400,31 @@ const saltise = createTheme({
 
 export const formTheme = createTheme(saltise, {
   components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          padding: "20px",
+        },
+      },
+    },
+    MuiCardHeader: {
+      styleOverrides: {
+        title: {
+          fontSize: "18px",
+          fontWeight: 600,
+          lineHeight: "28px",
+          padding: "0px",
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#E9EBF2",
+          margin: "20px -20px",
+        },
+      },
+    },
     MuiCardContent: {
       styleOverrides: {
         root: {
@@ -444,20 +469,6 @@ export const formTheme = createTheme(saltise, {
         },
       },
     },
-    MuiCardHeader: {
-      styleOverrides: {
-        title: {
-          fontSize: "18px",
-          fontWeight: 500,
-          lineHeight: "28px",
-        },
-        subheader: {
-          fontSize: "10px",
-          lineHeight: "20px",
-          color: "#90929B",
-        },
-      },
-    },
     MuiTextField: {
       styleOverrides: {
         root: {
@@ -469,14 +480,6 @@ export const formTheme = createTheme(saltise, {
           "&:active": {
             color: "#515159",
           },
-        },
-      },
-    },
-    MuiDivider: {
-      styleOverrides: {
-        root: {
-          backgroundColor: "#E9EBF2",
-          margin: "20px -20px",
         },
       },
     },

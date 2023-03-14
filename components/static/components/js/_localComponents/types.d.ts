@@ -24,6 +24,14 @@ export type UserType = {
   username: string;
 };
 
+export type AssignmentType = {
+  answer_count: number;
+  owner: string;
+  pk: string;
+  question_count: number;
+  title: string;
+};
+
 export type GroupAssignmentType = {
   active: boolean;
   answerCount: number;
@@ -57,13 +65,13 @@ export type CollectionType = {
 type QuestionDifficulty = {
   label: QuestionDifficultyLevels;
   score: number;
-  value: QuestionDifficultyLabels;
+  value?: QuestionDifficultyLabels;
 };
 
 type QuestionPeerImpact = {
   label: PeerImpactLevels;
   score: number;
-  value: PeerImpactLabels;
+  value?: PeerImpactLabels;
 };
 
 type AnswerChoiceType = {
@@ -103,7 +111,7 @@ export type GroupType = {
 };
 
 export type AssignmentBisProps = {
-  assignment: GroupAssignmentType;
+  assignment: AssignmentType;
   gettext: (a: string) => string;
 };
 
@@ -146,6 +154,7 @@ export type GroupStudentProps = {
 export type QuestionProps = {
   gettext: (a: string) => string;
   bookmarked?: boolean;
+  difficultyLabels?: Record<string, string>;
   question: QuestionType;
   toggleBookmarked: () => void;
 };

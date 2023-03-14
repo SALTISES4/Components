@@ -92,6 +92,8 @@ export type SearchAppState = {
   selectedDisciplines: string[];
   selectedImpact: string[];
   selectedTypes: string[];
+  snackbarIsOpen: boolean;
+  snackbarMessage: string;
   teacher: TeacherType;
   timeoutID: number;
 };

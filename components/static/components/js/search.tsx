@@ -6,13 +6,16 @@ import { get, submitData } from "./ajax";
 
 import Box from "@mui/material/Box";
 import CategoryIcon from "@mui/icons-material/Category";
+import CloseIcon from "@mui/icons-material/Close";
 import Container from "@mui/material/Container";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import NetworkCheckIcon from "@mui/icons-material/NetworkCheck";
 import PeopleIcon from "@mui/icons-material/People";
 import ScienceIcon from "@mui/icons-material/Science";
+import Snackbar from "@mui/material/Snackbar";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -62,13 +65,15 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       questions,
       searching: false,
       searchTerm: "",
-      teacher,
-      timeoutID: 0,
       selectedCategories: [],
       selectedDifficulty: [],
       selectedDisciplines: [],
       selectedImpact: [],
       selectedTypes: ["Question", "Assignment", "Collection"],
+      snackbarIsOpen: false,
+      snackbarMessage: "",
+      teacher,
+      timeoutID: 0,
     };
   }
 
@@ -129,45 +134,97 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         )} ${searchString}`;
       }
 
-      const queryString = new URLSearchParams();
-      queryString.append("search_string", searchString);
-      const url = new URL(this.props.urls.questions, window.location.origin);
-      url.search = queryString.toString();
-
       if (this.state.searchTerm.length > 2) {
         try {
           this.setState({ searching: true });
-          const data = (await get(url.toString())) as SearchData;
-          console.debug(data);
-          this.setState(
-            {
-              categoryFilters: data.meta.categories,
-              difficultyFilterLabels: data.meta.difficulties.reduce(
-                (acc, curr) => {
-                  acc[curr[0]] = curr[1];
-                  return acc;
-                },
-                {},
-              ),
-              difficultyFilters: data.meta.difficulties.map((d) => `${d[0]}`),
-              disciplineFilters: data.meta.disciplines,
-              peerImpactFilterLabels: data.meta.impacts.reduce((acc, curr) => {
-                acc[curr[0]] = curr[1];
-                return acc;
-              }, {}),
-              peerImpactFilters: data.meta.impacts.map((d) => `${d[0]}`),
-              hitCount: data.meta.hit_count,
-              questions: data.results,
-              searching: false,
-            },
-            () =>
-              console.debug(
-                `Search time: ${(
-                  (performance.now() - startTime) /
-                  1000
-                ).toExponential(3)}s`,
-              ),
-          );
+
+          if (this.state.selectedTypes.includes("Question")) {
+            const queryString = new URLSearchParams();
+            queryString.append("search_string", searchString);
+            const url = new URL(
+              this.props.urls.questions,
+              window.location.origin,
+            );
+            url.search = queryString.toString();
+            const data = (await get(url.toString())) as SearchData;
+            console.debug(data);
+            this.setState(
+              {
+                categoryFilters: data.meta.categories,
+                difficultyFilterLabels: data.meta.difficulties.reduce(
+                  (acc, curr) => {
+                    acc[curr[0]] = curr[1];
+                    return acc;
+                  },
+                  {},
+                ),
+                difficultyFilters: data.meta.difficulties.map(
+                  (d) => `${d[0]}`,
+                ),
+                disciplineFilters: data.meta.disciplines,
+                peerImpactFilterLabels: data.meta.impacts.reduce(
+                  (acc, curr) => {
+                    acc[curr[0]] = curr[1];
+                    return acc;
+                  },
+                  {},
+                ),
+                peerImpactFilters: data.meta.impacts.map((d) => `${d[0]}`),
+                hitCount: data.meta.hit_count,
+                questions: data.results,
+                searching: false,
+              },
+              () =>
+                console.debug(
+                  `Search time: ${(
+                    (performance.now() - startTime) /
+                    1000
+                  ).toExponential(3)}s`,
+                ),
+            );
+          } else {
+            // Clear out question results
+            this.setState({
+              hitCount: 0,
+              questions: [],
+              questionLimit: 10,
+              categoryFilters: [],
+              difficultyFilterLabels: {},
+              difficultyFilters: [],
+              disciplineFilters: [],
+              peerImpactFilterLabels: {},
+              peerImpactFilters: [],
+              selectedCategories: [],
+              selectedDifficulty: [],
+              selectedDisciplines: [],
+              selectedImpact: [],
+            });
+          }
+
+          if (this.state.selectedTypes.includes("Assignment")) {
+            const queryString = new URLSearchParams();
+            queryString.append("search_string", searchString);
+            const url = new URL(
+              this.props.urls.assignments,
+              window.location.origin,
+            );
+            url.search = queryString.toString();
+            const data = (await get(url.toString())) as SearchData;
+            console.debug(data);
+            this.setState(
+              {
+                assignments: data.results,
+                searching: false,
+              },
+              () =>
+                console.debug(
+                  `Search time: ${(
+                    (performance.now() - startTime) /
+                    1000
+                  ).toExponential(3)}s`,
+                ),
+            );
+          }
         } catch (error) {
           console.debug(error);
           this.setState({
@@ -179,6 +236,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         }
       } else {
         this.setState({
+          assignments: [],
           hitCount: 0,
           questions: [],
           questionLimit: 10,
@@ -276,8 +334,76 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     }
   };
 
+  assignmentResults = () => {
+    if (
+      this.state.assignments.length > 0 &&
+      this.state.selectedTypes.includes("Assignment")
+    ) {
+      return (
+        <Fragment>
+          <Subtitle>
+            <Typography variant="h2">
+              {this.state.assignments.length}
+              {this.props.gettext(" results in Assignments")}
+            </Typography>
+          </Subtitle>
+          <Stack spacing="10px">
+            {this.state.assignments.map(
+              (assignment: AssignmentType, i: number) => (
+                <AssignmentBis
+                  key={i}
+                  assignment={assignment}
+                  gettext={this.props.gettext}
+                />
+              ),
+            )}
+          </Stack>
+        </Fragment>
+      );
+    }
+  };
+
+  collectionResults = () => {
+    if (
+      this.state.collections.length > 0 &&
+      this.state.selectedTypes.includes("Collection")
+    ) {
+      return (
+        <Fragment>
+          <Subtitle>
+            <Typography variant="h2">
+              {this.state.collections.length}
+              {this.props.gettext(" results in Collections")}
+            </Typography>
+          </Subtitle>
+          <Grid container spacing="20px">
+            {this.state.collections.map(
+              (collection: CollectionType, i: number) => (
+                <Grid key={i} item xs={6}>
+                  <Collection
+                    collection={collection}
+                    gettext={this.props.gettext}
+                    getHeight={this.getHeight}
+                    logo={this.props.logo}
+                    minHeight={this.state.height}
+                    toggleBookmarked={() =>
+                      this.handleCollectionBookmarkClick(collection.follow_url)
+                    }
+                  />
+                </Grid>
+              ),
+            )}
+          </Grid>
+        </Fragment>
+      );
+    }
+  };
+
   questionResults = () => {
-    if (this.state.questions.length > 0) {
+    if (
+      this.state.questions.length > 0 &&
+      this.state.selectedTypes.includes("Question")
+    ) {
       return (
         <Fragment>
           <Subtitle>
@@ -313,6 +439,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   bookmarked={this.state.teacher.favourite_questions?.includes(
                     question.pk,
                   )}
+                  difficultyLabels={this.state.difficultyFilterLabels}
                   gettext={this.props.gettext}
                   question={question}
                   toggleBookmarked={() =>
@@ -348,6 +475,20 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     }
     return <span>{this.props.gettext("No results")}</span>;
   };
+
+  action = () => (
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={() =>
+        this.setState({ snackbarIsOpen: false, snackbarMessage: "" })
+      }
+      sx={{ color: "#fff" }}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  );
 
   cache = createCache({
     key: "nonced",
@@ -441,6 +582,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                     title: this.props.gettext("Type"),
                   }}
                   labels={this.typeFilterLabels}
+                  minimum={1}
                   selected={this.state.selectedTypes}
                 />
                 <SearchFilter
@@ -525,61 +667,19 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             </Box>
             <Box width={this.pageWidth}>
               <Container>{this.questionResults()}</Container>
-              <Container>
-                <Subtitle>
-                  <Typography variant="h2">
-                    {this.state.assignments.length}
-                    {this.props.gettext(" results in Assignments")}
-                  </Typography>
-                  <Link variant="h4">
-                    {this.props.gettext("View All Results")}
-                  </Link>
-                </Subtitle>
-                <Stack spacing="10px">
-                  {this.state.assignments.map(
-                    (assignment: AssignmentType, i: number) => (
-                      <AssignmentBis
-                        key={i}
-                        assignment={assignment}
-                        gettext={this.props.gettext}
-                      />
-                    ),
-                  )}
-                </Stack>
-              </Container>
-              <Container>
-                <Subtitle>
-                  <Typography variant="h2">
-                    {this.state.collections.length}
-                    {this.props.gettext(" results in Collections")}
-                  </Typography>
-                  <Link variant="h4">
-                    {this.props.gettext("View All Results")}
-                  </Link>
-                </Subtitle>
-                <Grid container spacing="20px">
-                  {this.state.collections.map(
-                    (collection: CollectionType, i: number) => (
-                      <Grid key={i} item xs={6}>
-                        <Collection
-                          collection={collection}
-                          gettext={this.props.gettext}
-                          getHeight={this.getHeight}
-                          logo={this.props.logo}
-                          minHeight={this.state.height}
-                          toggleBookmarked={() =>
-                            this.handleCollectionBookmarkClick(
-                              collection.follow_url,
-                            )
-                          }
-                        />
-                      </Grid>
-                    ),
-                  )}
-                </Grid>
-              </Container>
+              <Container>{this.assignmentResults()}</Container>
+              <Container>{this.collectionResults()}</Container>
             </Box>
           </Box>
+          <Snackbar
+            action={this.action()}
+            autoHideDuration={6000}
+            message={this.state.snackbarMessage}
+            onClose={() =>
+              this.setState({ snackbarIsOpen: false, snackbarMessage: "" })
+            }
+            open={this.state.snackbarIsOpen}
+          />
         </CacheProvider>
       </ThemeProvider>
     );

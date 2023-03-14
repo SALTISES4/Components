@@ -123,7 +123,6 @@ export class App extends Component<RationalesAppProps, RationalesAppState> {
                                         </Typography>
                                       </Box>
                                     </Box>
-
                                     <Typography
                                       key={i}
                                       variant="h4"

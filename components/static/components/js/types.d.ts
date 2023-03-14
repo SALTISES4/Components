@@ -8,7 +8,6 @@ import {
   UserType,
 } from "./_localComponents/types";
 
-
 type TeacherType = {
   activeAssignmentCount: number;
   activeGroupCount: number;
@@ -140,7 +139,7 @@ type RationalesType = {
   viewCount: number;
   selectedCount: number;
   description: string;
-}
+};
 
 export type AnswerWithRationalesType = {
   correct: boolean;

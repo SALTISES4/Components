@@ -18,13 +18,22 @@ import { formTheme } from "./theme";
 //cache
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-import { rationalesAppProps, rationalesAppState } from "./types";
+import {
+  AnswerWithRationalesType,
+  RationalesAppProps,
+  RationalesAppState,
+  RationalesType,
+} from "./types";
 import { Container } from "@mui/system";
 
-export class App extends Component<rationalesAppProps, rationalesAppState> {
-  constructor(props: rationalesAppProps) {
+import { answersWithRationales } from "./data";
+
+export class App extends Component<RationalesAppProps, RationalesAppState> {
+  constructor(props: RationalesAppProps) {
     super(props);
-    this.state = {};
+    this.state = {
+      answersWithRationales,
+    };
   }
 
   componentDidMount(): void {
@@ -50,66 +59,87 @@ export class App extends Component<rationalesAppProps, rationalesAppState> {
                     {this.props.gettext("Rationales")}
                   </Typography>
                   <Box height={190} width="300px" />
-                  <Box>
-                    <Stack spacing={"40px"}>
-                      <Stack spacing={"20px"}>
-                        <Box>
+
+                  <Stack spacing={"40px"}>
+                    {this.state.answersWithRationales.map(
+                      (answer: AnswerWithRationalesType, i: number) => (
+                        <Box key={i}>
                           <Typography
                             variant="h3"
                             sx={{ margin: "0px 0px 10px 190px" }}
                           >
-                            {this.props.gettext("A. Net Positive")}
+                            {answer.description}
                           </Typography>
-                          <Box display="flex">
-                            <Box position="absolute" display="flex">
-                              <Box
-                                display="flex"
-                                alignItems="center"
-                                sx={{
-                                  backgroundColor: "secondary1.main",
-                                  borderRadius: "4px 0px 0px 4px",
-                                  padding: "4px 7px",
-                                }}
-                              >
-                                <VisibilityIcon
-                                  fontSize="small"
-                                  sx={{ mr: "5px" }}
-                                />
-                                <Typography>
-                                  {this.props.gettext("views")}
-                                </Typography>
-                              </Box>
-                              <Box
-                                display="flex"
-                                alignItems="center"
-                                sx={{
-                                  backgroundColor: "successTint.main",
-                                  borderRadius: "0px 4px 4px 0px",
-                                  padding: "4px 7px",
-                                }}
-                              >
-                                <CheckCircleIcon
-                                  fontSize="small"
-                                  sx={{ mr: "5px" }}
-                                />
-                                <Typography>
-                                  {this.props.gettext("selected")}
-                                </Typography>
-                              </Box>
-                            </Box>
+                          <Stack spacing={"20px"}>
+                            {answer.rationales.map(
+                              (rationale: RationalesType, j: number) => (
+                                <Box key={j}>
+                                  <Box display="flex">
+                                    <Box position="absolute" display="flex">
+                                      <Box
+                                        display="flex"
+                                        alignItems="center"
+                                        sx={{
+                                          backgroundColor: "secondary1.main",
+                                          borderRadius: "4px 0px 0px 4px",
+                                          padding: "4px 7px",
+                                          width: "64",
+                                          boxSizing: "border-box",
+                                        }}
+                                      >
+                                        <VisibilityIcon
+                                          sx={{
+                                            mr: "5px",
+                                            width: "11px",
+                                            height: "11px",
+                                          }}
+                                        />
+                                        <Typography fontSize="10px">
+                                          {rationale.viewCount}
+                                          {this.props.gettext(" views")}
+                                        </Typography>
+                                      </Box>
+                                      <Box
+                                        display="flex"
+                                        alignItems="center"
+                                        sx={{
+                                          width: "83px",
+                                          boxSizing: "border-box",
+                                          backgroundColor: "successTint.main",
+                                          borderRadius: "0px 4px 4px 0px",
+                                          padding: "4px 7px",
+                                        }}
+                                      >
+                                        <CheckCircleIcon
+                                          sx={{
+                                            mr: "5px",
+                                            width: "11px",
+                                            height: "11px",
+                                          }}
+                                        />
+                                        <Typography fontSize="10px">
+                                          {rationale.selectedCount}
+                                          {this.props.gettext(" selected")}
+                                        </Typography>
+                                      </Box>
+                                    </Box>
 
-                            <Typography variant="h4" sx={{ ml: "190px" }}>
-                              Justification Justification Justification
-                              Justification Justification Justification
-                              Justification Justification Justification
-                              Justification Justification Justification
-                            </Typography>
-                          </Box>
+                                    <Typography
+                                      key={i}
+                                      variant="h4"
+                                      sx={{ ml: "190px" }}
+                                    >
+                                      {rationale.description}
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                              ),
+                            )}
+                          </Stack>
                         </Box>
-                      </Stack>
-                      <Stack spacing={"20px"} />
-                    </Stack>
-                  </Box>
+                      ),
+                    )}
+                  </Stack>
                 </Card>
               </Box>
             </Container>

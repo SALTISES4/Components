@@ -272,3 +272,38 @@ export const peerImpactFilters = {
     PeerImpactLevels.quatre,
   ],
 };
+
+export const answersWithRationales = [
+  {
+    correct: true,
+    description: faker.lorem.sentence(),
+    rationales: [
+      {
+        viewCount: parseInt(faker.random.numeric(1)),
+        selectedCount: parseInt(faker.random.numeric(2)),
+        description: faker.lorem.paragraph(1),
+      },
+    ],
+  },
+  {
+    correct: true,
+    description: faker.lorem.sentence(),
+    rationales: [
+      {
+        viewCount: parseInt(faker.random.numeric(1)),
+        selectedCount: parseInt(faker.random.numeric(2)),
+        description: faker.lorem.paragraph(1),
+      },
+      {
+        viewCount: parseInt(faker.random.numeric(1)),
+        selectedCount: parseInt(faker.random.numeric(1)),
+        description: faker.lorem.paragraph(3),
+      },
+      {
+        viewCount: parseInt(faker.random.numeric(2)),
+        selectedCount: parseInt(faker.random.numeric(1)),
+        description: faker.lorem.paragraph(2),
+      },
+    ],
+  },
+];

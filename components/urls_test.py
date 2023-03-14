@@ -34,5 +34,10 @@ urlpatterns = i18n_patterns(
         views_test.createQuestions2,
         name="createQuestions2",
     ),
+    path(
+        "rationales",
+        views_test.rationales,
+        name="rationales",
+    ),
     path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
 )

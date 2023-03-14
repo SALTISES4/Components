@@ -123,3 +123,10 @@ export type CreateQuestions2AppProps = {
 };
 
 export type CreateQuestions2AppState = {};
+
+export type rationalesAppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+};
+
+export type rationalesAppState = {};

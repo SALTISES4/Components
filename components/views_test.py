@@ -48,3 +48,10 @@ def createQuestions2(request):
     template = "components/createQuestions2.html"
     context = {}
     return render(request, template, context)
+
+
+def rationales(request):
+
+    template = "components/rationales.html"
+    context = {}
+    return render(request, template, context)

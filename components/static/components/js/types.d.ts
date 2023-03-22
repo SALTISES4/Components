@@ -65,10 +65,12 @@ export type SearchAppProps = {
   nonce: string;
   urls: {
     assignments: string;
+    backgroundImage: string;
     collections: string;
     questions: string;
     teacher: string;
   };
+  user: { username: string };
 };
 
 export type SearchAppState = {

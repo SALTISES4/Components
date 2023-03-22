@@ -91,8 +91,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     const DT = 500;
     const startTime = performance.now();
     const timeElapsed = startTime - this.state.lastKeyStroke;
-    if (timeElapsed > DT || this.state.questions.length == 0) {
-      console.info("Submitting...");
+    console.info(timeElapsed);
+    if (timeElapsed > DT) {
       window.clearTimeout(this.state.timeoutID);
       this.setState(
         {
@@ -137,6 +137,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       if (this.state.searchTerm.length > 2) {
         try {
           this.setState({ searching: true });
+          console.info("Submitting...");
 
           if (this.state.selectedTypes.includes("Question")) {
             const queryString = new URLSearchParams();
@@ -253,6 +254,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         });
       }
     } else {
+      console.info("Clearing timeout");
       window.clearTimeout(this.state.timeoutID);
       this.setState({
         lastKeyStroke: performance.now(),
@@ -514,9 +516,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               display="flex"
               justifyContent="center"
               sx={{
-                mt: "-8px",
+                mt: "-24px",
                 padding: "15px 15px 16px",
-                backgroundColor: "#061A4E",
+                backgroundImage: `url(${this.props.urls.backgroundImage})`,
+                backgroundSize: "cover",
               }}
             >
               <Box

@@ -161,7 +161,7 @@ export function Question({
   const addToAssignmentIcon = () => {
     if (showDetails) {
       return (
-        <IconButton>
+        <IconButton title={gettext("Add to assignment")}>
           <PlaylistAddIcon fontSize="medium" />
         </IconButton>
       );
@@ -182,6 +182,11 @@ export function Question({
               color: "primary.main",
             },
           }}
+          title={
+            bookmarked
+              ? gettext("Remove from library")
+              : gettext("Add to library")
+          }
         />
       );
     }

@@ -493,7 +493,9 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         </span>
       );
     }
-    return <span>{this.props.gettext("No results")}</span>;
+    return (
+      <span>{this.props.gettext("Your search returned no results")}</span>
+    );
   };
 
   action = () => (

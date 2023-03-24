@@ -57,6 +57,7 @@ export type CollectionType = {
   featured?: boolean;
   followed_by_user?: boolean;
   follow_url?: string;
+  follower_count?: number;
   pk: number;
   title: string;
   url: string;

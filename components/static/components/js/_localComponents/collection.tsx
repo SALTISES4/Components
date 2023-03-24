@@ -11,7 +11,7 @@ import Stack from "@mui/material/Stack";
 import SvgIcon from "@mui/material/SvgIcon";
 import Typography from "@mui/material/Typography";
 
-import BarChartIcon from "@mui/icons-material/BarChart";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 
@@ -219,12 +219,12 @@ export class Collection extends Component<CollectionProps> {
                 paddingBottom: "3px",
               }}
             >
-              <BarChartIcon fontSize="small" />
+              <BookmarksIcon fontSize="small" />
               <Typography>
-                {this.props.collection.answerCount}{" "}
-                {this.props.collection.answerCount == 1
-                  ? this.props.gettext("answer")
-                  : this.props.gettext("answers")}
+                {this.props.collection.follower_count}{" "}
+                {this.props.collection.follower_count == 1
+                  ? this.props.gettext("follower")
+                  : this.props.gettext("followers")}
               </Typography>
             </Tag>
           </Stack>

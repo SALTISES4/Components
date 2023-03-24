@@ -103,7 +103,7 @@ export const questions = [
   {
     answer_count: parseInt(faker.random.numeric(1)),
     title: faker.lorem.sentence(),
-    user: { username: faker.name.fullName() },
+    user: "",
     text: faker.lorem.sentence(),
     discipline: { pk: 1, title: "Physics" },
     category: faker.helpers.arrayElement([
@@ -128,7 +128,7 @@ export const questions = [
   {
     answer_count: parseInt(faker.random.numeric(2)),
     title: faker.lorem.sentence(),
-    user: { username: faker.name.fullName() },
+    user: { username: "" },
     text: faker.lorem.sentence(),
     discipline: { pk: 1, title: "Physics" },
     category: faker.helpers.arrayElement([

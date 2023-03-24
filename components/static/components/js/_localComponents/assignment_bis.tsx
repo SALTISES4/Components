@@ -21,7 +21,10 @@ export function AssignmentBis({
       <Box display="flex" justifyContent="space-between">
         <Box>
           <Typography variant="h3">{assignment.title}</Typography>
-          <Typography variant="caption">
+          <Typography
+            variant="caption"
+            sx={{ display: assignment.owner ? "block" : "none" }}
+          >
             {gettext("By")} {assignment.owner}
           </Typography>
         </Box>

@@ -295,7 +295,7 @@ export function Question({
             </Box>
           </Box>
           <Typography variant="caption">
-            {question.user.username ? gettext("From") : ""}{" "}
+            {question.user?.username ? gettext("From") : ""}{" "}
             {question.user.username}
           </Typography>
           <Typography

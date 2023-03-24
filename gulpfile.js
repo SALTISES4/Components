@@ -28,7 +28,7 @@ const tsProject = ts.createProject("tsconfig.json");
 //   "navigation",
 //   "search",
 // ];
-const modules = ["navigation"];
+const modules = ["search"];
 
 function typescript() {
   const build = gulp

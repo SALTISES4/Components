@@ -74,17 +74,19 @@ export type SearchAppProps = {
 };
 
 export type SearchAppState = {
+  assignmentHitCount: number;
   assignments: GroupAssignmentType[];
   categoryFilters: string[];
+  collectionHitCount: number;
   collections: CollectionType[];
   difficultyFilters: string[];
   difficultyFilterLabels: Record<string, string>;
   disciplineFilters: string[];
   height: number;
-  hitCount: number;
   lastKeyStroke: number;
   peerImpactFilters: string[];
   peerImpactFilterLabels: Record<string, string>;
+  questionHitCount: number;
   questionLimit: number;
   questions: QuestionType[];
   searching: boolean;

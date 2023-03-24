@@ -50,17 +50,19 @@ export class App extends Component<SearchAppProps, SearchAppState> {
   constructor(props: SearchAppProps) {
     super(props);
     this.state = {
+      assignmentHitCount: 0,
       assignments,
       categoryFilters: [],
+      collectionHitCount: 0,
       collections,
       difficultyFilterLabels: {},
       difficultyFilters: [],
       disciplineFilters: [],
       height: 0,
-      hitCount: 0,
       lastKeyStroke: 0,
       peerImpactFilterLabels: {},
       peerImpactFilters: [],
+      questionHitCount: 0,
       questionLimit: 10,
       questions,
       searching: false,
@@ -171,7 +173,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   {},
                 ),
                 peerImpactFilters: data.meta.impacts.map((d) => `${d[0]}`),
-                hitCount: data.meta.hit_count,
+                questionHitCount: data.meta.hit_count,
                 questions: data.results,
                 searching: false,
               },
@@ -186,7 +188,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           } else {
             // Clear out question results
             this.setState({
-              hitCount: 0,
+              questionHitCount: 0,
               questions: [],
               questionLimit: 10,
               categoryFilters: [],
@@ -214,6 +216,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             console.debug(data);
             this.setState(
               {
+                assignmentHitCount: data.meta.hit_count,
                 assignments: data.results,
                 searching: false,
               },
@@ -237,11 +240,14 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         }
       } else {
         this.setState({
+          assignmentHitCount: 0,
           assignments: [],
-          hitCount: 0,
+          questionHitCount: 0,
           questions: [],
           questionLimit: 10,
           categoryFilters: [],
+          collectionHitCount: 0,
+          collections: [],
           difficultyFilterLabels: {},
           difficultyFilters: [],
           disciplineFilters: [],
@@ -411,7 +417,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           <Subtitle>
             <Typography variant="h2">
               {this.state.questions.length > this.state.questionLimit ||
-              this.state.questions.length < this.state.hitCount
+              this.state.questions.length < this.state.questionHitCount
                 ? `${this.props.gettext("Top")} ${this.state.questionLimit}`
                 : this.state.questions.length}{" "}
               {this.props.gettext("results in Questions")}
@@ -427,7 +433,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             >
               {this.state.questions.length <= this.state.questionLimit
                 ? ""
-                : this.state.questions.length == this.state.hitCount
+                : this.state.questions.length == this.state.questionHitCount
                 ? this.props.gettext("View all results")
                 : this.props.gettext("View top 50 results")}
             </Link>
@@ -468,10 +474,25 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         </span>
       );
     }
-    if (this.state.questions.length > 0) {
+    if (
+      this.state.questionHitCount ||
+      this.state.assignmentHitCount ||
+      this.state.collectionHitCount
+    ) {
       return (
         <span>
-          {this.state.hitCount} {this.props.gettext("potential matches")}
+          {this.state.questionHitCount}{" "}
+          {this.state.questionHitCount != 1
+            ? this.props.gettext("question results")
+            : this.props.gettext("question result")}
+          , {this.state.assignmentHitCount}{" "}
+          {this.state.assignmentHitCount != 1
+            ? this.props.gettext("assignment results")
+            : this.props.gettext("assignment result")}
+          , {this.state.collectionHitCount}{" "}
+          {this.state.collectionHitCount != 1
+            ? this.props.gettext("collection results")
+            : this.props.gettext("collection result")}
         </span>
       );
     }

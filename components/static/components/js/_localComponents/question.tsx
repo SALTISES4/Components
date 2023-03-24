@@ -279,7 +279,11 @@ export function Question({
 
   return (
     <Card>
-      <CardActionArea onClick={handleChange}>
+      <CardActionArea
+        onClick={handleChange}
+        disableRipple={true}
+        sx={{ userSelect: "text" }}
+      >
         <CardContent sx={{ pt: "20px" }}>
           <Box display="flex" justifyContent="space-between">
             <Typography variant="h3" sx={{ m: "0px" }}>

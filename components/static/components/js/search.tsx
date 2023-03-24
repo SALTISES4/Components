@@ -352,7 +352,9 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           <Subtitle>
             <Typography variant="h2">
               {this.state.assignmentHitCount}{" "}
-              {this.props.gettext("results in Assignments")}
+              {this.state.assignmentHitCount != 1
+                ? this.props.gettext("results in Assignments")
+                : this.props.gettext("result in Assignments")}
             </Typography>
           </Subtitle>
           <Stack spacing="10px">
@@ -381,7 +383,9 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           <Subtitle>
             <Typography variant="h2">
               {this.state.collectionHitCount}{" "}
-              {this.props.gettext("results in Collections")}
+              {this.state.collectionHitCount != 1
+                ? this.props.gettext("results in Collections")
+                : this.props.gettext("result in Collections")}
             </Typography>
           </Subtitle>
           <Grid container spacing="20px">
@@ -417,7 +421,9 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           <Subtitle>
             <Typography variant="h2">
               {this.state.questionHitCount}{" "}
-              {this.props.gettext("results in Questions")}
+              {this.state.questionHitCount != 1
+                ? this.props.gettext("results in Questions")
+                : this.props.gettext("result in Questions")}
             </Typography>
             <Link
               variant="h4"

@@ -45,7 +45,6 @@ export class App extends Component<NavigationAppProps, NavigationAppState> {
           <Box sx={{ display: "flex" }}>
             <Header
               menuAddItems={this.props.menuAddItems}
-              menuHelpItems={this.props.menuHelpItems}
               menuProfile={this.props.menuProfile}
               user={this.props.user}
             />

@@ -2,7 +2,6 @@ import { LinkType, UserType } from "../types";
 
 export type headerProps = {
   menuAddItems: LinkType[][];
-  menuHelpItems: LinkType[][];
   menuProfile: LinkType[][];
   user: UserType;
 };

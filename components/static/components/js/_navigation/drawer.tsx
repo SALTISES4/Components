@@ -15,8 +15,12 @@ import { DrawerProps } from "./types";
 export const SideBar = ({ groups, logo }: DrawerProps) => {
   const drawerWidth = 200;
 
-  const handleClick = (url: string) => {
-    window.location.href = url;
+  const handleClick = (url: string, target: string | undefined) => {
+    if (target) {
+      window.open(url, target);
+    } else {
+      window.location.href = url;
+    }
   };
 
   return (
@@ -42,16 +46,18 @@ export const SideBar = ({ groups, logo }: DrawerProps) => {
         </Box>
       </Box>
 
-      <Box>
+      <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
         {groups.map((group, i) => (
           <Fragment key={i}>
-            <List>
+            <List sx={{ flexGrow: i == groups.length - 2 ? 2 : 0 }}>
               {group.map((entry) => (
                 <ListItem
                   key={entry.title}
                   disablePadding
                   onClick={() =>
-                    !entry.selected ? handleClick(entry.url) : null
+                    !entry.selected
+                      ? handleClick(entry.url, entry.target)
+                      : null
                   }
                   sx={{ pointerEvents: entry.selected ? "none" : "auto" }}
                 >

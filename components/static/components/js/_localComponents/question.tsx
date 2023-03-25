@@ -18,7 +18,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+// import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -46,7 +46,11 @@ export function Question({
 
   const maxCategoriesShown = 3;
 
-  const handleChange = () => {
+  const handleChange = (evt: MouseEvent) => {
+    if (window.getSelection()?.toString()) {
+      evt.stopPropagation();
+      return;
+    }
     setShowDetails((prevState) => ({
       showDetails: !prevState.showDetails,
     }));
@@ -86,6 +90,7 @@ export function Question({
                       __html: answerchoice.text,
                     }} // Bleached in serializer
                     sx={{
+                      cursor: "text",
                       "> p": { mt: 0, mb: "4px" },
                     }}
                     variant={"body1"}
@@ -144,6 +149,7 @@ export function Question({
           inputProps={{ "aria-label": gettext("Show/hide details") }}
           icon={<VisibilityIcon fontSize="medium" />}
           checkedIcon={<VisibilityOffIcon fontSize="medium" />}
+          onClick={(evt: MouseEvent) => evt.stopPropagation()}
           sx={{
             color: "primary.main",
             "&.Mui-checked": {
@@ -161,7 +167,10 @@ export function Question({
   const addToAssignmentIcon = () => {
     if (showDetails) {
       return (
-        <IconButton title={gettext("Add to assignment")}>
+        <IconButton
+          onClick={(evt: MouseEvent) => evt.stopPropagation()}
+          title={gettext("Add to assignment")}
+        >
           <PlaylistAddIcon fontSize="medium" />
         </IconButton>
       );
@@ -176,6 +185,7 @@ export function Question({
           icon={<BookmarkAddOutlinedIcon />}
           checkedIcon={<BookmarkAddedIcon />}
           onChange={toggleBookmarked}
+          onClick={(evt: MouseEvent) => evt.stopPropagation()}
           sx={{
             color: "primary.main",
             "&.Mui-checked": {
@@ -192,15 +202,15 @@ export function Question({
     }
   };
 
-  const moreIcon = () => {
-    if (showDetails) {
-      return (
-        <IconButton>
-          <MoreHorizIcon fontSize="medium" />
-        </IconButton>
-      );
-    }
-  };
+  // const moreIcon = () => {
+  //   if (showDetails) {
+  //     return (
+  //       <IconButton>
+  //         <MoreHorizIcon fontSize="medium" />
+  //       </IconButton>
+  //     );
+  //   }
+  // };
 
   const discipline = () => {
     if (question?.discipline) {
@@ -280,8 +290,8 @@ export function Question({
   return (
     <Card>
       <CardActionArea
-        onClick={handleChange}
         disableRipple={true}
+        onClick={handleChange}
         sx={{ userSelect: "text" }}
       >
         <CardContent sx={{ pt: "20px" }}>
@@ -299,51 +309,51 @@ export function Question({
             {question.user.username}
           </Typography>
           <Typography
-            sx={{ mb: "10px", mt: "20px" }}
+            sx={{ cursor: "text", mb: "10px", mt: "20px" }}
             dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer and elastic doc
           />
           {image()}
           {video()}
           {answerchoices()}
         </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Stack direction="row" spacing="5px">
-          {discipline()}
-          {categories()}
-          {extraCategories()}
-          <Tag
+        <CardActions>
+          <Stack direction="row" spacing="5px">
+            {discipline()}
+            {categories()}
+            {extraCategories()}
+            <Tag
+              sx={{
+                bgcolor: "white",
+                borderStyle: "solid",
+                paddingTop: "3px",
+                paddingBottom: "3px",
+              }}
+            >
+              <BarChartIcon fontSize="small" />
+              <Typography>
+                {question.answer_count}{" "}
+                {question.answer_count == 1
+                  ? gettext("answer")
+                  : gettext("answers")}
+              </Typography>
+            </Tag>
+          </Stack>
+          <Stack
+            direction="row"
+            spacing="15px"
             sx={{
-              bgcolor: "white",
-              borderStyle: "solid",
-              paddingTop: "3px",
-              paddingBottom: "3px",
+              "& .MuiIconButton-root": {
+                marginLeft: "15px",
+              },
             }}
           >
-            <BarChartIcon fontSize="small" />
-            <Typography>
-              {question.answer_count}{" "}
-              {question.answer_count == 1
-                ? gettext("answer")
-                : gettext("answers")}
-            </Typography>
-          </Tag>
-        </Stack>
-        <Stack
-          direction="row"
-          spacing="15px"
-          sx={{
-            "& .MuiIconButton-root": {
-              marginLeft: "15px",
-            },
-          }}
-        >
-          {showDetailsIcon()}
-          {addToAssignmentIcon()}
-          {bookmarkIcon()}
-          {moreIcon()}
-        </Stack>
-      </CardActions>
+            {showDetailsIcon()}
+            {addToAssignmentIcon()}
+            {bookmarkIcon()}
+            {/* {moreIcon()} */}
+          </Stack>
+        </CardActions>
+      </CardActionArea>
     </Card>
   );
 }

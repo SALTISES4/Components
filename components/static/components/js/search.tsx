@@ -31,6 +31,7 @@ import { Subtitle } from "./styledComponents";
 import { AssignmentBis } from "./_localComponents/assignment_bis";
 import { Collection } from "./_localComponents/collection";
 import { Question } from "./_localComponents/question";
+import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { SearchFilter } from "./_search/searchFilter";
 import {
   SearchAppProps,
@@ -39,7 +40,6 @@ import {
   TeacherType,
 } from "./types";
 
-import { assignments, collections, questions, teacher } from "./data";
 import {
   AssignmentType,
   CollectionType,
@@ -51,10 +51,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     super(props);
     this.state = {
       assignmentHitCount: 0,
-      assignments,
+      assignments: [],
       categoryFilters: [],
       collectionHitCount: 0,
-      collections,
+      collections: [],
       difficultyFilterLabels: {},
       difficultyFilters: [],
       disciplineFilters: [],
@@ -64,8 +64,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       peerImpactFilters: [],
       questionHitCount: 0,
       questionLimit: 10,
-      questions,
-      searching: false,
+      questions: [],
+      questionsLoaded: true,
       searchTerm: "",
       selectedCategories: [],
       selectedDifficulty: [],
@@ -74,7 +74,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       selectedTypes: ["Question", "Assignment", "Collection"],
       snackbarIsOpen: false,
       snackbarMessage: "",
-      teacher,
+      teacher: undefined,
       timeoutID: 0,
     };
   }
@@ -86,6 +86,17 @@ export class App extends Component<SearchAppProps, SearchAppState> {
   };
 
   typeFilters = ["Question", "Assignment", "Collection"];
+
+  error = (e: any): void => {
+    const message = this.props.gettext(
+      "An error occurred.  Try refreshing this page.",
+    );
+    console.error(e);
+    this.setState({
+      snackbarIsOpen: true,
+      snackbarMessage: message,
+    });
+  };
 
   handleSubmit = async (): Promise<void> => {
     console.debug("handleSubmit called");
@@ -138,7 +149,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
 
       if (this.state.searchTerm.length > 2) {
         try {
-          this.setState({ searching: true });
+          this.setState({ questionsLoaded: false });
           console.info("Submitting...");
 
           if (this.state.selectedTypes.includes("Question")) {
@@ -175,7 +186,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 peerImpactFilters: data.meta.impacts.map((d) => `${d[0]}`),
                 questionHitCount: data.meta.hit_count,
                 questions: data.results,
-                searching: false,
+                questionsLoaded: true,
               },
               () =>
                 console.debug(
@@ -188,15 +199,16 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           } else {
             // Clear out question results
             this.setState({
-              questionHitCount: 0,
-              questions: [],
-              questionLimit: 10,
               categoryFilters: [],
               difficultyFilterLabels: {},
               difficultyFilters: [],
               disciplineFilters: [],
               peerImpactFilterLabels: {},
               peerImpactFilters: [],
+              questionHitCount: 0,
+              questionLimit: 10,
+              questions: [],
+              questionsLoaded: true,
               selectedCategories: [],
               selectedDifficulty: [],
               selectedDisciplines: [],
@@ -218,7 +230,6 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               {
                 assignmentHitCount: data.meta.hit_count,
                 assignments: data.results,
-                searching: false,
               },
               () =>
                 console.debug(
@@ -229,35 +240,33 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 ),
             );
           }
-        } catch (error) {
-          console.debug(error);
-          this.setState({
-            snackbarIsOpen: true,
-            snackbarMessage: this.props.gettext(
-              "An error occurred.  Try refreshing this page.",
-            ),
-          });
+        } catch (error: any) {
+          this.error(error);
         }
-      } else {
-        this.setState({
-          assignmentHitCount: 0,
-          assignments: [],
-          questionHitCount: 0,
-          questions: [],
-          questionLimit: 10,
-          categoryFilters: [],
-          collectionHitCount: 0,
-          collections: [],
-          difficultyFilterLabels: {},
-          difficultyFilters: [],
-          disciplineFilters: [],
-          peerImpactFilterLabels: {},
-          peerImpactFilters: [],
-          selectedCategories: [],
-          selectedDifficulty: [],
-          selectedDisciplines: [],
-          selectedImpact: [],
-        });
+      }
+      if (this.state.searchTerm.length == 0) {
+        this.setState(
+          {
+            assignmentHitCount: 0,
+            assignments: [],
+            questionHitCount: 0,
+            questions: [],
+            questionLimit: 10,
+            categoryFilters: [],
+            collectionHitCount: 0,
+            collections: [],
+            difficultyFilterLabels: {},
+            difficultyFilters: [],
+            disciplineFilters: [],
+            peerImpactFilterLabels: {},
+            peerImpactFilters: [],
+            selectedCategories: [],
+            selectedDifficulty: [],
+            selectedDisciplines: [],
+            selectedImpact: [],
+          },
+          () => this.getRecommendedQuestions(),
+        );
       }
     } else {
       console.info("Clearing timeout");
@@ -269,22 +278,56 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     }
   };
 
+  getRecommendedQuestions = async (): Promise<void> => {
+    // Load a set of recommended questions
+    try {
+      this.setState({
+        questionsLoaded: false,
+      });
+
+      const questions = (await get(
+        this.props.urls.recommendations.questions,
+      )) as QuestionType[];
+
+      this.setState({
+        questions,
+        questionHitCount: questions.length,
+      });
+    } catch (error: any) {
+      this.error(error);
+    } finally {
+      this.setState({
+        questionsLoaded: true,
+      });
+    }
+  };
+
   sync = async (): Promise<void> => {
+    // Load teacher info
     try {
       const teacher = (await get(this.props.urls.teacher)) as TeacherType;
 
-      // Temp to populate during dev
+      this.setState({
+        teacher,
+      });
+    } catch (error: any) {
+      this.error(error);
+    }
+
+    this.getRecommendedQuestions();
+
+    // Load a set of recommended collections
+    try {
       const collections = await get(this.props.urls.collections);
 
       this.setState(
         {
           collections: (collections as any).results as CollectionType[],
-          teacher,
         },
         () => console.info(this.state),
       );
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      this.error(error);
     }
   };
 
@@ -294,28 +337,32 @@ export class App extends Component<SearchAppProps, SearchAppState> {
   }
 
   handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
-    const index = this.state.teacher.favourite_questions.indexOf(pk);
-    const newFavouriteQuestions = [...this.state.teacher.favourite_questions];
-    if (index >= 0) {
-      newFavouriteQuestions.splice(index, 1);
-    } else {
-      newFavouriteQuestions.unshift(pk);
-    }
-    try {
-      const teacher = (await submitData(
-        this.props.urls.teacher,
-        { favourite_questions: newFavouriteQuestions },
-        "PUT",
-      )) as TeacherType;
+    if (this.state.teacher) {
+      const index = this.state.teacher.favourite_questions.indexOf(pk);
+      const newFavouriteQuestions = [
+        ...this.state.teacher.favourite_questions,
+      ];
+      if (index >= 0) {
+        newFavouriteQuestions.splice(index, 1);
+      } else {
+        newFavouriteQuestions.unshift(pk);
+      }
+      try {
+        const teacher = (await submitData(
+          this.props.urls.teacher,
+          { favourite_questions: newFavouriteQuestions },
+          "PUT",
+        )) as TeacherType;
 
-      this.setState(
-        {
-          teacher,
-        },
-        () => console.info(this.state),
-      );
-    } catch (error) {
-      console.error(error);
+        this.setState(
+          {
+            teacher,
+          },
+          () => console.info(this.state),
+        );
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -412,18 +459,20 @@ export class App extends Component<SearchAppProps, SearchAppState> {
   };
 
   questionResults = () => {
-    if (
-      this.state.questions.length > 0 &&
-      this.state.selectedTypes.includes("Question")
-    ) {
+    if (this.state.selectedTypes.includes("Question")) {
       return (
         <Fragment>
           <Subtitle>
             <Typography variant="h2">
-              {this.state.questionHitCount}{" "}
-              {this.state.questionHitCount != 1
-                ? this.props.gettext("results in Questions")
-                : this.props.gettext("result in Questions")}
+              {this.state.questionsLoaded
+                ? `${this.state.questionHitCount} ${
+                    this.state.searchTerm.length <= 2
+                      ? this.props.gettext("recommended Questions")
+                      : this.state.questionHitCount != 1
+                      ? this.props.gettext("results in Questions")
+                      : this.props.gettext("result in Questions")
+                  }`
+                : this.props.gettext("Loading questions...")}
             </Typography>
             <Link
               variant="h4"
@@ -432,7 +481,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   questionLimit: this.state.questions.length,
                 });
               }}
-              sx={{ cursor: "pointer" }}
+              sx={{
+                cursor: "pointer",
+                display: this.state.questionsLoaded ? "block" : "none",
+              }}
             >
               {this.state.questions.length <= this.state.questionLimit
                 ? ""
@@ -442,22 +494,30 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             </Link>
           </Subtitle>
           <Stack spacing="10px">
-            {[...this.state.questions]
-              .slice(0, this.state.questionLimit)
-              .map((question: QuestionType, i: number) => (
-                <Question
-                  key={i}
-                  bookmarked={this.state.teacher.favourite_questions?.includes(
-                    question.pk,
-                  )}
-                  difficultyLabels={this.state.difficultyFilterLabels}
-                  gettext={this.props.gettext}
-                  question={question}
-                  toggleBookmarked={() =>
-                    this.handleQuestionBookmarkClick(question.pk)
-                  }
-                />
-              ))}
+            {this.state.questionsLoaded ? (
+              [...this.state.questions]
+                .slice(0, this.state.questionLimit)
+                .map((question: QuestionType, i: number) => (
+                  <Question
+                    key={i}
+                    bookmarked={this.state.teacher?.favourite_questions?.includes(
+                      question.pk,
+                    )}
+                    difficultyLabels={this.state.difficultyFilterLabels}
+                    gettext={this.props.gettext}
+                    question={question}
+                    toggleBookmarked={() =>
+                      this.handleQuestionBookmarkClick(question.pk)
+                    }
+                  />
+                ))
+            ) : (
+              <Fragment>
+                <QuestionSkeleton />
+                <QuestionSkeleton />
+                <QuestionSkeleton />
+              </Fragment>
+            )}
           </Stack>
         </Fragment>
       );

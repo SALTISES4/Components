@@ -67,6 +67,11 @@ export type SearchAppProps = {
     assignments: string;
     backgroundImage: string;
     collections: string;
+    recommendations: {
+      assignments: string;
+      collections: string;
+      questions: string;
+    };
     questions: string;
     teacher: string;
   };
@@ -89,7 +94,7 @@ export type SearchAppState = {
   questionHitCount: number;
   questionLimit: number;
   questions: QuestionType[];
-  searching: boolean;
+  questionsLoaded: boolean;
   searchTerm: string;
   selectedCategories: string[];
   selectedDifficulty: string[];
@@ -98,7 +103,7 @@ export type SearchAppState = {
   selectedTypes: string[];
   snackbarIsOpen: boolean;
   snackbarMessage: string;
-  teacher: TeacherType;
+  teacher: TeacherType | undefined;
   timeoutID: number;
 };
 

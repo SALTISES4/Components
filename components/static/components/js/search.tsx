@@ -432,9 +432,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             <Typography variant="h2">
               {this.state.assignmentsLoaded
                 ? `${this.state.assignmentHitCount} ${
-                    this.state.searchTerm.length == 0 ||
-                    (this.state.searchTerm.length < 3 &&
-                      this.state.assignments.length == 0)
+                    this.state.searchTerm.length == 0
                       ? this.props.gettext("recommended Assignments")
                       : this.state.assignmentHitCount != 1
                       ? this.props.gettext("results in Assignments")

@@ -28,6 +28,7 @@ import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
 import { Subtitle } from "./styledComponents";
+import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { AssignmentBis } from "./_localComponents/assignment_bis";
 import { Collection } from "./_localComponents/collection";
 import { Question } from "./_localComponents/question";
@@ -52,6 +53,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     this.state = {
       assignmentHitCount: 0,
       assignments: [],
+      assignmentsLoaded: true,
       categoryFilters: [],
       collectionHitCount: 0,
       collections: [],
@@ -149,8 +151,9 @@ export class App extends Component<SearchAppProps, SearchAppState> {
 
       if (this.state.searchTerm.length > 2) {
         try {
-          this.setState({ questionsLoaded: false });
           console.info("Submitting...");
+
+          this.setState({ assignmentsLoaded: false, questionsLoaded: false });
 
           if (this.state.selectedTypes.includes("Question")) {
             const queryString = new URLSearchParams();
@@ -229,7 +232,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             this.setState(
               {
                 assignmentHitCount: data.meta.hit_count,
-                assignments: data.results,
+                assignments: data.results as AssignmentType[],
+                assignmentsLoaded: true,
               },
               () =>
                 console.debug(
@@ -265,7 +269,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             selectedDisciplines: [],
             selectedImpact: [],
           },
-          () => this.getRecommendedQuestions(),
+          () => {
+            this.getRecommendedAssignments();
+            this.getRecommendedQuestions();
+          },
         );
       }
     } else {
@@ -274,6 +281,30 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       this.setState({
         lastKeyStroke: performance.now(),
         timeoutID: window.setTimeout(this.handleSubmit, DT),
+      });
+    }
+  };
+
+  getRecommendedAssignments = async (): Promise<void> => {
+    // Load a set of recommended assignments
+    try {
+      this.setState({
+        assignmentsLoaded: false,
+      });
+
+      const assignments = (await get(
+        this.props.urls.recommendations.assignments,
+      )) as AssignmentType[];
+
+      this.setState({
+        assignmentHitCount: assignments.length,
+        assignments,
+      });
+    } catch (error: any) {
+      this.error(error);
+    } finally {
+      this.setState({
+        assignmentsLoaded: true,
       });
     }
   };
@@ -290,8 +321,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       )) as QuestionType[];
 
       this.setState({
-        questions,
         questionHitCount: questions.length,
+        questions,
       });
     } catch (error: any) {
       this.error(error);
@@ -314,6 +345,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       this.error(error);
     }
 
+    // Load a set of recommended assignments
+    this.getRecommendedAssignments();
+
+    // Load a set of recommended questions
     this.getRecommendedQuestions();
 
     // Load a set of recommended collections
@@ -390,29 +425,47 @@ export class App extends Component<SearchAppProps, SearchAppState> {
   };
 
   assignmentResults = () => {
-    if (
-      this.state.assignments.length > 0 &&
-      this.state.selectedTypes.includes("Assignment")
-    ) {
+    if (this.state.selectedTypes.includes("Assignment")) {
       return (
         <Fragment>
           <Subtitle>
             <Typography variant="h2">
-              {this.state.assignmentHitCount}{" "}
-              {this.state.assignmentHitCount != 1
-                ? this.props.gettext("results in Assignments")
-                : this.props.gettext("result in Assignments")}
+              {this.state.assignmentsLoaded
+                ? `${this.state.assignmentHitCount} ${
+                    this.state.searchTerm.length == 0 ||
+                    (this.state.searchTerm.length < 3 &&
+                      this.state.assignments.length == 0)
+                      ? this.props.gettext("recommended Assignments")
+                      : this.state.assignmentHitCount != 1
+                      ? this.props.gettext("results in Assignments")
+                      : this.props.gettext("result in Assignments")
+                  }`
+                : this.props.gettext("Loading assignments...")}
             </Typography>
           </Subtitle>
           <Stack spacing="10px">
-            {this.state.assignments.map(
-              (assignment: AssignmentType, i: number) => (
-                <AssignmentBis
-                  key={i}
-                  assignment={assignment}
-                  gettext={this.props.gettext}
-                />
-              ),
+            {this.state.assignmentsLoaded ? (
+              this.state.assignments.length > 0 ? (
+                this.state.assignments.map(
+                  (assignment: AssignmentType, i: number) => (
+                    <AssignmentBis
+                      key={i}
+                      assignment={assignment}
+                      gettext={this.props.gettext}
+                    />
+                  ),
+                )
+              ) : (
+                <Typography>
+                  {this.props.gettext("Your search returned no results.")}
+                </Typography>
+              )
+            ) : (
+              <Fragment>
+                <AssignmentSkeleton />
+                <AssignmentSkeleton />
+                <AssignmentSkeleton />
+              </Fragment>
             )}
           </Stack>
         </Fragment>
@@ -466,7 +519,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             <Typography variant="h2">
               {this.state.questionsLoaded
                 ? `${this.state.questionHitCount} ${
-                    this.state.searchTerm.length <= 2
+                    this.state.searchTerm.length == 0
                       ? this.props.gettext("recommended Questions")
                       : this.state.questionHitCount != 1
                       ? this.props.gettext("results in Questions")
@@ -495,22 +548,28 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           </Subtitle>
           <Stack spacing="10px">
             {this.state.questionsLoaded ? (
-              [...this.state.questions]
-                .slice(0, this.state.questionLimit)
-                .map((question: QuestionType, i: number) => (
-                  <Question
-                    key={i}
-                    bookmarked={this.state.teacher?.favourite_questions?.includes(
-                      question.pk,
-                    )}
-                    difficultyLabels={this.state.difficultyFilterLabels}
-                    gettext={this.props.gettext}
-                    question={question}
-                    toggleBookmarked={() =>
-                      this.handleQuestionBookmarkClick(question.pk)
-                    }
-                  />
-                ))
+              this.state.questions.length > 0 ? (
+                [...this.state.questions]
+                  .slice(0, this.state.questionLimit)
+                  .map((question: QuestionType, i: number) => (
+                    <Question
+                      key={i}
+                      bookmarked={this.state.teacher?.favourite_questions?.includes(
+                        question.pk,
+                      )}
+                      difficultyLabels={this.state.difficultyFilterLabels}
+                      gettext={this.props.gettext}
+                      question={question}
+                      toggleBookmarked={() =>
+                        this.handleQuestionBookmarkClick(question.pk)
+                      }
+                    />
+                  ))
+              ) : (
+                <Typography>
+                  {this.props.gettext("Your search returned no results.")}
+                </Typography>
+              )
             ) : (
               <Fragment>
                 <QuestionSkeleton />
@@ -559,9 +618,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         </span>
       );
     }
-    return (
-      <span>{this.props.gettext("Your search returned no results")}</span>
-    );
+    return <span>{this.props.gettext("No results")}</span>;
   };
 
   action = () => (

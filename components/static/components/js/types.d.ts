@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 
 import {
+  AssignmentType,
   CollectionType,
   GroupAssignmentType,
   QuestionType,
@@ -56,7 +57,7 @@ type SearchData = {
     disciplines: string[];
     impacts: [number, string][];
   };
-  results: QuestionType[];
+  results: QuestionType[] | AssignmentType[];
 };
 
 export type SearchAppProps = {
@@ -80,7 +81,8 @@ export type SearchAppProps = {
 
 export type SearchAppState = {
   assignmentHitCount: number;
-  assignments: GroupAssignmentType[];
+  assignments: AssignmentType[];
+  assignmentsLoaded: boolean;
   categoryFilters: string[];
   collectionHitCount: number;
   collections: CollectionType[];

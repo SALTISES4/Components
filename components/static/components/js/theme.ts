@@ -294,6 +294,9 @@ const saltise = createTheme({
       styleOverrides: {
         root: {
           padding: "0px 20px",
+          " &:last-child": {
+            paddingBottom: 10,
+          },
         },
       },
     },
@@ -392,6 +395,13 @@ const saltise = createTheme({
         },
         fontSizeLarge: {
           fontSize: "24px",
+        },
+      },
+    },
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#E9EBF2",
         },
       },
     },

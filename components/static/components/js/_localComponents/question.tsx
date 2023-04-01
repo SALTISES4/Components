@@ -156,9 +156,7 @@ export function Question({
               color: "primary.main",
             },
           }}
-          title={
-            showDetails ? gettext("Hide details") : gettext("Show details")
-          }
+          title={showDetails ? gettext("Hide data") : gettext("Show data")}
         />
       );
     }

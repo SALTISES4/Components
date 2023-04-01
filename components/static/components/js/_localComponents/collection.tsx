@@ -170,12 +170,18 @@ export class Collection extends Component<CollectionProps> {
           icon={<BookmarkAddOutlinedIcon />}
           checkedIcon={<BookmarkAddedIcon />}
           onChange={this.props.toggleBookmarked}
+          onClick={(evt: MouseEvent) => evt.stopPropagation()}
           sx={{
             color: "primary.main",
             "&.Mui-checked": {
               color: "primary.main",
             },
           }}
+          title={
+            this.props.collection.followed_by_user
+              ? this.props.gettext("Remove from library")
+              : this.props.gettext("Add to library")
+          }
         />
       );
     }
@@ -185,7 +191,9 @@ export class Collection extends Component<CollectionProps> {
     return (
       <Card>
         <CardActionArea
+          disableRipple={true}
           onClick={() => (window.location.href = this.props.collection.url)}
+          sx={{ userSelect: "text" }}
         >
           <CardHeader
             avatar={this.avatar()}
@@ -207,29 +215,29 @@ export class Collection extends Component<CollectionProps> {
               {this.props.collection.description}
             </Typography>
           </CardContent>
+          <CardActions sx={{ justifyContent: "space-between" }}>
+            <Stack direction="row" spacing="5px">
+              {this.discipline()}
+              <Tag
+                sx={{
+                  bgcolor: "white",
+                  borderStyle: "solid",
+                  paddingTop: "3px",
+                  paddingBottom: "3px",
+                }}
+              >
+                <BookmarksIcon fontSize="small" />
+                <Typography>
+                  {this.props.collection.follower_count}{" "}
+                  {this.props.collection.follower_count == 1
+                    ? this.props.gettext("follower")
+                    : this.props.gettext("followers")}
+                </Typography>
+              </Tag>
+            </Stack>
+            {this.bookmarkIcon()}
+          </CardActions>
         </CardActionArea>
-        <CardActions sx={{ justifyContent: "space-between" }}>
-          <Stack direction="row" spacing="5px">
-            {this.discipline()}
-            <Tag
-              sx={{
-                bgcolor: "white",
-                borderStyle: "solid",
-                paddingTop: "3px",
-                paddingBottom: "3px",
-              }}
-            >
-              <BookmarksIcon fontSize="small" />
-              <Typography>
-                {this.props.collection.follower_count}{" "}
-                {this.props.collection.follower_count == 1
-                  ? this.props.gettext("follower")
-                  : this.props.gettext("followers")}
-              </Typography>
-            </Tag>
-          </Stack>
-          {this.bookmarkIcon()}
-        </CardActions>
       </Card>
     );
   }

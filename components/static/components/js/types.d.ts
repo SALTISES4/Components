@@ -123,9 +123,10 @@ export type LibraryAppProps = {
 
 export type LibraryAppState = {
   collections: CollectionType[];
+  collectionsLoading: boolean;
   height: number;
-  questionLoading: boolean;
   questions: QuestionType[];
+  questionsLoading: boolean;
   teacher: TeacherType | undefined;
   type: number;
 };

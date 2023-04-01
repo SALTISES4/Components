@@ -339,6 +339,7 @@ const saltise = createTheme({
         root: {
           borderColor: "#1743B3",
           color: "#1743B3",
+          fontSize: "16px",
         },
       },
       variants: [

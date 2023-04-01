@@ -12,6 +12,7 @@ import Stack from "@mui/material/Stack";
 
 //components
 import { Collection } from "./_localComponents/collection";
+import { Collection as CollectionSkeleton } from "./_skeletons/collection";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 
@@ -33,9 +34,10 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     super(props);
     this.state = {
       collections: [],
+      collectionsLoading: true,
       height: 0,
-      questionLoading: true,
       questions: [],
+      questionsLoading: true,
       teacher: undefined,
       type: 1,
     };
@@ -44,21 +46,38 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
   collections = () => {
     return (
       <Grid container spacing="20px">
-        {this.state.collections.map(
-          (collection: CollectionType, i: number) => (
-            <Grid key={i} item xs={6}>
-              <Collection
-                gettext={this.props.gettext}
-                getHeight={this.getHeight}
-                logo={this.props.logo}
-                minHeight={this.state.height}
-                collection={collection}
-                toggleBookmarked={() =>
-                  this.handleCollectionBookmarkClick(collection.follow_url)
-                }
-              />
+        {!this.state.collectionsLoading ? (
+          this.state.collections.map(
+            (collection: CollectionType, i: number) => (
+              <Grid key={i} item xs={6}>
+                <Collection
+                  gettext={this.props.gettext}
+                  getHeight={this.getHeight}
+                  logo={this.props.logo}
+                  minHeight={this.state.height}
+                  collection={collection}
+                  toggleBookmarked={() =>
+                    this.handleCollectionBookmarkClick(collection.follow_url)
+                  }
+                />
+              </Grid>
+            ),
+          )
+        ) : (
+          <Fragment>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
             </Grid>
-          ),
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+          </Fragment>
         )}
       </Grid>
     );
@@ -71,7 +90,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
   questions = () => {
     return (
       <Stack spacing="10px">
-        {!this.state.questionLoading ? (
+        {!this.state.questionsLoading ? (
           [...this.state.questions].map(
             (question: QuestionType, i: number) => (
               <Question
@@ -114,6 +133,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
 
     // Load collections
     try {
+      this.setState({ collectionsLoading: true });
       const collections = await get(this.props.urls.collections);
 
       this.setState(
@@ -123,6 +143,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
               +(b?.followed_by_user || false) -
               +(a?.followed_by_user || false),
           ) as CollectionType[],
+          collectionsLoading: false,
         },
         () => console.info(this.state),
       );
@@ -134,14 +155,13 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
 
     // Load questions
     try {
-      this.setState({ questionLoading: true });
+      this.setState({ questionsLoading: true });
       const questions = (await get(
         this.props.urls.questions,
       )) as QuestionType[];
 
       this.setState(
         {
-          questionLoading: false,
           questions: questions.sort((a: QuestionType, b: QuestionType) => {
             if (this.state.teacher) {
               return (
@@ -151,6 +171,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
             }
             return 0;
           }),
+          questionsLoading: false,
         },
         () => console.info(this.state),
       );

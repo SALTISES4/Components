@@ -45,7 +45,11 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
 
         const collections = await get(this.props.urls.collections);
         this.setState({
-          collections: (collections as any).results as CollectionType[],
+          collections: (collections as any).results.sort(
+            (a: CollectionType, b: CollectionType) =>
+              +(b?.followed_by_user || false) -
+              +(a?.followed_by_user || false),
+          ) as CollectionType[],
         });
       } catch (error) {
         console.error(error);
@@ -90,7 +94,11 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
 
       this.setState(
         {
-          collections: (collections as any).results as CollectionType[],
+          collections: (collections as any).results.sort(
+            (a: CollectionType, b: CollectionType) =>
+              +(b?.followed_by_user || false) -
+              +(a?.followed_by_user || false),
+          ) as CollectionType[],
         },
         () => console.info(this.state),
       );

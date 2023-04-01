@@ -115,12 +115,18 @@ export type LibraryAppProps = {
   nonce: string;
   urls: {
     collections: string;
+    questions: string;
+    teacher: string;
   };
+  user: UserType;
 };
 
 export type LibraryAppState = {
   collections: CollectionType[];
   height: number;
+  questionLoading: boolean;
+  questions: QuestionType[];
+  teacher: TeacherType | undefined;
   type: number;
 };
 

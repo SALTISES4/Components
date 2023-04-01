@@ -306,7 +306,7 @@ export function Question({
           </Box>
           <Typography variant="caption">
             {question.user?.username ? gettext("From") : ""}{" "}
-            {question.user.username}
+            {question.user?.username}
           </Typography>
           <Typography
             sx={{ cursor: "text", mb: "10px", mt: "20px" }}
@@ -318,9 +318,6 @@ export function Question({
         </CardContent>
         <CardActions>
           <Stack direction="row" spacing="5px">
-            {discipline()}
-            {categories()}
-            {extraCategories()}
             <Tag
               sx={{
                 bgcolor: "white",
@@ -337,6 +334,9 @@ export function Question({
                   : gettext("answers")}
               </Typography>
             </Tag>
+            {discipline()}
+            {categories()}
+            {extraCategories()}
           </Stack>
           <Stack
             direction="row"

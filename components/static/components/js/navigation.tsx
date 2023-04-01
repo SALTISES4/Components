@@ -27,10 +27,6 @@ export class App extends Component<NavigationAppProps, NavigationAppState> {
     this.state = {};
   }
 
-  componentDidMount(): void {
-    // Fetch data from db to overwrite placeholders
-  }
-
   cache = createCache({
     key: "nonced",
     nonce: this.props.nonce,

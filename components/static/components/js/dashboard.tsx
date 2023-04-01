@@ -206,7 +206,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     return (
       <ThemeProvider theme={saltise}>
         <CacheProvider value={this.cache}>
-          <Box width="calc(100% - 200px)" marginLeft="200px">
+          <Box margin="0 auto" maxWidth="980px" width="100%">
             <Typography variant="h1" align="center">
               {this.props.gettext("Good Morning,")} {this.props.user.username}
             </Typography>

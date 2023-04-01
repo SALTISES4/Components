@@ -646,12 +646,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     return (
       <ThemeProvider theme={saltise}>
         <CacheProvider value={this.cache}>
-          <Box
-            marginLeft="200px"
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-          >
+          <Box display="flex" flexDirection="column" alignItems="center">
             <Box
               width="100%"
               display="flex"

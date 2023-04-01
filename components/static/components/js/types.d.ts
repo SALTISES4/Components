@@ -109,6 +109,21 @@ export type SearchAppState = {
   timeoutID: number;
 };
 
+export type LibraryAppProps = {
+  gettext: (a: string) => string;
+  logo: string;
+  nonce: string;
+  urls: {
+    collections: string;
+  };
+};
+
+export type LibraryAppState = {
+  collections: CollectionType[];
+  height: number;
+  type: number;
+};
+
 export type NavigationAppProps = {
   logo: string;
   menuAddItems: LinkType[][];

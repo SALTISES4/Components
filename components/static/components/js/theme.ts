@@ -78,6 +78,13 @@ declare module "@mui/material/Button" {
     secondary4: true;
   }
 }
+
+declare module "@mui/material/Chip" {
+  interface ChipPropsVariantOverrides {
+    selected: true;
+  }
+}
+
 declare module "@mui/material/IconButton" {
   interface IconButtonPropsColorOverrides {}
 }
@@ -290,6 +297,15 @@ const saltise = createTheme({
         },
       },
     },
+    MuiCardActions: {
+      styleOverrides: {
+        root: {
+          height: "26px",
+          justifyContent: "space-between",
+          padding: "20px",
+        },
+      },
+    },
     MuiCardContent: {
       styleOverrides: {
         root: {
@@ -318,14 +334,22 @@ const saltise = createTheme({
         },
       },
     },
-    MuiCardActions: {
+    MuiChip: {
       styleOverrides: {
         root: {
-          height: "26px",
-          justifyContent: "space-between",
-          padding: "20px",
+          borderColor: "#1743B3",
+          color: "#1743B3",
         },
       },
+      variants: [
+        {
+          props: { variant: "selected" },
+          style: {
+            backgroundColor: "#1743B3",
+            color: "#fff",
+          },
+        },
+      ],
     },
     MuiDivider: {
       styleOverrides: {

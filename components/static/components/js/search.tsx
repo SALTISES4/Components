@@ -81,6 +81,15 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     };
   }
 
+  cache = createCache({
+    key: "nonced",
+    nonce: this.props.nonce,
+    prepend: true,
+    stylisPlugins: [prefixer],
+  });
+
+  pageWidth = "82%";
+
   typeFilterLabels = {
     Question: this.props.gettext("Question"),
     Assignment: this.props.gettext("Assigment"),
@@ -371,6 +380,34 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     this.sync();
   }
 
+  handleAssignmentBookmarkClick = async (pk: string): Promise<void> => {
+    if (this.state.teacher?.assignment_pks) {
+      const index = this.state.teacher.assignment_pks.indexOf(pk);
+      const newAssignmentPks = [...this.state.teacher.assignment_pks];
+      if (index >= 0) {
+        newAssignmentPks.splice(index, 1);
+      } else {
+        newAssignmentPks.unshift(pk);
+      }
+      try {
+        const teacher = (await submitData(
+          this.props.urls.teacher,
+          { assignment_pks: newAssignmentPks },
+          "PUT",
+        )) as TeacherType;
+
+        this.setState(
+          {
+            teacher,
+          },
+          () => console.info(this.state),
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
     if (this.state.teacher) {
       const index = this.state.teacher.favourite_questions.indexOf(pk);
@@ -453,6 +490,9 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                         assignment.pk,
                       )}
                       gettext={this.props.gettext}
+                      toggleBookmarked={() =>
+                        this.handleAssignmentBookmarkClick(assignment.pk)
+                      }
                     />
                   ),
                 )
@@ -635,15 +675,6 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       <CloseIcon fontSize="small" />
     </IconButton>
   );
-
-  cache = createCache({
-    key: "nonced",
-    nonce: this.props.nonce,
-    prepend: true,
-    stylisPlugins: [prefixer],
-  });
-
-  pageWidth = "82%";
 
   render() {
     return (

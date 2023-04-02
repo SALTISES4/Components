@@ -152,6 +152,34 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     this.sync();
   }
 
+  handleAssignmentBookmarkClick = async (pk: string): Promise<void> => {
+    if (this.state.teacher?.assignment_pks) {
+      const index = this.state.teacher.assignment_pks.indexOf(pk);
+      const newAssignmentPks = [...this.state.teacher.assignment_pks];
+      if (index >= 0) {
+        newAssignmentPks.splice(index, 1);
+      } else {
+        newAssignmentPks.unshift(pk);
+      }
+      try {
+        const teacher = (await submitData(
+          this.props.urls.teacher,
+          { assignment_pks: newAssignmentPks },
+          "PUT",
+        )) as TeacherType;
+
+        this.setState(
+          {
+            teacher,
+          },
+          () => console.info(this.state),
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   handleCollectionBookmarkClick = async (
     url: string | undefined,
   ): Promise<void> => {
@@ -284,6 +312,9 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                   assignment.pk,
                 )}
                 gettext={this.props.gettext}
+                toggleBookmarked={() =>
+                  this.handleAssignmentBookmarkClick(assignment.pk)
+                }
               />
             ),
           )

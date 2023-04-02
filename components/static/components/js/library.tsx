@@ -68,7 +68,17 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
 
       this.setState(
         {
-          assignments,
+          assignments: assignments.sort(
+            (a: AssignmentType, b: AssignmentType) => {
+              if (this.state.teacher) {
+                return (
+                  +this.state.teacher?.assignment_pks.includes(b.pk) -
+                  +this.state.teacher?.assignment_pks.includes(a.pk)
+                );
+              }
+              return 0;
+            },
+          ),
           assignmentsLoading: false,
         },
         () => console.info(this.state),
@@ -153,6 +163,9 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
   }
 
   handleAssignmentBookmarkClick = async (pk: string): Promise<void> => {
+    // Some extra logic needed here:
+    // - If user unbookmarks an assignment they don't own, drop from state
+    // - If user bookmarks or unbookmarks an assignment they own, resort
     if (this.state.teacher?.assignment_pks) {
       const index = this.state.teacher.assignment_pks.indexOf(pk);
       const newAssignmentPks = [...this.state.teacher.assignment_pks];
@@ -168,8 +181,25 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
           "PUT",
         )) as TeacherType;
 
+        let _assignments = [...this.state.assignments];
+
+        if (
+          _assignments.filter((a) => a.pk == pk)[0].owner ==
+          this.props.user.username
+        ) {
+          _assignments.sort((a: AssignmentType, b: AssignmentType) => {
+            return (
+              +newAssignmentPks.includes(b.pk) -
+              +newAssignmentPks.includes(a.pk)
+            );
+          });
+        } else if (index >= 0) {
+          _assignments = _assignments.filter((a) => a.pk != pk);
+        }
+
         this.setState(
           {
+            assignments: _assignments,
             teacher,
           },
           () => console.info(this.state),
@@ -186,8 +216,8 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     if (url) {
       try {
         await submitData(url, {}, "PUT");
-
         const collections = await get(this.props.urls.collections);
+
         this.setState({
           collections: (collections as any).results.sort(
             (a: CollectionType, b: CollectionType) =>

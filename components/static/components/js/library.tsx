@@ -15,6 +15,7 @@ import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { AssignmentBis } from "./_localComponents/assignment_bis";
 import { Collection } from "./_localComponents/collection";
 import { Collection as CollectionSkeleton } from "./_skeletons/collection";
+import { GroupAssignment } from "./_localComponents/assignment";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 
@@ -23,6 +24,7 @@ import { LibraryAppProps, LibraryAppState, TeacherType } from "./types";
 import {
   AssignmentType,
   CollectionType,
+  GroupAssignmentType,
   QuestionType,
 } from "./_localComponents/types";
 
@@ -43,6 +45,8 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
       assignmentsLoading: true,
       collections: [],
       collectionsLoading: true,
+      groupAssignments: [],
+      groupAssignmentsLoading: true,
       height: 0,
       questions: [],
       questionsLoading: true,
@@ -109,6 +113,53 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     }
   };
 
+  loadGroupAssignments = async (): Promise<void> => {
+    try {
+      this.setState({ groupAssignmentsLoading: true });
+
+      const groupAssignments = await get(this.props.urls.group_assignments);
+
+      // Groupby operation on assignment by pk
+      const groupedAssignments = groupAssignments.reduce(
+        (accumulator: {}, currentValue: {}) => {
+          if (
+            !Object.prototype.hasOwnProperty.call(
+              accumulator,
+              currentValue.assignment_pk,
+            )
+          ) {
+            accumulator[currentValue.assignment_pk] = { ...currentValue };
+            accumulator[currentValue.assignment_pk].groups = [];
+          }
+          accumulator[currentValue.assignment_pk].groups.unshift({
+            title: currentValue.group,
+            due_date: currentValue.due_date,
+            progress: currentValue.progress,
+            url: currentValue.url,
+          });
+          delete accumulator[currentValue.assignment_pk].due_date;
+          delete accumulator[currentValue.assignment_pk].group;
+          delete accumulator[currentValue.assignment_pk].progress;
+          delete accumulator[currentValue.assignment_pk].url;
+          return accumulator;
+        },
+        {},
+      );
+
+      this.setState(
+        {
+          groupAssignments: Object.values(
+            groupedAssignments,
+          ) as GroupAssignmentType[],
+          groupAssignmentsLoading: false,
+        },
+        () => console.info(this.state),
+      );
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
   loadQuestions = async (): Promise<void> => {
     try {
       this.setState({ questionsLoading: true });
@@ -152,6 +203,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     this.loadCollections();
 
     // Load assignments
+    this.loadGroupAssignments();
     this.loadAssignments();
 
     // Load questions
@@ -332,6 +384,23 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     // Combined list of GroupAssignments and Assignments
     return (
       <Stack spacing="10px">
+        {!this.state.groupAssignmentsLoading ? (
+          this.state.groupAssignments.map(
+            (assignment: GroupAssignmentType, i: number) => (
+              <GroupAssignment
+                key={i}
+                assignment={assignment}
+                gettext={this.props.gettext}
+              />
+            ),
+          )
+        ) : (
+          <Fragment>
+            <AssignmentSkeleton />
+            <AssignmentSkeleton />
+            <AssignmentSkeleton />
+          </Fragment>
+        )}
         {!this.state.assignmentsLoading ? (
           this.state.assignments.map(
             (assignment: AssignmentType, i: number) => (

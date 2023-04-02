@@ -117,6 +117,7 @@ export type LibraryAppProps = {
   urls: {
     assignments: string;
     collections: string;
+    group_assignments: string;
     questions: string;
     teacher: string;
   };
@@ -128,6 +129,8 @@ export type LibraryAppState = {
   assignmentsLoading: boolean;
   collections: CollectionType[];
   collectionsLoading: boolean;
+  groupAssignments: GroupAssignmentType[];
+  groupAssignmentsLoading: boolean;
   height: number;
   questions: QuestionType[];
   questionsLoading: boolean;

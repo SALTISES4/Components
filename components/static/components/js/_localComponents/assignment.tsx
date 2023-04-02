@@ -65,29 +65,30 @@ export function GroupAssignment({
             </Typography>
           </Box>
           <Box display="flex" alignItems="center">
-            <Box>
-              <Tag
-                sx={{
-                  mx: "10px",
-                  minWidth: "102px",
-                  boxSizing: "border-box",
-                  display: "flex",
-                  justifyContent: "space-around",
-                }}
-              >
-                <FormatListBulletedIcon fontSize="small" />
-                <Typography>
-                  {assignment.questionCount} {gettext("questions")}
-                </Typography>
-              </Tag>
-            </Box>
-            <Box display="flex" sx={{ width: "190px" }}>
+            <Tag
+              sx={{
+                mx: "10px",
+                minWidth: "102px",
+                boxSizing: "border-box",
+                display: "flex",
+                justifyContent: "space-around",
+              }}
+            >
+              <FormatListBulletedIcon fontSize="small" />
+              <Typography>
+                {assignment.questionCount} {gettext("questions")}
+              </Typography>
+            </Tag>
+            <Box
+              display="flex"
+              sx={{ ml: "10px", mr: "10px", width: "102px" }}
+            >
               <AssignmentStateIcon state={assignment.distributionState} />
               <Typography variant="h4">
                 {assignment.distributionState}
               </Typography>
             </Box>
-            <Box display="flex" justifyContent="center" sx={{ width: "24px" }}>
+            <Box display="flex" justifyContent="end" sx={{ width: "118px" }}>
               {assignment.distributionState == "Distributed" ? icon() : null}
             </Box>
           </Box>

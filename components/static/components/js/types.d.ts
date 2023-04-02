@@ -11,6 +11,7 @@ import {
 type TeacherType = {
   activeAssignmentCount: number;
   activeGroupCount: number;
+  assignment_pks?: string[];
   createdQuestionCount: number;
   favourite_questions: number[];
 };

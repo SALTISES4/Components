@@ -113,7 +113,9 @@ export type GroupType = {
 
 export type AssignmentBisProps = {
   assignment: AssignmentType;
+  bookmarked?: boolean;
   gettext: (a: string) => string;
+  toggleBookmarked: () => void;
 };
 
 export type GroupAssignmentProps = {

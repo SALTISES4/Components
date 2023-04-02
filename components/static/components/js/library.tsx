@@ -280,6 +280,9 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
               <AssignmentBis
                 key={i}
                 assignment={assignment}
+                bookmarked={this.state.teacher?.assignment_pks?.includes(
+                  assignment.pk,
+                )}
                 gettext={this.props.gettext}
               />
             ),

@@ -449,6 +449,9 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                     <AssignmentBis
                       key={i}
                       assignment={assignment}
+                      bookmarked={this.state.teacher?.assignment_pks?.includes(
+                        assignment.pk,
+                      )}
                       gettext={this.props.gettext}
                     />
                   ),

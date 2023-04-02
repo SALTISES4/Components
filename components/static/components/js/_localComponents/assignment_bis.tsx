@@ -3,9 +3,10 @@ import { h } from "preact";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import IconButton from "@mui/material/IconButton";
+import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
@@ -16,7 +17,34 @@ import { AssignmentBisProps } from "./types";
 export function AssignmentBis({
   gettext,
   assignment,
+  bookmarked,
+  toggleBookmarked,
 }: AssignmentBisProps): JSX.Element {
+  const bookmarkIcon = () => {
+    if (bookmarked !== undefined) {
+      return (
+        <Checkbox
+          checked={bookmarked}
+          icon={<BookmarkAddOutlinedIcon />}
+          checkedIcon={<BookmarkAddedIcon />}
+          onChange={toggleBookmarked}
+          sx={{
+            color: "primary.main",
+            "&.Mui-checked": {
+              color: "primary.main",
+            },
+            ml: "80px",
+          }}
+          title={
+            bookmarked
+              ? gettext("Remove from library")
+              : gettext("Add to library")
+          }
+        />
+      );
+    }
+  };
+
   return (
     <Card>
       <CardContent sx={{ padding: "10px 20px" }}>
@@ -59,9 +87,7 @@ export function AssignmentBis({
                 {assignment.answer_count} {gettext("answers")}
               </Typography>
             </Tag>
-            <IconButton sx={{ ml: "80px" }}>
-              <BookmarkAddOutlinedIcon fontSize="medium" />
-            </IconButton>
+            {bookmarkIcon()}
           </Box>
         </Box>
       </CardContent>

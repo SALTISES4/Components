@@ -114,6 +114,7 @@ export type LibraryAppProps = {
   logo: string;
   nonce: string;
   urls: {
+    assignments: string;
     collections: string;
     questions: string;
     teacher: string;
@@ -122,6 +123,8 @@ export type LibraryAppProps = {
 };
 
 export type LibraryAppState = {
+  assignments: AssignmentType[];
+  assignmentsLoading: boolean;
   collections: CollectionType[];
   collectionsLoading: boolean;
   height: number;

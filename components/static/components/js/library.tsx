@@ -11,6 +11,8 @@ import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 
 //components
+import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
+import { AssignmentBis } from "./_localComponents/assignment_bis";
 import { Collection } from "./_localComponents/collection";
 import { Collection as CollectionSkeleton } from "./_skeletons/collection";
 import { Question } from "./_localComponents/question";
@@ -18,7 +20,11 @@ import { Question as QuestionSkeleton } from "./_skeletons/question";
 
 //types
 import { LibraryAppProps, LibraryAppState, TeacherType } from "./types";
-import { CollectionType, QuestionType } from "./_localComponents/types";
+import {
+  AssignmentType,
+  CollectionType,
+  QuestionType,
+} from "./_localComponents/types";
 
 //style
 import { prefixer } from "stylis";
@@ -33,6 +39,8 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
   constructor(props: LibraryAppProps) {
     super(props);
     this.state = {
+      assignments: [],
+      assignmentsLoading: true,
       collections: [],
       collectionsLoading: true,
       height: 0,
@@ -43,95 +51,34 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     };
   }
 
-  collections = () => {
-    return (
-      <Grid container spacing="20px">
-        {!this.state.collectionsLoading ? (
-          this.state.collections.map(
-            (collection: CollectionType, i: number) => (
-              <Grid key={i} item xs={6}>
-                <Collection
-                  gettext={this.props.gettext}
-                  getHeight={this.getHeight}
-                  logo={this.props.logo}
-                  minHeight={this.state.height}
-                  collection={collection}
-                  toggleBookmarked={() =>
-                    this.handleCollectionBookmarkClick(collection.follow_url)
-                  }
-                />
-              </Grid>
-            ),
-          )
-        ) : (
-          <Fragment>
-            <Grid item xs={6}>
-              <CollectionSkeleton />
-            </Grid>
-            <Grid item xs={6}>
-              <CollectionSkeleton />
-            </Grid>
-            <Grid item xs={6}>
-              <CollectionSkeleton />
-            </Grid>
-            <Grid item xs={6}>
-              <CollectionSkeleton />
-            </Grid>
-          </Fragment>
-        )}
-      </Grid>
-    );
-  };
+  cache = createCache({
+    key: "nonced",
+    nonce: this.props.nonce,
+    prepend: true,
+    stylisPlugins: [prefixer],
+  });
 
-  assignments = () => {
-    return;
-  };
-
-  questions = () => {
-    return (
-      <Stack spacing="10px">
-        {!this.state.questionsLoading ? (
-          [...this.state.questions].map(
-            (question: QuestionType, i: number) => (
-              <Question
-                key={i}
-                bookmarked={this.state.teacher?.favourite_questions?.includes(
-                  question.pk,
-                )}
-                gettext={this.props.gettext}
-                question={question}
-                toggleBookmarked={() =>
-                  this.handleQuestionBookmarkClick(question.pk)
-                }
-              />
-            ),
-          )
-        ) : (
-          <Fragment>
-            <QuestionSkeleton />
-            <QuestionSkeleton />
-            <QuestionSkeleton />
-            <QuestionSkeleton />
-            <QuestionSkeleton />
-          </Fragment>
-        )}
-      </Stack>
-    );
-  };
-
-  sync = async (): Promise<void> => {
-    // Load teacher info
+  loadAssignments = async (): Promise<void> => {
     try {
-      const teacher = (await get(this.props.urls.teacher)) as TeacherType;
+      this.setState({ assignmentsLoading: true });
 
-      this.setState({
-        teacher,
-      });
+      const assignments = (await get(
+        this.props.urls.assignments,
+      )) as AssignmentType[];
+
+      this.setState(
+        {
+          assignments,
+          assignmentsLoading: false,
+        },
+        () => console.info(this.state),
+      );
     } catch (error: any) {
       console.error(error);
     }
+  };
 
-    // Load collections
+  loadCollections = async (): Promise<void> => {
     try {
       this.setState({ collectionsLoading: true });
       const collections = await get(this.props.urls.collections);
@@ -150,10 +97,9 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     } catch (error: any) {
       console.error(error);
     }
+  };
 
-    // Load assignments
-
-    // Load questions
+  loadQuestions = async (): Promise<void> => {
     try {
       this.setState({ questionsLoading: true });
       const questions = (await get(
@@ -178,6 +124,28 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     } catch (error: any) {
       console.error(error);
     }
+  };
+
+  sync = async (): Promise<void> => {
+    // Load teacher info
+    try {
+      const teacher = (await get(this.props.urls.teacher)) as TeacherType;
+
+      this.setState({
+        teacher,
+      });
+    } catch (error: any) {
+      console.error(error);
+    }
+
+    // Load collections
+    this.loadCollections();
+
+    // Load assignments
+    this.loadAssignments();
+
+    // Load questions
+    this.loadQuestions();
   };
 
   componentDidMount(): void {
@@ -262,12 +230,102 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     }
   };
 
-  cache = createCache({
-    key: "nonced",
-    nonce: this.props.nonce,
-    prepend: true,
-    stylisPlugins: [prefixer],
-  });
+  collections = () => {
+    return (
+      <Grid container spacing="20px">
+        {!this.state.collectionsLoading ? (
+          this.state.collections.map(
+            (collection: CollectionType, i: number) => (
+              <Grid key={i} item xs={6}>
+                <Collection
+                  gettext={this.props.gettext}
+                  getHeight={this.getHeight}
+                  logo={this.props.logo}
+                  minHeight={this.state.height}
+                  collection={collection}
+                  toggleBookmarked={() =>
+                    this.handleCollectionBookmarkClick(collection.follow_url)
+                  }
+                />
+              </Grid>
+            ),
+          )
+        ) : (
+          <Fragment>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+          </Fragment>
+        )}
+      </Grid>
+    );
+  };
+
+  assignments = () => {
+    // Combined list of GroupAssignments and Assignments
+    return (
+      <Stack spacing="10px">
+        {!this.state.assignmentsLoading ? (
+          this.state.assignments.map(
+            (assignment: AssignmentType, i: number) => (
+              <AssignmentBis
+                key={i}
+                assignment={assignment}
+                gettext={this.props.gettext}
+              />
+            ),
+          )
+        ) : (
+          <Fragment>
+            <AssignmentSkeleton />
+            <AssignmentSkeleton />
+            <AssignmentSkeleton />
+          </Fragment>
+        )}
+      </Stack>
+    );
+  };
+
+  questions = () => {
+    return (
+      <Stack spacing="10px">
+        {!this.state.questionsLoading ? (
+          [...this.state.questions].map(
+            (question: QuestionType, i: number) => (
+              <Question
+                key={i}
+                bookmarked={this.state.teacher?.favourite_questions?.includes(
+                  question.pk,
+                )}
+                gettext={this.props.gettext}
+                question={question}
+                toggleBookmarked={() =>
+                  this.handleQuestionBookmarkClick(question.pk)
+                }
+              />
+            ),
+          )
+        ) : (
+          <Fragment>
+            <QuestionSkeleton />
+            <QuestionSkeleton />
+            <QuestionSkeleton />
+            <QuestionSkeleton />
+            <QuestionSkeleton />
+          </Fragment>
+        )}
+      </Stack>
+    );
+  };
 
   render() {
     return (

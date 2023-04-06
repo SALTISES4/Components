@@ -10,46 +10,46 @@ import { useState } from "preact/hooks";
 type LinkProps = {
   link: SankeyLink<{}, {}>;
   color: string;
-  maxWidth?: number;
+  opacityInit: number;
+  graphHeight: number;
 };
 
-function horizontalSourceO(d: any) {
-  const y = (d.source.y1 - d.source.y0) / 2 + d.source.y0;
-  return [d.source.x1, y];
+function horizontalSourceO(
+  link: SankeyLink<{}, {}>,
+  height: number,
+  linkWidth: number,
+) {
+  const y = (link.source.y1 - link.source.y0) / 2 + link.source.y0;
+  const yCorr = y > height / 2 ? y - linkWidth / 2 : y + linkWidth / 2;
+  return [link.source.x1, yCorr];
 }
 
-function horizontalTargetO(d: any) {
-  const y = (d.target.y1 - d.target.y0) / 2 + d.target.y0;
-  return [d.target.x0, y];
+function horizontalTargetO(
+  link: SankeyLink<{}, {}>,
+  height: number,
+  linkWidth: number,
+) {
+  const y = (link.target.y1 - link.target.y0) / 2 + link.target.y0;
+  const yCorr = y > height / 2 ? y - linkWidth / 2 : y + linkWidth / 2;
+  return [link.target.x0, yCorr];
 }
-
-function horizontalSource(d: any) {
-  return [d.source.x1, d.y0];
-}
-
-function horizontalTarget(d: any) {
-  return [d.target.x0, d.y1];
-}
-
-function sankeyLinkHorizontal() {
-  return linkHorizontal().source(horizontalSource).target(horizontalTarget);
-}
-
 function sankeyLinkHorizontalO() {
   return linkHorizontal().source(horizontalSourceO).target(horizontalTargetO);
 }
 
 // Component
-export default function Link({ link, color, maxWidth }: LinkProps) {
-  const linkWidth = maxWidth
-    ? (link.value / link.source.value) * maxWidth
-    : link.width;
+export default function Link({
+  link,
+  color,
+  opacityInit,
+  graphHeight,
+}: LinkProps) {
+  const linkWidth = (link.width / 100) * 50;
+  //  link.width < graphHeight / 2.7 ? link.width : (link.width / 100) * 75; //block to a max width
 
-  const path: string = maxWidth
-    ? sankeyLinkHorizontalO()(link)
-    : sankeyLinkHorizontal()(link);
+  const path: string = sankeyLinkHorizontalO()(link, graphHeight, linkWidth);
 
-  const [opacity, setOpacity] = useState(0.3);
+  const [opacity, setOpacity] = useState(opacityInit);
 
   return (
     <path
@@ -61,7 +61,7 @@ export default function Link({ link, color, maxWidth }: LinkProps) {
         strokeWidth: linkWidth && !isNaN(linkWidth) ? linkWidth : 0,
       }}
       onMouseEnter={() => setOpacity(0.8)}
-      onMouseLeave={() => setOpacity(0.3)}
+      onMouseLeave={() => setOpacity(opacityInit)}
     >
       <title>
         {link.source.name} -&gt; {link.target.name}: {link.value}

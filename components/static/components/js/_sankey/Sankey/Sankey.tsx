@@ -1,5 +1,5 @@
 // Libraries
-import { ComponentChildren, h } from "preact";
+import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 //import * as d3 from "d3";
 // Library Types
@@ -9,19 +9,22 @@ import {
   SankeyGraph,
   SankeyNode,
   SankeyLink,
+  SankeyExtraProperties,
 } from "d3-sankey";
 
 // Props
-interface SankeyProps<N, L> {
+interface SankeyProps<SankeyExtraProperties, SankeyExtraProperties> {
   data: {
-    nodes: SankeyNode<N, L>[];
-    links: SankeyLink<N, L>[];
+    nodes: SankeyNode<SankeyExtraProperties, SankeyExtraProperties>[];
+    links: SankeyLink<SankeyExtraProperties, SankeyExtraProperties>[];
   };
   width?: number;
   height?: number;
   nodeWidth: number;
   nodePadding: number;
-  children?: (sankey: { graph: SankeyGraph<N, L> }) => JSX.Element;
+  children?: (sankey: {
+    graph: SankeyGraph<SankeyExtraProperties, SankeyExtraProperties>;
+  }) => JSX.Element;
 }
 
 // Component
@@ -35,25 +38,27 @@ export function SankeyChart<N, L>({
 }: SankeyProps<N, L>) {
   // Handling Size
   const { width: windowWidth, height: windowHeight } = {
-    width: 120,
-    height: 150,
+    width: 600,
+    height: 300,
   };
 
   const sankeyWidth = width ? width : windowWidth - 100;
   const sankeyHeight = height ? height : windowHeight - 100;
 
   // State & Data
-  const [graph, setGraph] = useState<SankeyGraph<N, L>>({
+  const [graph, setGraph] = useState<
+    SankeyGraph<SankeyExtraProperties, SankeyExtraProperties>
+  >({
     nodes: [],
     links: [],
   });
   useEffect(() => {
     setGraph(
-      d3sankey()
+      d3sankey<SankeyExtraProperties, SankeyExtraProperties>()
         .nodeWidth(nodeWidth)
         .nodePadding(nodePadding)
         .extent([
-          [0, 0],
+          [1, 1],
           [sankeyWidth, sankeyHeight - 50],
         ])(data),
     );

@@ -86,6 +86,7 @@ export type QuestionType = {
   answer_count: number;
   answerchoice_set: AnswerChoiceType[];
   category?: { title: string }[];
+  collaborators?: UserType[];
   difficulty: QuestionDifficulty;
   discipline?: DisciplineType;
   image: string;
@@ -159,8 +160,9 @@ export type GroupStudentProps = {
 export type QuestionProps = {
   gettext: (a: string) => string;
   bookmarked?: boolean;
-  expanded?: boolean;
   difficultyLabels?: Record<string, string>;
+  expanded?: boolean;
   question: QuestionType;
+  showBookmark: boolean;
   toggleBookmarked: () => void;
 };

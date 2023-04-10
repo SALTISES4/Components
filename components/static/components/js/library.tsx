@@ -474,6 +474,11 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                   expanded={this.state.questionsExpanded}
                   gettext={this.props.gettext}
                   question={question}
+                  showBookmark={
+                    question.is_owner !== undefined
+                      ? !question.is_owner
+                      : false
+                  }
                   toggleBookmarked={() =>
                     this.handleQuestionBookmarkClick(question.pk)
                   }

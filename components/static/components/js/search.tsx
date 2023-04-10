@@ -601,6 +601,17 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       difficultyLabels={this.state.difficultyFilterLabels}
                       gettext={this.props.gettext}
                       question={question}
+                      showBookmark={
+                        question.is_owner !== undefined
+                          ? !question.is_owner
+                          : this.props.user.username !=
+                              question.user.username &&
+                            !(question.collaborators
+                              ? question.collaborators
+                                  .map((user) => user.username)
+                                  .includes(this.props.user.username)
+                              : false)
+                      }
                       toggleBookmarked={() =>
                         this.handleQuestionBookmarkClick(question.pk)
                       }

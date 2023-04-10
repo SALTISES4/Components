@@ -275,6 +275,11 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                       expanded={true}
                       gettext={this.props.gettext}
                       question={question}
+                      showBookmark={
+                        question.is_owner !== undefined
+                          ? !question.is_owner
+                          : false
+                      }
                       toggleBookmarked={() =>
                         this.handleQuestionBookmarkClick(question.pk)
                       }

@@ -37,9 +37,10 @@ const theme = saltise;
 export function Question({
   gettext,
   bookmarked,
-  expanded,
   difficultyLabels,
+  expanded,
   question,
+  showBookmark,
   toggleBookmarked,
 }: QuestionProps): JSX.Element {
   let maxCategoriesShown = 3;
@@ -201,7 +202,7 @@ export function Question({
   };
 
   const bookmarkIcon = () => {
-    if (bookmarked !== undefined && showDetails && !question.is_owner) {
+    if (bookmarked !== undefined && showDetails && showBookmark) {
       return (
         <Checkbox
           checked={bookmarked}

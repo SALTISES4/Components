@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable indent */
 import { h } from "preact";
 
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
@@ -36,15 +37,24 @@ const theme = saltise;
 export function Question({
   gettext,
   bookmarked,
+  expanded,
   difficultyLabels,
   question,
   toggleBookmarked,
 }: QuestionProps): JSX.Element {
+  const maxCategoriesShown = 3;
+
   const [{ showDetails }, setShowDetails] = useState<{
     showDetails: boolean;
   }>({ showDetails: false });
 
-  const maxCategoriesShown = 3;
+  useEffect(() => {
+    if (expanded !== undefined && showDetails != expanded) {
+      setShowDetails(() => ({
+        showDetails: expanded,
+      }));
+    }
+  }, [expanded]);
 
   const handleChange = (evt: MouseEvent) => {
     if (window.getSelection()?.toString()) {
@@ -54,6 +64,17 @@ export function Question({
     setShowDetails((prevState) => ({
       showDetails: !prevState.showDetails,
     }));
+  };
+
+  const text = () => {
+    if (showDetails) {
+      return (
+        <Typography
+          sx={{ cursor: "text", mb: "10px", mt: "20px" }}
+          dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer and elastic doc
+        />
+      );
+    }
   };
 
   const answerchoices = () => {
@@ -306,10 +327,7 @@ export function Question({
             {question.user?.username ? gettext("From") : ""}{" "}
             {question.user?.username}
           </Typography>
-          <Typography
-            sx={{ cursor: "text", mb: "10px", mt: "20px" }}
-            dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer and elastic doc
-          />
+          {text()}
           {image()}
           {video()}
           {answerchoices()}

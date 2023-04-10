@@ -133,6 +133,7 @@ export type LibraryAppState = {
   groupAssignmentsLoading: boolean;
   height: number;
   questions: QuestionType[];
+  questionsExpanded: boolean;
   questionsLoading: boolean;
   teacher: TeacherType | undefined;
   type: number;

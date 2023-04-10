@@ -7,7 +7,10 @@ import { get, submitData } from "./ajax";
 //mui
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
+import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import Stack from "@mui/material/Stack";
 
 //components
@@ -49,6 +52,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
       groupAssignmentsLoading: true,
       height: 0,
       questions: [],
+      questionsExpanded: false,
       questionsLoading: true,
       teacher: undefined,
       type: 1,
@@ -428,35 +432,71 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     );
   };
 
+  questionCTA = () => {
+    if (!this.state.questionsLoading) {
+      return (
+        <Box
+          alignItems="center"
+          display="flex"
+          mb="20px"
+          sx={{ flexFlow: "row-reverse", gridGap: "10px" }}
+        >
+          <Link
+            onClick={() =>
+              this.setState({
+                questionsExpanded: !this.state.questionsExpanded,
+              })
+            }
+            sx={{ cursor: "pointer" }}
+            variant="h4"
+          >
+            {this.state.questionsExpanded
+              ? this.props.gettext("Collapse all questions")
+              : this.props.gettext("Expand all questions")}
+          </Link>
+          {this.state.questionsExpanded ? (
+            <CloseFullscreenIcon color="primary" fontSize="small" />
+          ) : (
+            <OpenInFullIcon color="primary" fontSize="small" />
+          )}
+        </Box>
+      );
+    }
+  };
+
   questions = () => {
     return (
-      <Stack spacing="10px">
-        {!this.state.questionsLoading ? (
-          [...this.state.questions].map(
-            (question: QuestionType, i: number) => (
-              <Question
-                key={i}
-                bookmarked={this.state.teacher?.favourite_questions?.includes(
-                  question.pk,
-                )}
-                gettext={this.props.gettext}
-                question={question}
-                toggleBookmarked={() =>
-                  this.handleQuestionBookmarkClick(question.pk)
-                }
-              />
-            ),
-          )
-        ) : (
-          <Fragment>
-            <QuestionSkeleton />
-            <QuestionSkeleton />
-            <QuestionSkeleton />
-            <QuestionSkeleton />
-            <QuestionSkeleton />
-          </Fragment>
-        )}
-      </Stack>
+      <Fragment>
+        {this.questionCTA()}
+        <Stack spacing="10px">
+          {!this.state.questionsLoading ? (
+            [...this.state.questions].map(
+              (question: QuestionType, i: number) => (
+                <Question
+                  key={i}
+                  bookmarked={this.state.teacher?.favourite_questions?.includes(
+                    question.pk,
+                  )}
+                  expanded={this.state.questionsExpanded}
+                  gettext={this.props.gettext}
+                  question={question}
+                  toggleBookmarked={() =>
+                    this.handleQuestionBookmarkClick(question.pk)
+                  }
+                />
+              ),
+            )
+          ) : (
+            <Fragment>
+              <QuestionSkeleton />
+              <QuestionSkeleton />
+              <QuestionSkeleton />
+              <QuestionSkeleton />
+              <QuestionSkeleton />
+            </Fragment>
+          )}
+        </Stack>
+      </Fragment>
     );
   };
 

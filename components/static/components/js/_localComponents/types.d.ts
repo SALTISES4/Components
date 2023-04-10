@@ -157,6 +157,7 @@ export type GroupStudentProps = {
 export type QuestionProps = {
   gettext: (a: string) => string;
   bookmarked?: boolean;
+  expanded?: boolean;
   difficultyLabels?: Record<string, string>;
   question: QuestionType;
   toggleBookmarked: () => void;

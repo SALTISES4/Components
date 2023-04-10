@@ -29,7 +29,7 @@ const tsProject = ts.createProject("tsconfig.json");
 //   "search",
 //   "library",
 // ];
-const modules = ["dashboard"];
+const modules = ["search", "dashboard", "library"];
 
 function typescript() {
   const build = gulp

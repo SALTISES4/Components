@@ -15,8 +15,9 @@ export const DueInTag = ({ gettext, dueDate }: DueInTagProps) => {
         <Tag
           sx={{
             mr: "10px",
-            color: "error.main",
-            backgroundColor: "errorTint.main",
+            color: daysDifference <= 3 ? "error.main" : "success.main",
+            backgroundColor:
+              daysDifference <= 3 ? "errorTint.main" : "successTint.main",
           }}
         >
           <AlarmIcon fontSize="small" />

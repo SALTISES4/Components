@@ -409,6 +409,11 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                   assignment.pk,
                 )}
                 gettext={this.props.gettext}
+                showBookmark={
+                  assignment.is_owner !== undefined
+                    ? !assignment.is_owner
+                    : false
+                }
                 toggleBookmarked={() =>
                   this.handleAssignmentBookmarkClick(assignment.pk)
                 }

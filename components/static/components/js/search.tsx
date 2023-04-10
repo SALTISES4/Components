@@ -490,6 +490,15 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                         assignment.pk,
                       )}
                       gettext={this.props.gettext}
+                      showBookmark={
+                        assignment.is_owner !== undefined
+                          ? !assignment.is_owner
+                          : !(assignment.owner
+                              ? assignment.owner
+                                  .map((user) => user.username)
+                                  .includes(this.props.user.username)
+                              : false)
+                      }
                       toggleBookmarked={() =>
                         this.handleAssignmentBookmarkClick(assignment.pk)
                       }

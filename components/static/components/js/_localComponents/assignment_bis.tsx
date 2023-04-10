@@ -18,10 +18,11 @@ export function AssignmentBis({
   gettext,
   assignment,
   bookmarked,
+  showBookmark,
   toggleBookmarked,
 }: AssignmentBisProps): JSX.Element {
   const bookmarkIcon = () => {
-    if (bookmarked !== undefined && !assignment.is_owner) {
+    if (bookmarked !== undefined && showBookmark) {
       return (
         <Checkbox
           checked={bookmarked}
@@ -54,9 +55,17 @@ export function AssignmentBis({
             <Typography variant="h3">{assignment.title}</Typography>
             <Typography
               variant="caption"
-              sx={{ display: assignment.owner ? "block" : "none" }}
+              sx={{
+                display:
+                  assignment.owner && assignment.owner.length > 0
+                    ? "block"
+                    : "none",
+              }}
             >
-              {gettext("By")} {assignment.owner}
+              {gettext("By")}{" "}
+              {assignment.owner && assignment.owner.length > 0
+                ? assignment.owner[0]?.username
+                : ""}
             </Typography>
           </Box>
           <Box display="flex" alignItems="center">

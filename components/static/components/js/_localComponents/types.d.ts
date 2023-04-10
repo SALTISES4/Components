@@ -27,7 +27,7 @@ export type UserType = {
 export type AssignmentType = {
   answer_count: number;
   is_owner?: boolean;
-  owner: string;
+  owner: UserType[];
   pk: string;
   question_count: number;
   title: string;
@@ -118,6 +118,7 @@ export type AssignmentBisProps = {
   assignment: AssignmentType;
   bookmarked?: boolean;
   gettext: (a: string) => string;
+  showBookmark: boolean;
   toggleBookmarked: () => void;
 };
 

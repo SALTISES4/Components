@@ -42,11 +42,15 @@ export function Question({
   question,
   toggleBookmarked,
 }: QuestionProps): JSX.Element {
-  const maxCategoriesShown = 3;
+  let maxCategoriesShown = 3;
 
   const [{ showDetails }, setShowDetails] = useState<{
     showDetails: boolean;
   }>({ showDetails: false });
+
+  const [{ showAllCategories }, setShowAllCategories] = useState<{
+    showAllCategories: boolean;
+  }>({ showAllCategories: false });
 
   useEffect(() => {
     if (expanded !== undefined && showDetails != expanded) {
@@ -245,6 +249,9 @@ export function Question({
   };
 
   const categories = () => {
+    if (showAllCategories && question.category) {
+      maxCategoriesShown = question.category.length;
+    }
     return question.category
       ?.slice(0, maxCategoriesShown)
       .map((category, i) => (
@@ -259,15 +266,15 @@ export function Question({
       question.category !== undefined &&
       question.category.length > maxCategoriesShown
     ) {
-      const list = question.category
-        .slice(maxCategoriesShown)
-        .reduce(
-          (acc, curr, i, arr) =>
-            `${acc}${curr.title}${i < arr.length - 1 ? "\n" : ""}`,
-          "",
-        );
       return (
-        <Tag title={list}>
+        <Tag
+          onClick={(evt: MouseEvent) => {
+            evt.stopPropagation();
+            setShowAllCategories({ showAllCategories: true });
+          }}
+          sx={{ cursor: "pointer" }}
+          title={gettext("Click to show all categories")}
+        >
           <Typography>{`+${
             question.category.length - maxCategoriesShown
           } ${gettext("more")}`}</Typography>

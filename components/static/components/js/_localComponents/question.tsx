@@ -201,7 +201,7 @@ export function Question({
   };
 
   const bookmarkIcon = () => {
-    if (bookmarked !== undefined && showDetails) {
+    if (bookmarked !== undefined && showDetails && !question.is_owner) {
       return (
         <Checkbox
           checked={bookmarked}

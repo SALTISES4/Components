@@ -21,7 +21,7 @@ export function AssignmentBis({
   toggleBookmarked,
 }: AssignmentBisProps): JSX.Element {
   const bookmarkIcon = () => {
-    if (bookmarked !== undefined) {
+    if (bookmarked !== undefined && !assignment.is_owner) {
       return (
         <Checkbox
           checked={bookmarked}
@@ -43,6 +43,7 @@ export function AssignmentBis({
         />
       );
     }
+    return <Box height="38px" ml="80px" width="38px" />;
   };
 
   return (

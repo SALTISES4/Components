@@ -78,13 +78,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
         {
           assignments: assignments.sort(
             (a: AssignmentType, b: AssignmentType) => {
-              if (this.state.teacher) {
-                return (
-                  +this.state.teacher?.assignment_pks.includes(b.pk) -
-                  +this.state.teacher?.assignment_pks.includes(a.pk)
-                );
-              }
-              return 0;
+              return +(a.is_owner || false) - +(b.is_owner || false);
             },
           ),
           assignmentsLoading: false,

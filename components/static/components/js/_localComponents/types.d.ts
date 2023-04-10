@@ -26,6 +26,7 @@ export type UserType = {
 
 export type AssignmentType = {
   answer_count: number;
+  is_owner?: boolean;
   owner: string;
   pk: string;
   question_count: number;
@@ -89,6 +90,7 @@ export type QuestionType = {
   discipline?: DisciplineType;
   image: string;
   image_alt_text: string;
+  is_owner?: boolean;
   peer_impact: QuestionPeerImpact;
   pk: number;
   text: string;

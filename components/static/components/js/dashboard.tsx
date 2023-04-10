@@ -272,6 +272,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                       bookmarked={this.state.teacher.favourite_questions?.includes(
                         question.pk,
                       )}
+                      expanded={true}
                       gettext={this.props.gettext}
                       question={question}
                       toggleBookmarked={() =>

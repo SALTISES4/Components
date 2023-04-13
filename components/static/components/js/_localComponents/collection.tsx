@@ -160,13 +160,10 @@ export class Collection extends Component<CollectionProps> {
   };
 
   bookmarkIcon = () => {
-    if (
-      this.props.collection.followed_by_user !== undefined &&
-      this.props.collection.follow_url !== undefined
-    ) {
+    if (this.props.bookmarked !== undefined) {
       return (
         <Checkbox
-          checked={this.props.collection.followed_by_user}
+          checked={this.props.bookmarked}
           icon={<BookmarkAddOutlinedIcon />}
           checkedIcon={<BookmarkAddedIcon />}
           onChange={this.props.toggleBookmarked}
@@ -178,7 +175,7 @@ export class Collection extends Component<CollectionProps> {
             },
           }}
           title={
-            this.props.collection.followed_by_user
+            this.props.bookmarked
               ? this.props.gettext("Remove from library")
               : this.props.gettext("Add to library")
           }
@@ -227,12 +224,7 @@ export class Collection extends Component<CollectionProps> {
                 }}
               >
                 <BookmarksIcon fontSize="small" />
-                <Typography>
-                  {this.props.collection.follower_count}{" "}
-                  {this.props.collection.follower_count == 1
-                    ? this.props.gettext("follower")
-                    : this.props.gettext("followers")}
-                </Typography>
+                <Typography>{this.props.collection.follower_count}</Typography>
               </Tag>
             </Stack>
             {this.bookmarkIcon()}

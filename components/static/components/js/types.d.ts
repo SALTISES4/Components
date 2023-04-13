@@ -12,6 +12,7 @@ type TeacherType = {
   activeAssignmentCount: number;
   activeGroupCount: number;
   assignment_pks?: string[];
+  bookmarked_collections: number[];
   createdQuestionCount: number;
   favourite_questions: number[];
 };
@@ -43,10 +44,13 @@ export type DashboardAppProps = {
 
 export type DashboardAppState = {
   assignments: GroupAssignmentType[];
+  assignmentsLoading: boolean;
   collections: CollectionType[];
+  collectionsLoading: boolean;
   height: number;
   questions: QuestionType[];
-  teacher: TeacherType;
+  questionsLoading: boolean;
+  teacher: TeacherType | undefined;
 };
 
 type SearchData = {
@@ -68,7 +72,6 @@ export type SearchAppProps = {
   urls: {
     assignments: string;
     backgroundImage: string;
-    collections: string;
     recommendations: {
       assignments: string;
       collections: string;
@@ -87,6 +90,7 @@ export type SearchAppState = {
   categoryFilters: string[];
   collectionHitCount: number;
   collections: CollectionType[];
+  collectionsLoaded: boolean;
   difficultyFilters: string[];
   difficultyFilterLabels: Record<string, string>;
   disciplineFilters: string[];

@@ -51,13 +51,10 @@ export type GroupAssignmentType = {
 type DisciplineType = { pk: number; title: string };
 
 export type CollectionType = {
-  answerCount: number;
   author: string;
   description: string;
   discipline?: DisciplineType;
   featured?: boolean;
-  followed_by_user?: boolean;
-  follow_url?: string;
   follower_count?: number;
   pk: number;
   title: string;
@@ -140,6 +137,7 @@ export type AssignmentStudentCompletedProps = {
 };
 
 export type CollectionProps = {
+  bookmarked?: boolean;
   gettext: (a: string) => string;
   getHeight: (height: number) => void;
   logo: string;

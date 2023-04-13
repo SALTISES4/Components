@@ -57,6 +57,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       categoryFilters: [],
       collectionHitCount: 0,
       collections: [],
+      collectionsLoaded: false,
       difficultyFilterLabels: {},
       difficultyFilters: [],
       disciplineFilters: [],
@@ -318,6 +319,30 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     }
   };
 
+  getRecommendedCollections = async (): Promise<void> => {
+    // Load a set of recommended collections
+    try {
+      this.setState({
+        collectionsLoaded: false,
+      });
+
+      const collections = (await get(
+        this.props.urls.recommendations.collections,
+      )) as CollectionType[];
+
+      this.setState({
+        collectionHitCount: collections.length,
+        collections,
+      });
+    } catch (error: any) {
+      this.error(error);
+    } finally {
+      this.setState({
+        collectionsLoaded: true,
+      });
+    }
+  };
+
   getRecommendedQuestions = async (): Promise<void> => {
     // Load a set of recommended questions
     try {
@@ -357,22 +382,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     // Load a set of recommended assignments
     this.getRecommendedAssignments();
 
+    // Load a set of recommended assignments
+    this.getRecommendedCollections();
+
     // Load a set of recommended questions
     this.getRecommendedQuestions();
-
-    // Load a set of recommended collections
-    try {
-      const collections = await get(this.props.urls.collections);
-
-      this.setState(
-        {
-          collections: (collections as any).results as CollectionType[],
-        },
-        () => console.info(this.state),
-      );
-    } catch (error: any) {
-      this.error(error);
-    }
   };
 
   componentDidMount(): void {
@@ -438,18 +452,28 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     }
   };
 
-  handleCollectionBookmarkClick = async (
-    url: string | undefined,
-  ): Promise<void> => {
-    if (url) {
+  handleCollectionBookmarkClick = async (pk: number): Promise<void> => {
+    if (this.state.teacher) {
+      const index = this.state.teacher.bookmarked_collections.indexOf(pk);
+      const newBookmarkedCollections = [
+        ...this.state.teacher.bookmarked_collections,
+      ];
+      if (index >= 0) {
+        newBookmarkedCollections.splice(index, 1);
+      } else {
+        newBookmarkedCollections.unshift(pk);
+      }
       try {
-        await submitData(url, {}, "PUT");
+        const teacher = (await submitData(
+          this.props.urls.teacher,
+          { bookmarked_collections: newBookmarkedCollections },
+          "PUT",
+        )) as TeacherType;
 
-        const collections = await get(this.props.urls.collections);
         this.setState({
-          collections: (collections as any).results as CollectionType[],
+          teacher,
         });
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
       }
     }
@@ -533,7 +557,9 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           <Subtitle>
             <Typography variant="h2">
               {this.state.collectionHitCount}{" "}
-              {this.state.collectionHitCount != 1
+              {this.state.searchTerm.length == 0
+                ? this.props.gettext("recommended Collections")
+                : this.state.collectionHitCount != 1
                 ? this.props.gettext("results in Collections")
                 : this.props.gettext("result in Collections")}
             </Typography>
@@ -543,13 +569,16 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               (collection: CollectionType, i: number) => (
                 <Grid key={i} item xs={6}>
                   <Collection
+                    bookmarked={this.state.teacher?.bookmarked_collections?.includes(
+                      collection.pk,
+                    )}
                     collection={collection}
                     gettext={this.props.gettext}
                     getHeight={this.getHeight}
                     logo={this.props.logo}
                     minHeight={this.state.height}
                     toggleBookmarked={() =>
-                      this.handleCollectionBookmarkClick(collection.follow_url)
+                      this.handleCollectionBookmarkClick(collection.pk)
                     }
                   />
                 </Grid>

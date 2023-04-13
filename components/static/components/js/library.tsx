@@ -234,8 +234,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
         let _assignments = [...this.state.assignments];
 
         if (
-          _assignments.filter((a) => a.pk == pk)[0].owner ==
-          this.props.user.username
+          _assignments.filter((a) => a.pk == pk)[0].owner[0] == this.props.user
         ) {
           _assignments.sort((a: AssignmentType, b: AssignmentType) => {
             return (
@@ -260,20 +259,26 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     }
   };
 
-  handleCollectionBookmarkClick = async (
-    url: string | undefined,
-  ): Promise<void> => {
-    if (url) {
+  handleCollectionBookmarkClick = async (pk: number): Promise<void> => {
+    if (this.state.teacher) {
+      const index = this.state.teacher.bookmarked_collections.indexOf(pk);
+      const newBookmarkedCollections = [
+        ...this.state.teacher.bookmarked_collections,
+      ];
+      if (index >= 0) {
+        newBookmarkedCollections.splice(index, 1);
+      } else {
+        newBookmarkedCollections.unshift(pk);
+      }
       try {
-        await submitData(url, {}, "PUT");
-        const collections = await get(this.props.urls.collections);
+        const teacher = (await submitData(
+          this.props.urls.teacher,
+          { bookmarked_collections: newBookmarkedCollections },
+          "PUT",
+        )) as TeacherType;
 
         this.setState({
-          collections: (collections as any).results.sort(
-            (a: CollectionType, b: CollectionType) =>
-              +(b?.followed_by_user || false) -
-              +(a?.followed_by_user || false),
-          ) as CollectionType[],
+          teacher,
         });
       } catch (error) {
         console.error(error);
@@ -346,13 +351,16 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
             (collection: CollectionType, i: number) => (
               <Grid key={i} item xs={6}>
                 <Collection
+                  bookmarked={this.state.teacher?.bookmarked_collections?.includes(
+                    collection.pk,
+                  )}
                   gettext={this.props.gettext}
                   getHeight={this.getHeight}
                   logo={this.props.logo}
                   minHeight={this.state.height}
                   collection={collection}
                   toggleBookmarked={() =>
-                    this.handleCollectionBookmarkClick(collection.follow_url)
+                    this.handleCollectionBookmarkClick(collection.pk)
                   }
                 />
               </Grid>

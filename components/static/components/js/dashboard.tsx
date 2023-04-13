@@ -1,4 +1,4 @@
-import { Component, h, render } from "preact";
+import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
 import { get, submitData } from "./ajax";
@@ -16,9 +16,12 @@ import { Subtitle } from "./styledComponents";
 
 import { SuperUserBar } from "./_dashboard/superUserBar";
 
+import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { GroupAssignment } from "./_localComponents/assignment";
 import { Collection } from "./_localComponents/collection";
+import { Collection as CollectionSkeleton } from "./_skeletons/collection";
 import { Question } from "./_localComponents/question";
+import { Question as QuestionSkeleton } from "./_skeletons/question";
 
 //types
 import {
@@ -37,62 +40,34 @@ import saltise from "./theme";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-import { assignments, collections, questions, teacher } from "./data";
-
 export class App extends Component<DashboardAppProps, DashboardAppState> {
   constructor(props: DashboardAppProps) {
     super(props);
     this.state = {
-      assignments,
-      collections,
+      assignments: [],
+      assignmentsLoading: true,
+      collections: [],
+      collectionsLoading: true,
       height: 0,
-      questions,
-      teacher,
+      questions: [],
+      questionsLoading: true,
+      teacher: undefined,
     };
   }
 
-  assignments = () => {
-    if (this.state.assignments?.length > 0) {
-      return (
-        <Stack spacing="10px">
-          {this.state.assignments.map(
-            (assignment: GroupAssignmentType, i: number) => (
-              <GroupAssignment
-                key={i}
-                assignment={assignment}
-                gettext={this.props.gettext}
-              />
-            ),
-          )}
-        </Stack>
-      );
-    }
-    return (
-      <Typography>
-        {this.props.gettext("You have no recently due assignments.")}
-      </Typography>
-    );
-  };
-
-  collectionsTitle = () => {
-    if (this.state.collections.every((collection) => collection.featured)) {
-      return (
-        <Typography variant="h2">
-          {this.props.gettext("Featured Collections")}
-        </Typography>
-      );
-    }
-    return (
-      <Typography variant="h2">
-        {this.props.gettext("Sample Collections")}
-      </Typography>
-    );
-  };
+  cache = createCache({
+    key: "nonced",
+    nonce: this.props.nonce,
+    prepend: true,
+    stylisPlugins: [prefixer],
+  });
 
   sync = async (): Promise<void> => {
     try {
       const assignments = await get(this.props.urls.assignments);
-      const collections = await get(this.props.urls.collections);
+      const collections = (await get(
+        this.props.urls.collections,
+      )) as CollectionType[];
       const questions = (await get(
         this.props.urls.questions,
       )) as QuestionType[];
@@ -130,8 +105,11 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
           assignments: Object.values(
             groupedAssignments,
           ) as GroupAssignmentType[],
-          collections: (collections as any).results as CollectionType[],
+          assignmentsLoading: false,
+          collections,
+          collectionsLoading: false,
           questions,
+          questionsLoading: false,
           teacher,
         },
         () => console.info(this.state),
@@ -147,43 +125,57 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
   }
 
   handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
-    const index = this.state.teacher.favourite_questions.indexOf(pk);
-    const newFavouriteQuestions = [...this.state.teacher.favourite_questions];
-    if (index >= 0) {
-      newFavouriteQuestions.splice(index, 1);
-    } else {
-      newFavouriteQuestions.unshift(pk);
-    }
-    try {
-      const teacher = (await submitData(
-        this.props.urls.teacher,
-        { favourite_questions: newFavouriteQuestions },
-        "PUT",
-      )) as TeacherType;
+    if (this.state.teacher) {
+      const index = this.state.teacher.favourite_questions.indexOf(pk);
+      const newFavouriteQuestions = [
+        ...this.state.teacher.favourite_questions,
+      ];
+      if (index >= 0) {
+        newFavouriteQuestions.splice(index, 1);
+      } else {
+        newFavouriteQuestions.unshift(pk);
+      }
+      try {
+        const teacher = (await submitData(
+          this.props.urls.teacher,
+          { favourite_questions: newFavouriteQuestions },
+          "PUT",
+        )) as TeacherType;
 
-      this.setState(
-        {
-          teacher,
-        },
-        () => console.info(this.state),
-      );
-    } catch (error) {
-      console.error(error);
+        this.setState(
+          {
+            teacher,
+          },
+          () => console.info(this.state),
+        );
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
-  handleCollectionBookmarkClick = async (
-    url: string | undefined,
-  ): Promise<void> => {
-    if (url) {
+  handleCollectionBookmarkClick = async (pk: number): Promise<void> => {
+    if (this.state.teacher) {
+      const index = this.state.teacher.bookmarked_collections.indexOf(pk);
+      const newBookmarkedCollections = [
+        ...this.state.teacher.bookmarked_collections,
+      ];
+      if (index >= 0) {
+        newBookmarkedCollections.splice(index, 1);
+      } else {
+        newBookmarkedCollections.unshift(pk);
+      }
       try {
-        await submitData(url, {}, "PUT");
+        const teacher = (await submitData(
+          this.props.urls.teacher,
+          { bookmarked_collections: newBookmarkedCollections },
+          "PUT",
+        )) as TeacherType;
 
-        const collections = await get(this.props.urls.collections);
         this.setState({
-          collections: (collections as any).results as CollectionType[],
+          teacher,
         });
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
       }
     }
@@ -195,12 +187,46 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     }
   };
 
-  cache = createCache({
-    key: "nonced",
-    nonce: this.props.nonce,
-    prepend: true,
-    stylisPlugins: [prefixer],
-  });
+  assignments = () => {
+    return (
+      <Stack spacing="10px">
+        {!this.state.assignmentsLoading ? (
+          this.state.assignments?.length > 0 ? (
+            this.state.assignments.map(
+              (assignment: GroupAssignmentType, i: number) => (
+                <GroupAssignment
+                  key={i}
+                  assignment={assignment}
+                  gettext={this.props.gettext}
+                />
+              ),
+            )
+          ) : (
+            <Typography>
+              {this.props.gettext("You have no recently due assignments.")}
+            </Typography>
+          )
+        ) : (
+          <AssignmentSkeleton />
+        )}
+      </Stack>
+    );
+  };
+
+  collectionsTitle = () => {
+    if (this.state.collections?.every((collection) => collection.featured)) {
+      return (
+        <Typography variant="h2">
+          {this.props.gettext("Featured Collections")}
+        </Typography>
+      );
+    }
+    return (
+      <Typography variant="h2">
+        {this.props.gettext("Recommended Collections")}
+      </Typography>
+    );
+  };
 
   render() {
     return (
@@ -235,23 +261,41 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                 </Link>
               </Subtitle>
               <Grid container spacing="20px">
-                {this.state.collections.map(
-                  (collection: CollectionType, i: number) => (
-                    <Grid key={i} item xs={6}>
-                      <Collection
-                        gettext={this.props.gettext}
-                        getHeight={this.getHeight}
-                        logo={this.props.logo}
-                        minHeight={this.state.height}
-                        collection={collection}
-                        toggleBookmarked={() =>
-                          this.handleCollectionBookmarkClick(
-                            collection.follow_url,
-                          )
-                        }
-                      />
+                {!this.state.collectionsLoading ? (
+                  this.state.collections?.map(
+                    (collection: CollectionType, i: number) => (
+                      <Grid key={i} item xs={6}>
+                        <Collection
+                          bookmarked={this.state.teacher?.bookmarked_collections?.includes(
+                            collection.pk,
+                          )}
+                          gettext={this.props.gettext}
+                          getHeight={this.getHeight}
+                          logo={this.props.logo}
+                          minHeight={this.state.height}
+                          collection={collection}
+                          toggleBookmarked={() =>
+                            this.handleCollectionBookmarkClick(collection.pk)
+                          }
+                        />
+                      </Grid>
+                    ),
+                  )
+                ) : (
+                  <Fragment>
+                    <Grid item xs={6}>
+                      <CollectionSkeleton />
                     </Grid>
-                  ),
+                    <Grid item xs={6}>
+                      <CollectionSkeleton />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <CollectionSkeleton />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <CollectionSkeleton />
+                    </Grid>
+                  </Fragment>
                 )}
               </Grid>
             </Container>
@@ -265,26 +309,35 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                 </Link>
               </Subtitle>
               <Stack spacing="10px">
-                {this.state.questions.map(
-                  (question: QuestionType, i: number) => (
-                    <Question
-                      key={i}
-                      bookmarked={this.state.teacher.favourite_questions?.includes(
-                        question.pk,
-                      )}
-                      expanded={true}
-                      gettext={this.props.gettext}
-                      question={question}
-                      showBookmark={
-                        question.is_owner !== undefined
-                          ? !question.is_owner
-                          : false
-                      }
-                      toggleBookmarked={() =>
-                        this.handleQuestionBookmarkClick(question.pk)
-                      }
-                    />
-                  ),
+                {!this.state.questionsLoading ? (
+                  this.state.questions.map(
+                    (question: QuestionType, i: number) => (
+                      <Question
+                        key={i}
+                        bookmarked={this.state.teacher?.favourite_questions?.includes(
+                          question.pk,
+                        )}
+                        expanded={true}
+                        gettext={this.props.gettext}
+                        question={question}
+                        showBookmark={
+                          question.is_owner !== undefined
+                            ? !question.is_owner
+                            : false
+                        }
+                        toggleBookmarked={() =>
+                          this.handleQuestionBookmarkClick(question.pk)
+                        }
+                      />
+                    ),
+                  )
+                ) : (
+                  <Fragment>
+                    <QuestionSkeleton />
+                    <QuestionSkeleton />
+                    <QuestionSkeleton />
+                    <QuestionSkeleton />
+                  </Fragment>
                 )}
               </Stack>
             </Container>

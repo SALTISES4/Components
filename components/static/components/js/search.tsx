@@ -9,7 +9,6 @@ import CategoryIcon from "@mui/icons-material/Category";
 import CloseIcon from "@mui/icons-material/Close";
 import Container from "@mui/material/Container";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import NetworkCheckIcon from "@mui/icons-material/NetworkCheck";
@@ -30,7 +29,7 @@ import { CacheProvider } from "@emotion/react";
 import { Subtitle } from "./styledComponents";
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { AssignmentBis } from "./_localComponents/assignment_bis";
-import { Collection } from "./_localComponents/collection";
+import { CollectionBlock } from "./_localComponents/collection";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { SearchFilter } from "./_search/searchFilter";
@@ -61,7 +60,6 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       difficultyFilterLabels: {},
       difficultyFilters: [],
       disciplineFilters: [],
-      height: 0,
       lastKeyStroke: 0,
       peerImpactFilterLabels: {},
       peerImpactFilters: [],
@@ -479,12 +477,6 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     }
   };
 
-  getHeight = (height: number) => {
-    if (height > this.state.height) {
-      this.setState({ height });
-    }
-  };
-
   assignmentResults = () => {
     if (this.state.selectedTypes.includes("Assignment")) {
       return (
@@ -564,27 +556,14 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 : this.props.gettext("result in Collections")}
             </Typography>
           </Subtitle>
-          <Grid container spacing="20px">
-            {this.state.collections.map(
-              (collection: CollectionType, i: number) => (
-                <Grid key={i} item xs={6}>
-                  <Collection
-                    bookmarked={this.state.teacher?.bookmarked_collections?.includes(
-                      collection.pk,
-                    )}
-                    collection={collection}
-                    gettext={this.props.gettext}
-                    getHeight={this.getHeight}
-                    logo={this.props.logo}
-                    minHeight={this.state.height}
-                    toggleBookmarked={() =>
-                      this.handleCollectionBookmarkClick(collection.pk)
-                    }
-                  />
-                </Grid>
-              ),
-            )}
-          </Grid>
+          <CollectionBlock
+            collections={this.state.collections}
+            gettext={this.props.gettext}
+            handleBookmarkClick={this.handleCollectionBookmarkClick}
+            loading={this.state.collectionsLoading}
+            logo={this.props.logo}
+            teacher={this.state.teacher}
+          />
         </Fragment>
       );
     }

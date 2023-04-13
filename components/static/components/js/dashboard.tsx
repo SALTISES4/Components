@@ -5,7 +5,6 @@ import { get, submitData } from "./ajax";
 
 //material ui components
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -18,8 +17,7 @@ import { SuperUserBar } from "./_dashboard/superUserBar";
 
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { GroupAssignment } from "./_localComponents/assignment";
-import { Collection } from "./_localComponents/collection";
-import { Collection as CollectionSkeleton } from "./_skeletons/collection";
+import { CollectionBlock } from "./_localComponents/collection";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 
@@ -48,7 +46,6 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
       assignmentsLoading: true,
       collections: [],
       collectionsLoading: true,
-      height: 0,
       questions: [],
       questionsLoading: true,
       teacher: undefined,
@@ -124,36 +121,6 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     this.sync();
   }
 
-  handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
-    if (this.state.teacher) {
-      const index = this.state.teacher.favourite_questions.indexOf(pk);
-      const newFavouriteQuestions = [
-        ...this.state.teacher.favourite_questions,
-      ];
-      if (index >= 0) {
-        newFavouriteQuestions.splice(index, 1);
-      } else {
-        newFavouriteQuestions.unshift(pk);
-      }
-      try {
-        const teacher = (await submitData(
-          this.props.urls.teacher,
-          { favourite_questions: newFavouriteQuestions },
-          "PUT",
-        )) as TeacherType;
-
-        this.setState(
-          {
-            teacher,
-          },
-          () => console.info(this.state),
-        );
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
   handleCollectionBookmarkClick = async (pk: number): Promise<void> => {
     if (this.state.teacher) {
       const index = this.state.teacher.bookmarked_collections.indexOf(pk);
@@ -181,9 +148,33 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     }
   };
 
-  getHeight = (height: number) => {
-    if (height > this.state.height) {
-      this.setState({ height });
+  handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
+    if (this.state.teacher) {
+      const index = this.state.teacher.favourite_questions.indexOf(pk);
+      const newFavouriteQuestions = [
+        ...this.state.teacher.favourite_questions,
+      ];
+      if (index >= 0) {
+        newFavouriteQuestions.splice(index, 1);
+      } else {
+        newFavouriteQuestions.unshift(pk);
+      }
+      try {
+        const teacher = (await submitData(
+          this.props.urls.teacher,
+          { favourite_questions: newFavouriteQuestions },
+          "PUT",
+        )) as TeacherType;
+
+        this.setState(
+          {
+            teacher,
+          },
+          () => console.info(this.state),
+        );
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -260,44 +251,14 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                   {this.props.gettext("Explore collections")}
                 </Link>
               </Subtitle>
-              <Grid container spacing="20px">
-                {!this.state.collectionsLoading ? (
-                  this.state.collections?.map(
-                    (collection: CollectionType, i: number) => (
-                      <Grid key={i} item xs={6}>
-                        <Collection
-                          bookmarked={this.state.teacher?.bookmarked_collections?.includes(
-                            collection.pk,
-                          )}
-                          gettext={this.props.gettext}
-                          getHeight={this.getHeight}
-                          logo={this.props.logo}
-                          minHeight={this.state.height}
-                          collection={collection}
-                          toggleBookmarked={() =>
-                            this.handleCollectionBookmarkClick(collection.pk)
-                          }
-                        />
-                      </Grid>
-                    ),
-                  )
-                ) : (
-                  <Fragment>
-                    <Grid item xs={6}>
-                      <CollectionSkeleton />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <CollectionSkeleton />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <CollectionSkeleton />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <CollectionSkeleton />
-                    </Grid>
-                  </Fragment>
-                )}
-              </Grid>
+              <CollectionBlock
+                collections={this.state.collections}
+                gettext={this.props.gettext}
+                handleBookmarkClick={this.handleCollectionBookmarkClick}
+                loading={this.state.collectionsLoading}
+                logo={this.props.logo}
+                teacher={this.state.teacher}
+              />
             </Container>
             <Container>
               <Subtitle>

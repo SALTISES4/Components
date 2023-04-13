@@ -47,7 +47,6 @@ export type DashboardAppState = {
   assignmentsLoading: boolean;
   collections: CollectionType[];
   collectionsLoading: boolean;
-  height: number;
   questions: QuestionType[];
   questionsLoading: boolean;
   teacher: TeacherType | undefined;
@@ -94,7 +93,6 @@ export type SearchAppState = {
   difficultyFilters: string[];
   difficultyFilterLabels: Record<string, string>;
   disciplineFilters: string[];
-  height: number;
   lastKeyStroke: number;
   peerImpactFilters: string[];
   peerImpactFilterLabels: Record<string, string>;
@@ -135,7 +133,6 @@ export type LibraryAppState = {
   collectionsLoading: boolean;
   groupAssignments: GroupAssignmentType[];
   groupAssignmentsLoading: boolean;
-  height: number;
   questions: QuestionType[];
   questionsExpanded: boolean;
   questionsLoading: boolean;

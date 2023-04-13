@@ -19,6 +19,8 @@ import {
   QuestionDifficultyLevels,
 } from "./enum";
 
+import { TeacherType } from "../types";
+
 export type UserType = {
   avatar?: string;
   username: string;
@@ -144,6 +146,19 @@ export type CollectionProps = {
   minHeight: number;
   collection: CollectionType;
   toggleBookmarked: () => void;
+};
+
+export type CollectionBlockProps = {
+  collections: CollectionType[];
+  gettext: (a: string) => string;
+  handleBookmarkClick: (a: number) => void;
+  loading: boolean;
+  logo: string;
+  teacher: TeacherType | undefined;
+};
+
+export type CollectionBlockState = {
+  height: number;
 };
 
 export type GroupProps = {

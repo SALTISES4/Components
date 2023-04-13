@@ -8,7 +8,6 @@ import { get, submitData } from "./ajax";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
-import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import Stack from "@mui/material/Stack";
@@ -16,8 +15,7 @@ import Stack from "@mui/material/Stack";
 //components
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { AssignmentBis } from "./_localComponents/assignment_bis";
-import { Collection } from "./_localComponents/collection";
-import { Collection as CollectionSkeleton } from "./_skeletons/collection";
+import { CollectionBlock } from "./_localComponents/collection";
 import { GroupAssignment } from "./_localComponents/assignment";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
@@ -50,7 +48,6 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
       collectionsLoading: true,
       groupAssignments: [],
       groupAssignmentsLoading: true,
-      height: 0,
       questions: [],
       questionsExpanded: false,
       questionsLoading: true,
@@ -337,55 +334,6 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     }
   };
 
-  getHeight = (height: number) => {
-    if (height > this.state.height) {
-      this.setState({ height });
-    }
-  };
-
-  collections = () => {
-    return (
-      <Grid container spacing="20px">
-        {!this.state.collectionsLoading ? (
-          this.state.collections.map(
-            (collection: CollectionType, i: number) => (
-              <Grid key={i} item xs={6}>
-                <Collection
-                  bookmarked={this.state.teacher?.bookmarked_collections?.includes(
-                    collection.pk,
-                  )}
-                  gettext={this.props.gettext}
-                  getHeight={this.getHeight}
-                  logo={this.props.logo}
-                  minHeight={this.state.height}
-                  collection={collection}
-                  toggleBookmarked={() =>
-                    this.handleCollectionBookmarkClick(collection.pk)
-                  }
-                />
-              </Grid>
-            ),
-          )
-        ) : (
-          <Fragment>
-            <Grid item xs={6}>
-              <CollectionSkeleton />
-            </Grid>
-            <Grid item xs={6}>
-              <CollectionSkeleton />
-            </Grid>
-            <Grid item xs={6}>
-              <CollectionSkeleton />
-            </Grid>
-            <Grid item xs={6}>
-              <CollectionSkeleton />
-            </Grid>
-          </Fragment>
-        )}
-      </Grid>
-    );
-  };
-
   assignments = () => {
     // Combined list of GroupAssignments and Assignments
     return (
@@ -538,11 +486,20 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
               />
             </Stack>
             <Box marginTop="40px">
-              {this.state.type == 1
-                ? this.collections()
-                : this.state.type == 2
-                ? this.assignments()
-                : this.questions()}
+              {this.state.type == 1 ? (
+                <CollectionBlock
+                  collections={this.state.collections}
+                  gettext={this.props.gettext}
+                  handleBookmarkClick={this.handleCollectionBookmarkClick}
+                  loading={this.state.collectionsLoading}
+                  logo={this.props.logo}
+                  teacher={this.state.teacher}
+                />
+              ) : this.state.type == 2 ? (
+                this.assignments()
+              ) : (
+                this.questions()
+              )}
             </Box>
           </Box>
         </CacheProvider>

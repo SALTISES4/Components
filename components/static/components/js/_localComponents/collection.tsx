@@ -1,4 +1,4 @@
-import { Component, createRef, h } from "preact";
+import { Component, createRef, Fragment, h } from "preact";
 
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
@@ -7,6 +7,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Checkbox from "@mui/material/Checkbox";
+import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import SvgIcon from "@mui/material/SvgIcon";
 import Typography from "@mui/material/Typography";
@@ -15,9 +16,16 @@ import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 
+import { Collection as CollectionSkeleton } from "../_skeletons/collection";
+
 import saltise from "../theme";
 import { Tag } from "../styledComponents";
-import { CollectionProps } from "./types";
+import {
+  CollectionBlockProps,
+  CollectionBlockState,
+  CollectionProps,
+  CollectionType,
+} from "./types";
 
 const theme = saltise;
 
@@ -231,6 +239,67 @@ export class Collection extends Component<CollectionProps> {
           </CardActions>
         </CardActionArea>
       </Card>
+    );
+  }
+}
+
+export class CollectionBlock extends Component<
+  CollectionBlockProps,
+  CollectionBlockState
+> {
+  constructor(props: CollectionBlockProps) {
+    super(props);
+    this.state = {
+      height: 0,
+    };
+  }
+
+  getHeight = (height: number) => {
+    if (height > this.state.height) {
+      this.setState({ height });
+    }
+  };
+
+  render() {
+    return (
+      <Grid container spacing="20px">
+        {!this.props.loading ? (
+          this.props.collections.map(
+            (collection: CollectionType, i: number) => (
+              <Grid key={i} item xs={6}>
+                <Collection
+                  bookmarked={this.props.teacher?.bookmarked_collections?.includes(
+                    collection.pk,
+                  )}
+                  collection={collection}
+                  gettext={this.props.gettext}
+                  getHeight={this.getHeight}
+                  logo={this.props.logo}
+                  minHeight={this.state.height}
+                  toggleBookmarked={() =>
+                    this.props.handleBookmarkClick(collection.pk)
+                  }
+                />
+              </Grid>
+            ),
+          )
+        ) : (
+          <Fragment>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+          </Fragment>
+        )}
+      </Grid>
     );
   }
 }

@@ -1,7 +1,9 @@
 import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
+//functions
 import { get, submitData } from "./ajax";
+import { handleCollectionBookmarkClick } from "./functions";
 
 //material ui components
 import Box from "@mui/material/Box";
@@ -121,33 +123,6 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     this.sync();
   }
 
-  handleCollectionBookmarkClick = async (pk: number): Promise<void> => {
-    if (this.state.teacher) {
-      const index = this.state.teacher.bookmarked_collections.indexOf(pk);
-      const newBookmarkedCollections = [
-        ...this.state.teacher.bookmarked_collections,
-      ];
-      if (index >= 0) {
-        newBookmarkedCollections.splice(index, 1);
-      } else {
-        newBookmarkedCollections.unshift(pk);
-      }
-      try {
-        const teacher = (await submitData(
-          this.props.urls.teacher,
-          { bookmarked_collections: newBookmarkedCollections },
-          "PUT",
-        )) as TeacherType;
-
-        this.setState({
-          teacher,
-        });
-      } catch (error: any) {
-        console.error(error);
-      }
-    }
-  };
-
   handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
     if (this.state.teacher) {
       const index = this.state.teacher.favourite_questions.indexOf(pk);
@@ -254,7 +229,14 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
               <CollectionBlock
                 collections={this.state.collections}
                 gettext={this.props.gettext}
-                handleBookmarkClick={this.handleCollectionBookmarkClick}
+                handleBookmarkClick={(pk: number) =>
+                  handleCollectionBookmarkClick(
+                    (teacher) => this.setState({ teacher }),
+                    pk,
+                    this.state.teacher,
+                    this.props.urls.teacher,
+                  )
+                }
                 loading={this.state.collectionsLoading}
                 logo={this.props.logo}
                 teacher={this.state.teacher}

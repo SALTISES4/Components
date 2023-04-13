@@ -3,6 +3,7 @@ import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
 import { get, submitData } from "./ajax";
+import { handleCollectionBookmarkClick } from "./functions";
 
 //mui
 import Box from "@mui/material/Box";
@@ -256,33 +257,6 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     }
   };
 
-  handleCollectionBookmarkClick = async (pk: number): Promise<void> => {
-    if (this.state.teacher) {
-      const index = this.state.teacher.bookmarked_collections.indexOf(pk);
-      const newBookmarkedCollections = [
-        ...this.state.teacher.bookmarked_collections,
-      ];
-      if (index >= 0) {
-        newBookmarkedCollections.splice(index, 1);
-      } else {
-        newBookmarkedCollections.unshift(pk);
-      }
-      try {
-        const teacher = (await submitData(
-          this.props.urls.teacher,
-          { bookmarked_collections: newBookmarkedCollections },
-          "PUT",
-        )) as TeacherType;
-
-        this.setState({
-          teacher,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
   handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
     // Some extra logic needed here:
     // - If user unbookmarks a question they don't own, drop from state
@@ -490,7 +464,14 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                 <CollectionBlock
                   collections={this.state.collections}
                   gettext={this.props.gettext}
-                  handleBookmarkClick={this.handleCollectionBookmarkClick}
+                  handleBookmarkClick={(pk: number) =>
+                    handleCollectionBookmarkClick(
+                      (teacher) => this.setState({ teacher }),
+                      pk,
+                      this.state.teacher,
+                      this.props.urls.teacher,
+                    )
+                  }
                   loading={this.state.collectionsLoading}
                   logo={this.props.logo}
                   teacher={this.state.teacher}

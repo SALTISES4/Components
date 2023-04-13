@@ -3,6 +3,7 @@ import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
 import { get, submitData } from "./ajax";
+import { handleCollectionBookmarkClick } from "./functions";
 
 import Box from "@mui/material/Box";
 import CategoryIcon from "@mui/icons-material/Category";
@@ -450,33 +451,6 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     }
   };
 
-  handleCollectionBookmarkClick = async (pk: number): Promise<void> => {
-    if (this.state.teacher) {
-      const index = this.state.teacher.bookmarked_collections.indexOf(pk);
-      const newBookmarkedCollections = [
-        ...this.state.teacher.bookmarked_collections,
-      ];
-      if (index >= 0) {
-        newBookmarkedCollections.splice(index, 1);
-      } else {
-        newBookmarkedCollections.unshift(pk);
-      }
-      try {
-        const teacher = (await submitData(
-          this.props.urls.teacher,
-          { bookmarked_collections: newBookmarkedCollections },
-          "PUT",
-        )) as TeacherType;
-
-        this.setState({
-          teacher,
-        });
-      } catch (error: any) {
-        console.error(error);
-      }
-    }
-  };
-
   assignmentResults = () => {
     if (this.state.selectedTypes.includes("Assignment")) {
       return (
@@ -559,8 +533,15 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           <CollectionBlock
             collections={this.state.collections}
             gettext={this.props.gettext}
-            handleBookmarkClick={this.handleCollectionBookmarkClick}
-            loading={this.state.collectionsLoading}
+            handleBookmarkClick={(pk: number) =>
+              handleCollectionBookmarkClick(
+                (teacher) => this.setState({ teacher }),
+                pk,
+                this.state.teacher,
+                this.props.urls.teacher,
+              )
+            }
+            loading={!this.state.collectionsLoaded}
             logo={this.props.logo}
             teacher={this.state.teacher}
           />

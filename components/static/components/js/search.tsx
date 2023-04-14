@@ -178,7 +178,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               {
                 categoryFilters: data.meta.categories,
                 difficultyFilterLabels: data.meta.difficulties.reduce(
-                  (acc, curr) => {
+                  (acc: Record<string, string>, curr: [number, string]) => {
                     acc[curr[0]] = curr[1];
                     return acc;
                   },
@@ -189,7 +189,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 ),
                 disciplineFilters: data.meta.disciplines,
                 peerImpactFilterLabels: data.meta.impacts.reduce(
-                  (acc, curr) => {
+                  (acc: Record<string, string>, curr: [number, string]) => {
                     acc[curr[0]] = curr[1];
                     return acc;
                   },
@@ -197,7 +197,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 ),
                 peerImpactFilters: data.meta.impacts.map((d) => `${d[0]}`),
                 questionHitCount: data.meta.hit_count,
-                questions: data.results,
+                questions: data.results as QuestionType[],
                 questionsLoaded: true,
               },
               () =>
@@ -719,7 +719,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   fullWidth
                   onInput={(evt: InputEvent) => {
                     this.setState(
-                      { searchTerm: evt.target?.value },
+                      { searchTerm: (evt.target as HTMLInputElement)?.value },
                       this.handleSubmit,
                     );
                   }}

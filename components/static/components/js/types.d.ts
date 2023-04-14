@@ -96,7 +96,7 @@ export type SearchAppState = {
   lastKeyStroke: number;
   peerImpactFilters: string[];
   peerImpactFilterLabels: Record<string, string>;
-  questionHitCount: number;
+  questionHitCount: number | undefined;
   questionLimit: number;
   questions: QuestionType[];
   questionsLoaded: boolean;

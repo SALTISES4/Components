@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
@@ -26,6 +27,7 @@ import { Question as QuestionSkeleton } from "./_skeletons/question";
 //types
 import {
   GroupAssignmentType,
+  GroupedAssignmentType,
   CollectionType,
   QuestionType,
 } from "./_localComponents/types";
@@ -61,29 +63,38 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     stylisPlugins: [prefixer],
   });
 
-  sync = async (): Promise<void> => {
+  getAssignments = async (): Promise<void> => {
+    // Load group assignments and regroup by assignment
     try {
-      const assignments = await get(this.props.urls.assignments);
-      const collections = (await get(
-        this.props.urls.collections,
-      )) as CollectionType[];
-      const questions = (await get(
-        this.props.urls.questions,
-      )) as QuestionType[];
-      const teacher = (await get(this.props.urls.teacher)) as TeacherType;
+      this.setState({
+        assignmentsLoading: true,
+      });
+
+      const assignments = (await get(
+        this.props.urls.assignments,
+      )) as GroupAssignmentType[];
 
       // Groupby operation on assignment by pk
       const groupedAssignments = assignments.reduce(
-        (accumulator: {}, currentValue: {}) => {
+        (
+          accumulator: Record<string, GroupedAssignmentType>,
+          currentValue: GroupAssignmentType,
+        ) => {
           if (
             !Object.prototype.hasOwnProperty.call(
               accumulator,
               currentValue.assignment_pk,
             )
           ) {
-            accumulator[currentValue.assignment_pk] = { ...currentValue };
-            accumulator[currentValue.assignment_pk].groups = [];
+            accumulator[currentValue.assignment_pk] = {
+              ...currentValue,
+              title: currentValue.title,
+              groups: [],
+              dueDate: undefined, // Needed?
+              pk: 0,
+            };
           }
+          // TODO: clean this up and refactor to a separate function
           accumulator[currentValue.assignment_pk].groups.unshift({
             title: currentValue.group,
             due_date: currentValue.due_date,
@@ -98,28 +109,82 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
         },
         {},
       );
-
-      this.setState(
-        {
-          assignments: Object.values(
-            groupedAssignments,
-          ) as GroupAssignmentType[],
-          assignmentsLoading: false,
-          collections,
-          collectionsLoading: false,
-          questions,
-          questionsLoading: false,
-          teacher,
-        },
-        () => console.info(this.state),
-      );
-    } catch (error) {
+      this.setState({
+        assignments: Object.values(
+          groupedAssignments,
+        ) as GroupedAssignmentType[],
+      });
+    } catch (error: any) {
       console.error(error);
+    } finally {
+      this.setState({
+        assignmentsLoading: false,
+      });
     }
   };
 
+  getRecommendedCollections = async (): Promise<void> => {
+    // Load a set of recommended collections
+    try {
+      this.setState({
+        collectionsLoading: true,
+      });
+
+      const collections = (await get(
+        this.props.urls.collections,
+      )) as CollectionType[];
+
+      this.setState({ collections });
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      this.setState({
+        collectionsLoading: false,
+      });
+    }
+  };
+
+  getQuestions = async (): Promise<void> => {
+    // Load a set of new questions
+    try {
+      this.setState({
+        questionsLoading: true,
+      });
+
+      const questions = (await get(
+        this.props.urls.questions,
+      )) as QuestionType[];
+
+      this.setState({ questions });
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      this.setState({
+        questionsLoading: false,
+      });
+    }
+  };
+
+  sync = async (): Promise<void> => {
+    try {
+      const teacher = (await get(this.props.urls.teacher)) as TeacherType;
+      this.setState({ teacher });
+    } catch (error) {
+      console.error(error);
+    }
+
+    // Load assignments
+    this.getAssignments();
+
+    // Load a set of recommended collections
+    this.getRecommendedCollections();
+
+    // Load new questions
+    this.getQuestions();
+  };
+
   componentDidMount(): void {
-    // Fetch data from db to overwrite placeholders
+    // Fetch data from db
     this.sync();
   }
 
@@ -159,7 +224,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
         {!this.state.assignmentsLoading ? (
           this.state.assignments?.length > 0 ? (
             this.state.assignments.map(
-              (assignment: GroupAssignmentType, i: number) => (
+              (assignment: GroupedAssignmentType, i: number) => (
                 <GroupAssignment
                   key={i}
                   assignment={assignment}

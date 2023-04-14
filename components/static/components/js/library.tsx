@@ -27,6 +27,7 @@ import {
   AssignmentType,
   CollectionType,
   GroupAssignmentType,
+  GroupedAssignmentType,
   QuestionType,
 } from "./_localComponents/types";
 
@@ -113,7 +114,9 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     try {
       this.setState({ groupAssignmentsLoading: true });
 
-      const groupAssignments = await get(this.props.urls.group_assignments);
+      const groupAssignments = (await get(
+        this.props.urls.group_assignments,
+      )) as GroupAssignmentType;
 
       // Groupby operation on assignment by pk
       const groupedAssignments = groupAssignments.reduce(
@@ -146,7 +149,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
         {
           groupAssignments: Object.values(
             groupedAssignments,
-          ) as GroupAssignmentType[],
+          ) as GroupedAssignmentType[],
           groupAssignmentsLoading: false,
         },
         () => console.info(this.state),

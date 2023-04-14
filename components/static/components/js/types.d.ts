@@ -3,7 +3,7 @@
 import {
   AssignmentType,
   CollectionType,
-  GroupAssignmentType,
+  GroupedAssignmentType,
   QuestionType,
   UserType,
 } from "./_localComponents/types";
@@ -43,7 +43,7 @@ export type DashboardAppProps = {
 };
 
 export type DashboardAppState = {
-  assignments: GroupAssignmentType[];
+  assignments: GroupedAssignmentType[];
   assignmentsLoading: boolean;
   collections: CollectionType[];
   collectionsLoading: boolean;
@@ -131,7 +131,7 @@ export type LibraryAppState = {
   assignmentsLoading: boolean;
   collections: CollectionType[];
   collectionsLoading: boolean;
-  groupAssignments: GroupAssignmentType[];
+  groupAssignments: GroupedAssignmentType[];
   groupAssignmentsLoading: boolean;
   questions: QuestionType[];
   questionsExpanded: boolean;

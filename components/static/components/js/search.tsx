@@ -370,10 +370,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     // Load teacher info
     try {
       const teacher = (await get(this.props.urls.teacher)) as TeacherType;
-
-      this.setState({
-        teacher,
-      });
+      this.setState({ teacher });
     } catch (error: any) {
       this.error(error);
     }

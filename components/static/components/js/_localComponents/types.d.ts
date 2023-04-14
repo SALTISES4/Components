@@ -38,10 +38,26 @@ export type AssignmentType = {
 export type GroupAssignmentType = {
   active: boolean;
   answerCount: number;
+  assignment_pk: string;
   author: string;
   difficulty: string;
   distributionState: DistributionState;
-  dueDate: Date;
+  due_date: Date;
+  group: string;
+  issueCount: number;
+  progress: number;
+  questionCount: number;
+  title: string;
+  url: string;
+};
+
+export type GroupedAssignmentType = {
+  active: boolean;
+  answerCount: number;
+  author: string;
+  difficulty: string;
+  distributionState: DistributionState;
+  dueDate: Date | undefined;
   groups: GroupType[];
   issueCount: number;
   pk: number;
@@ -101,11 +117,11 @@ export type QuestionType = {
 
 export type GroupType = {
   title: string;
-  author: string;
-  session: string;
-  studentCount: number;
-  assignmentCount: number;
-  active: boolean;
+  author?: string;
+  session?: string;
+  studentCount?: number;
+  assignmentCount?: number;
+  active?: boolean;
   subject?: string[];
   due_date: Date;
   progress: number;
@@ -123,7 +139,7 @@ export type AssignmentBisProps = {
 
 export type GroupAssignmentProps = {
   gettext: (a: string) => string;
-  assignment: GroupAssignmentType;
+  assignment: GroupedAssignmentType;
 };
 
 export type AssignmentStudentProps = {

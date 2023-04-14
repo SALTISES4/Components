@@ -389,7 +389,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
   };
 
   componentDidMount(): void {
-    // Fetch data from db to overwrite placeholders
+    // Fetch data from db
     this.sync();
   }
 
@@ -522,12 +522,16 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         <Fragment>
           <Subtitle>
             <Typography variant="h2">
-              {this.state.collectionHitCount}{" "}
-              {this.state.searchTerm.length == 0
-                ? this.props.gettext("recommended Collections")
-                : this.state.collectionHitCount != 1
-                ? this.props.gettext("results in Collections")
-                : this.props.gettext("result in Collections")}
+              {this.state.collectionsLoaded
+                ? `${this.state.collectionHitCount}
+              ${
+                this.state.searchTerm.length == 0
+                  ? this.props.gettext("recommended Collections")
+                  : this.state.collectionHitCount != 1
+                  ? this.props.gettext("results in Collections")
+                  : this.props.gettext("result in Collections")
+              }`
+                : this.props.gettext("Loading collections...")}
             </Typography>
           </Subtitle>
           <CollectionBlock

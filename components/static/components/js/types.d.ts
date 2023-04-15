@@ -61,7 +61,7 @@ type SearchData = {
     disciplines: string[];
     impacts: [number, string][];
   };
-  results: QuestionType[] | AssignmentType[];
+  results: QuestionType[] | AssignmentType[] | CollectionType[];
 };
 
 export type SearchAppProps = {
@@ -71,12 +71,13 @@ export type SearchAppProps = {
   urls: {
     assignments: string;
     backgroundImage: string;
+    collections: string;
+    questions: string;
     recommendations: {
       assignments: string;
       collections: string;
       questions: string;
     };
-    questions: string;
     teacher: string;
   };
   user: { username: string };

@@ -265,7 +265,46 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           } else {
             // Clear out assignment results
             this.setState({
+              assignmentHitCount: 0,
               assignments: [],
+            });
+          }
+
+          if (
+            this.state.selectedTypes.includes("Collection") ||
+            this.state.selectedTypes.length == 0
+          ) {
+            const queryString = new URLSearchParams();
+            queryString.append("search_string", searchString);
+            const url = new URL(
+              this.props.urls.collections,
+              window.location.origin,
+            );
+            url.search = queryString.toString();
+
+            this.setState({ collectionsLoaded: false });
+
+            const data = (await get(url.toString())) as SearchData;
+
+            this.setState(
+              {
+                collectionHitCount: data.meta.hit_count,
+                collections: data.results as CollectionType[],
+                collectionsLoaded: true,
+              },
+              () =>
+                console.debug(
+                  `Search time: ${(
+                    (performance.now() - startTime) /
+                    1000
+                  ).toExponential(3)}s`,
+                ),
+            );
+          } else {
+            // Clear out collection results
+            this.setState({
+              collectionHitCount: 0,
+              collections: [],
             });
           }
         } catch (error: any) {
@@ -532,9 +571,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
 
   collectionResults = () => {
     if (
-      this.state.collections.length > 0 &&
-      (this.state.selectedTypes.includes("Collection") ||
-        this.state.selectedTypes.length == 0)
+      this.state.selectedTypes.includes("Collection") ||
+      this.state.selectedTypes.length == 0
     ) {
       return (
         <Fragment>
@@ -552,21 +590,27 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 : this.props.gettext("Loading collections...")}
             </Typography>
           </Subtitle>
-          <CollectionBlock
-            collections={this.state.collections}
-            gettext={this.props.gettext}
-            handleBookmarkClick={(pk: number) =>
-              handleCollectionBookmarkClick(
-                (teacher) => this.setState({ teacher }),
-                pk,
-                this.state.teacher,
-                this.props.urls.teacher,
-              )
-            }
-            loading={!this.state.collectionsLoaded}
-            logo={this.props.logo}
-            teacher={this.state.teacher}
-          />
+          {this.state.collections.length > 0 ? (
+            <CollectionBlock
+              collections={this.state.collections}
+              gettext={this.props.gettext}
+              handleBookmarkClick={(pk: number) =>
+                handleCollectionBookmarkClick(
+                  (teacher) => this.setState({ teacher }),
+                  pk,
+                  this.state.teacher,
+                  this.props.urls.teacher,
+                )
+              }
+              loading={!this.state.collectionsLoaded}
+              logo={this.props.logo}
+              teacher={this.state.teacher}
+            />
+          ) : (
+            <Typography>
+              {this.props.gettext("Your search returned no results.")}
+            </Typography>
+          )}
         </Fragment>
       );
     }

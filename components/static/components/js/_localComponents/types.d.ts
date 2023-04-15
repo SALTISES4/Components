@@ -69,7 +69,6 @@ export type GroupedAssignmentType = {
 type DisciplineType = { pk: number; title: string };
 
 export type CollectionType = {
-  author: string;
   description: string;
   discipline?: DisciplineType;
   featured?: boolean;
@@ -77,6 +76,7 @@ export type CollectionType = {
   pk: number;
   title: string;
   url: string;
+  user: UserType;
 };
 
 type QuestionDifficulty = {

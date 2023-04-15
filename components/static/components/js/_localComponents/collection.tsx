@@ -211,7 +211,7 @@ export class Collection extends Component<CollectionProps> {
             }
             title={this.props.collection.title}
             subheader={this.props.gettext(
-              "From ".concat(this.props.collection.author),
+              "From ".concat(this.props.collection.user.username),
             )}
             sx={{ cursor: "pointer" }}
           />

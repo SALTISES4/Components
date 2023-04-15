@@ -73,7 +73,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       selectedDifficulty: [],
       selectedDisciplines: [],
       selectedImpact: [],
-      selectedTypes: ["Question", "Assignment", "Collection"],
+      selectedTypes: [],
       snackbarIsOpen: false,
       snackbarMessage: "",
       teacher: undefined,
@@ -162,9 +162,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         try {
           console.info("Submitting...");
 
-          this.setState({ assignmentsLoaded: false, questionsLoaded: false });
-
-          if (this.state.selectedTypes.includes("Question")) {
+          if (
+            this.state.selectedTypes.includes("Question") ||
+            this.state.selectedTypes.length == 0
+          ) {
             const queryString = new URLSearchParams();
             queryString.append("search_string", searchString);
             const url = new URL(
@@ -172,8 +173,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               window.location.origin,
             );
             url.search = queryString.toString();
+
+            this.setState({ questionsLoaded: false });
+
             const data = (await get(url.toString())) as SearchData;
-            console.debug(data);
+
             this.setState(
               {
                 categoryFilters: data.meta.categories,
@@ -228,7 +232,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             });
           }
 
-          if (this.state.selectedTypes.includes("Assignment")) {
+          if (
+            this.state.selectedTypes.includes("Assignment") ||
+            this.state.selectedTypes.length == 0
+          ) {
             const queryString = new URLSearchParams();
             queryString.append("search_string", searchString);
             const url = new URL(
@@ -236,8 +243,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               window.location.origin,
             );
             url.search = queryString.toString();
+
+            this.setState({ assignmentsLoaded: false });
+
             const data = (await get(url.toString())) as SearchData;
-            console.debug(data);
+
             this.setState(
               {
                 assignmentHitCount: data.meta.hit_count,
@@ -252,11 +262,17 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   ).toExponential(3)}s`,
                 ),
             );
+          } else {
+            // Clear out assignment results
+            this.setState({
+              assignments: [],
+            });
           }
         } catch (error: any) {
           this.error(error);
         }
       }
+
       if (this.state.searchTerm.length == 0) {
         this.setState(
           {
@@ -280,6 +296,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           },
           () => {
             this.getRecommendedAssignments();
+            this.getRecommendedCollections();
             this.getRecommendedQuestions();
           },
         );
@@ -378,7 +395,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     // Load a set of recommended assignments
     this.getRecommendedAssignments();
 
-    // Load a set of recommended assignments
+    // Load a set of recommended collections
     this.getRecommendedCollections();
 
     // Load a set of recommended questions
@@ -449,7 +466,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
   };
 
   assignmentResults = () => {
-    if (this.state.selectedTypes.includes("Assignment")) {
+    if (
+      this.state.selectedTypes.includes("Assignment") ||
+      this.state.selectedTypes.length == 0
+    ) {
       return (
         <Fragment>
           <Subtitle>
@@ -513,7 +533,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
   collectionResults = () => {
     if (
       this.state.collections.length > 0 &&
-      this.state.selectedTypes.includes("Collection")
+      (this.state.selectedTypes.includes("Collection") ||
+        this.state.selectedTypes.length == 0)
     ) {
       return (
         <Fragment>
@@ -552,7 +573,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
   };
 
   questionResults = () => {
-    if (this.state.selectedTypes.includes("Question")) {
+    if (
+      this.state.selectedTypes.includes("Question") ||
+      this.state.selectedTypes.length == 0
+    ) {
       return (
         <Fragment>
           <Subtitle>
@@ -760,12 +784,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   filter={{
                     choices: this.typeFilters,
                     icon: CategoryIcon,
-                    notification: this.typeFilters.length,
+                    notification: this.state.selectedTypes.length,
                     subtitle: this.props.gettext("Types"),
                     title: this.props.gettext("Type"),
                   }}
                   labels={this.typeFilterLabels}
-                  minimum={1}
                   selected={this.state.selectedTypes}
                 />
                 <SearchFilter

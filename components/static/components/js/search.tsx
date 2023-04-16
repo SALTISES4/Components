@@ -845,6 +845,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       this.handleSubmit,
                     );
                   }}
+                  disabled={
+                    this.state.selectedTypes.length != 0 &&
+                    !this.state.selectedTypes.includes("Question")
+                  }
                   filter={{
                     choices: this.state.disciplineFilters,
                     icon: ScienceIcon,
@@ -864,6 +868,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       this.handleSubmit,
                     );
                   }}
+                  disabled={
+                    this.state.selectedTypes.length != 0 &&
+                    !this.state.selectedTypes.includes("Question")
+                  }
                   filter={{
                     choices: this.state.categoryFilters,
                     icon: FilterAltIcon,
@@ -883,6 +891,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       this.handleSubmit,
                     );
                   }}
+                  disabled={
+                    this.state.selectedTypes.length != 0 &&
+                    !this.state.selectedTypes.includes("Question")
+                  }
                   filter={{
                     choices: this.state.difficultyFilters,
                     icon: NetworkCheckIcon,
@@ -903,6 +915,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       this.handleSubmit,
                     );
                   }}
+                  disabled={
+                    this.state.selectedTypes.length != 0 &&
+                    !this.state.selectedTypes.includes("Question")
+                  }
                   filter={{
                     choices: this.state.peerImpactFilters,
                     icon: PeopleIcon,

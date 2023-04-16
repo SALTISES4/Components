@@ -848,7 +848,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   filter={{
                     choices: this.state.disciplineFilters,
                     icon: ScienceIcon,
-                    notification: this.state.disciplineFilters.length,
+                    notification: this.state.selectedDisciplines.length,
                     subtitle: this.props.gettext("Disciplines"),
                     title: this.props.gettext("Discipline"),
                   }}
@@ -867,7 +867,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   filter={{
                     choices: this.state.categoryFilters,
                     icon: FilterAltIcon,
-                    notification: this.state.categoryFilters.length,
+                    notification: this.state.selectedCategories.length,
                     subtitle: this.props.gettext("Categories"),
                     title: this.props.gettext("Category"),
                   }}
@@ -886,7 +886,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   filter={{
                     choices: this.state.difficultyFilters,
                     icon: NetworkCheckIcon,
-                    notification: this.state.difficultyFilters.length,
+                    notification: this.state.selectedDifficulty.length,
                     subtitle: this.props.gettext("Difficulty levels"),
                     title: this.props.gettext("Difficulty"),
                   }}
@@ -906,7 +906,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   filter={{
                     choices: this.state.peerImpactFilters,
                     icon: PeopleIcon,
-                    notification: this.state.peerImpactFilters.length,
+                    notification: this.state.selectedImpact.length,
                     subtitle: this.props.gettext("Impact levels"),
                     title: this.props.gettext("Peer impact"),
                   }}

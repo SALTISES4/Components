@@ -64,7 +64,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       lastKeyStroke: 0,
       peerImpactFilterLabels: {},
       peerImpactFilters: [],
-      questionHitCount: 0,
+      questionHitCount: undefined,
       questionPage: 0,
       questionPageSize: 10,
       questions: [],
@@ -207,7 +207,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         disciplineFilters: [],
         peerImpactFilterLabels: {},
         peerImpactFilters: [],
-        questionHitCount: 0,
+        questionHitCount: undefined,
         questionPage: 0,
         questions: [],
         questionsLoaded: true,
@@ -326,7 +326,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           {
             assignmentHitCount: 0,
             assignments: [],
-            questionHitCount: 0,
+            questionHitCount: undefined,
             questions: [],
             categoryFilters: [],
             collectionHitCount: 0,
@@ -418,7 +418,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       )) as QuestionType[];
 
       this.setState({
-        questionHitCount: questions.length,
+        questionHitCount: undefined, // Endpoint does not support pagination
         questions,
       });
     } catch (error: any) {
@@ -634,7 +634,9 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           <Subtitle>
             <Typography variant="h2">
               {this.state.questionsLoaded
-                ? `${this.state.questionHitCount} ${
+                ? `${
+                    this.state.questionHitCount || this.state.questions.length
+                  } ${
                     this.state.searchTerm.length == 0
                       ? this.props.gettext("recommended Questions")
                       : this.state.questionHitCount != 1
@@ -711,7 +713,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             )}
           </Stack>
           {this.state.selectedTypes.length == 1 &&
-          this.state.selectedTypes.includes("Question") ? (
+          this.state.selectedTypes.includes("Question") &&
+          this.state.questionHitCount !== undefined ? (
             <Stack
               direction="row"
               spacing={2}
@@ -739,16 +742,14 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               <Typography>
                 {this.state.questionPage + 1}/
                 {Math.ceil(
-                  (this.state.questionHitCount || 0) /
-                    this.state.questionPageSize,
+                  this.state.questionHitCount / this.state.questionPageSize,
                 )}
               </Typography>
 
               <Link
                 color={
-                  this.state.questionHitCount ||
-                  0 >
-                    (this.state.questionPage + 1) * this.state.questionPageSize
+                  this.state.questionHitCount >
+                  (this.state.questionPage + 1) * this.state.questionPageSize
                     ? "primary"
                     : "disabled"
                 }
@@ -761,17 +762,14 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 }}
                 sx={{
                   cursor:
-                    this.state.questionHitCount ||
-                    0 >
-                      (this.state.questionPage + 1) *
-                        this.state.questionPageSize
+                    this.state.questionHitCount >
+                    (this.state.questionPage + 1) * this.state.questionPageSize
                       ? "pointer"
                       : "not-allowed",
                 }}
                 underline={
-                  this.state.questionHitCount ||
-                  0 >
-                    (this.state.questionPage + 1) * this.state.questionPageSize
+                  this.state.questionHitCount >
+                  (this.state.questionPage + 1) * this.state.questionPageSize
                     ? "always"
                     : "none"
                 }

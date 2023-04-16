@@ -32,14 +32,22 @@ const theme = saltise;
 export class Collection extends Component<CollectionProps> {
   ref = createRef();
 
+  componentDidMount(): void {
+    this.resize();
+  }
+
   componentDidUpdate(): void {
+    this.resize();
+  }
+
+  resize = (): void => {
     if (this.ref.current) {
       const height = this.ref.current.getBoundingClientRect().height;
       if (this.props.minHeight != height) {
         this.props.getHeight(height);
       }
     }
-  }
+  };
 
   avatar = () => {
     return (

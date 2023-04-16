@@ -318,6 +318,24 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     }
   };
 
+  collectionUpdate = (pk: number): void => {
+    let _collections = [...this.state.collections];
+
+    if (
+      _collections.filter((c) => c.pk == pk)[0].user.username !=
+      this.props.user.username
+    ) {
+      _collections = _collections.filter((c) => c.pk != pk);
+    }
+
+    this.setState(
+      {
+        collections: _collections,
+      },
+      () => console.info(this.state),
+    );
+  };
+
   assignments = () => {
     // Combined list of GroupAssignments and Assignments
     return (
@@ -479,14 +497,15 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                 <CollectionBlock
                   collections={this.state.collections}
                   gettext={this.props.gettext}
-                  handleBookmarkClick={(pk: number) =>
+                  handleBookmarkClick={(pk: number) => {
                     handleCollectionBookmarkClick(
                       (teacher) => this.setState({ teacher }),
                       pk,
                       this.state.teacher,
                       this.props.urls.teacher,
-                    )
-                  }
+                    );
+                    this.collectionUpdate(pk);
+                  }}
                   loading={this.state.collectionsLoading}
                   logo={this.props.logo}
                   teacher={this.state.teacher}

@@ -98,9 +98,15 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
       this.setState(
         {
           collections: (collections as any).results.sort(
-            (a: CollectionType, b: CollectionType) =>
-              +(b?.followed_by_user || false) -
-              +(a?.followed_by_user || false),
+            (a: CollectionType, b: CollectionType) => {
+              if (this.state.teacher?.user?.username !== undefined) {
+                return (
+                  +(this.state.teacher.user.username == a.user.username) -
+                  +(this.state.teacher.user.username == b.user.username)
+                );
+              }
+              return 0;
+            },
           ) as CollectionType[],
           collectionsLoading: false,
         },

@@ -92,6 +92,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
   loadCollections = async (): Promise<void> => {
     try {
       this.setState({ collectionsLoading: true });
+
       const collections = await get(this.props.urls.collections);
 
       this.setState(

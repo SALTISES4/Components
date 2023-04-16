@@ -15,6 +15,7 @@ type TeacherType = {
   bookmarked_collections: number[];
   createdQuestionCount: number;
   favourite_questions: number[];
+  user?: UserType;
 };
 
 export type LinkType = {

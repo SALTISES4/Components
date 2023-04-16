@@ -156,11 +156,12 @@ export type AssignmentStudentCompletedProps = {
 
 export type CollectionProps = {
   bookmarked?: boolean;
+  collection: CollectionType;
   gettext: (a: string) => string;
   getHeight: (height: number) => void;
   logo: string;
   minHeight: number;
-  collection: CollectionType;
+  showBookmark: boolean;
   toggleBookmarked: () => void;
 };
 
@@ -188,10 +189,10 @@ export type GroupStudentProps = {
 };
 
 export type QuestionProps = {
-  gettext: (a: string) => string;
   bookmarked?: boolean;
   difficultyLabels?: Record<string, string>;
   expanded?: boolean;
+  gettext: (a: string) => string;
   question: QuestionType;
   showBookmark: boolean;
   toggleBookmarked: () => void;

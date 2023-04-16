@@ -168,7 +168,7 @@ export class Collection extends Component<CollectionProps> {
   };
 
   bookmarkIcon = () => {
-    if (this.props.bookmarked !== undefined) {
+    if (this.props.bookmarked !== undefined && this.props.showBookmark) {
       return (
         <Checkbox
           checked={this.props.bookmarked}
@@ -276,6 +276,13 @@ export class CollectionBlock extends Component<
                   getHeight={this.getHeight}
                   logo={this.props.logo}
                   minHeight={this.state.height}
+                  showBookmark={
+                    this.props.teacher !== undefined &&
+                    this.props?.teacher?.user?.username
+                      ? this.props.teacher.user.username !==
+                        collection.user.username
+                      : false
+                  }
                   toggleBookmarked={() =>
                     this.props.handleBookmarkClick(collection.pk)
                   }

@@ -25,6 +25,8 @@ export const SearchDropdown = ({
   selected,
   title,
 }: SearchDropdownProps) => {
+  const limit = 20;
+
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = async (choice: string) => {
@@ -53,22 +55,24 @@ export const SearchDropdown = ({
         zIndex: 10,
       }}
     >
-      <TextField
-        fullWidth
-        onInput={(evt: InputEvent) => {
-          setSearchTerm((evt.target as HTMLInputElement).value);
-        }}
-        placeholder={`${gettext("Find")} ${title.toLowerCase()}...`}
-        type="search"
-        variant="outlined"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
+      {choices.length > limit ? (
+        <TextField
+          fullWidth
+          onInput={(evt: InputEvent) => {
+            setSearchTerm((evt.target as HTMLInputElement).value);
+          }}
+          placeholder={`${gettext("Find")} ${title.toLowerCase()}...`}
+          type="search"
+          variant="outlined"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+      ) : null}
       <Typography
         fontSize="10px"
         fontWeight={600}

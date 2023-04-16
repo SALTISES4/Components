@@ -32,9 +32,12 @@ const theme = saltise;
 export class Collection extends Component<CollectionProps> {
   ref = createRef();
 
-  componentDidMount(): void {
+  componentDidUpdate(): void {
     if (this.ref.current) {
-      this.props.getHeight(this.ref.current.getBoundingClientRect().height);
+      const height = this.ref.current.getBoundingClientRect().height;
+      if (this.props.minHeight != height) {
+        this.props.getHeight(height);
+      }
     }
   }
 

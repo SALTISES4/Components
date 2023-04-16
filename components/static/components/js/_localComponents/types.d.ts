@@ -54,6 +54,7 @@ export type GroupAssignmentType = {
 export type GroupedAssignmentType = {
   active: boolean;
   answerCount: number;
+  assignment_pk: string;
   author: string;
   difficulty: string;
   distributionState: DistributionState;

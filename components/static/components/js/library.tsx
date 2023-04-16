@@ -324,7 +324,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
       <Stack spacing="10px">
         {!this.state.groupAssignmentsLoading ? (
           this.state.groupAssignments.map(
-            (assignment: GroupAssignmentType, i: number) => (
+            (assignment: GroupedAssignmentType, i: number) => (
               <GroupAssignment
                 key={i}
                 assignment={assignment}
@@ -340,8 +340,14 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
           </Fragment>
         )}
         {!this.state.assignmentsLoading ? (
-          this.state.assignments.map(
-            (assignment: AssignmentType, i: number) => (
+          this.state.assignments
+            .filter(
+              (assignment) =>
+                !this.state.groupAssignments
+                  .map((ga) => ga.assignment_pk)
+                  .includes(assignment.pk),
+            )
+            .map((assignment: AssignmentType, i: number) => (
               <AssignmentBis
                 key={i}
                 assignment={assignment}
@@ -358,8 +364,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                   this.handleAssignmentBookmarkClick(assignment.pk)
                 }
               />
-            ),
-          )
+            ))
         ) : (
           <Fragment>
             <AssignmentSkeleton />

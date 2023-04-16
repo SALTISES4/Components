@@ -20,15 +20,28 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   "& .MuiToggleButtonGroup-grouped": {
     margin: theme.spacing(0.5),
     border: 0,
+    color: theme.palette.secondary4.main,
+    "&.Mui-selected": {
+      color: theme.palette.secondary4.main,
+    },
     "&.Mui-disabled": {
       border: 0,
     },
     "&:not(:first-of-type)": {
-      borderRadius: theme.shape.borderRadius,
+      borderRadius: "3px",
     },
     "&:first-of-type": {
-      borderRadius: theme.shape.borderRadius,
+      borderRadius: "3px",
     },
+  },
+}));
+
+const StyleDivider = styled(Divider)(({ theme }) => ({
+  margin: theme.spacing(0.5),
+  border: 0,
+  color: theme.palette.secondary4.main,
+  "&.Mui-selected": {
+    color: theme.palette.secondary4.main,
   },
 }));
 
@@ -44,10 +57,11 @@ export const StyledToggleBar = () => {
       <Paper
         elevation={0}
         sx={{
-          backgroundColor: "secondary1",
+          backgroundColor: "secondary1.main",
           display: "flex",
           border: (theme) => `1px solid ${theme.palette.secondary2.main}`,
           flexWrap: "wrap",
+          borderRadius: "3px 3px 0px 0px",
         }}
       >
         <StyledToggleButtonGroup size="small" exclusive aria-label="undo redo">
@@ -58,7 +72,7 @@ export const StyledToggleBar = () => {
             <RedoIcon />
           </ToggleButton>
         </StyledToggleButtonGroup>
-        <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
+        <Divider flexItem />
         <StyledToggleButtonGroup
           size="small"
           value={formats}
@@ -77,16 +91,26 @@ export const StyledToggleBar = () => {
         </StyledToggleButtonGroup>
         <StyledToggleButtonGroup size="small">
           <ToggleButton value="" aria-label="color">
-            <Typography fontSize="20px">X</Typography>
+            <Typography
+              sx={{ fontSize: "16px !important", fontWeight: "600" }}
+            >
+              X<sup>2</sup>
+            </Typography>
           </ToggleButton>
           <ToggleButton value="" aria-label="color">
-            <Typography fontSize="20px">X</Typography>
+            <Typography
+              sx={{ fontSize: "16px !important", fontWeight: "600" }}
+            >
+              X<sub>2</sub>
+            </Typography>
           </ToggleButton>
         </StyledToggleButtonGroup>
         <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
-        <ToggleButton value="" aria-label="color">
-          <LinkIcon />
-        </ToggleButton>
+        <StyledToggleButtonGroup>
+          <ToggleButton value="" aria-label="color">
+            <LinkIcon />
+          </ToggleButton>
+        </StyledToggleButtonGroup>
       </Paper>
     </Box>
   );

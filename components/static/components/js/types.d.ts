@@ -61,6 +61,8 @@ type SearchData = {
     difficulties: [number, string][];
     disciplines: string[];
     impacts: [number, string][];
+    page: number | undefined;
+    page_size: number | undefined;
   };
   results: QuestionType[] | AssignmentType[] | CollectionType[];
 };
@@ -88,28 +90,37 @@ export type SearchAppState = {
   assignmentHitCount: number;
   assignments: AssignmentType[];
   assignmentsLoaded: boolean;
-  categoryFilters: string[];
+
   collectionHitCount: number;
   collections: CollectionType[];
   collectionsLoaded: boolean;
-  difficultyFilters: string[];
-  difficultyFilterLabels: Record<string, string>;
-  disciplineFilters: string[];
+
   lastKeyStroke: number;
-  peerImpactFilters: string[];
-  peerImpactFilterLabels: Record<string, string>;
+
   questionHitCount: number | undefined;
-  questionLimit: number;
+  questionPage: number;
+  questionPageSize: number;
   questions: QuestionType[];
   questionsLoaded: boolean;
+
   searchTerm: string;
+
+  categoryFilters: string[];
+  difficultyFilterLabels: Record<string, string>;
+  difficultyFilters: string[];
+  disciplineFilters: string[];
+  peerImpactFilterLabels: Record<string, string>;
+  peerImpactFilters: string[];
+
   selectedCategories: string[];
   selectedDifficulty: string[];
   selectedDisciplines: string[];
   selectedImpact: string[];
   selectedTypes: string[];
+
   snackbarIsOpen: boolean;
   snackbarMessage: string;
+
   teacher: TeacherType | undefined;
   timeoutID: number;
 };

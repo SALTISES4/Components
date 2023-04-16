@@ -65,7 +65,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       peerImpactFilterLabels: {},
       peerImpactFilters: [],
       questionHitCount: 0,
-      questionLimit: 10,
+      questionPage: 0,
+      questionPageSize: 10,
       questions: [],
       questionsLoaded: true,
       searchTerm: "",
@@ -109,6 +110,115 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     });
   };
 
+  searchString = () => {
+    // Build query url for questions
+    let searchString = this.state.searchTerm;
+
+    if (this.state.selectedCategories.length > 0) {
+      searchString = `${this.state.selectedCategories.reduce(
+        (acc, curr) => `${acc} category__title::${curr.replaceAll(" ", "_")}`,
+        "",
+      )} ${searchString}`;
+    }
+
+    if (this.state.selectedDisciplines.length > 0) {
+      searchString = `${this.state.selectedDisciplines.reduce(
+        (acc, curr) => `${acc} discipline.title::${curr.replaceAll(" ", "_")}`,
+        "",
+      )} ${searchString}`;
+    }
+
+    if (this.state.selectedDifficulty.length > 0) {
+      searchString = `${this.state.selectedDifficulty.reduce(
+        (acc, curr) => `${acc} difficulty.label::${curr}`,
+        "",
+      )} ${searchString}`;
+    }
+
+    if (this.state.selectedImpact.length > 0) {
+      searchString = `${this.state.selectedImpact.reduce(
+        (acc, curr) => `${acc} peer_impact.label::${curr}`,
+        "",
+      )} ${searchString}`;
+    }
+
+    return searchString;
+  };
+
+  submitQuestionSearch = async (
+    startTime = performance.now(),
+  ): Promise<void> => {
+    if (
+      this.state.selectedTypes.includes("Question") ||
+      this.state.selectedTypes.length == 0
+    ) {
+      const queryString = new URLSearchParams();
+      queryString.append("search_string", this.searchString());
+      const url = new URL(
+        `${this.props.urls.questions}${this.state.questionPage}`,
+        window.location.origin,
+      );
+      url.search = queryString.toString();
+
+      this.setState({ questionsLoaded: false });
+
+      const data = (await get(url.toString())) as SearchData;
+
+      this.setState(
+        {
+          categoryFilters: data.meta.categories,
+          difficultyFilterLabels: data.meta.difficulties.reduce(
+            (acc: Record<string, string>, curr: [number, string]) => {
+              acc[curr[0]] = curr[1];
+              return acc;
+            },
+            {},
+          ),
+          difficultyFilters: data.meta.difficulties.map((d) => `${d[0]}`),
+          disciplineFilters: data.meta.disciplines,
+          peerImpactFilterLabels: data.meta.impacts.reduce(
+            (acc: Record<string, string>, curr: [number, string]) => {
+              acc[curr[0]] = curr[1];
+              return acc;
+            },
+            {},
+          ),
+          peerImpactFilters: data.meta.impacts.map((d) => `${d[0]}`),
+          questionHitCount: data.meta.hit_count,
+          questions: data.results as QuestionType[],
+          questionsLoaded: true,
+          questionPage: data.meta.page,
+          questionPageSize: data.meta.page_size,
+        },
+        () =>
+          console.debug(
+            `Search time: ${(
+              (performance.now() - startTime) /
+              1000
+            ).toExponential(3)}s`,
+          ),
+      );
+    } else {
+      // Clear out question results
+      this.setState({
+        categoryFilters: [],
+        difficultyFilterLabels: {},
+        difficultyFilters: [],
+        disciplineFilters: [],
+        peerImpactFilterLabels: {},
+        peerImpactFilters: [],
+        questionHitCount: 0,
+        questionPage: 0,
+        questions: [],
+        questionsLoaded: true,
+        selectedCategories: [],
+        selectedDifficulty: [],
+        selectedDisciplines: [],
+        selectedImpact: [],
+      });
+    }
+  };
+
   handleSubmit = async (): Promise<void> => {
     console.debug("handleSubmit called");
     /* Prevent searches from being submitted faster than once per DT ms */
@@ -125,119 +235,18 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         () => console.debug(this.state),
       );
 
-      // Build query url for questions
-      let searchString = this.state.searchTerm;
-
-      if (this.state.selectedCategories.length > 0) {
-        searchString = `${this.state.selectedCategories.reduce(
-          (acc, curr) =>
-            `${acc} category__title::${curr.replaceAll(" ", "_")}`,
-          "",
-        )} ${searchString}`;
-      }
-
-      if (this.state.selectedDisciplines.length > 0) {
-        searchString = `${this.state.selectedDisciplines.reduce(
-          (acc, curr) =>
-            `${acc} discipline.title::${curr.replaceAll(" ", "_")}`,
-          "",
-        )} ${searchString}`;
-      }
-
-      if (this.state.selectedDifficulty.length > 0) {
-        searchString = `${this.state.selectedDifficulty.reduce(
-          (acc, curr) => `${acc} difficulty.label::${curr}`,
-          "",
-        )} ${searchString}`;
-      }
-
-      if (this.state.selectedImpact.length > 0) {
-        searchString = `${this.state.selectedImpact.reduce(
-          (acc, curr) => `${acc} peer_impact.label::${curr}`,
-          "",
-        )} ${searchString}`;
-      }
-
       if (this.state.searchTerm.length > 2) {
         try {
           console.info("Submitting...");
 
-          if (
-            this.state.selectedTypes.includes("Question") ||
-            this.state.selectedTypes.length == 0
-          ) {
-            const queryString = new URLSearchParams();
-            queryString.append("search_string", searchString);
-            const url = new URL(
-              this.props.urls.questions,
-              window.location.origin,
-            );
-            url.search = queryString.toString();
-
-            this.setState({ questionsLoaded: false });
-
-            const data = (await get(url.toString())) as SearchData;
-
-            this.setState(
-              {
-                categoryFilters: data.meta.categories,
-                difficultyFilterLabels: data.meta.difficulties.reduce(
-                  (acc: Record<string, string>, curr: [number, string]) => {
-                    acc[curr[0]] = curr[1];
-                    return acc;
-                  },
-                  {},
-                ),
-                difficultyFilters: data.meta.difficulties.map(
-                  (d) => `${d[0]}`,
-                ),
-                disciplineFilters: data.meta.disciplines,
-                peerImpactFilterLabels: data.meta.impacts.reduce(
-                  (acc: Record<string, string>, curr: [number, string]) => {
-                    acc[curr[0]] = curr[1];
-                    return acc;
-                  },
-                  {},
-                ),
-                peerImpactFilters: data.meta.impacts.map((d) => `${d[0]}`),
-                questionHitCount: data.meta.hit_count,
-                questions: data.results as QuestionType[],
-                questionsLoaded: true,
-              },
-              () =>
-                console.debug(
-                  `Search time: ${(
-                    (performance.now() - startTime) /
-                    1000
-                  ).toExponential(3)}s`,
-                ),
-            );
-          } else {
-            // Clear out question results
-            this.setState({
-              categoryFilters: [],
-              difficultyFilterLabels: {},
-              difficultyFilters: [],
-              disciplineFilters: [],
-              peerImpactFilterLabels: {},
-              peerImpactFilters: [],
-              questionHitCount: 0,
-              questionLimit: 10,
-              questions: [],
-              questionsLoaded: true,
-              selectedCategories: [],
-              selectedDifficulty: [],
-              selectedDisciplines: [],
-              selectedImpact: [],
-            });
-          }
+          this.submitQuestionSearch(startTime);
 
           if (
             this.state.selectedTypes.includes("Assignment") ||
             this.state.selectedTypes.length == 0
           ) {
             const queryString = new URLSearchParams();
-            queryString.append("search_string", searchString);
+            queryString.append("search_string", this.searchString());
             const url = new URL(
               this.props.urls.assignments,
               window.location.origin,
@@ -275,7 +284,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             this.state.selectedTypes.length == 0
           ) {
             const queryString = new URLSearchParams();
-            queryString.append("search_string", searchString);
+            queryString.append("search_string", this.searchString());
             const url = new URL(
               this.props.urls.collections,
               window.location.origin,
@@ -319,7 +328,6 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             assignments: [],
             questionHitCount: 0,
             questions: [],
-            questionLimit: 10,
             categoryFilters: [],
             collectionHitCount: 0,
             collections: [],
@@ -639,7 +647,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               variant="h4"
               onClick={() => {
                 this.setState({
-                  questionLimit: this.state.questions.length,
+                  selectedTypes: ["Question"],
                 });
               }}
               sx={{
@@ -647,25 +655,29 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 display: this.state.questionsLoaded ? "block" : "none",
               }}
             >
-              {this.state.questions.length <= this.state.questionLimit
-                ? ""
-                : this.state.questions.length == this.state.questionHitCount
-                ? this.props.gettext("View all results")
-                : this.props.gettext("View top 50 results")}
+              {this.state.questionsLoaded &&
+              this.state.questions.length <
+                (this.state.questionHitCount || 0) &&
+              this.state.selectedTypes.length != 1
+                ? this.props.gettext("View all")
+                : null}
             </Link>
           </Subtitle>
           <Stack spacing="10px">
             {this.state.questionsLoaded ? (
               this.state.questions.length > 0 ? (
-                [...this.state.questions]
-                  .slice(0, this.state.questionLimit)
-                  .map((question: QuestionType, i: number) => (
+                [...this.state.questions].map(
+                  (question: QuestionType, i: number) => (
                     <Question
                       key={i}
                       bookmarked={this.state.teacher?.favourite_questions?.includes(
                         question.pk,
                       )}
                       difficultyLabels={this.state.difficultyFilterLabels}
+                      expanded={
+                        this.state.selectedTypes.length == 1 &&
+                        this.state.selectedTypes.includes("Question")
+                      }
                       gettext={this.props.gettext}
                       question={question}
                       showBookmark={
@@ -683,7 +695,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                         this.handleQuestionBookmarkClick(question.pk)
                       }
                     />
-                  ))
+                  ),
+                )
               ) : (
                 <Typography>
                   {this.props.gettext("Your search returned no results.")}
@@ -697,6 +710,76 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               </Fragment>
             )}
           </Stack>
+          {this.state.selectedTypes.length == 1 &&
+          this.state.selectedTypes.includes("Question") ? (
+            <Stack
+              direction="row"
+              spacing={2}
+              mt="12px"
+              sx={{ justifyContent: "center" }}
+            >
+              <Link
+                color={this.state.questionPage == 0 ? "disabled" : "primary"}
+                variant="h4"
+                onClick={() => {
+                  this.setState(
+                    { questionPage: this.state.questionPage - 1 },
+                    this.submitQuestionSearch,
+                  );
+                }}
+                sx={{
+                  cursor:
+                    this.state.questionPage == 0 ? "not-allowed" : "pointer",
+                }}
+                underline={this.state.questionPage == 0 ? "none" : "always"}
+              >
+                {this.props.gettext("Previous")}
+              </Link>
+
+              <Typography>
+                {this.state.questionPage + 1}/
+                {Math.ceil(
+                  (this.state.questionHitCount || 0) /
+                    this.state.questionPageSize,
+                )}
+              </Typography>
+
+              <Link
+                color={
+                  this.state.questionHitCount ||
+                  0 >
+                    (this.state.questionPage + 1) * this.state.questionPageSize
+                    ? "primary"
+                    : "disabled"
+                }
+                variant="h4"
+                onClick={() => {
+                  this.setState(
+                    { questionPage: this.state.questionPage + 1 },
+                    this.submitQuestionSearch,
+                  );
+                }}
+                sx={{
+                  cursor:
+                    this.state.questionHitCount ||
+                    0 >
+                      (this.state.questionPage + 1) *
+                        this.state.questionPageSize
+                      ? "pointer"
+                      : "not-allowed",
+                }}
+                underline={
+                  this.state.questionHitCount ||
+                  0 >
+                    (this.state.questionPage + 1) * this.state.questionPageSize
+                    ? "always"
+                    : "none"
+                }
+              >
+                {this.props.gettext("Next")}
+              </Link>
+            </Stack>
+          ) : null}
         </Fragment>
       );
     }
@@ -784,7 +867,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   fullWidth
                   onInput={(evt: InputEvent) => {
                     this.setState(
-                      { searchTerm: (evt.target as HTMLInputElement)?.value },
+                      {
+                        questionPage: 0,
+                        searchTerm: (evt.target as HTMLInputElement)?.value,
+                      },
                       this.handleSubmit,
                     );
                   }}

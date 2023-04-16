@@ -803,7 +803,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     ) {
       return (
         <span>
-          {this.state.questionHitCount}{" "}
+          {this.state.questionHitCount || 0}{" "}
           {this.state.questionHitCount != 1
             ? this.props.gettext("question results")
             : this.props.gettext("question result")}

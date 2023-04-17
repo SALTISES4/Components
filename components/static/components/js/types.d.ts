@@ -68,7 +68,10 @@ type SearchData = {
 };
 
 export type SearchAppProps = {
+  difficulties: [number, string][];
+  disciplines: string[];
   gettext: (a: string) => string;
+  impacts: [number, string][];
   logo: string;
   nonce: string;
   urls: {

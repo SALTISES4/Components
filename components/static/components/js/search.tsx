@@ -934,36 +934,13 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                     !this.state.selectedTypes.includes("Question")
                   }
                   filter={{
-                    choices: this.state.disciplineFilters,
+                    choices: this.props.disciplines,
                     icon: ScienceIcon,
                     notification: this.state.selectedDisciplines.length,
                     subtitle: this.props.gettext("Disciplines"),
                     title: this.props.gettext("Discipline"),
                   }}
                   selected={this.state.selectedDisciplines}
-                />
-                <SearchFilter
-                  gettext={this.props.gettext}
-                  callback={(selections) => {
-                    this.setState(
-                      {
-                        selectedCategories: selections,
-                      },
-                      this.handleSubmit,
-                    );
-                  }}
-                  disabled={
-                    this.state.selectedTypes.length != 0 &&
-                    !this.state.selectedTypes.includes("Question")
-                  }
-                  filter={{
-                    choices: this.state.categoryFilters,
-                    icon: FilterAltIcon,
-                    notification: this.state.selectedCategories.length,
-                    subtitle: this.props.gettext("Categories"),
-                    title: this.props.gettext("Category"),
-                  }}
-                  selected={this.state.selectedCategories}
                 />
                 <SearchFilter
                   gettext={this.props.gettext}
@@ -980,13 +957,19 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                     !this.state.selectedTypes.includes("Question")
                   }
                   filter={{
-                    choices: this.state.difficultyFilters,
+                    choices: this.props.difficulties.map((d) => `${d[0]}`),
                     icon: NetworkCheckIcon,
                     notification: this.state.selectedDifficulty.length,
                     subtitle: this.props.gettext("Difficulty levels"),
                     title: this.props.gettext("Difficulty"),
                   }}
-                  labels={this.state.difficultyFilterLabels}
+                  labels={this.props.difficulties.reduce(
+                    (acc: Record<string, string>, curr: [number, string]) => {
+                      acc[curr[0]] = curr[1];
+                      return acc;
+                    },
+                    {},
+                  )}
                   selected={this.state.selectedDifficulty}
                 />
                 <SearchFilter
@@ -1004,14 +987,46 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                     !this.state.selectedTypes.includes("Question")
                   }
                   filter={{
-                    choices: this.state.peerImpactFilters,
+                    choices: this.props.impacts.map((d) => `${d[0]}`),
                     icon: PeopleIcon,
                     notification: this.state.selectedImpact.length,
                     subtitle: this.props.gettext("Impact levels"),
                     title: this.props.gettext("Peer impact"),
                   }}
-                  labels={this.state.peerImpactFilterLabels}
+                  labels={this.props.impacts.reduce(
+                    (acc: Record<string, string>, curr: [number, string]) => {
+                      acc[curr[0]] = curr[1];
+                      return acc;
+                    },
+                    {},
+                  )}
                   selected={this.state.selectedImpact}
+                />
+                <SearchFilter
+                  gettext={this.props.gettext}
+                  callback={(selections) => {
+                    this.setState(
+                      {
+                        selectedCategories: selections,
+                      },
+                      this.handleSubmit,
+                    );
+                  }}
+                  disabled={
+                    (this.state.selectedTypes.length != 0 &&
+                      !this.state.selectedTypes.includes("Question")) ||
+                    this.state.categoryFilters.length == 0
+                  }
+                  filter={{
+                    choices: this.state.categoryFilters,
+                    icon: FilterAltIcon,
+                    notification: this.state.selectedCategories.filter((d) =>
+                      this.state.categoryFilters.includes(d),
+                    ).length,
+                    subtitle: this.props.gettext("Categories"),
+                    title: this.props.gettext("Category"),
+                  }}
+                  selected={this.state.selectedCategories}
                 />
               </Box>
             </Box>

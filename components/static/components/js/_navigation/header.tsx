@@ -7,19 +7,13 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
-import HelpIcon from "@mui/icons-material/Help";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 
 import { CustomMenu } from "./menu";
 import { headerProps } from "./types";
 
-export const Header = ({
-  menuAddItems,
-  menuHelpItems,
-  menuProfile,
-  user,
-}: headerProps) => {
+export const Header = ({ menuAddItems, menuProfile, user }: headerProps) => {
   const [{ openMore, anchorElMore }, setOpenMore] = useState<{
     openMore: boolean;
     anchorElMore: null | HTMLElement;
@@ -32,11 +26,6 @@ export const Header = ({
     openAvatar: boolean;
     anchorElAvatar: null | HTMLElement;
   }>({ openAvatar: false, anchorElAvatar: null });
-
-  const [{ openHelp, anchorElHelp }, setOpenHelp] = useState<{
-    openHelp: boolean;
-    anchorElHelp: null | HTMLElement;
-  }>({ openHelp: false, anchorElHelp: null });
 
   const handleClickMore = (event: MouseEvent | TouchEvent) => {
     setOpenMore((prevState) => ({
@@ -54,18 +43,15 @@ export const Header = ({
     }));
   };
 
-  const handleClickHelp = (event: MouseEvent | TouchEvent) => {
-    setOpenHelp((prevState) => ({
-      openHelp: !prevState.openHelp,
-      anchorElHelp: !prevState.openHelp ? (event.target as HTMLElement) : null,
-    }));
-  };
-
   return (
     <AppBar
-      elevation={0}
+      elevation={6}
       position="fixed"
-      sx={{ zIndex: (theme) => theme.zIndex.drawer - 1 }}
+      sx={{
+        boxShadow:
+          "rgba(0, 0, 0, 0.1) 0px 3px 5px -1px, rgba(0, 0, 0, 0.07) 0px 6px 10px 0px, rgba(0, 0, 0, 0.06) 0px 1px 18px 0px",
+        zIndex: (theme) => theme.zIndex.drawer - 1,
+      }}
     >
       <Toolbar variant="dense">
         <Box sx={{ flexGrow: 1 }} />
@@ -79,17 +65,6 @@ export const Header = ({
           menuItems={menuAddItems}
           onClose={handleClickMore}
           open={Boolean(openMore)}
-        />
-
-        <IconButton onClick={handleClickHelp}>
-          <HelpIcon fontSize="large" />
-        </IconButton>
-
-        <CustomMenu
-          anchorEl={anchorElHelp}
-          menuItems={menuHelpItems}
-          onClose={handleClickHelp}
-          open={Boolean(openHelp)}
         />
 
         <IconButton onClick={handleClickAvatar}>

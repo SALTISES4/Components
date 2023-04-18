@@ -25,9 +25,9 @@ export const SearchDropdown = ({
   selected,
   title,
 }: SearchDropdownProps) => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const limit = 20;
 
-  const limit = 5;
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = async (choice: string) => {
     // Update state
@@ -81,7 +81,9 @@ export const SearchDropdown = ({
       >
         {subtitle}
       </Typography>
-      <FormGroup>
+      <FormGroup
+        sx={{ flexFlow: "row wrap", maxHeight: "50vh", overflowY: "scroll" }}
+      >
         {choices
           .filter((cat) =>
             searchTerm.length > 0
@@ -89,7 +91,6 @@ export const SearchDropdown = ({
               : true,
           )
           .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-          .slice(0, limit)
           .map((choice: string) => (
             <FormControlLabel
               key={choice}
@@ -112,6 +113,7 @@ export const SearchDropdown = ({
               label={labels ? labels[choice] : choice}
               onChange={() => handleChange(choice)}
               sx={{
+                flexBasis: "100%",
                 margin: "5px 0px",
                 "& .MuiTypography-root": {
                   fontSize: "14px",
@@ -121,12 +123,6 @@ export const SearchDropdown = ({
             />
           ))}
       </FormGroup>
-      {choices.length > limit && searchTerm.length == 0 ? (
-        <Typography
-          tag="div"
-          sx={{ minHeight: "24px", ml: "34px", mt: "5px" }}
-        >{`+${choices.length - limit} ${gettext("more")}`}</Typography>
-      ) : null}
     </Box>
   );
 };

@@ -2,6 +2,7 @@ import { h } from "preact";
 
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
+import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 
 import { SuperUserBarProps } from "./types";
@@ -30,15 +31,27 @@ export const SuperUserBar = ({
   return (
     <Box sx={style}>
       <Typography variant="h4" width="100%" align="center">
-        {activeAssignmentCount} {gettext("active assignments")}
+        {activeAssignmentCount ? (
+          `${activeAssignmentCount} ${gettext("active assignments")}`
+        ) : (
+          <Skeleton sx={{ margin: "0 auto", width: "60%" }} />
+        )}
       </Typography>
       <Divider orientation="vertical" flexItem />
       <Typography variant="h4" width="100%" align="center">
-        {activeGroupCount} {gettext("groups")}
+        {activeGroupCount ? (
+          `${activeGroupCount} ${gettext("groups")}`
+        ) : (
+          <Skeleton sx={{ margin: "0 auto", width: "35%" }} />
+        )}
       </Typography>
       <Divider orientation="vertical" flexItem />
       <Typography variant="h4" width="100%" align="center">
-        {createdQuestionCount} {gettext("questions")}
+        {createdQuestionCount ? (
+          `${createdQuestionCount} ${gettext("questions")}`
+        ) : (
+          <Skeleton sx={{ margin: "0 auto", width: "50%" }} />
+        )}
       </Typography>
     </Box>
   );

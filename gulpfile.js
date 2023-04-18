@@ -27,6 +27,7 @@ const tsProject = ts.createProject("tsconfig.json");
 //   "dashboardStudent",
 //   "navigation",
 //   "search",
+//   "library",
 // ];
 const modules = ["rationales"];
 

@@ -1,4 +1,4 @@
-import { Component, createRef, h } from "preact";
+import { Component, createRef, Fragment, h } from "preact";
 
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
@@ -7,17 +7,25 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Checkbox from "@mui/material/Checkbox";
+import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import SvgIcon from "@mui/material/SvgIcon";
 import Typography from "@mui/material/Typography";
 
-import BarChartIcon from "@mui/icons-material/BarChart";
+import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 
+import { Collection as CollectionSkeleton } from "../_skeletons/collection";
+
 import saltise from "../theme";
 import { Tag } from "../styledComponents";
-import { CollectionProps } from "./types";
+import {
+  CollectionBlockProps,
+  CollectionBlockState,
+  CollectionProps,
+  CollectionType,
+} from "./types";
 
 const theme = saltise;
 
@@ -25,10 +33,21 @@ export class Collection extends Component<CollectionProps> {
   ref = createRef();
 
   componentDidMount(): void {
-    if (this.ref.current) {
-      this.props.getHeight(this.ref.current.getBoundingClientRect().height);
-    }
+    this.resize();
   }
+
+  componentDidUpdate(): void {
+    this.resize();
+  }
+
+  resize = (): void => {
+    if (this.ref.current) {
+      const height = this.ref.current.getBoundingClientRect().height;
+      if (this.props.minHeight != height) {
+        this.props.getHeight(height);
+      }
+    }
+  };
 
   avatar = () => {
     return (
@@ -160,22 +179,25 @@ export class Collection extends Component<CollectionProps> {
   };
 
   bookmarkIcon = () => {
-    if (
-      this.props.collection.followed_by_user !== undefined &&
-      this.props.collection.follow_url !== undefined
-    ) {
+    if (this.props.bookmarked !== undefined && this.props.showBookmark) {
       return (
         <Checkbox
-          checked={this.props.collection.followed_by_user}
+          checked={this.props.bookmarked}
           icon={<BookmarkAddOutlinedIcon />}
           checkedIcon={<BookmarkAddedIcon />}
           onChange={this.props.toggleBookmarked}
+          onClick={(evt: MouseEvent) => evt.stopPropagation()}
           sx={{
             color: "primary.main",
             "&.Mui-checked": {
               color: "primary.main",
             },
           }}
+          title={
+            this.props.bookmarked
+              ? this.props.gettext("Remove from library")
+              : this.props.gettext("Add to library")
+          }
         />
       );
     }
@@ -185,7 +207,9 @@ export class Collection extends Component<CollectionProps> {
     return (
       <Card>
         <CardActionArea
+          disableRipple={true}
           onClick={() => (window.location.href = this.props.collection.url)}
+          sx={{ userSelect: "text" }}
         >
           <CardHeader
             avatar={this.avatar()}
@@ -198,7 +222,7 @@ export class Collection extends Component<CollectionProps> {
             }
             title={this.props.collection.title}
             subheader={this.props.gettext(
-              "From ".concat(this.props.collection.author),
+              "From ".concat(this.props.collection.user.username),
             )}
             sx={{ cursor: "pointer" }}
           />
@@ -207,30 +231,93 @@ export class Collection extends Component<CollectionProps> {
               {this.props.collection.description}
             </Typography>
           </CardContent>
+          <CardActions sx={{ justifyContent: "space-between" }}>
+            <Stack direction="row" spacing="5px">
+              {this.discipline()}
+              <Tag
+                sx={{
+                  bgcolor: "white",
+                  borderStyle: "solid",
+                  paddingTop: "3px",
+                  paddingBottom: "3px",
+                }}
+              >
+                <BookmarksIcon fontSize="small" />
+                <Typography>{this.props.collection.follower_count}</Typography>
+              </Tag>
+            </Stack>
+            {this.bookmarkIcon()}
+          </CardActions>
         </CardActionArea>
-        <CardActions sx={{ justifyContent: "space-between" }}>
-          <Stack direction="row" spacing="5px">
-            {this.discipline()}
-            <Tag
-              sx={{
-                bgcolor: "white",
-                borderStyle: "solid",
-                paddingTop: "3px",
-                paddingBottom: "3px",
-              }}
-            >
-              <BarChartIcon fontSize="small" />
-              <Typography>
-                {this.props.collection.answerCount}{" "}
-                {this.props.collection.answerCount == 1
-                  ? this.props.gettext("answer")
-                  : this.props.gettext("answers")}
-              </Typography>
-            </Tag>
-          </Stack>
-          {this.bookmarkIcon()}
-        </CardActions>
       </Card>
+    );
+  }
+}
+
+export class CollectionBlock extends Component<
+  CollectionBlockProps,
+  CollectionBlockState
+> {
+  constructor(props: CollectionBlockProps) {
+    super(props);
+    this.state = {
+      height: 0,
+    };
+  }
+
+  getHeight = (height: number) => {
+    if (height > this.state.height) {
+      this.setState({ height });
+    }
+  };
+
+  render() {
+    return (
+      <Grid container spacing="20px">
+        {!this.props.loading ? (
+          this.props.collections.map(
+            (collection: CollectionType, i: number) => (
+              <Grid key={i} item xs={6}>
+                <Collection
+                  bookmarked={this.props.teacher?.bookmarked_collections?.includes(
+                    collection.pk,
+                  )}
+                  collection={collection}
+                  gettext={this.props.gettext}
+                  getHeight={this.getHeight}
+                  logo={this.props.logo}
+                  minHeight={this.state.height}
+                  showBookmark={
+                    this.props.teacher !== undefined &&
+                    this.props?.teacher?.user?.username
+                      ? this.props.teacher.user.username !==
+                        collection.user.username
+                      : false
+                  }
+                  toggleBookmarked={() =>
+                    this.props.handleBookmarkClick(collection.pk)
+                  }
+                />
+              </Grid>
+            ),
+          )
+        ) : (
+          <Fragment>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+            <Grid item xs={6}>
+              <CollectionSkeleton />
+            </Grid>
+          </Fragment>
+        )}
+      </Grid>
     );
   }
 }

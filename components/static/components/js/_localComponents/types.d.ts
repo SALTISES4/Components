@@ -19,6 +19,8 @@ import {
   QuestionDifficultyLevels,
 } from "./enum";
 
+import { TeacherType } from "../types";
+
 export type UserType = {
   avatar?: string;
   username: string;
@@ -26,7 +28,8 @@ export type UserType = {
 
 export type AssignmentType = {
   answer_count: number;
-  owner: string;
+  is_owner?: boolean;
+  owner: UserType[];
   pk: string;
   question_count: number;
   title: string;
@@ -35,10 +38,27 @@ export type AssignmentType = {
 export type GroupAssignmentType = {
   active: boolean;
   answerCount: number;
+  assignment_pk: string;
   author: string;
   difficulty: string;
   distributionState: DistributionState;
-  dueDate: Date;
+  due_date: Date;
+  group: string;
+  issueCount: number;
+  progress: number;
+  questionCount: number;
+  title: string;
+  url: string;
+};
+
+export type GroupedAssignmentType = {
+  active: boolean;
+  answerCount: number;
+  assignment_pk: string;
+  author: string;
+  difficulty: string;
+  distributionState: DistributionState;
+  dueDate: Date | undefined;
   groups: GroupType[];
   issueCount: number;
   pk: number;
@@ -50,16 +70,14 @@ export type GroupAssignmentType = {
 type DisciplineType = { pk: number; title: string };
 
 export type CollectionType = {
-  answerCount: number;
-  author: string;
   description: string;
   discipline?: DisciplineType;
   featured?: boolean;
-  followed_by_user?: boolean;
-  follow_url?: string;
+  follower_count?: number;
   pk: number;
   title: string;
   url: string;
+  user: UserType;
 };
 
 type QuestionDifficulty = {
@@ -84,10 +102,12 @@ export type QuestionType = {
   answer_count: number;
   answerchoice_set: AnswerChoiceType[];
   category?: { title: string }[];
+  collaborators?: UserType[];
   difficulty: QuestionDifficulty;
   discipline?: DisciplineType;
   image: string;
   image_alt_text: string;
+  is_owner?: boolean;
   peer_impact: QuestionPeerImpact;
   pk: number;
   text: string;
@@ -98,11 +118,11 @@ export type QuestionType = {
 
 export type GroupType = {
   title: string;
-  author: string;
-  session: string;
-  studentCount: number;
-  assignmentCount: number;
-  active: boolean;
+  author?: string;
+  session?: string;
+  studentCount?: number;
+  assignmentCount?: number;
+  active?: boolean;
   subject?: string[];
   due_date: Date;
   progress: number;
@@ -112,12 +132,15 @@ export type GroupType = {
 
 export type AssignmentBisProps = {
   assignment: AssignmentType;
+  bookmarked?: boolean;
   gettext: (a: string) => string;
+  showBookmark: boolean;
+  toggleBookmarked: () => void;
 };
 
 export type GroupAssignmentProps = {
   gettext: (a: string) => string;
-  assignment: GroupAssignmentType;
+  assignment: GroupedAssignmentType;
 };
 
 export type AssignmentStudentProps = {
@@ -133,12 +156,27 @@ export type AssignmentStudentCompletedProps = {
 };
 
 export type CollectionProps = {
+  bookmarked?: boolean;
+  collection: CollectionType;
   gettext: (a: string) => string;
   getHeight: (height: number) => void;
   logo: string;
   minHeight: number;
-  collection: CollectionType;
+  showBookmark: boolean;
   toggleBookmarked: () => void;
+};
+
+export type CollectionBlockProps = {
+  collections: CollectionType[];
+  gettext: (a: string) => string;
+  handleBookmarkClick: (a: number) => void;
+  loading: boolean;
+  logo: string;
+  teacher: TeacherType | undefined;
+};
+
+export type CollectionBlockState = {
+  height: number;
 };
 
 export type GroupProps = {
@@ -152,9 +190,11 @@ export type GroupStudentProps = {
 };
 
 export type QuestionProps = {
-  gettext: (a: string) => string;
   bookmarked?: boolean;
   difficultyLabels?: Record<string, string>;
+  expanded?: boolean;
+  gettext: (a: string) => string;
   question: QuestionType;
+  showBookmark: boolean;
   toggleBookmarked: () => void;
 };

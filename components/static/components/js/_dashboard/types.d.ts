@@ -7,8 +7,8 @@ export type NewUserBarProps = {
 };
 
 export type SuperUserBarProps = {
-  activeAssignmentCount: number;
-  activeGroupCount: number;
-  createdQuestionCount: number;
+  activeAssignmentCount?: number;
+  activeGroupCount?: number;
+  createdQuestionCount?: number;
   gettext: (a: string) => string;
 };

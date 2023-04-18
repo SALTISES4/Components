@@ -21,7 +21,7 @@ export const AssignmentStateIcon = ({ state }: AssignmentStateIconProps) => {
   return (
     <CircleIcon
       fontSize="medium"
-      sx={{ pl: "10px", pr: "10px", color: { color } }}
+      sx={{ pr: "6px", color: { color } }}
       titleAccess={state}
     />
   );

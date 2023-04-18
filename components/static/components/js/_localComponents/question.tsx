@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable indent */
 import { h } from "preact";
 
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
@@ -18,7 +19,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+// import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -37,19 +38,48 @@ export function Question({
   gettext,
   bookmarked,
   difficultyLabels,
+  expanded,
   question,
+  showBookmark,
   toggleBookmarked,
 }: QuestionProps): JSX.Element {
+  let maxCategoriesShown = 3;
+
   const [{ showDetails }, setShowDetails] = useState<{
     showDetails: boolean;
   }>({ showDetails: false });
 
-  const maxCategoriesShown = 3;
+  const [{ showAllCategories }, setShowAllCategories] = useState<{
+    showAllCategories: boolean;
+  }>({ showAllCategories: false });
 
-  const handleChange = () => {
+  useEffect(() => {
+    if (expanded !== undefined && showDetails != expanded) {
+      setShowDetails(() => ({
+        showDetails: expanded,
+      }));
+    }
+  }, [expanded]);
+
+  const handleChange = (evt: MouseEvent) => {
+    if (window.getSelection()?.toString()) {
+      evt.stopPropagation();
+      return;
+    }
     setShowDetails((prevState) => ({
       showDetails: !prevState.showDetails,
     }));
+  };
+
+  const text = () => {
+    if (showDetails) {
+      return (
+        <Typography
+          sx={{ cursor: "text", mb: "10px", mt: "20px" }}
+          dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer and elastic doc
+        />
+      );
+    }
   };
 
   const answerchoices = () => {
@@ -86,6 +116,7 @@ export function Question({
                       __html: answerchoice.text,
                     }} // Bleached in serializer
                     sx={{
+                      cursor: "text",
                       "> p": { mt: 0, mb: "4px" },
                     }}
                     variant={"body1"}
@@ -144,15 +175,14 @@ export function Question({
           inputProps={{ "aria-label": gettext("Show/hide details") }}
           icon={<VisibilityIcon fontSize="medium" />}
           checkedIcon={<VisibilityOffIcon fontSize="medium" />}
+          onClick={(evt: MouseEvent) => evt.stopPropagation()}
           sx={{
             color: "primary.main",
             "&.Mui-checked": {
               color: "primary.main",
             },
           }}
-          title={
-            showDetails ? gettext("Hide details") : gettext("Show details")
-          }
+          title={showDetails ? gettext("Hide data") : gettext("Show data")}
         />
       );
     }
@@ -161,7 +191,10 @@ export function Question({
   const addToAssignmentIcon = () => {
     if (showDetails) {
       return (
-        <IconButton>
+        <IconButton
+          onClick={(evt: MouseEvent) => evt.stopPropagation()}
+          title={gettext("Add to assignment")}
+        >
           <PlaylistAddIcon fontSize="medium" />
         </IconButton>
       );
@@ -169,33 +202,39 @@ export function Question({
   };
 
   const bookmarkIcon = () => {
-    if (bookmarked !== undefined && showDetails) {
+    if (bookmarked !== undefined && showDetails && showBookmark) {
       return (
         <Checkbox
           checked={bookmarked}
           icon={<BookmarkAddOutlinedIcon />}
           checkedIcon={<BookmarkAddedIcon />}
           onChange={toggleBookmarked}
+          onClick={(evt: MouseEvent) => evt.stopPropagation()}
           sx={{
             color: "primary.main",
             "&.Mui-checked": {
               color: "primary.main",
             },
           }}
+          title={
+            bookmarked
+              ? gettext("Remove from library")
+              : gettext("Add to library")
+          }
         />
       );
     }
   };
 
-  const moreIcon = () => {
-    if (showDetails) {
-      return (
-        <IconButton>
-          <MoreHorizIcon fontSize="medium" />
-        </IconButton>
-      );
-    }
-  };
+  // const moreIcon = () => {
+  //   if (showDetails) {
+  //     return (
+  //       <IconButton>
+  //         <MoreHorizIcon fontSize="medium" />
+  //       </IconButton>
+  //     );
+  //   }
+  // };
 
   const discipline = () => {
     if (question?.discipline) {
@@ -211,6 +250,9 @@ export function Question({
   };
 
   const categories = () => {
+    if (showAllCategories && question.category) {
+      maxCategoriesShown = question.category.length;
+    }
     return question.category
       ?.slice(0, maxCategoriesShown)
       .map((category, i) => (
@@ -225,15 +267,15 @@ export function Question({
       question.category !== undefined &&
       question.category.length > maxCategoriesShown
     ) {
-      const list = question.category
-        .slice(maxCategoriesShown)
-        .reduce(
-          (acc, curr, i, arr) =>
-            `${acc}${curr.title}${i < arr.length - 1 ? "\n" : ""}`,
-          "",
-        );
       return (
-        <Tag title={list}>
+        <Tag
+          onClick={(evt: MouseEvent) => {
+            evt.stopPropagation();
+            setShowAllCategories({ showAllCategories: true });
+          }}
+          sx={{ cursor: "pointer" }}
+          title={gettext("Click to show all categories")}
+        >
           <Typography>{`+${
             question.category.length - maxCategoriesShown
           } ${gettext("more")}`}</Typography>
@@ -274,7 +316,11 @@ export function Question({
 
   return (
     <Card>
-      <CardActionArea onClick={handleChange}>
+      <CardActionArea
+        disableRipple={true}
+        onClick={handleChange}
+        sx={{ userSelect: "text" }}
+      >
         <CardContent sx={{ pt: "20px" }}>
           <Box display="flex" justifyContent="space-between">
             <Typography variant="h3" sx={{ m: "0px" }}>
@@ -286,55 +332,52 @@ export function Question({
             </Box>
           </Box>
           <Typography variant="caption">
-            {question.user.username ? gettext("From") : ""}{" "}
-            {question.user.username}
+            {question.user?.username ? gettext("From") : ""}{" "}
+            {question.user?.username}
           </Typography>
-          <Typography
-            sx={{ mb: "10px", mt: "20px" }}
-            dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer and elastic doc
-          />
+          {text()}
           {image()}
           {video()}
           {answerchoices()}
         </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Stack direction="row" spacing="5px">
-          {discipline()}
-          {categories()}
-          {extraCategories()}
-          <Tag
+        <CardActions>
+          <Stack direction="row" spacing="5px">
+            <Tag
+              sx={{
+                bgcolor: "white",
+                borderStyle: "solid",
+                paddingTop: "3px",
+                paddingBottom: "3px",
+              }}
+            >
+              <BarChartIcon fontSize="small" />
+              <Typography>
+                {question.answer_count}{" "}
+                {question.answer_count == 1
+                  ? gettext("answer")
+                  : gettext("answers")}
+              </Typography>
+            </Tag>
+            {discipline()}
+            {categories()}
+            {extraCategories()}
+          </Stack>
+          <Stack
+            direction="row"
+            spacing="15px"
             sx={{
-              bgcolor: "white",
-              borderStyle: "solid",
-              paddingTop: "3px",
-              paddingBottom: "3px",
+              "& .MuiIconButton-root": {
+                marginLeft: "15px",
+              },
             }}
           >
-            <BarChartIcon fontSize="small" />
-            <Typography>
-              {question.answer_count}{" "}
-              {question.answer_count == 1
-                ? gettext("answer")
-                : gettext("answers")}
-            </Typography>
-          </Tag>
-        </Stack>
-        <Stack
-          direction="row"
-          spacing="15px"
-          sx={{
-            "& .MuiIconButton-root": {
-              marginLeft: "15px",
-            },
-          }}
-        >
-          {showDetailsIcon()}
-          {addToAssignmentIcon()}
-          {bookmarkIcon()}
-          {moreIcon()}
-        </Stack>
-      </CardActions>
+            {showDetailsIcon()}
+            {addToAssignmentIcon()}
+            {bookmarkIcon()}
+            {/* {moreIcon()} */}
+          </Stack>
+        </CardActions>
+      </CardActionArea>
     </Card>
   );
 }

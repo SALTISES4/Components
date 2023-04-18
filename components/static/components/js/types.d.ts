@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 
 import {
+  AssignmentType,
   CollectionType,
-  GroupAssignmentType,
-  GroupType,
+  GroupedAssignmentType,
   QuestionType,
   UserType,
 } from "./_localComponents/types";
@@ -11,8 +11,11 @@ import {
 type TeacherType = {
   activeAssignmentCount: number;
   activeGroupCount: number;
+  assignment_pks?: string[];
+  bookmarked_collections: number[];
   createdQuestionCount: number;
   favourite_questions: number[];
+  user?: UserType;
 };
 
 export type LinkType = {
@@ -41,12 +44,13 @@ export type DashboardAppProps = {
 };
 
 export type DashboardAppState = {
-  assignments: GroupAssignmentType[];
+  assignments: GroupedAssignmentType[];
+  assignmentsLoading: boolean;
   collections: CollectionType[];
-  height: number;
+  collectionsLoading: boolean;
   questions: QuestionType[];
-  teacher: TeacherType;
-  groups: GroupType[];
+  questionsLoading: boolean;
+  teacher: TeacherType | undefined;
 };
 
 type SearchData = {
@@ -57,53 +61,104 @@ type SearchData = {
     difficulties: [number, string][];
     disciplines: string[];
     impacts: [number, string][];
+    page: number | undefined;
+    page_size: number | undefined;
   };
-  results: QuestionType[];
+  results: QuestionType[] | AssignmentType[] | CollectionType[];
 };
 
 export type SearchAppProps = {
+  difficulties: [number, string][];
+  disciplines: string[];
+  gettext: (a: string) => string;
+  impacts: [number, string][];
+  logo: string;
+  nonce: string;
+  urls: {
+    assignments: string;
+    backgroundImage: string;
+    collections: string;
+    questions: string;
+    recommendations: {
+      assignments: string;
+      collections: string;
+      questions: string;
+    };
+    teacher: string;
+  };
+  user: { username: string };
+};
+
+export type SearchAppState = {
+  assignmentHitCount: number;
+  assignments: AssignmentType[];
+  assignmentsLoaded: boolean;
+
+  collectionHitCount: number;
+  collections: CollectionType[];
+  collectionsLoaded: boolean;
+
+  lastKeyStroke: number;
+
+  questionHitCount: number | undefined;
+  questionPage: number;
+  questionPageSize: number;
+  questions: QuestionType[];
+  questionsLoaded: boolean;
+
+  searchTerm: string;
+
+  categoryFilters: string[];
+  difficultyFilterLabels: Record<string, string>;
+  difficultyFilters: string[];
+  disciplineFilters: string[];
+  peerImpactFilterLabels: Record<string, string>;
+  peerImpactFilters: string[];
+
+  selectedCategories: string[];
+  selectedDifficulty: string[];
+  selectedDisciplines: string[];
+  selectedImpact: string[];
+  selectedTypes: string[];
+
+  snackbarIsOpen: boolean;
+  snackbarMessage: string;
+
+  teacher: TeacherType | undefined;
+  timeoutID: number;
+};
+
+export type LibraryAppProps = {
   gettext: (a: string) => string;
   logo: string;
   nonce: string;
   urls: {
     assignments: string;
     collections: string;
+    group_assignments: string;
     questions: string;
     teacher: string;
   };
+  user: UserType;
 };
 
-export type SearchAppState = {
-  assignments: GroupAssignmentType[];
-  categoryFilters: string[];
+export type LibraryAppState = {
+  assignments: AssignmentType[];
+  assignmentsLoading: boolean;
   collections: CollectionType[];
-  difficultyFilters: string[];
-  difficultyFilterLabels: Record<string, string>;
-  disciplineFilters: string[];
-  height: number;
-  hitCount: number;
-  lastKeyStroke: number;
-  peerImpactFilters: string[];
-  peerImpactFilterLabels: Record<string, string>;
-  questionLimit: number;
+  collectionsLoading: boolean;
+  groupAssignments: GroupedAssignmentType[];
+  groupAssignmentsLoading: boolean;
   questions: QuestionType[];
-  searching: boolean;
-  searchTerm: string;
-  selectedCategories: string[];
-  selectedDifficulty: string[];
-  selectedDisciplines: string[];
-  selectedImpact: string[];
-  selectedTypes: string[];
-  snackbarIsOpen: boolean;
-  snackbarMessage: string;
-  teacher: TeacherType;
-  timeoutID: number;
+  questionsExpanded: boolean;
+  questionsLoading: boolean;
+  teacher: TeacherType | undefined;
+  type: number;
 };
 
 export type NavigationAppProps = {
   logo: string;
   menuAddItems: LinkType[][];
-  menuHelpItems: LinkType[][];
   menuProfile: LinkType[][];
   nonce: string;
   sidebarGroups: LinkType[][];

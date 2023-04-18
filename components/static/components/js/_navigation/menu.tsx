@@ -10,8 +10,8 @@ import { CustomMenuProps } from "./types";
 
 const typographyStyle = {
   sx: {
-    fontSize: "12px",
-    lineHeight: "16px",
+    fontSize: "0.9rem",
+    lineHeight: "1.2rem",
     color: "secondary4.main",
   },
 };

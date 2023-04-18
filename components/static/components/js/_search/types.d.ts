@@ -7,6 +7,7 @@ import { PeerImpactLabels } from "../_localComponents/enum";
 export type SearchFilterProps = {
   gettext: (a: string) => string;
   callback: (a: string[]) => void;
+  disabled?: boolean;
   filter: FilterType;
   labels?: Record<string, string>;
   minimum?: number;

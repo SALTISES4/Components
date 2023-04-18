@@ -13,6 +13,7 @@ import { SearchFilterProps } from "./types";
 export const SearchFilter = ({
   gettext,
   callback,
+  disabled,
   filter,
   labels,
   minimum,
@@ -30,7 +31,7 @@ export const SearchFilter = ({
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <Box>
-        <Filter onClick={handleClick}>
+        <Filter disabled={disabled} onClick={handleClick}>
           {filter.notification > 0 ? (
             <Notification sx={{ top: "-8px", left: "-13px" }}>
               <Typography>{filter.notification}</Typography>

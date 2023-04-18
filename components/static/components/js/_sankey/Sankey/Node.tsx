@@ -25,7 +25,7 @@ export default function Node<N, L>({
 }: NodeProps<N, L>) {
   const textX = x0 > graphWidth / 2 ? x0 + textPadding : x1 - textPadding;
   const y = (y1 - y0) / 2 + y0;
-  const textY = y < graphHeight / 2 ? y + 10 : y - 7;
+  const textY = y < graphHeight / 2 ? 27.5 + 20 : 27.7 + 145 - 10;
 
   return (
     <g style={{ pointerEvents: "all" }} onClick={() => console.log()}>
@@ -33,7 +33,12 @@ export default function Node<N, L>({
         x={textX}
         y={textY}
         fill="#515159"
-        style={{ userSelect: "none", overflowX: "hidden", fontSize: "14px" }}
+        style={{
+          userSelect: "none",
+          overflowX: "hidden",
+          fontSize: "14px", //font-family: 'Open Sans', sans-serif;
+          fontFamily: "Open sans, sans-serif",
+        }}
       >
         {name}
       </text>

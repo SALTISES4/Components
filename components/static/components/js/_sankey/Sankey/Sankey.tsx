@@ -18,8 +18,8 @@ interface SankeyProps<SankeyExtraProperties, SankeyExtraProperties> {
     nodes: SankeyNode<SankeyExtraProperties, SankeyExtraProperties>[];
     links: SankeyLink<SankeyExtraProperties, SankeyExtraProperties>[];
   };
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
   nodeWidth: number;
   nodePadding: number;
   children?: (sankey: {
@@ -37,13 +37,8 @@ export function SankeyChart<N, L>({
   children,
 }: SankeyProps<N, L>) {
   // Handling Size
-  const { width: windowWidth, height: windowHeight } = {
-    width: 600,
-    height: 300,
-  };
-
-  const sankeyWidth = width ? width : windowWidth - 100;
-  const sankeyHeight = height ? height : windowHeight - 100;
+  const sankeyWidth = width;
+  const sankeyHeight = height;
 
   // State & Data
   const [graph, setGraph] = useState<
@@ -58,8 +53,8 @@ export function SankeyChart<N, L>({
         .nodeWidth(nodeWidth)
         .nodePadding(nodePadding)
         .extent([
-          [1, 1],
-          [sankeyWidth, sankeyHeight - 50],
+          [0, 0],
+          [sankeyWidth, sankeyHeight],
         ])(data),
     );
   }, [nodePadding, nodeWidth, sankeyWidth, sankeyHeight, data]);

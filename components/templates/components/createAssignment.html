@@ -1,0 +1,39 @@
+{% load i18n static %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<!DOCTYPE html>
+<html lang="{{LANGUAGE_CODE}}">
+  <head>
+    {% include "components/meta.html" %}
+    <script
+      src="{% static 'components/js/build/createAssignment.min.js' %}"
+      defer="true"
+    ></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="navigation-app"></div>
+
+    <div id="question-app"></div>
+
+    {% csrf_token %}
+
+    {% include './navigationJS.html' %}
+
+    <script nonce="{{ request.csp_nonce }}">
+      window.addEventListener("load", function () {
+        const createAssignmentApp = () => {
+          return createAssignment.h(createAssignment.App, {
+            gettext: gettext,
+            nonce: "{{ request.csp_nonce }}",
+          });
+        };
+        createAssignment.render(
+          createAssignmentApp(),
+          document.getElementById("question-app")
+        );
+      });
+    </script>
+  </body>
+</html>

@@ -201,3 +201,11 @@ export type AnswerWithRationalesType = {
   description: string;
   rationales: RationalesType[];
 };
+
+
+export type CreateAssignmentAppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+};
+
+export type CreateAssignmentAppState = {};

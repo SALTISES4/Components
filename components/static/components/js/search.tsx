@@ -14,6 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import NetworkCheckIcon from "@mui/icons-material/NetworkCheck";
 import PeopleIcon from "@mui/icons-material/People";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import ScienceIcon from "@mui/icons-material/Science";
 import Snackbar from "@mui/material/Snackbar";
 import Stack from "@mui/material/Stack";
@@ -1028,6 +1029,45 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   }}
                   selected={this.state.selectedCategories}
                 />
+                <Box sx={{ flexGrow: 1 }}>
+                  {this.state.selectedCategories.length > 0 ||
+                  this.state.selectedDifficulty.length > 0 ||
+                  this.state.selectedDisciplines.length > 0 ||
+                  this.state.selectedImpact.length > 0 ||
+                  this.state.selectedTypes.length > 0 ? (
+                    <Box
+                      alignItems="center"
+                      color={"primary.main"}
+                      display="flex"
+                      justifyContent="flex-end"
+                    >
+                      <RefreshIcon fontSize="small" />
+                      <Typography
+                        onClick={() =>
+                          this.setState(
+                            {
+                              selectedCategories: [],
+                              selectedDifficulty: [],
+                              selectedDisciplines: [],
+                              selectedImpact: [],
+                              selectedTypes: [],
+                            },
+                            this.handleSubmit,
+                          )
+                        }
+                        sx={{
+                          color: "primary.main",
+                          cursor: "pointer",
+                          fontSize: "0.9rem",
+                          paddingLeft: "8px",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        {this.props.gettext("Clear all filters")}
+                      </Typography>
+                    </Box>
+                  ) : null}
+                </Box>
               </Box>
             </Box>
             <Box width={this.pageWidth}>

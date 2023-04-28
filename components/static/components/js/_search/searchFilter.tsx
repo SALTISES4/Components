@@ -30,7 +30,7 @@ export const SearchFilter = ({
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
-      <Box>
+      <Box sx={{ flexGrow: 0 }}>
         <Filter disabled={disabled} onClick={handleClick}>
           {filter.notification > 0 ? (
             <Notification sx={{ top: "-8px", left: "-13px" }}>

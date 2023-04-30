@@ -91,6 +91,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     stylisPlugins: [prefixer],
   });
 
+  minimumSearchStringLength = 2;
+
   pageWidth = "82%";
 
   typeFilterLabels = {
@@ -237,7 +239,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         () => console.debug(this.state),
       );
 
-      if (this.state.searchTerm.length > 2) {
+      if (this.state.searchTerm.length > this.minimumSearchStringLength) {
         try {
           console.info("Submitting...");
 
@@ -916,7 +918,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       {
                         selectedTypes: selections,
                       },
-                      this.handleSubmit,
+                      () =>
+                        this.state.searchTerm.length >
+                        this.minimumSearchStringLength
+                          ? this.handleSubmit()
+                          : null,
                     );
                   }}
                   filter={{
@@ -936,7 +942,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       {
                         selectedDisciplines: selections,
                       },
-                      this.handleSubmit,
+                      () =>
+                        this.state.searchTerm.length >
+                        this.minimumSearchStringLength
+                          ? this.handleSubmit()
+                          : null,
                     );
                   }}
                   disabled={
@@ -959,7 +969,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       {
                         selectedDifficulty: selections,
                       },
-                      this.handleSubmit,
+                      () =>
+                        this.state.searchTerm.length >
+                        this.minimumSearchStringLength
+                          ? this.handleSubmit()
+                          : null,
                     );
                   }}
                   disabled={
@@ -989,7 +1003,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       {
                         selectedImpact: selections,
                       },
-                      this.handleSubmit,
+                      () =>
+                        this.state.searchTerm.length >
+                        this.minimumSearchStringLength
+                          ? this.handleSubmit()
+                          : null,
                     );
                   }}
                   disabled={
@@ -1019,7 +1037,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       {
                         selectedCategories: selections,
                       },
-                      this.handleSubmit,
+                      () =>
+                        this.state.searchTerm.length >
+                        this.minimumSearchStringLength
+                          ? this.handleSubmit()
+                          : null,
                     );
                   }}
                   disabled={

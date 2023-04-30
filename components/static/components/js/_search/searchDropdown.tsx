@@ -46,7 +46,7 @@ export const SearchDropdown = ({
     <Box
       position="absolute"
       sx={{
-        width: "220px",
+        width: "320px",
         boxShadow: "0px 0px 4px rgb(0,0,0.1)",
         borderRadius: "4px",
         backgroundColor: "background.paper",
@@ -81,6 +81,8 @@ export const SearchDropdown = ({
       >
         {subtitle}
       </Typography>
+      <Typography>{gettext("All")}</Typography>
+      <Typography>{gettext("None")}</Typography>
       <FormGroup
         sx={{ flexFlow: "row wrap", maxHeight: "50vh", overflowY: "scroll" }}
       >

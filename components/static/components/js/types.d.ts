@@ -34,6 +34,7 @@ export type DashboardAppProps = {
   urls: {
     assignments: string;
     assignmentsLink: string;
+    collection: string;
     collections: string;
     collectionsLink: string;
     questions: string;
@@ -51,6 +52,13 @@ export type DashboardAppState = {
   questions: QuestionType[];
   questionsLoading: boolean;
   teacher: TeacherType | undefined;
+};
+
+type PaginatedData = {
+  count: number;
+  next: null | number;
+  previous: null | number;
+  results: QuestionType[] | AssignmentType[] | CollectionType[];
 };
 
 type SearchData = {
@@ -77,6 +85,7 @@ export type SearchAppProps = {
   urls: {
     assignments: string;
     backgroundImage: string;
+    collection: string;
     collections: string;
     questions: string;
     recommendations: {

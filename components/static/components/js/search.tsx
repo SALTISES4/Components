@@ -3,7 +3,7 @@ import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
 import { get, submitData } from "./ajax";
-import { handleCollectionBookmarkClick } from "./functions";
+import { handleCollectionBookmarkClick, updateCollections } from "./functions";
 
 import Box from "@mui/material/Box";
 import CategoryIcon from "@mui/icons-material/Category";
@@ -36,6 +36,7 @@ import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { SearchFilter } from "./_search/searchFilter";
 import {
+  PaginatedData,
   SearchAppProps,
   SearchAppState,
   SearchData,
@@ -390,9 +391,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         collectionsLoaded: false,
       });
 
-      const collections = (await get(
-        this.props.urls.recommendations.collections,
-      )) as CollectionType[];
+      const collections = (
+        (await get(
+          this.props.urls.recommendations.collections,
+        )) as PaginatedData
+      ).results as CollectionType[];
 
       this.setState({
         collectionHitCount: collections.length,
@@ -603,14 +606,20 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             <CollectionBlock
               collections={this.state.collections}
               gettext={this.props.gettext}
-              handleBookmarkClick={(pk: number) =>
-                handleCollectionBookmarkClick(
+              handleBookmarkClick={async (pk: number) => {
+                await handleCollectionBookmarkClick(
                   (teacher) => this.setState({ teacher }),
                   pk,
                   this.state.teacher,
                   this.props.urls.teacher,
-                )
-              }
+                );
+                updateCollections(
+                  pk,
+                  (collections) => this.setState({ collections }),
+                  this.props.urls.collection,
+                  this.state.collections,
+                );
+              }}
               loading={!this.state.collectionsLoaded}
               logo={this.props.logo}
               teacher={this.state.teacher}

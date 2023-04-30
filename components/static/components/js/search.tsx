@@ -28,7 +28,7 @@ import saltise from "./theme";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-import { Subtitle } from "./styledComponents";
+import { Action, Subtitle } from "./styledComponents";
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { AssignmentBis } from "./_localComponents/assignment_bis";
 import { CollectionBlock } from "./_localComponents/collection";
@@ -1073,7 +1073,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       justifyContent="flex-end"
                     >
                       <RefreshIcon fontSize="small" />
-                      <Typography
+                      <Action
                         onClick={() =>
                           this.setState(
                             {
@@ -1086,16 +1086,10 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                             this.handleSubmit,
                           )
                         }
-                        sx={{
-                          color: "primary.main",
-                          cursor: "pointer",
-                          fontSize: "0.9rem",
-                          paddingLeft: "8px",
-                          textDecoration: "underline",
-                        }}
+                        sx={{ paddingLeft: "8px" }}
                       >
                         {this.props.gettext("Clear all filters")}
-                      </Typography>
+                      </Action>
                     </Box>
                   ) : null}
                 </Box>

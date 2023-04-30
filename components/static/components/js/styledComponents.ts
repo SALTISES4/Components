@@ -2,6 +2,7 @@ import saltise from "./theme";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 const theme = saltise;
 
@@ -125,4 +126,11 @@ export const StepBar = styled(Box)({
   marginBottom: "30px",
   height: "12px",
   borderRadius: "4px",
+});
+
+export const Action = styled(Typography)({
+  color: theme.palette.primary.main,
+  cursor: "pointer",
+  fontSize: "0.9rem",
+  textDecoration: "underline",
 });

@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import { useState } from "preact/hooks";
 import { SearchDropdownProps } from "./types";
 
-import { BpIcon } from "../styledComponents";
+import { Action, BpIcon } from "../styledComponents";
 
 export const SearchDropdown = ({
   gettext,
@@ -73,16 +73,23 @@ export const SearchDropdown = ({
           }}
         />
       ) : null}
-      <Typography
-        fontSize="10px"
-        fontWeight={600}
-        textTransform="uppercase"
-        margin="5px 0px"
-      >
-        {subtitle}
-      </Typography>
-      <Typography>{gettext("All")}</Typography>
-      <Typography>{gettext("None")}</Typography>
+      <Box alignItems="baseline" display="flex" sx={{ gridGap: "10px" }}>
+        <Typography
+          flexGrow={1}
+          fontSize="12px"
+          fontWeight={600}
+          textTransform="uppercase"
+          margin="5px 0px"
+        >
+          {subtitle}
+        </Typography>
+        <Action onClick={() => callback(choices)} sx={{ fontSize: "12px" }}>
+          {gettext("All")}
+        </Action>
+        <Action onClick={() => callback([])} sx={{ fontSize: "12px" }}>
+          {gettext("None")}
+        </Action>
+      </Box>
       <FormGroup
         sx={{ flexFlow: "row wrap", maxHeight: "50vh", overflowY: "scroll" }}
       >

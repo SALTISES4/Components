@@ -439,6 +439,16 @@ export class App extends Component<SearchAppProps, SearchAppState> {
   };
 
   sync = async (): Promise<void> => {
+    if (this.props.type !== undefined) {
+      const index = this.typeFilters
+        .map((d) => d.toLowerCase())
+        .indexOf(this.props.type.toLowerCase());
+
+      if (index >= 0) {
+        this.setState({ selectedTypes: [this.typeFilters[index]] });
+      }
+    }
+
     // Load teacher info
     try {
       const teacher = (await get(this.props.urls.teacher)) as TeacherType;

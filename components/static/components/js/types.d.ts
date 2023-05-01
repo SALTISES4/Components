@@ -82,6 +82,7 @@ export type SearchAppProps = {
   impacts: [number, string][];
   logo: string;
   nonce: string;
+  type?: "question" | "assignment" | "collection";
   urls: {
     assignments: string;
     backgroundImage: string;

@@ -10,6 +10,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 
+import { Action } from "../styledComponents";
 import { DrawerProps } from "./types";
 
 export const SideBar = ({ groups, logo }: DrawerProps) => {
@@ -59,17 +60,35 @@ export const SideBar = ({ groups, logo }: DrawerProps) => {
                       ? handleClick(entry.url, entry.target)
                       : null
                   }
-                  sx={{ pointerEvents: entry.selected ? "none" : "auto" }}
+                  sx={{
+                    pointerEvents: entry.selected ? "none" : "auto",
+                  }}
                 >
-                  <ListItemButton
-                    disabled={entry.disabled}
-                    selected={entry.selected}
-                  >
-                    <ListItemIcon sx={{ minWidth: 36 }}>
-                      <Icon>{entry.icon}</Icon>
-                    </ListItemIcon>
-                    <ListItemText primary={entry.title} />
-                  </ListItemButton>
+                  {entry.aside ? (
+                    <Action
+                      sx={{
+                        fontSize: "x-small!important",
+                        padding: "0px 16px",
+                      }}
+                    >
+                      {entry.title}
+                    </Action>
+                  ) : (
+                    <ListItemButton
+                      disabled={entry.disabled}
+                      selected={entry.selected}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          display: entry.icon ? "block" : "none",
+                          minWidth: 36,
+                        }}
+                      >
+                        <Icon>{entry.icon}</Icon>
+                      </ListItemIcon>
+                      <ListItemText primary={entry.title} />
+                    </ListItemButton>
+                  )}
                 </ListItem>
               ))}
             </List>

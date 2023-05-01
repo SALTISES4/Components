@@ -19,6 +19,7 @@ type TeacherType = {
 };
 
 export type LinkType = {
+  aside?: boolean;
   disabled?: boolean;
   icon: string;
   selected?: boolean;

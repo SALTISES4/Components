@@ -274,7 +274,11 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
             </Typography>
             <Container align="center">
               <SuperUserBar
-                {...this.state.teacher}
+                activeAssignmentCount={
+                  this.state.teacher?.activeAssignmentCount
+                }
+                activeGroupCount={this.state.teacher?.activeGroupCount}
+                createdQuestionCount={this.state.teacher?.createdQuestionCount}
                 gettext={this.props.gettext}
               />
             </Container>

@@ -48,6 +48,8 @@ import {
   CollectionType,
   QuestionType,
 } from "./_localComponents/types";
+import { DifficultyCircleIcon } from "./_reusableComponents/difficultyIconQuestion";
+import { PeerImpactIcon } from "./_reusableComponents/peerImpactIcon";
 
 export class App extends Component<SearchAppProps, SearchAppState> {
   constructor(props: SearchAppProps) {
@@ -982,6 +984,12 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   }
                   filter={{
                     choices: this.props.difficulties.map((d) => `${d[0]}`),
+                    choiceIcons: this.props.difficulties.map((d, i) => (
+                      <DifficultyCircleIcon
+                        difficulty={{ label: d[0], score: parseInt(d[1]) }}
+                        key={i}
+                      />
+                    )),
                     icon: NetworkCheckIcon,
                     notification: this.state.selectedDifficulty.length,
                     subtitle: this.props.gettext("Difficulty levels"),
@@ -1016,6 +1024,12 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   }
                   filter={{
                     choices: this.props.impacts.map((d) => `${d[0]}`),
+                    choiceIcons: this.props.impacts.map((d, i) => (
+                      <PeerImpactIcon
+                        peerImpact={{ label: d[0], score: parseInt(d[1]) }}
+                        key={i}
+                      />
+                    )),
                     icon: PeopleIcon,
                     notification: this.state.selectedImpact.length,
                     subtitle: this.props.gettext("Impact levels"),

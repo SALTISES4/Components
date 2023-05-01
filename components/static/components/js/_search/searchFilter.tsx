@@ -58,6 +58,7 @@ export const SearchFilter = ({
             gettext={gettext}
             callback={callback}
             choices={filter.choices}
+            choiceIcons={filter.choiceIcons}
             labels={labels}
             minimum={minimum}
             selected={selected}

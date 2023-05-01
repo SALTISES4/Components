@@ -19,6 +19,7 @@ export const SearchDropdown = ({
   gettext,
   callback,
   choices,
+  choiceIcons,
   labels,
   minimum,
   subtitle,
@@ -26,6 +27,11 @@ export const SearchDropdown = ({
   title,
 }: SearchDropdownProps) => {
   const limit = 20;
+
+  const _choices: [string, JSX.Element | null][] = [...choices].map((c, i) => [
+    c,
+    choiceIcons ? choiceIcons[i] : null,
+  ]);
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -55,7 +61,7 @@ export const SearchDropdown = ({
         zIndex: 10,
       }}
     >
-      {choices.length > limit ? (
+      {_choices.length > limit ? (
         <TextField
           fullWidth
           onInput={(evt: InputEvent) => {
@@ -93,14 +99,14 @@ export const SearchDropdown = ({
       <FormGroup
         sx={{ flexFlow: "row wrap", maxHeight: "50vh", overflowY: "scroll" }}
       >
-        {choices
-          .filter((cat) =>
+        {_choices
+          .filter(([cat]) =>
             searchTerm.length > 0
               ? cat.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0
               : true,
           )
-          .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-          .map((choice: string) => (
+          .sort(([a], [b]) => a.toLowerCase().localeCompare(b.toLowerCase()))
+          .map(([choice, icon]) => (
             <FormControlLabel
               key={choice}
               checked={selected.indexOf(choice) >= 0}
@@ -119,7 +125,12 @@ export const SearchDropdown = ({
                   selected.indexOf(choice) >= 0) ||
                 false
               }
-              label={labels ? labels[choice] : choice}
+              label={
+                <Typography>
+                  {labels ? labels[choice] : choice}
+                  {icon}
+                </Typography>
+              }
               onChange={() => handleChange(choice)}
               sx={{
                 flexBasis: "100%",

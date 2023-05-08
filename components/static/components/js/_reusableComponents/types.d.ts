@@ -11,6 +11,21 @@ export type CircleProgressionIconProps = {
   progress: number;
 };
 
+export type CustomEditorProps = {
+  boldIcon: string;
+  italicIcon: string;
+  underlineIcon: string;
+  superscriptIcon: string;
+  subscriptIcon: string;
+  linkIcon: string;
+  redoIcon: string;
+  undoIcon: string;
+};
+
+export type CustomEditorState = {
+  editorState: any;
+};
+
 export type DifficultyCircleAssignmentProps = {
   difficulty: string;
 };

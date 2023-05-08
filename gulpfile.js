@@ -29,7 +29,7 @@ const tsProject = ts.createProject("tsconfig.json");
 //   "search",
 //   "library",
 // ];
-const modules = ["rationales"];
+const modules = ["createAssignment"];
 
 function typescript() {
   const build = gulp

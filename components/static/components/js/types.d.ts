@@ -201,3 +201,18 @@ export type AnswerWithRationalesType = {
   description: string;
   rationales: RationalesType[];
 };
+
+export type CreateAssignmentAppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+  boldIcon: string;
+  italicIcon: string;
+  underIcon: string;
+  undoIcon: string;
+  redoIcon: string;
+  subIcon: string;
+  superIcon: string;
+  linkIcon: string;
+};
+
+export type CreateAssignmentAppState = {};

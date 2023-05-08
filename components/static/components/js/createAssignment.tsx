@@ -16,8 +16,7 @@ import { CacheProvider } from "@emotion/react";
 import { SaveBar } from "../questions/saveBar";
 import { CreateAssignmentAppProps, CreateAssignmentAppState } from "./types";
 
-//import MUIRichTextEditor from "mui-rte";
-
+import { CustomEditor } from "./_reusableComponents/editor";
 export class App extends Component<
   CreateAssignmentAppProps,
   CreateAssignmentAppState
@@ -47,7 +46,16 @@ export class App extends Component<
               <Typography variant="h1" align="left">
                 {this.props.gettext("Create Assignement")}
               </Typography>
-              <Box />
+              <CustomEditor
+                boldIcon={this.props.boldIcon}
+                italicIcon={this.props.italicIcon}
+                underlineIcon={this.props.underIcon}
+                superscriptIcon={this.props.superIcon}
+                subscriptIcon={this.props.subIcon}
+                linkIcon={this.props.linkIcon}
+                redoIcon={this.props.redoIcon}
+                undoIcon={this.props.undoIcon}
+              />
             </Container>
           </Box>
           <SaveBar gettext={this.props.gettext} />

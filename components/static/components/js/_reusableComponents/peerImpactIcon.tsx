@@ -35,7 +35,10 @@ const colorPicker = (peerImpact: QuestionPeerImpact) => {
 export const PeerImpactIcon = ({ peerImpact }: PeerImpactIconProps) => {
   const color = colorPicker(peerImpact);
   return (
-    <Box marginRight="10px" display="flex">
+    <Box
+      sx={{ pl: "10px", pr: "10px", verticalAlign: "bottom" }}
+      display="inline-flex"
+    >
       <ImpactRectangle sx={{ backgroundColor: color[0] }} />
       <ImpactRectangle sx={{ backgroundColor: color[1] }} />
       <ImpactRectangle sx={{ backgroundColor: color[2] }} />

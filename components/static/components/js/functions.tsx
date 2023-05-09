@@ -1,6 +1,8 @@
-import { submitData } from "./ajax";
+import { get, submitData } from "./ajax";
 
 import { TeacherType } from "./types";
+
+import { CollectionType } from "./_localComponents/types";
 
 export const daysDiff = (dueDate: Date) => {
   if (dueDate) {
@@ -39,5 +41,27 @@ export const handleCollectionBookmarkClick = async (
     } catch (e: any) {
       error(e);
     }
+  }
+};
+
+export const updateCollections = async (
+  pk: number,
+  callback: (collections: CollectionType[]) => void,
+  path: string,
+  collections: CollectionType[],
+): Promise<void> => {
+  try {
+    const url = new URL(path, window.location.origin);
+    url.pathname = `${url.pathname}${pk}/`;
+
+    const collection = (await get(url.toString())) as CollectionType;
+    const _collections = [...collections];
+
+    const index = _collections.map((c) => c.pk).indexOf(collection.pk);
+    _collections[index] = collection;
+
+    callback(_collections);
+  } catch (error: any) {
+    console.error(error);
   }
 };

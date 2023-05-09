@@ -31,24 +31,34 @@ export const SuperUserBar = ({
   return (
     <Box sx={style}>
       <Typography variant="h4" width="100%" align="center">
-        {activeAssignmentCount ? (
-          `${activeAssignmentCount} ${gettext("active assignments")}`
+        {activeAssignmentCount !== undefined ? (
+          `${activeAssignmentCount} ${
+            activeAssignmentCount != 1
+              ? gettext("active assignments")
+              : gettext("active assignments")
+          }`
         ) : (
           <Skeleton sx={{ margin: "0 auto", width: "60%" }} />
         )}
       </Typography>
       <Divider orientation="vertical" flexItem />
       <Typography variant="h4" width="100%" align="center">
-        {activeGroupCount ? (
-          `${activeGroupCount} ${gettext("groups")}`
+        {activeGroupCount !== undefined ? (
+          `${activeGroupCount} ${
+            activeGroupCount != 1 ? gettext("groups") : gettext("groups")
+          }`
         ) : (
           <Skeleton sx={{ margin: "0 auto", width: "35%" }} />
         )}
       </Typography>
       <Divider orientation="vertical" flexItem />
       <Typography variant="h4" width="100%" align="center">
-        {createdQuestionCount ? (
-          `${createdQuestionCount} ${gettext("questions")}`
+        {createdQuestionCount !== undefined ? (
+          `${createdQuestionCount} ${
+            createdQuestionCount != 1
+              ? gettext("questions")
+              : gettext("question")
+          }`
         ) : (
           <Skeleton sx={{ margin: "0 auto", width: "50%" }} />
         )}

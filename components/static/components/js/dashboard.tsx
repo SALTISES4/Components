@@ -4,7 +4,7 @@ export { h, render };
 
 //functions
 import { get, submitData } from "./ajax";
-import { handleCollectionBookmarkClick } from "./functions";
+import { handleCollectionBookmarkClick, updateCollections } from "./functions";
 
 //material ui components
 import Box from "@mui/material/Box";
@@ -31,7 +31,12 @@ import {
   CollectionType,
   QuestionType,
 } from "./_localComponents/types";
-import { DashboardAppProps, DashboardAppState, TeacherType } from "./types";
+import {
+  DashboardAppProps,
+  DashboardAppState,
+  PaginatedData,
+  TeacherType,
+} from "./types";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -130,9 +135,9 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
         collectionsLoading: true,
       });
 
-      const collections = (await get(
-        this.props.urls.collections,
-      )) as CollectionType[];
+      const collections = (
+        (await get(this.props.urls.collections)) as PaginatedData
+      ).results as CollectionType[];
 
       this.setState({ collections });
     } catch (error: any) {
@@ -269,7 +274,11 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
             </Typography>
             <Container align="center">
               <SuperUserBar
-                {...this.state.teacher}
+                activeAssignmentCount={
+                  this.state.teacher?.activeAssignmentCount
+                }
+                activeGroupCount={this.state.teacher?.activeGroupCount}
+                createdQuestionCount={this.state.teacher?.createdQuestionCount}
                 gettext={this.props.gettext}
               />
             </Container>
@@ -294,14 +303,20 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
               <CollectionBlock
                 collections={this.state.collections}
                 gettext={this.props.gettext}
-                handleBookmarkClick={(pk: number) =>
-                  handleCollectionBookmarkClick(
+                handleBookmarkClick={async (pk: number) => {
+                  await handleCollectionBookmarkClick(
                     (teacher) => this.setState({ teacher }),
                     pk,
                     this.state.teacher,
                     this.props.urls.teacher,
-                  )
-                }
+                  );
+                  updateCollections(
+                    pk,
+                    (collections) => this.setState({ collections }),
+                    this.props.urls.collection,
+                    this.state.collections,
+                  );
+                }}
                 loading={this.state.collectionsLoading}
                 logo={this.props.logo}
                 teacher={this.state.teacher}

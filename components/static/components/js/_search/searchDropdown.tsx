@@ -13,12 +13,13 @@ import Typography from "@mui/material/Typography";
 import { useState } from "preact/hooks";
 import { SearchDropdownProps } from "./types";
 
-import { BpIcon } from "../styledComponents";
+import { Action, BpIcon } from "../styledComponents";
 
 export const SearchDropdown = ({
   gettext,
   callback,
   choices,
+  choiceIcons,
   labels,
   minimum,
   subtitle,
@@ -26,6 +27,11 @@ export const SearchDropdown = ({
   title,
 }: SearchDropdownProps) => {
   const limit = 20;
+
+  const _choices: [string, JSX.Element | null][] = [...choices].map((c, i) => [
+    c,
+    choiceIcons ? choiceIcons[i] : null,
+  ]);
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -46,7 +52,7 @@ export const SearchDropdown = ({
     <Box
       position="absolute"
       sx={{
-        width: "220px",
+        width: "320px",
         boxShadow: "0px 0px 4px rgb(0,0,0.1)",
         borderRadius: "4px",
         backgroundColor: "background.paper",
@@ -55,7 +61,7 @@ export const SearchDropdown = ({
         zIndex: 10,
       }}
     >
-      {choices.length > limit ? (
+      {_choices.length > limit ? (
         <TextField
           fullWidth
           onInput={(evt: InputEvent) => {
@@ -73,25 +79,34 @@ export const SearchDropdown = ({
           }}
         />
       ) : null}
-      <Typography
-        fontSize="10px"
-        fontWeight={600}
-        textTransform="uppercase"
-        margin="5px 0px"
-      >
-        {subtitle}
-      </Typography>
+      <Box alignItems="baseline" display="flex" sx={{ gridGap: "10px" }}>
+        <Typography
+          flexGrow={1}
+          fontSize="12px"
+          fontWeight={600}
+          textTransform="uppercase"
+          margin="5px 0px"
+        >
+          {subtitle}
+        </Typography>
+        <Action onClick={() => callback(choices)} sx={{ fontSize: "12px" }}>
+          {gettext("All")}
+        </Action>
+        <Action onClick={() => callback([])} sx={{ fontSize: "12px" }}>
+          {gettext("None")}
+        </Action>
+      </Box>
       <FormGroup
         sx={{ flexFlow: "row wrap", maxHeight: "50vh", overflowY: "scroll" }}
       >
-        {choices
-          .filter((cat) =>
+        {_choices
+          .filter(([cat]) =>
             searchTerm.length > 0
               ? cat.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0
               : true,
           )
-          .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-          .map((choice: string) => (
+          .sort(([a], [b]) => a.toLowerCase().localeCompare(b.toLowerCase()))
+          .map(([choice, icon]) => (
             <FormControlLabel
               key={choice}
               checked={selected.indexOf(choice) >= 0}
@@ -110,7 +125,12 @@ export const SearchDropdown = ({
                   selected.indexOf(choice) >= 0) ||
                 false
               }
-              label={labels ? labels[choice] : choice}
+              label={
+                <Typography>
+                  {labels ? labels[choice] : choice}
+                  {icon}
+                </Typography>
+              }
               onChange={() => handleChange(choice)}
               sx={{
                 flexBasis: "100%",

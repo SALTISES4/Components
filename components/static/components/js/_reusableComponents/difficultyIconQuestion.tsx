@@ -28,7 +28,12 @@ export const DifficultyCircleIcon = ({
   return (
     <CircleIcon
       fontSize="medium"
-      sx={{ pl: "10px", pr: "10px", color: { color } }}
+      sx={{
+        pl: "10px",
+        pr: "10px",
+        color: { color },
+        verticalAlign: "bottom",
+      }}
       titleAccess={difficulty.value}
     />
   );

@@ -3,7 +3,7 @@ import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
 import { get, submitData } from "./ajax";
-import { handleCollectionBookmarkClick } from "./functions";
+import { handleCollectionBookmarkClick, updateCollections } from "./functions";
 
 import Box from "@mui/material/Box";
 import CategoryIcon from "@mui/icons-material/Category";
@@ -14,6 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import NetworkCheckIcon from "@mui/icons-material/NetworkCheck";
 import PeopleIcon from "@mui/icons-material/People";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import ScienceIcon from "@mui/icons-material/Science";
 import Snackbar from "@mui/material/Snackbar";
 import Stack from "@mui/material/Stack";
@@ -27,7 +28,7 @@ import saltise from "./theme";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-import { Subtitle } from "./styledComponents";
+import { Action, Subtitle } from "./styledComponents";
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { AssignmentBis } from "./_localComponents/assignment_bis";
 import { CollectionBlock } from "./_localComponents/collection";
@@ -35,6 +36,7 @@ import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { SearchFilter } from "./_search/searchFilter";
 import {
+  PaginatedData,
   SearchAppProps,
   SearchAppState,
   SearchData,
@@ -46,6 +48,8 @@ import {
   CollectionType,
   QuestionType,
 } from "./_localComponents/types";
+import { DifficultyCircleIcon } from "./_reusableComponents/difficultyIconQuestion";
+import { PeerImpactIcon } from "./_reusableComponents/peerImpactIcon";
 
 export class App extends Component<SearchAppProps, SearchAppState> {
   constructor(props: SearchAppProps) {
@@ -88,6 +92,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     prepend: true,
     stylisPlugins: [prefixer],
   });
+
+  minimumSearchStringLength = 2;
 
   pageWidth = "82%";
 
@@ -235,7 +241,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         () => console.debug(this.state),
       );
 
-      if (this.state.searchTerm.length > 2) {
+      if (this.state.searchTerm.length > this.minimumSearchStringLength) {
         try {
           console.info("Submitting...");
 
@@ -389,9 +395,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         collectionsLoaded: false,
       });
 
-      const collections = (await get(
-        this.props.urls.recommendations.collections,
-      )) as CollectionType[];
+      const collections = (
+        (await get(
+          this.props.urls.recommendations.collections,
+        )) as PaginatedData
+      ).results as CollectionType[];
 
       this.setState({
         collectionHitCount: collections.length,
@@ -431,6 +439,16 @@ export class App extends Component<SearchAppProps, SearchAppState> {
   };
 
   sync = async (): Promise<void> => {
+    if (this.props.type !== undefined) {
+      const index = this.typeFilters
+        .map((d) => d.toLowerCase())
+        .indexOf(this.props.type.toLowerCase());
+
+      if (index >= 0) {
+        this.setState({ selectedTypes: [this.typeFilters[index]] });
+      }
+    }
+
     // Load teacher info
     try {
       const teacher = (await get(this.props.urls.teacher)) as TeacherType;
@@ -602,14 +620,20 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             <CollectionBlock
               collections={this.state.collections}
               gettext={this.props.gettext}
-              handleBookmarkClick={(pk: number) =>
-                handleCollectionBookmarkClick(
+              handleBookmarkClick={async (pk: number) => {
+                await handleCollectionBookmarkClick(
                   (teacher) => this.setState({ teacher }),
                   pk,
                   this.state.teacher,
                   this.props.urls.teacher,
-                )
-              }
+                );
+                updateCollections(
+                  pk,
+                  (collections) => this.setState({ collections }),
+                  this.props.urls.collection,
+                  this.state.collections,
+                );
+              }}
               loading={!this.state.collectionsLoaded}
               logo={this.props.logo}
               teacher={this.state.teacher}
@@ -906,7 +930,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       {
                         selectedTypes: selections,
                       },
-                      this.handleSubmit,
+                      () =>
+                        this.state.searchTerm.length >
+                        this.minimumSearchStringLength
+                          ? this.handleSubmit()
+                          : null,
                     );
                   }}
                   filter={{
@@ -926,7 +954,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       {
                         selectedDisciplines: selections,
                       },
-                      this.handleSubmit,
+                      () =>
+                        this.state.searchTerm.length >
+                        this.minimumSearchStringLength
+                          ? this.handleSubmit()
+                          : null,
                     );
                   }}
                   disabled={
@@ -949,7 +981,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       {
                         selectedDifficulty: selections,
                       },
-                      this.handleSubmit,
+                      () =>
+                        this.state.searchTerm.length >
+                        this.minimumSearchStringLength
+                          ? this.handleSubmit()
+                          : null,
                     );
                   }}
                   disabled={
@@ -958,6 +994,12 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   }
                   filter={{
                     choices: this.props.difficulties.map((d) => `${d[0]}`),
+                    choiceIcons: this.props.difficulties.map((d, i) => (
+                      <DifficultyCircleIcon
+                        difficulty={{ label: d[0], score: parseInt(d[1]) }}
+                        key={i}
+                      />
+                    )),
                     icon: NetworkCheckIcon,
                     notification: this.state.selectedDifficulty.length,
                     subtitle: this.props.gettext("Difficulty levels"),
@@ -979,7 +1021,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       {
                         selectedImpact: selections,
                       },
-                      this.handleSubmit,
+                      () =>
+                        this.state.searchTerm.length >
+                        this.minimumSearchStringLength
+                          ? this.handleSubmit()
+                          : null,
                     );
                   }}
                   disabled={
@@ -988,6 +1034,12 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   }
                   filter={{
                     choices: this.props.impacts.map((d) => `${d[0]}`),
+                    choiceIcons: this.props.impacts.map((d, i) => (
+                      <PeerImpactIcon
+                        peerImpact={{ label: d[0], score: parseInt(d[1]) }}
+                        key={i}
+                      />
+                    )),
                     icon: PeopleIcon,
                     notification: this.state.selectedImpact.length,
                     subtitle: this.props.gettext("Impact levels"),
@@ -1009,7 +1061,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                       {
                         selectedCategories: selections,
                       },
-                      this.handleSubmit,
+                      () =>
+                        this.state.searchTerm.length >
+                        this.minimumSearchStringLength
+                          ? this.handleSubmit()
+                          : null,
                     );
                   }}
                   disabled={
@@ -1028,6 +1084,39 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   }}
                   selected={this.state.selectedCategories}
                 />
+                <Box sx={{ flexGrow: 1 }}>
+                  {this.state.selectedCategories.length > 0 ||
+                  this.state.selectedDifficulty.length > 0 ||
+                  this.state.selectedDisciplines.length > 0 ||
+                  this.state.selectedImpact.length > 0 ||
+                  this.state.selectedTypes.length > 0 ? (
+                    <Box
+                      alignItems="center"
+                      color={"primary.main"}
+                      display="flex"
+                      justifyContent="flex-end"
+                    >
+                      <RefreshIcon fontSize="small" />
+                      <Action
+                        onClick={() =>
+                          this.setState(
+                            {
+                              selectedCategories: [],
+                              selectedDifficulty: [],
+                              selectedDisciplines: [],
+                              selectedImpact: [],
+                              selectedTypes: [],
+                            },
+                            this.handleSubmit,
+                          )
+                        }
+                        sx={{ paddingLeft: "8px" }}
+                      >
+                        {this.props.gettext("Clear all filters")}
+                      </Action>
+                    </Box>
+                  ) : null}
+                </Box>
               </Box>
             </Box>
             <Box width={this.pageWidth}>

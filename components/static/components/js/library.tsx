@@ -22,7 +22,12 @@ import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 
 //types
-import { LibraryAppProps, LibraryAppState, TeacherType } from "./types";
+import {
+  LibraryAppProps,
+  LibraryAppState,
+  PaginatedData,
+  TeacherType,
+} from "./types";
 import {
   AssignmentType,
   CollectionType,
@@ -97,7 +102,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
 
       this.setState(
         {
-          collections: (collections as any).results.sort(
+          collections: (collections as PaginatedData).results.sort(
             (a: CollectionType, b: CollectionType) => {
               if (this.state.teacher?.user?.username !== undefined) {
                 return (

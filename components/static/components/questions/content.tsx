@@ -15,7 +15,7 @@ import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
 
 import Button from "@mui/material/Button";
-import { TextInputBox } from "../js/_reusableComponents/textInputBox";
+import { TextInputBox } from "../js/_reusableComponents/customTextField";
 
 export function Content({
   gettext,

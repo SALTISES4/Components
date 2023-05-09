@@ -36,6 +36,7 @@ export class CustomEditor extends Component<
       color: "#515159",
       position: "inherit",
       minHeight: "90px", //wrapper width - toolbar width
+      boxSizing: "border-box",
     };
     const toolbarStyle = {
       visibility: "visible",
@@ -68,41 +69,41 @@ export class CustomEditor extends Component<
               "subscript",
             ],
             bold: {
-              icon: this.props.boldIcon,
+              icon: this.props.EditorIcons.boldIcon,
               className: undefined,
             },
             italic: {
-              icon: this.props.italicIcon,
+              icon: this.props.EditorIcons.italicIcon,
               className: "testCouleur",
             },
             underline: {
-              icon: this.props.underlineIcon,
+              icon: this.props.EditorIcons.underIcon,
               className: undefined,
             },
             superscript: {
-              icon: this.props.superscriptIcon,
+              icon: this.props.EditorIcons.superIcon,
               className: undefined,
             },
             subscript: {
-              icon: this.props.subscriptIcon,
+              icon: this.props.EditorIcons.subIcon,
               className: undefined,
             },
           },
           link: {
             options: ["link"],
             link: {
-              icon: this.props.linkIcon,
+              icon: this.props.EditorIcons.linkIcon,
               className: undefined,
             },
             showOpenOptionOnHover: true,
           },
           history: {
             redo: {
-              icon: this.props.redoIcon,
+              icon: this.props.EditorIcons.redoIcon,
               className: undefined,
             },
             undo: {
-              icon: this.props.undoIcon,
+              icon: this.props.EditorIcons.undoIcon,
               className: undefined,
             },
           },

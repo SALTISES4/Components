@@ -216,6 +216,10 @@ export type AnswerWithRationalesType = {
 export type CreateAssignmentAppProps = {
   gettext: (a: string) => string;
   nonce: string;
+  EditorIcons: EditorIconsType;
+};
+
+export type EditorIconsType = {
   boldIcon: string;
   italicIcon: string;
   underIcon: string;

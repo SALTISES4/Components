@@ -17,7 +17,7 @@ import { CustomAddBox } from "../js/styledComponents";
 import { IconButton } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import { TextInputBox } from "../js/_reusableComponents/textInputBox";
+import { TextInputBox } from "../js/_reusableComponents/customTextField";
 
 export function Answer({
   gettext,

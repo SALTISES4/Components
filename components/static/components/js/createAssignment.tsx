@@ -13,10 +13,12 @@ import { formTheme } from "./theme";
 //cache
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-import { SaveBar } from "../questions/saveBar";
 import { CreateAssignmentAppProps, CreateAssignmentAppState } from "./types";
-
-import { CustomEditor } from "./_reusableComponents/editor";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import { Card, CardContent, CardHeader, Divider, Stack } from "@mui/material";
+import { CustomTextField } from "./_reusableComponents/customTextField";
+import { CustomEditorField } from "./_reusableComponents/customEditorField";
+import { CancelButton, ValidateButton } from "./styledComponents";
 export class App extends Component<
   CreateAssignmentAppProps,
   CreateAssignmentAppState
@@ -46,19 +48,69 @@ export class App extends Component<
               <Typography variant="h1" align="left">
                 {this.props.gettext("Create Assignement")}
               </Typography>
-              <CustomEditor
-                boldIcon={this.props.boldIcon}
-                italicIcon={this.props.italicIcon}
-                underlineIcon={this.props.underIcon}
-                superscriptIcon={this.props.superIcon}
-                subscriptIcon={this.props.subIcon}
-                linkIcon={this.props.linkIcon}
-                redoIcon={this.props.redoIcon}
-                undoIcon={this.props.undoIcon}
-              />
+              <Card>
+                <CardHeader title={"Assignment settings"} />
+                <Divider />
+                <CardContent>
+                  <Stack spacing={"20px"}>
+                    <CustomTextField
+                      id="identifier"
+                      title="Identifier *"
+                      defaultValue=""
+                      icon={HelpOutlineIcon}
+                      helperText={this.props.gettext(
+                        "Only use letters, numbers and the underscore for the identifier. Max length is 100 characters.",
+                      )}
+                    />
+                    <CustomTextField
+                      id="title"
+                      title="Title *"
+                      defaultValue=""
+                      icon={HelpOutlineIcon}
+                      helperText={this.props.gettext(
+                        "Max length is 200 characters.",
+                      )}
+                    />
+                    <CustomEditorField
+                      id="Description"
+                      title="Description"
+                      icon={HelpOutlineIcon}
+                      EditorIcons={this.props.EditorIcons}
+                    />
+                    <CustomEditorField
+                      id="specialInstructions"
+                      title="Special instructions"
+                      icon={HelpOutlineIcon}
+                      EditorIcons={this.props.EditorIcons}
+                    />
+                    <CustomEditorField
+                      id="postAssignmentNotes"
+                      title="Post assignment notes"
+                      icon={HelpOutlineIcon}
+                      EditorIcons={this.props.EditorIcons}
+                    />
+                  </Stack>
+                </CardContent>
+              </Card>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  gap: "10px",
+                  margin: "50px 0px",
+                }}
+              >
+                <CancelButton>
+                  <Typography>{this.props.gettext("Cancel")}</Typography>
+                </CancelButton>
+                <ValidateButton variant="contained">
+                  <Typography>
+                    {this.props.gettext("Create assignment")}
+                  </Typography>
+                </ValidateButton>
+              </Box>
             </Container>
           </Box>
-          <SaveBar gettext={this.props.gettext} />
         </CacheProvider>
       </ThemeProvider>
     );

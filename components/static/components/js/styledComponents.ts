@@ -134,3 +134,14 @@ export const Action = styled(Typography)({
   fontSize: "0.9rem",
   textDecoration: "underline",
 });
+
+export const CancelButton = styled(Button)({
+  color: theme.palette.secondary4.main,
+  borderColor: theme.palette.secondary4.main,
+}); //border: "solid 2px",
+
+export const ValidateButton = styled(Button)({
+  color: theme.palette.primary.main,
+  borderColor: theme.palette.primary.main,
+  border: "solid 2px",
+});

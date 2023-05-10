@@ -9,47 +9,47 @@ import {
   SankeyGraph,
   SankeyNode,
   SankeyLink,
-  SankeyExtraProperties,
 } from "d3-sankey";
+import { ExtraLinkProperties, ExtraNodeProperties } from "./types";
 
 // Props
-interface SankeyProps<SankeyExtraProperties, SankeyExtraProperties> {
+interface SankeyProps {
   data: {
-    nodes: SankeyNode<SankeyExtraProperties, SankeyExtraProperties>[];
-    links: SankeyLink<SankeyExtraProperties, SankeyExtraProperties>[];
+    nodes: SankeyNode<ExtraNodeProperties, ExtraLinkProperties>[];
+    links: SankeyLink<ExtraNodeProperties, ExtraLinkProperties>[];
   };
   width: number;
   height: number;
   nodeWidth: number;
   nodePadding: number;
   children?: (sankey: {
-    graph: SankeyGraph<SankeyExtraProperties, SankeyExtraProperties>;
+    graph: SankeyGraph<ExtraNodeProperties, ExtraLinkProperties>;
   }) => JSX.Element;
 }
 
 // Component
-export function SankeyChart<N, L>({
+export function SankeyChart({
   data,
   width,
   height,
   nodeWidth,
   nodePadding,
   children,
-}: SankeyProps<N, L>) {
+}: SankeyProps) {
   // Handling Size
   const sankeyWidth = width;
   const sankeyHeight = height;
 
   // State & Data
   const [graph, setGraph] = useState<
-    SankeyGraph<SankeyExtraProperties, SankeyExtraProperties>
+    SankeyGraph<ExtraNodeProperties, ExtraLinkProperties>
   >({
     nodes: [],
     links: [],
   });
   useEffect(() => {
     setGraph(
-      d3sankey<SankeyExtraProperties, SankeyExtraProperties>()
+      d3sankey<ExtraNodeProperties, ExtraLinkProperties>()
         .nodeWidth(nodeWidth)
         .nodePadding(nodePadding)
         .extent([

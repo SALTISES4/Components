@@ -5,17 +5,16 @@ import { linkHorizontal } from "d3-shape";
 // Library Types
 import type { SankeyLink } from "d3-sankey";
 import { useState } from "preact/hooks";
+import { ExtraLinkProperties, ExtraNodeProperties } from "./types";
 
 // Props
 type LinkProps = {
-  link: SankeyLink<{}, {}>;
-  color: string;
-  opacityInit: number;
+  link: SankeyLink<ExtraNodeProperties, ExtraLinkProperties>;
   graphHeight: number;
 };
 
 function horizontalSourceO(
-  link: SankeyLink<{}, {}>,
+  link: SankeyLink<ExtraNodeProperties, ExtraLinkProperties>,
   height: number,
   linkWidth: number,
 ) {
@@ -26,7 +25,7 @@ function horizontalSourceO(
 }
 
 function horizontalTargetO(
-  link: SankeyLink<{}, {}>,
+  link: SankeyLink<ExtraNodeProperties, ExtraLinkProperties>,
   height: number,
   linkWidth: number,
 ) {
@@ -40,18 +39,14 @@ function sankeyLinkHorizontalO() {
 }
 
 // Component
-export default function Link({
-  link,
-  color,
-  opacityInit,
-  graphHeight,
-}: LinkProps) {
+export default function Link({ link, graphHeight }: LinkProps) {
   const linkWidth = (link.width / 100) * 50;
   //  link.width < graphHeight / 2.7 ? link.width : (link.width / 100) * 75; //block to a max width
 
   const path: string = sankeyLinkHorizontalO()(link, graphHeight, linkWidth);
 
-  const [opacity, setOpacity] = useState(opacityInit);
+  const [opacity, setOpacity] = useState(link.opacity);
+  const hoverOpacity = link.opacity + 0.2;
 
   return (
     <g>
@@ -60,11 +55,11 @@ export default function Link({
         style={{
           fill: "none",
           strokeOpacity: opacity,
-          stroke: color,
+          stroke: link.color,
           strokeWidth: linkWidth && !isNaN(linkWidth) ? linkWidth : 0,
         }}
-        onMouseEnter={() => setOpacity(0.8)}
-        onMouseLeave={() => setOpacity(opacityInit)}
+        onMouseEnter={() => setOpacity(hoverOpacity)}
+        onMouseLeave={() => setOpacity(opacity)}
       >
         <title>
           {link.source.name} -&gt; {link.target.name}: {link.value}

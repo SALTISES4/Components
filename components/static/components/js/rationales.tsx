@@ -28,10 +28,14 @@ import { Container } from "@mui/system";
 
 import { answersWithRationales } from "./data";
 import { SankeyChart } from "./_sankey/Sankey/Sankey";
-import { ExtraNodeProperties } from "./_sankey/Sankey/types";
+import {
+  ExtraLinkProperties,
+  ExtraNodeProperties,
+} from "./_sankey/Sankey/types";
 import { data } from "./_sankey/Sankey/data";
 import { Link, Node } from "./_sankey/Sankey";
 import VerticalBorder from "./_sankey/Sankey/VerticalBorder";
+import { SankeyLink, SankeyNode } from "d3-sankey";
 
 export class App extends Component<RationalesAppProps, RationalesAppState> {
   constructor(props: RationalesAppProps) {
@@ -61,13 +65,13 @@ export class App extends Component<RationalesAppProps, RationalesAppState> {
         <CacheProvider value={this.cache}>
           <Box width="calc(100% - 200px)" marginLeft="200px">
             <Container>
-              <Box width={cardWidth} sx={{ margin: "auto" }}>
+              <Box width={cardWidth} sx={{ mx: "auto", my: "30px" }}>
                 <Card sx={{ padding: "50px" }}>
                   <Typography variant="h1" sx={{ mt: "0px", mb: "20px" }}>
                     {this.props.gettext("Rationales")}
                   </Typography>
                   <Box display={"flex"} justifyContent="center">
-                    <SankeyChart<ExtraNodeProperties, {}>
+                    <SankeyChart
                       data={data}
                       nodeWidth={60}
                       nodePadding={40}
@@ -75,43 +79,49 @@ export class App extends Component<RationalesAppProps, RationalesAppState> {
                       height={sankeyHeight}
                     >
                       {({ graph }) => {
-                        const color = [
-                          "#0D2666",
-                          "#6691FF",
-                          "#1743B3",
-                          "#AEAEBF",
-                        ];
-                        const opacity = [1, 0.5, 0.5, 0.5];
                         const textPadding = [44, 54, 10, 10];
                         return (
                           <g>
                             {graph &&
-                              graph.links.map((link, i) => (
-                                <g key={`sankey-link-${i}`}>
-                                  <Link
-                                    link={link}
-                                    opacityInit={opacity[i]}
-                                    color={color[i]}
-                                    graphHeight={sankeyHeight}
-                                  />
-                                  <VerticalBorder
-                                    link={link}
-                                    graphHeight={sankeyHeight}
-                                  />
-                                </g>
-                              ))}
+                              graph.links.map(
+                                (
+                                  link: SankeyLink<
+                                    ExtraNodeProperties,
+                                    ExtraLinkProperties
+                                  >,
+                                  i: number,
+                                ) => (
+                                  <g key={`sankey-link-${i}`}>
+                                    <Link
+                                      link={link}
+                                      graphHeight={sankeyHeight}
+                                    />
+                                    <VerticalBorder
+                                      link={link}
+                                      graphHeight={sankeyHeight}
+                                    />
+                                  </g>
+                                ),
+                              )}
                             {graph &&
-                              graph.nodes.map((node, i) => (
-                                <Node<ExtraNodeProperties, {}>
-                                  key={`sankey-node-${i}`}
-                                  link={node}
-                                  name={node.name}
-                                  textPadding={textPadding[i]}
-                                  graph={graph}
-                                  graphHeight={sankeyHeight}
-                                  graphWidth={sankeyWidth}
-                                />
-                              ))}
+                              graph.nodes.map(
+                                (
+                                  node: SankeyNode<
+                                    ExtraNodeProperties,
+                                    ExtraLinkProperties
+                                  >,
+                                  i: number,
+                                ) => (
+                                  <Node
+                                    key={`sankey-node-${i}`}
+                                    node={node}
+                                    textPadding={textPadding[i]}
+                                    graph={graph}
+                                    graphHeight={sankeyHeight}
+                                    graphWidth={sankeyWidth}
+                                  />
+                                ),
+                              )}
                           </g>
                         );
                       }}

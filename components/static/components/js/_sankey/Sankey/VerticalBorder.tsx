@@ -3,16 +3,22 @@ import { h } from "preact";
 
 // Library Types
 import type { SankeyLink } from "d3-sankey";
+import { ExtraLinkProperties, ExtraNodeProperties } from "./types";
 
 // Props
 type VerticalBorderProps = {
-  link: SankeyLink<{}, {}>;
+  link: SankeyLink<ExtraNodeProperties, ExtraLinkProperties>;
   graphHeight: number;
 };
 
-function testRect(link: SankeyLink<{}, {}>, height: number) {
-  const ySource = (link.source.y1 - link.source.y0) / 2 + link.source.y0;
-  const yTarget = (link.target.y1 - link.target.y0) / 2 + link.target.y0;
+function testRect(
+  link: SankeyLink<ExtraNodeProperties, ExtraLinkProperties>,
+  height: number,
+) {
+  const ySource: number =
+    (link.source.y1 - link.source.y0) / 2 + link.source.y0;
+  const yTarget: number =
+    (link.target.y1 - link.target.y0) / 2 + link.target.y0;
   let test = false;
   if (ySource < height / 2 && yTarget < height / 2) {
     test = true;

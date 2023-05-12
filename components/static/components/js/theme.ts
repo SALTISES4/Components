@@ -442,6 +442,10 @@ export const formTheme = createTheme(saltise, {
       styleOverrides: {
         root: {
           padding: "20px",
+          "& .MuiDivider-root": {
+            margin: "20px -20px",
+            backgroundColor: saltise.palette.secondary1.main,
+          },
         },
       },
     },
@@ -458,8 +462,7 @@ export const formTheme = createTheme(saltise, {
     MuiDivider: {
       styleOverrides: {
         root: {
-          backgroundColor: "#E9EBF2",
-          margin: "20px -20px",
+          backgroundColor: saltise.palette.secondary2.main,
         },
       },
     },
@@ -468,7 +471,7 @@ export const formTheme = createTheme(saltise, {
         root: {
           padding: "0px",
           "& .MuiTypography-root": {
-            color: "#515159",
+            color: saltise.palette.secondary4.main,
             fontSize: "12px",
           },
         },
@@ -484,7 +487,7 @@ export const formTheme = createTheme(saltise, {
     MuiInputBase: {
       styleOverrides: {
         root: {
-          color: "#515159",
+          color: saltise.palette.secondary4.main,
         },
       },
     },
@@ -560,7 +563,14 @@ export const formTheme = createTheme(saltise, {
     MuiFormHelperText: {
       styleOverrides: {
         root: {
-          color: "#515159",
+          color: saltise.palette.secondary4.main,
+        },
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          color: saltise.palette.primary.main,
         },
       },
     },

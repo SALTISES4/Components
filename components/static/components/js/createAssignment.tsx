@@ -44,7 +44,7 @@ export class App extends Component<
       <ThemeProvider theme={formTheme}>
         <CacheProvider value={this.cache}>
           <Box width="calc(100% - 200px)" marginLeft="200px">
-            <Container sx={{ width: "80%" }}>
+            <Container sx={{ width: "65%" }}>
               <Typography variant="h1" align="left">
                 {this.props.gettext("Create Assignement")}
               </Typography>

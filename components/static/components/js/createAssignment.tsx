@@ -19,13 +19,20 @@ import { Card, CardContent, CardHeader, Divider, Stack } from "@mui/material";
 import { CustomTextField } from "./_reusableComponents/customTextField";
 import { CustomEditorField } from "./_reusableComponents/customEditorField";
 import { CancelButton, ValidateButton } from "./styledComponents";
+
 export class App extends Component<
   CreateAssignmentAppProps,
   CreateAssignmentAppState
 > {
   constructor(props: CreateAssignmentAppProps) {
     super(props);
-    this.state = {};
+    this.state = {
+      description: "",
+      identifier: "",
+      specialInstructions: "",
+      postAssignmentNotes: "",
+      title: "",
+    };
   }
 
   componentDidMount(): void {
@@ -43,10 +50,10 @@ export class App extends Component<
     return (
       <ThemeProvider theme={formTheme}>
         <CacheProvider value={this.cache}>
-          <Box width="calc(100% - 200px)" marginLeft="200px">
+          <Box>
             <Container sx={{ width: "65%" }}>
-              <Typography variant="h1" align="left">
-                {this.props.gettext("Create Assignement")}
+              <Typography variant="h1" align="left" mt={0}>
+                {this.props.gettext("Create Assignment")}
               </Typography>
               <Card>
                 <CardHeader title={"Assignment settings"} />
@@ -54,40 +61,56 @@ export class App extends Component<
                 <CardContent>
                   <Stack spacing={"20px"}>
                     <CustomTextField
+                      gettext={this.props.gettext}
                       id="identifier"
                       title="Identifier *"
                       defaultValue=""
                       icon={HelpOutlineIcon}
                       helperText={this.props.gettext(
-                        "Only use letters, numbers and the underscore for the identifier. Max length is 100 characters.",
+                        "Only use letters, numbers and the underscore for the identifier.",
                       )}
+                      maxLength={100}
+                      setValue={(identifier) => this.setState({ identifier })}
+                      value={this.state.identifier}
                     />
                     <CustomTextField
+                      gettext={this.props.gettext}
                       id="title"
                       title="Title *"
                       defaultValue=""
                       icon={HelpOutlineIcon}
-                      helperText={this.props.gettext(
-                        "Max length is 200 characters.",
-                      )}
+                      maxLength={200}
+                      setValue={(title) => this.setState({ title })}
+                      value={this.state.title}
                     />
                     <CustomEditorField
-                      id="Description"
                       title="Description"
                       icon={HelpOutlineIcon}
                       EditorIcons={this.props.EditorIcons}
+                      value={this.state.description}
+                      setValue={(description) =>
+                        this.setState({ description }, () =>
+                          console.info(this.state),
+                        )
+                      }
                     />
                     <CustomEditorField
-                      id="specialInstructions"
                       title="Special instructions"
                       icon={HelpOutlineIcon}
                       EditorIcons={this.props.EditorIcons}
+                      value={this.state.specialInstructions}
+                      setValue={(specialInstructions) =>
+                        this.setState({ specialInstructions })
+                      }
                     />
                     <CustomEditorField
-                      id="postAssignmentNotes"
                       title="Post assignment notes"
                       icon={HelpOutlineIcon}
                       EditorIcons={this.props.EditorIcons}
+                      value={this.state.postAssignmentNotes}
+                      setValue={(postAssignmentNotes) =>
+                        this.setState({ postAssignmentNotes })
+                      }
                     />
                   </Stack>
                 </CardContent>

@@ -230,4 +230,10 @@ export type EditorIconsType = {
   linkIcon: string;
 };
 
-export type CreateAssignmentAppState = {};
+export type CreateAssignmentAppState = {
+  description: string;
+  identifier: string;
+  specialInstructions: string;
+  postAssignmentNotes: string;
+  title: string;
+};

@@ -1,9 +1,13 @@
 import { Component, h } from "preact";
 import { formTheme } from "../theme";
 
-import { EditorState } from "draft-js";
+import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { CustomEditorProps, CustomEditorState } from "./types";
+
+import DOMPurify from "dompurify";
+import draftToHtml from "draftjs-to-html";
+// import htmlToDraft from "html-to-draftjs"; // Will be needed when editing an initial value
 
 export class CustomEditor extends Component<
   CustomEditorProps,
@@ -15,12 +19,25 @@ export class CustomEditor extends Component<
       editorState: EditorState.createEmpty(),
     };
   }
+
   onEditorStateChange = (editorState: any) => {
     console.log(editorState);
-    this.setState({
-      editorState,
-    });
+    this.setState(
+      {
+        editorState,
+      },
+      () =>
+        this.props.setValue(
+          DOMPurify.sanitize(
+            draftToHtml(convertToRaw(editorState.getCurrentContent())),
+            {
+              USE_PROFILES: { html: true },
+            },
+          ),
+        ),
+    );
   };
+
   render() {
     const wrapperStyle = {
       backgroundColor: "white",

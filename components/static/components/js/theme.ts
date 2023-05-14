@@ -287,6 +287,9 @@ const saltise = createTheme({
             color: "#fff",
           },
         },
+        outlined: {
+          border: "solid 2px",
+        },
       },
     },
     MuiCard: {
@@ -319,7 +322,7 @@ const saltise = createTheme({
     MuiCardHeader: {
       styleOverrides: {
         root: {
-          padding: "20px",
+          padding: "0px",
         },
         title: {
           fontSize: "16px",
@@ -435,12 +438,40 @@ const saltise = createTheme({
 
 export const formTheme = createTheme(saltise, {
   components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          padding: "20px",
+          "& .MuiDivider-root": {
+            margin: "20px -20px",
+            backgroundColor: saltise.palette.secondary1.main,
+          },
+        },
+      },
+    },
+    MuiCardHeader: {
+      styleOverrides: {
+        title: {
+          fontSize: "18px",
+          fontWeight: 600,
+          lineHeight: "28px",
+          padding: "0px",
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          backgroundColor: saltise.palette.secondary2.main,
+        },
+      },
+    },
     MuiCardContent: {
       styleOverrides: {
         root: {
           padding: "0px",
           "& .MuiTypography-root": {
-            color: "#515159",
+            color: saltise.palette.secondary4.main,
             fontSize: "12px",
           },
         },
@@ -456,7 +487,7 @@ export const formTheme = createTheme(saltise, {
     MuiInputBase: {
       styleOverrides: {
         root: {
-          color: "#515159",
+          color: saltise.palette.secondary4.main,
         },
       },
     },
@@ -479,39 +510,18 @@ export const formTheme = createTheme(saltise, {
         },
       },
     },
-    MuiCardHeader: {
-      styleOverrides: {
-        title: {
-          fontSize: "18px",
-          fontWeight: 500,
-          lineHeight: "28px",
-        },
-        subheader: {
-          fontSize: "10px",
-          lineHeight: "20px",
-          color: "#90929B",
-        },
-      },
-    },
     MuiTextField: {
       styleOverrides: {
         root: {
           width: "100%",
           color: "#AEAEBF",
-          "&:hover": {
-            color: "#515159",
-          },
-          "&:active": {
-            color: "#515159",
-          },
         },
       },
     },
-    MuiDivider: {
+    MuiOutlinedInput: {
       styleOverrides: {
-        root: {
-          backgroundColor: "#E9EBF2",
-          margin: "20px -20px",
+        notchedOutline: {
+          borderColor: "#AEAEBF",
         },
       },
     },
@@ -547,6 +557,20 @@ export const formTheme = createTheme(saltise, {
             lineHeight: "22px",
             marginBottom: "12px",
           },
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          color: saltise.palette.secondary4.main,
+        },
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          color: saltise.palette.primary.main,
         },
       },
     },

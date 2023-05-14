@@ -191,3 +191,43 @@ export type CreateQuestions2AppProps = {
 };
 
 export type CreateQuestions2AppState = {};
+
+export type RationalesAppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+};
+
+export type RationalesAppState = {
+  answersWithRationales: AnswerWithRationalesType[];
+};
+
+type RationalesType = {
+  viewCount: number;
+  selectedCount: number;
+  description: string;
+};
+
+export type AnswerWithRationalesType = {
+  correct: boolean;
+  description: string;
+  rationales: RationalesType[];
+};
+
+export type CreateAssignmentAppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+  EditorIcons: EditorIconsType;
+};
+
+export type EditorIconsType = {
+  boldIcon: string;
+  italicIcon: string;
+  underIcon: string;
+  undoIcon: string;
+  redoIcon: string;
+  subIcon: string;
+  superIcon: string;
+  linkIcon: string;
+};
+
+export type CreateAssignmentAppState = {};

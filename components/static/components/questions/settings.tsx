@@ -41,7 +41,7 @@ export function Settings({
           <Box>
             <FormLabel id="algorithm">
               <Typography>
-                {gettext("Rationale section algorithm *")}
+                {gettext("Rationale section algorithm*")}
               </Typography>
             </FormLabel>
             <RadioGroup

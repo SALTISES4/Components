@@ -20,9 +20,15 @@ import saltise from "./theme";
 
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-import { assignments, collections, questions, teacher } from "./data.js";
+import {
+  assignments,
+  collections,
+  questions,
+  teacher,
+  groups,
+} from "./data.js";
 import { DashboardAppProps, DashboardAppState } from "./types";
-import { AssignmentType, GroupType } from "./_localComponents/types";
+import { GroupAssignmentType, GroupType } from "./_localComponents/types";
 
 export class App extends Component<DashboardAppProps, DashboardAppState> {
   constructor(props: DashboardAppProps) {
@@ -32,6 +38,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
       collections,
       questions,
       teacher,
+      groups,
     };
   }
 
@@ -63,7 +70,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
               </Subtitle>
               <Stack spacing="10px">
                 {this.state.assignments.map(
-                  (assignment: AssignmentType, i: number) => (
+                  (assignment: GroupAssignmentType, i: number) => (
                     <AssignmentStudent
                       key={i}
                       assignment={assignment}
@@ -84,7 +91,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
               </Subtitle>
               <Stack spacing="10px">
                 {this.state.assignments.map(
-                  (assignment: AssignmentType, i: number) => (
+                  (assignment: GroupAssignmentType, i: number) => (
                     <AssignmentStudentCompleted
                       key={i}
                       assignment={assignment}

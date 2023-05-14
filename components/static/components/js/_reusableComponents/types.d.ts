@@ -1,3 +1,4 @@
+import { EditorIconsType } from "../types";
 import {
   QuestionDifficulty,
   QuestionPeerImpact,
@@ -9,6 +10,14 @@ export type AssignmentStateIconProps = {
 
 export type CircleProgressionIconProps = {
   progress: number;
+};
+
+export type CustomEditorProps = {
+  EditorIcons: EditorIconsType;
+};
+
+export type CustomEditorState = {
+  editorState: any;
 };
 
 export type DifficultyCircleAssignmentProps = {
@@ -28,10 +37,23 @@ export type PeerImpactIconProps = {
   peerImpact: QuestionPeerImpact;
 };
 
-export type TextInputBoxProps = {
+export type CustomTextFieldProps = {
   id: string;
   title: string;
-  rows: number;
   defaultValue: string;
-  gettext: (a: string) => string;
+  helperText?: string;
+  icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
+    muiName: string;
+  };
+};
+
+export type CustomEditorFieldProps = {
+  id: string;
+  title: string;
+  EditorIcons: EditorIconsType;
+  defaultValue?: string;
+  helperText?: string;
+  icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
+    muiName: string;
+  };
 };

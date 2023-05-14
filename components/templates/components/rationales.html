@@ -1,0 +1,38 @@
+{% load i18n static %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<!DOCTYPE html>
+<html lang="{{LANGUAGE_CODE}}">
+  <head>
+    {% include "components/meta.html" %}
+    <script
+      src="{% static 'components/js/build/rationales.min.js' %}"
+      defer="true"
+    ></script>
+  </head>
+  <body>
+    <div id="navigation-app"></div>
+
+    <div id="rationales-app"></div>
+
+    {% csrf_token %}
+
+    {% include './navigationJS.html' %}
+
+    <script nonce="{{ request.csp_nonce }}">
+      window.addEventListener("load", function () {
+        const rationalesApp = () => {
+          return rationales.h(rationales.App, {
+            gettext: gettext,
+            nonce: "{{ request.csp_nonce }}",
+          });
+        };
+        rationales.render(
+          rationalesApp(),
+          document.getElementById("rationales-app")
+        );
+      });
+    </script>
+  </body>
+</html>

@@ -5,6 +5,7 @@ import { formTheme } from "../theme";
 
 export const CustomTextField = ({
   gettext,
+  autoFocus = false,
   id,
   title,
   defaultValue,
@@ -31,6 +32,7 @@ export const CustomTextField = ({
         />
       </Box>
       <TextField
+        autoFocus={autoFocus}
         id={id}
         required={required}
         defaultValue={defaultValue}

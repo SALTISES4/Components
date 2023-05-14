@@ -3,6 +3,8 @@ export { h, render };
 
 import { submitData } from "./ajax";
 
+import { lettersNumbersUnderscoreOnly } from "./validators";
+
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -83,16 +85,18 @@ export class App extends Component<
                   <Stack spacing={"20px"}>
                     <CustomTextField
                       gettext={this.props.gettext}
+                      autoFocus={true}
                       id="identifier"
                       title="Identifier *"
                       defaultValue=""
                       error={
+                        !lettersNumbersUnderscoreOnly(this.state.identifier) ||
                         this.state.identifier.length < 2 ||
                         this.state.identifier.length > 100
                       }
                       icon={HelpOutlineIcon}
                       helperText={this.props.gettext(
-                        "Between 2 and 100 characters; only letters, numbers and the underscore permitted.",
+                        "Between 2 and 100 characters (letters, numbers and underscore only).",
                       )}
                       minLength={2}
                       maxLength={100}

@@ -41,6 +41,7 @@ export type PeerImpactIconProps = {
 
 export type CustomTextFieldProps = {
   gettext: (a: string) => string;
+  autoFocus?: boolean;
   id: string;
   title: string;
   defaultValue: string;

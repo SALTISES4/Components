@@ -44,10 +44,12 @@ export type CustomTextFieldProps = {
   id: string;
   title: string;
   defaultValue: string;
+  error?: boolean;
   helperText?: string;
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
   };
+  minLength?: number;
   maxLength: number;
   required?: boolean;
   setValue: (a: string) => void;

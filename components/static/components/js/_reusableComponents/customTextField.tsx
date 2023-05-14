@@ -8,8 +8,10 @@ export const CustomTextField = ({
   id,
   title,
   defaultValue,
+  error = false,
   helperText,
   icon,
+  minLength = 0,
   maxLength,
   required = true,
   setValue,
@@ -32,6 +34,8 @@ export const CustomTextField = ({
         id={id}
         required={required}
         defaultValue={defaultValue}
+        error={error}
+        inputProps={{ minLength, maxLength }}
         value={value}
         variant="outlined"
         helperText={`${helperText || ""}  ${
@@ -39,7 +43,7 @@ export const CustomTextField = ({
         }/${maxLength} ${gettext("characters")}.`}
         onChange={(evt: Event) => {
           if (evt.target && evt.target instanceof HTMLInputElement) {
-            setValue(evt.target.value.slice(0, maxLength));
+            setValue(evt.target.value);
           }
         }}
       />

@@ -217,6 +217,9 @@ export type CreateAssignmentAppProps = {
   gettext: (a: string) => string;
   nonce: string;
   EditorIcons: EditorIconsType;
+  urls: {
+    create: string;
+  };
 };
 
 export type EditorIconsType = {

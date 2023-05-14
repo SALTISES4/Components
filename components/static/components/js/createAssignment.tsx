@@ -1,6 +1,8 @@
 import { Component, h, render } from "preact";
 export { h, render };
 
+import { submitData } from "./ajax";
+
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -46,6 +48,25 @@ export class App extends Component<
     stylisPlugins: [prefixer],
   });
 
+  submitForm = async () => {
+    try {
+      const message = await submitData(
+        this.props.urls.create,
+        {
+          description: this.state.description,
+          pk: this.state.identifier,
+          specialInstructions: this.state.specialInstructions,
+          postAssignmentNotes: this.state.postAssignmentNotes,
+          title: this.state.title,
+        },
+        "POST",
+      );
+      console.info(message);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   render() {
     return (
       <ThemeProvider theme={formTheme}>
@@ -65,10 +86,15 @@ export class App extends Component<
                       id="identifier"
                       title="Identifier *"
                       defaultValue=""
+                      error={
+                        this.state.identifier.length < 2 ||
+                        this.state.identifier.length > 100
+                      }
                       icon={HelpOutlineIcon}
                       helperText={this.props.gettext(
-                        "Only use letters, numbers and the underscore for the identifier.",
+                        "Between 2 and 100 characters; only letters, numbers and the underscore permitted.",
                       )}
+                      minLength={2}
                       maxLength={100}
                       setValue={(identifier) => this.setState({ identifier })}
                       value={this.state.identifier}
@@ -78,7 +104,12 @@ export class App extends Component<
                       id="title"
                       title="Title *"
                       defaultValue=""
+                      error={
+                        this.state.title.length < 1 ||
+                        this.state.title.length > 200
+                      }
                       icon={HelpOutlineIcon}
+                      minLength={1}
                       maxLength={200}
                       setValue={(title) => this.setState({ title })}
                       value={this.state.title}
@@ -126,7 +157,7 @@ export class App extends Component<
                 <CancelButton onClick={() => history.back()}>
                   <Typography>{this.props.gettext("Cancel")}</Typography>
                 </CancelButton>
-                <ValidateButton variant="contained">
+                <ValidateButton onClick={this.submitForm} variant="contained">
                   <Typography>
                     {this.props.gettext("Create assignment")}
                   </Typography>

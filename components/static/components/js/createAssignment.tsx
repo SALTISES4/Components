@@ -123,7 +123,7 @@ export class App extends Component<
                   margin: "50px 0px",
                 }}
               >
-                <CancelButton>
+                <CancelButton onClick={() => history.back()}>
                   <Typography>{this.props.gettext("Cancel")}</Typography>
                 </CancelButton>
                 <ValidateButton variant="contained">

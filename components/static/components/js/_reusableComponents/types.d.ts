@@ -14,6 +14,8 @@ export type CircleProgressionIconProps = {
 
 export type CustomEditorProps = {
   EditorIcons: EditorIconsType;
+  setValue: (a: string) => void;
+  value: string;
 };
 
 export type CustomEditorState = {
@@ -38,17 +40,24 @@ export type PeerImpactIconProps = {
 };
 
 export type CustomTextFieldProps = {
+  gettext: (a: string) => string;
+  autoFocus?: boolean;
   id: string;
   title: string;
   defaultValue: string;
+  error?: boolean;
   helperText?: string;
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
   };
+  minLength?: number;
+  maxLength: number;
+  required?: boolean;
+  setValue: (a: string) => void;
+  value: string;
 };
 
 export type CustomEditorFieldProps = {
-  id: string;
   title: string;
   EditorIcons: EditorIconsType;
   defaultValue?: string;
@@ -56,4 +65,6 @@ export type CustomEditorFieldProps = {
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
   };
+  setValue: (a: string) => void;
+  value: string;
 };

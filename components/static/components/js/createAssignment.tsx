@@ -1,6 +1,14 @@
 import { Component, h, render } from "preact";
 export { h, render };
 
+import { submitData } from "./ajax";
+
+import {
+  lengthValidator,
+  lettersNumbersUnderscoreOnlyValidator,
+} from "./validators";
+
+import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -19,13 +27,22 @@ import { Card, CardContent, CardHeader, Divider, Stack } from "@mui/material";
 import { CustomTextField } from "./_reusableComponents/customTextField";
 import { CustomEditorField } from "./_reusableComponents/customEditorField";
 import { CancelButton, ValidateButton } from "./styledComponents";
+
 export class App extends Component<
   CreateAssignmentAppProps,
   CreateAssignmentAppState
 > {
   constructor(props: CreateAssignmentAppProps) {
     super(props);
-    this.state = {};
+    this.state = {
+      description: "",
+      errors: [],
+      identifier: "",
+      specialInstructions: "",
+      postAssignmentNotes: "",
+      submitting: false,
+      title: "",
+    };
   }
 
   componentDidMount(): void {
@@ -39,78 +56,147 @@ export class App extends Component<
     stylisPlugins: [prefixer],
   });
 
+  submitForm = async () => {
+    try {
+      this.setState({ submitting: true });
+      const newAssignment = await submitData(
+        this.props.urls.create,
+        {
+          conclusion_page: this.state.postAssignmentNotes,
+          description: this.state.description,
+          intro_page: this.state.specialInstructions,
+          pk: this.state.identifier,
+          title: this.state.title,
+        },
+        "POST",
+      );
+      window.location.assign(newAssignment.urls.update);
+    } catch (error) {
+      this.setState({ errors: Object.values(error) }, () =>
+        console.info(this.state, error),
+      );
+    } finally {
+      this.setState({ submitting: false });
+    }
+  };
+
+  identifierValidator = () => {
+    return (
+      lettersNumbersUnderscoreOnlyValidator(this.state.identifier) &&
+      lengthValidator(this.state.identifier, 2, 100)
+    );
+  };
+
+  titleValidator = () => {
+    return lengthValidator(this.state.title, 1, 200);
+  };
+
   render() {
     return (
       <ThemeProvider theme={formTheme}>
         <CacheProvider value={this.cache}>
-          <Box width="calc(100% - 200px)" marginLeft="200px">
-            <Container sx={{ width: "65%" }}>
-              <Typography variant="h1" align="left">
-                {this.props.gettext("Create Assignement")}
-              </Typography>
-              <Card>
-                <CardHeader title={"Assignment settings"} />
-                <Divider />
-                <CardContent>
-                  <Stack spacing={"20px"}>
-                    <CustomTextField
-                      id="identifier"
-                      title="Identifier *"
-                      defaultValue=""
-                      icon={HelpOutlineIcon}
-                      helperText={this.props.gettext(
-                        "Only use letters, numbers and the underscore for the identifier. Max length is 100 characters.",
-                      )}
-                    />
-                    <CustomTextField
-                      id="title"
-                      title="Title *"
-                      defaultValue=""
-                      icon={HelpOutlineIcon}
-                      helperText={this.props.gettext(
-                        "Max length is 200 characters.",
-                      )}
-                    />
-                    <CustomEditorField
-                      id="Description"
-                      title="Description"
-                      icon={HelpOutlineIcon}
-                      EditorIcons={this.props.EditorIcons}
-                    />
-                    <CustomEditorField
-                      id="specialInstructions"
-                      title="Special instructions"
-                      icon={HelpOutlineIcon}
-                      EditorIcons={this.props.EditorIcons}
-                    />
-                    <CustomEditorField
-                      id="postAssignmentNotes"
-                      title="Post assignment notes"
-                      icon={HelpOutlineIcon}
-                      EditorIcons={this.props.EditorIcons}
-                    />
-                  </Stack>
-                </CardContent>
-              </Card>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  gap: "10px",
-                  margin: "50px 0px",
-                }}
+          <Container sx={{ maxWidth: "780px!important" }}>
+            <Typography variant="h1" align="left" mt={0}>
+              {this.props.gettext("Create Assignment")}
+            </Typography>
+            <Card>
+              <CardHeader title={"Assignment settings"} />
+              <Divider />
+              <CardContent>
+                <Stack spacing={"20px"}>
+                  {this.state.errors.map((e, i) => (
+                    <Alert key={i} severity="error">
+                      {e[0]}
+                    </Alert>
+                  ))}
+                  <CustomTextField
+                    gettext={this.props.gettext}
+                    autoFocus={true}
+                    id="identifier"
+                    title="Identifier *"
+                    defaultValue=""
+                    error={!this.identifierValidator()}
+                    icon={HelpOutlineIcon}
+                    helperText={this.props.gettext(
+                      "Between 2 and 100 characters (letters, numbers and underscore only).",
+                    )}
+                    minLength={2}
+                    maxLength={100}
+                    setValue={(identifier) =>
+                      this.setState({ identifier, errors: [] })
+                    }
+                    value={this.state.identifier}
+                  />
+                  <CustomTextField
+                    gettext={this.props.gettext}
+                    id="title"
+                    title="Title *"
+                    defaultValue=""
+                    error={!this.titleValidator()}
+                    icon={HelpOutlineIcon}
+                    minLength={1}
+                    maxLength={200}
+                    setValue={(title) => this.setState({ title, errors: [] })}
+                    value={this.state.title}
+                  />
+                  <CustomEditorField
+                    title="Description"
+                    icon={HelpOutlineIcon}
+                    EditorIcons={this.props.EditorIcons}
+                    value={this.state.description}
+                    setValue={(description) =>
+                      this.setState({ description, errors: [] }, () =>
+                        console.info(this.state),
+                      )
+                    }
+                  />
+                  <CustomEditorField
+                    title="Special instructions"
+                    icon={HelpOutlineIcon}
+                    EditorIcons={this.props.EditorIcons}
+                    value={this.state.specialInstructions}
+                    setValue={(specialInstructions) =>
+                      this.setState({ specialInstructions, errors: [] })
+                    }
+                  />
+                  <CustomEditorField
+                    title="Post assignment notes"
+                    icon={HelpOutlineIcon}
+                    EditorIcons={this.props.EditorIcons}
+                    value={this.state.postAssignmentNotes}
+                    setValue={(postAssignmentNotes) =>
+                      this.setState({ postAssignmentNotes, errors: [] })
+                    }
+                  />
+                </Stack>
+              </CardContent>
+            </Card>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "10px",
+                margin: "50px 0px",
+              }}
+            >
+              <CancelButton onClick={() => history.back()}>
+                <Typography>{this.props.gettext("Cancel")}</Typography>
+              </CancelButton>
+              <ValidateButton
+                onClick={this.submitForm}
+                variant="contained"
+                disabled={
+                  ![this.identifierValidator(), this.titleValidator()].every(
+                    (test) => test,
+                  ) || this.state.submitting
+                }
               >
-                <CancelButton>
-                  <Typography>{this.props.gettext("Cancel")}</Typography>
-                </CancelButton>
-                <ValidateButton variant="contained">
-                  <Typography>
-                    {this.props.gettext("Create assignment")}
-                  </Typography>
-                </ValidateButton>
-              </Box>
-            </Container>
-          </Box>
+                <Typography>
+                  {this.props.gettext("Create assignment")}
+                </Typography>
+              </ValidateButton>
+            </Box>
+          </Container>
         </CacheProvider>
       </ThemeProvider>
     );

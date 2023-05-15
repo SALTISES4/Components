@@ -32,7 +32,7 @@ async function handleResponse(response: Response) {
   }
 
   if ([400, 404, 405].includes(response.status)) {
-    throw new Error(response.toString());
+    throw await response.json();
   }
 
   // Default to error?

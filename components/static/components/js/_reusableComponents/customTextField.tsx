@@ -4,11 +4,19 @@ import { CustomTextFieldProps } from "./types";
 import { formTheme } from "../theme";
 
 export const CustomTextField = ({
+  gettext,
+  autoFocus = false,
   id,
   title,
   defaultValue,
+  error = false,
   helperText,
   icon,
+  minLength = 0,
+  maxLength,
+  required = true,
+  setValue,
+  value,
 }: CustomTextFieldProps) => {
   return (
     <Box>
@@ -24,11 +32,22 @@ export const CustomTextField = ({
         />
       </Box>
       <TextField
+        autoFocus={autoFocus}
         id={id}
-        required
+        required={required}
         defaultValue={defaultValue}
+        error={error}
+        inputProps={{ minLength, maxLength }}
+        value={value}
         variant="outlined"
-        helperText={helperText}
+        helperText={`${helperText || ""}  ${
+          value.length
+        }/${maxLength} ${gettext("characters")}.`}
+        onChange={(evt: Event) => {
+          if (evt.target && evt.target instanceof HTMLInputElement) {
+            setValue(evt.target.value);
+          }
+        }}
       />
     </Box>
   );

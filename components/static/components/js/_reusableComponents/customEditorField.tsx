@@ -5,10 +5,11 @@ import { formTheme } from "../theme";
 import { CustomEditor } from "./customEditor";
 
 export const CustomEditorField = ({
-  id,
   title,
   EditorIcons,
   icon,
+  setValue,
+  value,
 }: CustomEditorFieldProps) => {
   return (
     <Box>
@@ -25,7 +26,11 @@ export const CustomEditorField = ({
           />
         ) : null}
       </Box>
-      <CustomEditor EditorIcons={EditorIcons} />
+      <CustomEditor
+        EditorIcons={EditorIcons}
+        setValue={setValue}
+        value={value}
+      />
     </Box>
   );
 };

@@ -219,6 +219,9 @@ export type CreateAssignmentAppProps = {
   gettext: (a: string) => string;
   nonce: string;
   EditorIcons: EditorIconsType;
+  urls: {
+    create: string;
+  };
 };
 export type CreateAssignmentAppState = {};
 
@@ -248,4 +251,14 @@ export type EditorIconsType = {
   subIcon: string;
   superIcon: string;
   linkIcon: string;
+};
+
+export type CreateAssignmentAppState = {
+  description: string;
+  errors: string[];
+  identifier: string;
+  specialInstructions: string;
+  postAssignmentNotes: string;
+  submitting: boolean;
+  title: string;
 };

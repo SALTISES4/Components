@@ -38,6 +38,7 @@ export class App extends Component<
       identifier: "",
       specialInstructions: "",
       postAssignmentNotes: "",
+      submitting: false,
       title: "",
     };
   }
@@ -55,18 +56,19 @@ export class App extends Component<
 
   submitForm = async () => {
     try {
-      const message = await submitData(
+      this.setState({ submitting: true });
+      const newAssignment = await submitData(
         this.props.urls.create,
         {
+          conclusion_page: this.state.postAssignmentNotes,
           description: this.state.description,
+          intro_page: this.state.specialInstructions,
           pk: this.state.identifier,
-          specialInstructions: this.state.specialInstructions,
-          postAssignmentNotes: this.state.postAssignmentNotes,
           title: this.state.title,
         },
         "POST",
       );
-      console.info(message);
+      window.location.assign(newAssignment.urls.update);
     } catch (error) {
       console.error(error);
     }
@@ -173,7 +175,7 @@ export class App extends Component<
                 disabled={
                   ![this.identifierValidator(), this.titleValidator()].every(
                     (test) => test,
-                  )
+                  ) || this.state.submitting
                 }
               >
                 <Typography>

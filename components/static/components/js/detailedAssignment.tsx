@@ -107,10 +107,12 @@ export class App extends Component<
             )
           ) : (
             <Fragment>
-              <QuestionSkeleton />
-              <QuestionSkeleton />
-              <QuestionSkeleton />
-              <QuestionSkeleton />
+              <Stack spacing={"10px"}>
+                <QuestionSkeleton />
+                <QuestionSkeleton />
+                <QuestionSkeleton />
+                <QuestionSkeleton />
+              </Stack>
             </Fragment>
           )}
         </Box>
@@ -156,10 +158,12 @@ export class App extends Component<
             )
           ) : (
             <Fragment>
-              <QuestionSkeleton />
-              <QuestionSkeleton />
-              <QuestionSkeleton />
-              <QuestionSkeleton />
+              <Stack spacing={"10px"}>
+                <QuestionSkeleton />
+                <QuestionSkeleton />
+                <QuestionSkeleton />
+                <QuestionSkeleton />
+              </Stack>
             </Fragment>
           )}
         </Box>

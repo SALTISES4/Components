@@ -8,6 +8,7 @@ import {
   lettersNumbersUnderscoreOnlyValidator,
 } from "./validators";
 
+import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -35,6 +36,7 @@ export class App extends Component<
     super(props);
     this.state = {
       description: "",
+      errors: [],
       identifier: "",
       specialInstructions: "",
       postAssignmentNotes: "",
@@ -70,7 +72,11 @@ export class App extends Component<
       );
       window.location.assign(newAssignment.urls.update);
     } catch (error) {
-      console.error(error);
+      this.setState({ errors: Object.values(error) }, () =>
+        console.info(this.state, error),
+      );
+    } finally {
+      this.setState({ submitting: false });
     }
   };
 
@@ -98,6 +104,11 @@ export class App extends Component<
               <Divider />
               <CardContent>
                 <Stack spacing={"20px"}>
+                  {this.state.errors.map((e, i) => (
+                    <Alert key={i} severity="error">
+                      {e[0]}
+                    </Alert>
+                  ))}
                   <CustomTextField
                     gettext={this.props.gettext}
                     autoFocus={true}
@@ -111,7 +122,9 @@ export class App extends Component<
                     )}
                     minLength={2}
                     maxLength={100}
-                    setValue={(identifier) => this.setState({ identifier })}
+                    setValue={(identifier) =>
+                      this.setState({ identifier, errors: [] })
+                    }
                     value={this.state.identifier}
                   />
                   <CustomTextField
@@ -123,7 +136,7 @@ export class App extends Component<
                     icon={HelpOutlineIcon}
                     minLength={1}
                     maxLength={200}
-                    setValue={(title) => this.setState({ title })}
+                    setValue={(title) => this.setState({ title, errors: [] })}
                     value={this.state.title}
                   />
                   <CustomEditorField
@@ -132,7 +145,7 @@ export class App extends Component<
                     EditorIcons={this.props.EditorIcons}
                     value={this.state.description}
                     setValue={(description) =>
-                      this.setState({ description }, () =>
+                      this.setState({ description, errors: [] }, () =>
                         console.info(this.state),
                       )
                     }
@@ -143,7 +156,7 @@ export class App extends Component<
                     EditorIcons={this.props.EditorIcons}
                     value={this.state.specialInstructions}
                     setValue={(specialInstructions) =>
-                      this.setState({ specialInstructions })
+                      this.setState({ specialInstructions, errors: [] })
                     }
                   />
                   <CustomEditorField
@@ -152,7 +165,7 @@ export class App extends Component<
                     EditorIcons={this.props.EditorIcons}
                     value={this.state.postAssignmentNotes}
                     setValue={(postAssignmentNotes) =>
-                      this.setState({ postAssignmentNotes })
+                      this.setState({ postAssignmentNotes, errors: [] })
                     }
                   />
                 </Stack>

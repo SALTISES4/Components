@@ -235,8 +235,10 @@ export type EditorIconsType = {
 
 export type CreateAssignmentAppState = {
   description: string;
+  errors: string[];
   identifier: string;
   specialInstructions: string;
   postAssignmentNotes: string;
+  submitting: boolean;
   title: string;
 };

@@ -15,6 +15,16 @@ import {
 
 import { ExerciceLabels } from "./_search/enum";
 
+export const teacher = {
+  activeAssignmentCount: 2,
+  activeGroupCount: 2,
+  assignment_pks: ["", "", ""],
+  bookmarked_collections: [1, 2, 3],
+  createdQuestionCount: 14,
+  favourite_questions: [1, 2, 3],
+  user: { username: "Username" },
+};
+
 export const assignments = [
   {
     active: true,
@@ -73,6 +83,142 @@ export const assignments = [
     answerCount: parseInt(faker.random.numeric(1)),
   },
 ];
+export const detailedAssignment = {
+  author: faker.name.fullName(),
+  is_owner: true,
+  title: faker.lorem.sentence(),
+  description: faker.lorem.sentences(),
+  specialInstructions: faker.lorem.sentences(),
+  postAssignmentNotes: faker.lorem.sentences(),
+  distributionState: faker.helpers.arrayElement([
+    DistributionState.draft,
+    DistributionState.distributed,
+  ]),
+  groups: [
+    {
+      title: faker.lorem.sentence(),
+      author: faker.name.fullName(),
+      session: faker.helpers.arrayElement(["Summer 2022", "Winter 2023"]),
+      studentCount: parseInt(faker.random.numeric(1)),
+      assignmentCount: parseInt(faker.random.numeric(1)),
+      active: faker.datatype.boolean(),
+      subject: faker.helpers.arrayElement([
+        ["Biology"],
+        ["Biology", "Cohesion"],
+        ["Mechanic", "Programming", "Thermodynamic"],
+      ]),
+      due_date: faker.date.soon(),
+      progress: parseInt(faker.random.numeric(2)),
+      url: "/",
+    },
+    {
+      title: faker.lorem.sentence(),
+      author: faker.name.fullName(),
+      session: faker.helpers.arrayElement(["Summer 2022", "Winter 2023"]),
+      studentCount: parseInt(faker.random.numeric(1)),
+      assignmentCount: parseInt(faker.random.numeric(1)),
+      active: faker.datatype.boolean(),
+      subject: faker.helpers.arrayElement([
+        ["Biology"],
+        ["Biology", "Cohesion"],
+        ["Mechanic", "Programming", "Thermodynamic"],
+      ]),
+      due_date: faker.date.soon(),
+      progress: parseInt(faker.random.numeric(2)),
+      url: "/",
+    },
+  ],
+  questions: [
+    {
+      answer_count: parseInt(faker.random.numeric(1)),
+      answerchoice_set: [
+        {
+          correct: true,
+          label: faker.lorem.sentence(),
+          text: faker.lorem.sentence(),
+        },
+        {
+          correct: true,
+          label: faker.lorem.sentence(),
+          text: faker.lorem.sentence(),
+        },
+      ],
+      category: faker.helpers.arrayElement([
+        [{ title: "Biology" }],
+        [{ title: "Biology" }, { title: "Cohesion" }],
+        [
+          { title: "Mechanic" },
+          { title: "Programming" },
+          { title: "Thermodynamic" },
+        ],
+      ]),
+      difficulty: {
+        score: 0.4,
+        value: QuestionDifficultyLabels.moderate,
+        label: QuestionDifficultyLevels.deux,
+      },
+      discipline: { pk: 1, title: "Physics" },
+      image: "",
+      image_alt_text: "",
+      is_owner: true,
+      peer_impact: {
+        score: 0.4,
+        value: PeerImpactLabels.med,
+        label: PeerImpactLevels.deux,
+      },
+      pk: 1,
+      text: faker.lorem.sentence(),
+      title: faker.lorem.sentence(),
+      user: { username: "" },
+      video_url: "",
+    },
+    {
+      answer_count: parseInt(faker.random.numeric(2)),
+      answerchoice_set: [
+        {
+          correct: true,
+          label: faker.lorem.sentence(),
+          text: faker.lorem.sentence(),
+        },
+        {
+          correct: true,
+          label: faker.lorem.sentence(),
+          text: faker.lorem.sentence(),
+        },
+      ],
+      category: faker.helpers.arrayElement([
+        [{ title: "Biology" }],
+        [{ title: "Biology" }, { title: "Cohesion" }],
+        [
+          { title: "Mechanic" },
+          { title: "Programming" },
+          { title: "Thermodynamic" },
+        ],
+      ]),
+      difficulty: {
+        score: 0.7,
+        value: QuestionDifficultyLabels.difficult,
+        label: QuestionDifficultyLevels.trois,
+      },
+      discipline: { pk: 1, title: "Physics" },
+      image: "",
+      image_alt_text: "",
+      is_owner: true,
+      peer_impact: {
+        score: 0.4,
+        value: PeerImpactLabels.high,
+        label: PeerImpactLevels.trois,
+      },
+
+      pk: 1,
+      text: faker.lorem.sentence(),
+      title: faker.lorem.sentence(),
+      user: { username: "" },
+      video_url: "",
+    },
+  ],
+};
+
 export const collections = [
   {
     title: faker.lorem.sentence(),
@@ -216,11 +362,6 @@ export const groups = [
     progress: parseInt(faker.random.numeric(2)),
   },
 ];
-export const teacher = {
-  activeAssignmentCount: 4,
-  activeGroupCount: 3,
-  createdQuestionCount: 12,
-};
 
 export const typeFilters = {
   title: "Type",

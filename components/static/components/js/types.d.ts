@@ -3,7 +3,9 @@
 import {
   AssignmentType,
   CollectionType,
+  DetailedAssignmentType,
   GroupedAssignmentType,
+  GroupType,
   QuestionType,
   UserType,
 } from "./_localComponents/types";
@@ -218,6 +220,24 @@ export type CreateAssignmentAppProps = {
   nonce: string;
   EditorIcons: EditorIconsType;
 };
+export type CreateAssignmentAppState = {};
+
+export type DetailedAssignmentAppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+  urls: {
+    teacher: string;
+  };
+};
+
+export type DetailedAssignmentAppState = {
+  detailedAssignment: DetailedAssignmentType;
+  questionsLoading: boolean;
+  questions: QuestionType[];
+  teacher: TeacherType | undefined;
+  groupsLoading: boolean;
+  groups: GroupType[];
+};
 
 export type EditorIconsType = {
   boldIcon: string;
@@ -229,5 +249,3 @@ export type EditorIconsType = {
   superIcon: string;
   linkIcon: string;
 };
-
-export type CreateAssignmentAppState = {};

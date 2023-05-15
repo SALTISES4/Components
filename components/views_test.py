@@ -56,8 +56,16 @@ def rationales(request):
     context = {}
     return render(request, template, context)
 
+
 def createAssignment(request):
 
     template = "components/createAssignment.html"
+    context = {}
+    return render(request, template, context)
+
+
+def detailedAssignment(request):
+
+    template = "components/detailedAssignment.html"
     context = {}
     return render(request, template, context)

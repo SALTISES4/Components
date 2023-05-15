@@ -32,6 +32,7 @@ import { submitData } from "./ajax";
 import Stack from "@mui/material/Stack";
 import { Group } from "./_localComponents/group";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
+import { Group as GroupSkeleton } from "./_skeletons/group";
 
 export class App extends Component<
   DetailedAssignmentAppProps,
@@ -87,7 +88,7 @@ export class App extends Component<
     return (
       <ThemeProvider theme={saltise}>
         <Box sx={{ mt: "30px" }}>
-          {!this.state.questionsLoading ? (
+          {!this.state.groupsLoading ? (
             this.state.detailedAssignment.groups?.length > 0 ? (
               <Stack spacing={"10px"}>
                 {this.state.detailedAssignment.groups.map(
@@ -108,10 +109,10 @@ export class App extends Component<
           ) : (
             <Fragment>
               <Stack spacing={"10px"}>
-                <QuestionSkeleton />
-                <QuestionSkeleton />
-                <QuestionSkeleton />
-                <QuestionSkeleton />
+                <GroupSkeleton />
+                <GroupSkeleton />
+                <GroupSkeleton />
+                <GroupSkeleton />
               </Stack>
             </Fragment>
           )}

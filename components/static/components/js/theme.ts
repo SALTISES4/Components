@@ -490,6 +490,7 @@ export const formTheme = createTheme(saltise, {
     MuiIconButton: {
       styleOverrides: {
         root: {
+          color: "inherit",
           padding: "4px",
         },
       },

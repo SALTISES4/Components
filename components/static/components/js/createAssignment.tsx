@@ -2,7 +2,7 @@ import { Component, h, render } from "preact";
 export { h, render };
 
 import { submitData } from "./ajax";
-
+import { titlecase } from "./functions";
 import {
   lengthValidator,
   lettersNumbersUnderscoreOnlyValidator,
@@ -133,7 +133,7 @@ export class App extends Component<
                           </IconButton>
                         }
                       >
-                        {e[0]}
+                        {titlecase(e[0])}
                       </Alert>
                     </Collapse>
                   ))}

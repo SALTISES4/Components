@@ -10,7 +10,10 @@ import {
 
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
+import CloseIcon from "@mui/icons-material/Close";
+import Collapse from "@mui/material/Collapse";
 import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 
 //style
@@ -37,6 +40,7 @@ export class App extends Component<
     this.state = {
       description: "",
       errors: [],
+      errorsOpen: [],
       identifier: "",
       specialInstructions: "",
       postAssignmentNotes: "",
@@ -64,6 +68,8 @@ export class App extends Component<
         {
           conclusion_page: this.state.postAssignmentNotes,
           description: this.state.description,
+          errors: [],
+          errorsOpen: [],
           intro_page: this.state.specialInstructions,
           pk: this.state.identifier,
           title: this.state.title,
@@ -72,12 +78,19 @@ export class App extends Component<
       );
       window.location.assign(newAssignment.urls.update);
     } catch (error) {
-      this.setState({ errors: Object.values(error) }, () =>
+      const e = Object.values(error);
+      this.setState({ errors: e, errorsOpen: e.map(() => true) }, () =>
         console.info(this.state, error),
       );
     } finally {
       this.setState({ submitting: false });
     }
+  };
+
+  setErrorsOpen = (open: boolean, i: number) => {
+    const errorsOpen = [...this.state.errorsOpen];
+    errorsOpen[i] = open;
+    this.setState({ errorsOpen });
   };
 
   identifierValidator = () => {
@@ -105,9 +118,24 @@ export class App extends Component<
               <CardContent>
                 <Stack spacing={"20px"}>
                   {this.state.errors.map((e, i) => (
-                    <Alert key={i} severity="error">
-                      {e[0]}
-                    </Alert>
+                    <Collapse key={i} in={this.state.errorsOpen[i]}>
+                      <Alert
+                        severity="error"
+                        action={
+                          <IconButton
+                            aria-label="close"
+                            color="error"
+                            onClick={() => {
+                              this.setErrorsOpen(false, i);
+                            }}
+                          >
+                            <CloseIcon />
+                          </IconButton>
+                        }
+                      >
+                        {e[0]}
+                      </Alert>
+                    </Collapse>
                   ))}
                   <CustomTextField
                     gettext={this.props.gettext}
@@ -122,9 +150,7 @@ export class App extends Component<
                     )}
                     minLength={2}
                     maxLength={100}
-                    setValue={(identifier) =>
-                      this.setState({ identifier, errors: [] })
-                    }
+                    setValue={(identifier) => this.setState({ identifier })}
                     value={this.state.identifier}
                   />
                   <CustomTextField
@@ -136,7 +162,7 @@ export class App extends Component<
                     icon={HelpOutlineIcon}
                     minLength={1}
                     maxLength={200}
-                    setValue={(title) => this.setState({ title, errors: [] })}
+                    setValue={(title) => this.setState({ title })}
                     value={this.state.title}
                   />
                   <CustomEditorField
@@ -145,7 +171,7 @@ export class App extends Component<
                     EditorIcons={this.props.EditorIcons}
                     value={this.state.description}
                     setValue={(description) =>
-                      this.setState({ description, errors: [] }, () =>
+                      this.setState({ description }, () =>
                         console.info(this.state),
                       )
                     }
@@ -156,7 +182,7 @@ export class App extends Component<
                     EditorIcons={this.props.EditorIcons}
                     value={this.state.specialInstructions}
                     setValue={(specialInstructions) =>
-                      this.setState({ specialInstructions, errors: [] })
+                      this.setState({ specialInstructions })
                     }
                   />
                   <CustomEditorField
@@ -165,7 +191,7 @@ export class App extends Component<
                     EditorIcons={this.props.EditorIcons}
                     value={this.state.postAssignmentNotes}
                     setValue={(postAssignmentNotes) =>
-                      this.setState({ postAssignmentNotes, errors: [] })
+                      this.setState({ postAssignmentNotes })
                     }
                   />
                 </Stack>

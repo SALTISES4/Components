@@ -18,10 +18,7 @@ import {
   DetailedAssignmentAppState,
   TeacherType,
 } from "./types";
-import SendIcon from "@mui/icons-material/Send";
-import ShareIcon from "@mui/icons-material/Share";
-import EditIcon from "@mui/icons-material/Edit";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+
 import { detailedAssignment, teacher } from "./data";
 import { Paper } from "@mui/material";
 import { ValidateButton } from "./styledComponents";
@@ -33,7 +30,7 @@ import Stack from "@mui/material/Stack";
 import { Group } from "./_localComponents/group";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { Group as GroupSkeleton } from "./_skeletons/group";
-
+import { Toolbar } from "./_assignments/toolbar";
 export class App extends Component<
   DetailedAssignmentAppProps,
   DetailedAssignmentAppState
@@ -186,16 +183,7 @@ export class App extends Component<
           <Box width="calc(100% - 200px)" marginLeft="200px">
             <Paper elevation={0}>
               <Container sx={{ width: "65%" }}>
-                <Box
-                  py="16px"
-                  style={{
-                    gap: "35px",
-                    display: "flex",
-                  }}
-                >
-                  <SendIcon /> <ShareIcon /> <EditIcon />
-                  <MoreHorizIcon />
-                </Box>
+                <Toolbar gettext={this.props.gettext} />
               </Container>
             </Paper>
             <Container sx={{ width: "65%" }}>

@@ -146,3 +146,10 @@ export const ValidateButton = styled(Button)({
   borderColor: theme.palette.primary.main,
   border: "solid 2px",
 });
+
+export const FormButtonBox = styled(Box)({
+  display: "flex",
+  justifyContent: "flex-end",
+  gap: "10px",
+  margin: "50px 0px",
+});

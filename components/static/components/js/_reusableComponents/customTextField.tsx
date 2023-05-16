@@ -21,7 +21,9 @@ export const CustomTextField = ({
   return (
     <Box>
       <Box sx={{ display: "flex", flexDirection: "row", gap: "5px" }}>
-        <Typography sx={{ marginLeft: "14px" }}>{title}</Typography>
+        <Typography fontSize={"12px"} sx={{ marginLeft: "14px" }}>
+          {title}
+        </Typography>
         <SvgIcon
           sx={{
             position: "relative",

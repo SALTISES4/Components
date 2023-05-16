@@ -11,3 +11,13 @@ export type GeneralProps = {
   instructions: string;
   notes: string;
 };
+
+export type ToolbarProps = {
+  gettext: (a: string) => string;
+};
+
+export type ShareModalProps = {
+  gettext: (a: string) => string;
+  open: any;
+  onClose: any;
+};

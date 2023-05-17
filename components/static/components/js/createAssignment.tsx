@@ -175,6 +175,9 @@ export class App extends Component<
                         console.info(this.state),
                       )
                     }
+                    tooltip={this.props.gettext(
+                      "Notes you would like keep for yourself (or other teachers) regarding this assignment.",
+                    )}
                   />
                   <CustomEditorField
                     title="Special instructions"
@@ -184,6 +187,9 @@ export class App extends Component<
                     setValue={(specialInstructions) =>
                       this.setState({ specialInstructions })
                     }
+                    tooltip={
+                      "Any special instructions you would like students to read before they start the assignment."
+                    }
                   />
                   <CustomEditorField
                     title="Post assignment notes"
@@ -192,6 +198,9 @@ export class App extends Component<
                     value={this.state.postAssignmentNotes}
                     setValue={(postAssignmentNotes) =>
                       this.setState({ postAssignmentNotes })
+                    }
+                    tooltip={
+                      "Any notes you would like to leave for students to read that will be shown after the last question of the assignment."
                     }
                   />
                 </Stack>

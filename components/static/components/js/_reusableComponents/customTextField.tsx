@@ -3,6 +3,9 @@ import { h } from "preact";
 import { CustomTextFieldProps } from "./types";
 import { formTheme } from "../theme";
 
+import Tooltip from "@mui/material/Tooltip";
+import Zoom from "@mui/material/Zoom";
+
 export const CustomTextField = ({
   gettext,
   autoFocus = false,
@@ -16,20 +19,30 @@ export const CustomTextField = ({
   maxLength,
   required = true,
   setValue,
+  tooltip = "",
   value,
 }: CustomTextFieldProps) => {
   return (
     <Box>
       <Box sx={{ display: "flex", flexDirection: "row", gap: "5px" }}>
         <Typography sx={{ marginLeft: "14px" }}>{title}</Typography>
-        <SvgIcon
-          sx={{
-            position: "relative",
-            color: formTheme.palette.primary.main,
-            fontSize: "14px",
-          }}
-          component={icon}
-        />
+        {icon && tooltip.length > 0 ? (
+          <Tooltip
+            arrow
+            title={tooltip}
+            TransitionComponent={Zoom}
+            placement="right"
+          >
+            <SvgIcon
+              sx={{
+                position: "relative",
+                color: formTheme.palette.primary.main,
+                fontSize: "14px",
+              }}
+              component={icon}
+            />
+          </Tooltip>
+        ) : null}
       </Box>
       <TextField
         autoFocus={autoFocus}

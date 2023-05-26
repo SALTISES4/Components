@@ -4,6 +4,10 @@ import { TeacherType } from "./types";
 
 import { CollectionType } from "./_localComponents/types";
 
+export function titlecase(title: string) {
+  return title.slice(0, 1).toUpperCase() + title.slice(1);
+}
+
 export const daysDiff = (dueDate: Date) => {
   if (dueDate) {
     const currentDate = new Date();

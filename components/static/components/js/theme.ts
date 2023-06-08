@@ -150,6 +150,8 @@ const saltise = createTheme({
       main: "#FFF2C4",
     },
     error: {
+      contrastText: "#D70000",
+      light: "#FFEBE6",
       main: "#D70000",
     },
     errorTint: {
@@ -438,6 +440,14 @@ const saltise = createTheme({
 
 export const formTheme = createTheme(saltise, {
   components: {
+    MuiAlert: {
+      styleOverrides: {
+        standardError: {
+          backgroundColor: saltise.palette.errorTint.main,
+          color: saltise.palette.error.main,
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
@@ -480,6 +490,7 @@ export const formTheme = createTheme(saltise, {
     MuiIconButton: {
       styleOverrides: {
         root: {
+          color: "inherit",
           padding: "4px",
         },
       },
@@ -564,13 +575,6 @@ export const formTheme = createTheme(saltise, {
       styleOverrides: {
         root: {
           color: saltise.palette.secondary4.main,
-        },
-      },
-    },
-    MuiSvgIcon: {
-      styleOverrides: {
-        root: {
-          color: saltise.palette.primary.main,
         },
       },
     },

@@ -54,6 +54,7 @@ export type CustomTextFieldProps = {
   maxLength: number;
   required?: boolean;
   setValue: (a: string) => void;
+  tooltip?: string;
   value: string;
 };
 
@@ -66,5 +67,6 @@ export type CustomEditorFieldProps = {
     muiName: string;
   };
   setValue: (a: string) => void;
+  tooltip?: string;
   value: string;
 };

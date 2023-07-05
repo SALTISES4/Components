@@ -5,7 +5,7 @@
   <head>
     {% include "components/meta.html" %}
     <script
-      src="{% static 'components/js/build/detailedAssignment.min.js' %}"
+      src="{% static 'components/js/build/updateAssignment.min.js' %}"
       defer="true"
     ></script>
 
@@ -142,8 +142,8 @@
 
     <script nonce="{{ request.csp_nonce }}">
       window.addEventListener("load", function () {
-        const detailedAssignmentApp = () => {
-          return detailedAssignment.h(detailedAssignment.App, {
+        const updateAssignmentApp = () => {
+          return updateAssignment.h(updateAssignment.App, {
             gettext: gettext,
             nonce: "{{ request.csp_nonce }}",
             EditorIcons: {
@@ -161,8 +161,8 @@
             },
           });
         };
-        detailedAssignment.render(
-          detailedAssignmentApp(),
+        updateAssignment.render(
+          updateAssignmentApp(),
           document.getElementById("question-app"),
         );
       });

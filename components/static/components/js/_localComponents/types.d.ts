@@ -28,11 +28,16 @@ export type UserType = {
 
 export type AssignmentType = {
   answer_count: number;
+  editable?: boolean;
   is_owner?: boolean;
   owner: UserType[];
   pk: string;
   question_count: number;
   title: string;
+  urls?: {
+    preview?: string;
+    update?: string;
+  };
 };
 
 export type GroupAssignmentType = {

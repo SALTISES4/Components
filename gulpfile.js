@@ -30,6 +30,7 @@ const tsProject = ts.createProject("tsconfig.json");
 //   "library",
 // "createAssignment",
 // ];
+
 const modules = ["detailedAssignment"];
 
 function typescript() {

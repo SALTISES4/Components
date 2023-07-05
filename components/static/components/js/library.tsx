@@ -46,8 +46,18 @@ import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
 export class App extends Component<LibraryAppProps, LibraryAppState> {
+  TYPES = [1, 2, 3];
+
   constructor(props: LibraryAppProps) {
     super(props);
+
+    const querystring = new URL(window.location.href).searchParams;
+    const view = querystring.get("view") || "";
+    let type = 1;
+    if (view && this.TYPES.includes(parseInt(view))) {
+      type = parseInt(view);
+    }
+
     this.state = {
       assignments: [],
       assignmentsLoading: true,
@@ -59,7 +69,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
       questionsExpanded: false,
       questionsLoading: true,
       teacher: undefined,
-      type: 1,
+      type,
     };
   }
 
@@ -69,6 +79,12 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     prepend: true,
     stylisPlugins: [prefixer],
   });
+
+  updateLocation = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("view", `${this.state.type}`);
+    window.history.pushState({}, "", url);
+  };
 
   loadAssignments = async (): Promise<void> => {
     try {
@@ -481,19 +497,19 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
               <Chip
                 clickable={this.state.type != 1}
                 label={this.props.gettext("Collections")}
-                onClick={() => this.setState({ type: 1 })}
+                onClick={() => this.setState({ type: 1 }, this.updateLocation)}
                 variant={this.state.type == 1 ? "selected" : "outlined"}
               />
               <Chip
                 clickable={this.state.type != 2}
                 label={this.props.gettext("Assignments")}
-                onClick={() => this.setState({ type: 2 })}
+                onClick={() => this.setState({ type: 2 }, this.updateLocation)}
                 variant={this.state.type == 2 ? "selected" : "outlined"}
               />
               <Chip
                 clickable={this.state.type != 3}
                 label={this.props.gettext("Questions")}
-                onClick={() => this.setState({ type: 3 })}
+                onClick={() => this.setState({ type: 3 }, this.updateLocation)}
                 variant={this.state.type == 3 ? "selected" : "outlined"}
               />
             </Stack>

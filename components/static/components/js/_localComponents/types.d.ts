@@ -72,6 +72,18 @@ export type GroupedAssignmentType = {
   title: string;
 };
 
+export type DetailedAssignmentType = {
+  author: string;
+  is_owner: boolean;
+  title: string;
+  description: string;
+  distributionState: DistributionState;
+  specialInstructions: string;
+  postAssignmentNotes: string;
+  groups: GroupType[];
+  questions: QuestionType[];
+};
+
 type DisciplineType = { pk: number; title: string };
 
 export type CollectionType = {

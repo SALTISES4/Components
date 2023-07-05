@@ -28,8 +28,10 @@ const tsProject = ts.createProject("tsconfig.json");
 //   "navigation",
 //   "search",
 //   "library",
+// "createAssignment",
 // ];
-const modules = ["library"];
+
+const modules = ["detailedAssignment"];
 
 function typescript() {
   const build = gulp

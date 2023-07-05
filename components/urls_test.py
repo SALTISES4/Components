@@ -44,5 +44,10 @@ urlpatterns = i18n_patterns(
         views_test.createAssignment,
         name="createAssignment",
     ),
+    path(
+        "detailedAssignment",
+        views_test.detailedAssignment,
+        name="detailedAssignment",
+    ),
     path("jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
 )

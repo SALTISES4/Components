@@ -48,17 +48,8 @@ export class App extends Component<NavigationAppProps, NavigationAppState> {
               groups={this.props.sidebarGroups}
               logo={this.props.logo}
             />
-            <Box
-              component="main"
-              maxWidth="lg"
-              sx={{
-                flexGrow: 1,
-                overflow: "auto",
-                ml: "130px",
-                mr: "130px",
-              }}
-            >
-              <Toolbar />
+            <Box component="main">
+              <Toolbar variant="dense" />
             </Box>
           </Box>
         </CacheProvider>

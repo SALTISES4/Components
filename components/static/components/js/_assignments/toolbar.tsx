@@ -8,9 +8,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import Box from "@mui/system/Box";
+import IconButton from "@mui/material/IconButton";
 
 import { ToolbarProps } from "./types";
-import { IconButton } from "@mui/material";
+
 import ShareModal from "./shareModal";
 
 export function Toolbar({ gettext }: ToolbarProps): JSX.Element {
@@ -20,23 +21,25 @@ export function Toolbar({ gettext }: ToolbarProps): JSX.Element {
 
   return (
     <Box
-      py="16px"
+      py="6px"
       display="flex"
       alignItem="center"
       style={{
         gap: "35px",
       }}
     >
-      <IconButton>
+      <IconButton color="primary">
         <SendIcon />
       </IconButton>
-      <IconButton onClick={handleOpenShareModal}>
+      <IconButton color="primary" onClick={handleOpenShareModal}>
         <ShareIcon />
       </IconButton>
-      <IconButton>
+      <IconButton color="primary">
         <EditIcon />
       </IconButton>
-      <MoreHorizIcon />
+      <IconButton color="primary">
+        <MoreHorizIcon />
+      </IconButton>
       <ShareModal
         open={openShareModal}
         onClose={handleCloseShareModal}

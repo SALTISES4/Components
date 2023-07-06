@@ -1,18 +1,25 @@
 import { h } from "preact";
-
 import { useState } from "preact/hooks";
 
+//functions
+import { emailValidator } from "../validators";
+
+//material ui components
+import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import { ShareModalProps } from "./types";
+
+//components
 import {
   CancelButton,
   FormButtonBox,
   ValidateButton,
 } from "../styledComponents";
-import { emailValidator } from "../validators";
 import { CustomTextField } from "../_reusableComponents/customTextField";
-import { Alert, Modal } from "@mui/material";
+
+//types
+import { ShareModalProps } from "./types";
 
 const style = {
   boxSizing: "border-box",
@@ -20,7 +27,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "780px",
+  maxWidth: "780px",
   backgroundColor: "rgb(255, 255, 255)",
   boxShadow:
     "rgba(0, 0, 0, 0.2) 0px 11px 15px -7px, rgba(0, 0, 0, 0.14) 0px 24px 38px 3px, rgba(0, 0, 0, 0.12) 0px 9px 46px 8px",
@@ -43,7 +50,7 @@ export default function ShareModal({
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
         <Typography variant="h1" sx={{ margin: "0px" }}>
-          Share with a colleague
+          {gettext("Share with a colleague")}
         </Typography>
         <Typography
           fontSize={"16"}
@@ -59,7 +66,7 @@ export default function ShareModal({
           gettext={gettext}
           autoFocus={true}
           id="email"
-          title="Email adress"
+          title={gettext("Email address")}
           defaultValue=""
           maxLength={100}
           error={!emailValidation()}
@@ -68,13 +75,14 @@ export default function ShareModal({
             setEmail(email);
             setError("");
           }}
+          sx={{ width: "100%" }}
         />
         <FormButtonBox sx={{ margin: "0px" }}>
           <CancelButton onClick={onClose}>
             <Typography>{gettext("Cancel")}</Typography>
           </CancelButton>
           <ValidateButton variant="contained" disabled={!emailValidation()}>
-            <Typography>{gettext("Create assignment")}</Typography>
+            <Typography>{gettext("Share")}</Typography>
           </ValidateButton>
         </FormButtonBox>
       </Box>

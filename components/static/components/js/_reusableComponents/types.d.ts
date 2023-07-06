@@ -54,6 +54,7 @@ export type CustomTextFieldProps = {
   maxLength: number;
   required?: boolean;
   setValue: (a: string) => void;
+  sx?: Record<string, string>;
   tooltip?: string;
   value: string;
 };

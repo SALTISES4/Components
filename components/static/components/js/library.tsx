@@ -493,7 +493,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
       <ThemeProvider theme={saltise}>
         <CacheProvider value={this.cache}>
           <Box margin="0 auto" maxWidth="980px" width="100%">
-            <Stack direction="row" spacing={1}>
+            <Stack direction="row" spacing={1} mt={"30px"}>
               <Chip
                 clickable={this.state.type != 1}
                 label={this.props.gettext("Collections")}

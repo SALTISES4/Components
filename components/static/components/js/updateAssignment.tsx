@@ -1,9 +1,32 @@
 import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
+//functions
+import { submitData } from "./ajax";
+
+//material ui components
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+
+//components
+import { ValidateButton } from "./styledComponents";
+import { GeneralDescription } from "./_assignments/generalDescription";
+import { GroupType, QuestionType } from "./_localComponents/types";
+import { Question } from "./_localComponents/question";
+import { Group } from "./_localComponents/group";
+import { Question as QuestionSkeleton } from "./_skeletons/question";
+import { Group as GroupSkeleton } from "./_skeletons/group";
+import { Toolbar } from "./_assignments/toolbar";
+
+//types
+import {
+  UpdateAssignmentAppProps,
+  UpdateAssignmentAppState,
+  TeacherType,
+} from "./types";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -13,32 +36,17 @@ import saltise, { formTheme } from "./theme";
 //cache
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-import {
-  DetailedAssignmentAppProps,
-  DetailedAssignmentAppState,
-  TeacherType,
-} from "./types";
 
-import { detailedAssignment, teacher } from "./data";
-import { Paper } from "@mui/material";
-import { ValidateButton } from "./styledComponents";
-import { GeneralDescription } from "./_assignments/generalDescription";
-import { GroupType, QuestionType } from "./_localComponents/types";
-import { Question } from "./_localComponents/question";
-import { submitData } from "./ajax";
-import Stack from "@mui/material/Stack";
-import { Group } from "./_localComponents/group";
-import { Question as QuestionSkeleton } from "./_skeletons/question";
-import { Group as GroupSkeleton } from "./_skeletons/group";
-import { Toolbar } from "./_assignments/toolbar";
+import { detailedAssignment as assignment, teacher } from "./data";
+
 export class App extends Component<
-  DetailedAssignmentAppProps,
-  DetailedAssignmentAppState
+  UpdateAssignmentAppProps,
+  UpdateAssignmentAppState
 > {
-  constructor(props: DetailedAssignmentAppProps) {
+  constructor(props: UpdateAssignmentAppProps) {
     super(props);
     this.state = {
-      detailedAssignment,
+      assignment,
       questions: [],
       questionsLoading: false,
       groups: [],
@@ -83,89 +91,81 @@ export class App extends Component<
 
   groups = () => {
     return (
-      <ThemeProvider theme={saltise}>
-        <Box sx={{ mt: "30px" }}>
-          {!this.state.groupsLoading ? (
-            this.state.detailedAssignment.groups?.length > 0 ? (
-              <Stack spacing={"10px"}>
-                {this.state.detailedAssignment.groups.map(
-                  (group: GroupType, i: number) => (
-                    <Group
-                      key={i}
-                      gettext={this.props.gettext}
-                      group={group}
-                    />
-                  ),
-                )}
-              </Stack>
-            ) : (
-              <Typography>
-                {this.props.gettext("Your assignment is not assigned yet!")}
-              </Typography>
-            )
+      <Box sx={{ mt: "30px" }}>
+        {!this.state.groupsLoading ? (
+          this.state.assignment.groups?.length > 0 ? (
+            <Stack spacing={"10px"}>
+              {this.state.assignment.groups.map(
+                (group: GroupType, i: number) => (
+                  <Group key={i} gettext={this.props.gettext} group={group} />
+                ),
+              )}
+            </Stack>
           ) : (
-            <Fragment>
-              <Stack spacing={"10px"}>
-                <GroupSkeleton />
-                <GroupSkeleton />
-                <GroupSkeleton />
-                <GroupSkeleton />
-              </Stack>
-            </Fragment>
-          )}
-        </Box>
-      </ThemeProvider>
+            <Typography>
+              {this.props.gettext("Your assignment is not assigned yet!")}
+            </Typography>
+          )
+        ) : (
+          <Fragment>
+            <Stack spacing={"10px"}>
+              <GroupSkeleton />
+              <GroupSkeleton />
+              <GroupSkeleton />
+              <GroupSkeleton />
+            </Stack>
+          </Fragment>
+        )}
+      </Box>
     );
   };
 
   questions = () => {
     return (
-      <ThemeProvider theme={saltise}>
-        <Box sx={{ marginTop: "30px" }}>
-          {!this.state.questionsLoading ? (
-            this.state.detailedAssignment.questions?.length > 0 ? (
-              <Stack spacing={"10px"}>
-                {this.state.detailedAssignment.questions.map(
-                  (question: QuestionType, i: number) => (
-                    <Question
-                      key={i}
-                      bookmarked={this.state.teacher?.favourite_questions?.includes(
-                        question.pk,
-                      )}
-                      expanded={true}
-                      gettext={this.props.gettext}
-                      question={question}
-                      showBookmark={
-                        question.is_owner !== undefined
-                          ? !question.is_owner
-                          : false
-                      }
-                      toggleBookmarked={() =>
-                        this.handleQuestionBookmarkClick(question.pk)
-                      }
-                    />
-                  ),
-                )}
-              </Stack>
-            ) : (
-              <Typography>
-                {this.props.gettext(
-                  "You assignment has no questions yet! Search our database to add questions.",
-                )}
-              </Typography>
-            )
+      <Box sx={{ marginTop: "30px" }}>
+        {!this.state.questionsLoading ? (
+          this.state.assignment.questions?.length > 0 ? (
+            <Stack spacing={"10px"}>
+              {this.state.assignment.questions.map(
+                (question: QuestionType, i: number) => (
+                  <Question
+                    key={i}
+                    bookmarked={this.state.teacher?.favourite_questions?.includes(
+                      question.pk,
+                    )}
+                    expanded={true}
+                    gettext={this.props.gettext}
+                    question={question}
+                    showBookmark={
+                      question.is_owner !== undefined
+                        ? !question.is_owner
+                        : false
+                    }
+                    toggleBookmarked={() =>
+                      this.handleQuestionBookmarkClick(question.pk)
+                    }
+                  />
+                ),
+              )}
+            </Stack>
           ) : (
-            <Fragment>
-              <Stack spacing={"10px"}>
-                <QuestionSkeleton />
-                <QuestionSkeleton />
-                <QuestionSkeleton />
-                <QuestionSkeleton />
-              </Stack>
-            </Fragment>
-          )}
-        </Box>
-      </ThemeProvider>
+            <Typography>
+              {this.props.gettext(
+                "You assignment has no questions yet! Search our database to add questions.",
+              )}
+            </Typography>
+          )
+        ) : (
+          <Fragment>
+            <Stack spacing={"10px"}>
+              <QuestionSkeleton />
+              <QuestionSkeleton />
+              <QuestionSkeleton />
+              <QuestionSkeleton />
+            </Stack>
+          </Fragment>
+        )}
+      </Box>
     );
   };
 
@@ -180,15 +180,17 @@ export class App extends Component<
     return (
       <ThemeProvider theme={formTheme}>
         <CacheProvider value={this.cache}>
-          <Box width="calc(100% - 200px)" marginLeft="200px">
+          <Box>
             <Paper elevation={0}>
               <Container sx={{ width: "65%" }}>
-                <Toolbar gettext={this.props.gettext} />
+                <ThemeProvider theme={saltise}>
+                  <Toolbar gettext={this.props.gettext} />
+                </ThemeProvider>
               </Container>
             </Paper>
             <Container sx={{ width: "65%" }}>
               <Typography variant="h1" align="left">
-                {this.state.detailedAssignment.title}
+                {this.state.assignment.title}
               </Typography>
               <Stack spacing={"50px"}>
                 <Box>
@@ -197,22 +199,22 @@ export class App extends Component<
                   </Typography>
                   <GeneralDescription
                     gettext={this.props.gettext}
-                    author={this.state.detailedAssignment.author}
-                    title={this.state.detailedAssignment.title}
-                    description={this.state.detailedAssignment.description}
-                    instructions={
-                      this.state.detailedAssignment.specialInstructions
-                    }
-                    notes={this.state.detailedAssignment.postAssignmentNotes}
+                    author={this.state.assignment.author}
+                    title={this.state.assignment.title}
+                    description={this.state.assignment.description}
+                    instructions={this.state.assignment.specialInstructions}
+                    notes={this.state.assignment.postAssignmentNotes}
                   />
                 </Box>
                 <Box>
-                  {this.state.detailedAssignment.is_owner ? (
+                  {this.state.assignment.is_owner ? (
                     <Box>
                       <Typography variant="h2" sx={{ mt: "0px", mb: "30px" }}>
                         {this.props.gettext("Groups")}
                       </Typography>
-                      {this.groups()}
+                      <ThemeProvider theme={saltise}>
+                        {this.groups()}
+                      </ThemeProvider>
                     </Box>
                   ) : null}
                 </Box>
@@ -220,7 +222,9 @@ export class App extends Component<
                   <Typography variant="h2" sx={{ mt: "0px", mb: "30px" }}>
                     {this.props.gettext("Questions")}
                   </Typography>
-                  {this.questions()}
+                  <ThemeProvider theme={saltise}>
+                    {this.questions()}
+                  </ThemeProvider>
                   <ValidateButton
                     variant="contained"
                     sx={{ margin: "30px 0px" }}

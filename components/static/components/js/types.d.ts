@@ -215,33 +215,6 @@ export type AnswerWithRationalesType = {
   rationales: RationalesType[];
 };
 
-export type CreateAssignmentAppProps = {
-  gettext: (a: string) => string;
-  nonce: string;
-  EditorIcons: EditorIconsType;
-  urls: {
-    create: string;
-  };
-};
-export type CreateAssignmentAppState = {};
-
-export type DetailedAssignmentAppProps = {
-  gettext: (a: string) => string;
-  nonce: string;
-  urls: {
-    teacher: string;
-  };
-};
-
-export type DetailedAssignmentAppState = {
-  detailedAssignment: DetailedAssignmentType;
-  questionsLoading: boolean;
-  questions: QuestionType[];
-  teacher: TeacherType | undefined;
-  groupsLoading: boolean;
-  groups: GroupType[];
-};
-
 export type EditorIconsType = {
   boldIcon: string;
   italicIcon: string;
@@ -262,4 +235,31 @@ export type CreateAssignmentAppState = {
   postAssignmentNotes: string;
   submitting: boolean;
   title: string;
+};
+
+export type CreateAssignmentAppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+  EditorIcons: EditorIconsType;
+  urls: {
+    create: string;
+  };
+};
+
+export type UpdateAssignmentAppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+  identifier: string;
+  urls: {
+    teacher: string;
+  };
+};
+
+export type UpdateAssignmentAppState = {
+  assignment: DetailedAssignmentType;
+  questionsLoading: boolean;
+  questions: QuestionType[];
+  teacher: TeacherType | undefined;
+  groupsLoading: boolean;
+  groups: GroupType[];
 };

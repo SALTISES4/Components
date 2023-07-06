@@ -2,13 +2,17 @@ import { h } from "preact";
 
 import { useState } from "preact/hooks";
 
+//material ui components
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 
-import Box from "@mui/system/Box";
-
-import { GeneralProps } from "./types";
+//components
 import { TextBox } from "./textBox";
-import { Collapse, Link } from "@mui/material";
+
+//types
+import { GeneralProps } from "./types";
 
 export function GeneralDescription({
   gettext,
@@ -44,12 +48,12 @@ export function GeneralDescription({
           <TextBox title={gettext("Post assignment notes")} text={notes} />
         </Collapse>
         {showMore ? (
-          <Link onClick={handleClick} sx={{ cursor: "pointer" }}>
-            <Typography>{gettext("Show Less")}</Typography>
+          <Link onClick={handleClick} sx={{ cursor: "pointer", mt: "12px" }}>
+            <Typography color="primary">{gettext("Show less")}</Typography>
           </Link>
         ) : (
-          <Link onClick={handleClick} sx={{ cursor: "pointer" }}>
-            <Typography>{gettext("Show More")}</Typography>
+          <Link onClick={handleClick} sx={{ cursor: "pointer", mt: "12px" }}>
+            <Typography color="primary">{gettext("Show more")}</Typography>
           </Link>
         )}
       </Box>

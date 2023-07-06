@@ -15,9 +15,7 @@ import Container from "@mui/system/Container";
 
 //components
 import { Subtitle } from "./styledComponents";
-
 import { SuperUserBar } from "./_dashboard/superUserBar";
-
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { GroupAssignment } from "./_localComponents/assignment";
 import { CollectionBlock } from "./_localComponents/collection";

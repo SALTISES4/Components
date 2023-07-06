@@ -21,6 +21,7 @@ export const CustomTextField = ({
   setValue,
   tooltip = "",
   value,
+  sx = {},
 }: CustomTextFieldProps) => {
   return (
     <Box>
@@ -57,12 +58,13 @@ export const CustomTextField = ({
         variant="outlined"
         helperText={`${helperText || ""}  ${
           value.length
-        }/${maxLength} ${gettext("characters")}.`}
+        }/${maxLength} ${gettext("characters")}`}
         onChange={(evt: Event) => {
           if (evt.target && evt.target instanceof HTMLInputElement) {
             setValue(evt.target.value);
           }
         }}
+        sx={sx}
       />
     </Box>
   );

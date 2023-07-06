@@ -184,7 +184,13 @@ export class App extends Component<
             <Paper elevation={0}>
               <Container sx={{ width: "65%" }}>
                 <ThemeProvider theme={saltise}>
-                  <Toolbar gettext={this.props.gettext} />
+                  <Toolbar
+                    gettext={this.props.gettext}
+                    groups={this.state.assignment.groups.map((g) => ({
+                      title: g.title,
+                      pk: g.pk,
+                    }))}
+                  />
                 </ThemeProvider>
               </Container>
             </Paper>

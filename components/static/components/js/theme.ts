@@ -408,6 +408,14 @@ const saltise = createTheme({
         },
       },
     },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          color: "#515159",
+          lineHeight: "1rem",
+        },
+      },
+    },
     MuiIconButton: {
       styleOverrides: {
         root: {
@@ -568,13 +576,6 @@ export const formTheme = createTheme(saltise, {
             lineHeight: "22px",
             marginBottom: "12px",
           },
-        },
-      },
-    },
-    MuiFormHelperText: {
-      styleOverrides: {
-        root: {
-          color: saltise.palette.secondary4.main,
         },
       },
     },

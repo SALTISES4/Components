@@ -142,6 +142,7 @@ export type GroupType = {
   active?: boolean;
   subject?: string[];
   due_date: Date;
+  pk?: number;
   progress: number;
   tags?: string[];
   url: string;

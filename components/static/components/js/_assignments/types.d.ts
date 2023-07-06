@@ -14,10 +14,18 @@ export type GeneralProps = {
 
 export type ToolbarProps = {
   gettext: (a: string) => string;
+  groups: { title: string; pk: number }[];
 };
 
 export type ShareModalProps = {
   gettext: (a: string) => string;
+  open: any;
+  onClose: any;
+};
+
+export type DistributeModalProps = {
+  gettext: (a: string) => string;
+  groups: { title: string; pk: number }[];
   open: any;
   onClose: any;
 };

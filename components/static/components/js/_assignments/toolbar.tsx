@@ -12,12 +12,17 @@ import IconButton from "@mui/material/IconButton";
 
 import { ToolbarProps } from "./types";
 
+import DistributeModal from "./distributeModal";
 import ShareModal from "./shareModal";
 
-export function Toolbar({ gettext }: ToolbarProps): JSX.Element {
+export function Toolbar({ gettext, groups }: ToolbarProps): JSX.Element {
   const [openShareModal, setOpenShareModal] = useState(false);
   const handleOpenShareModal = () => setOpenShareModal(true);
   const handleCloseShareModal = () => setOpenShareModal(false);
+
+  const [openDistributeModal, setOpenDistributeModal] = useState(false);
+  const handleOpenDistributeModal = () => setOpenDistributeModal(true);
+  const handleCloseDistributeModal = () => setOpenDistributeModal(false);
 
   return (
     <Box
@@ -28,7 +33,7 @@ export function Toolbar({ gettext }: ToolbarProps): JSX.Element {
         gap: "35px",
       }}
     >
-      <IconButton color="primary">
+      <IconButton color="primary" onClick={handleOpenDistributeModal}>
         <SendIcon />
       </IconButton>
       <IconButton color="primary" onClick={handleOpenShareModal}>
@@ -43,9 +48,17 @@ export function Toolbar({ gettext }: ToolbarProps): JSX.Element {
       <ShareModal
         open={openShareModal}
         onClose={handleCloseShareModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby="share"
+        aria-describedby="share with colleagues"
         gettext={gettext}
+      />
+      <DistributeModal
+        gettext={gettext}
+        groups={groups}
+        open={openDistributeModal}
+        onClose={handleCloseDistributeModal}
+        aria-labelledby="distribute"
+        aria-describedby="distribute to students"
       />
     </Box>
   );

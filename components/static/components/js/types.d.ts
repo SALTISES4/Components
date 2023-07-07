@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 
 import {
+  AssignmentDatabaseFields,
   AssignmentType,
   CollectionType,
-  DetailedAssignmentType,
   GroupedAssignmentType,
   GroupType,
   QuestionType,
@@ -249,14 +249,16 @@ export type CreateAssignmentAppProps = {
 export type UpdateAssignmentAppProps = {
   gettext: (a: string) => string;
   nonce: string;
-  identifier: string;
+  assignment: AssignmentDatabaseFields;
+  editableByUser?: boolean;
   urls: {
+    groups: string;
+    questions: string;
     teacher: string;
   };
 };
 
 export type UpdateAssignmentAppState = {
-  assignment: DetailedAssignmentType;
   questionsLoading: boolean;
   questions: QuestionType[];
   teacher: TeacherType | undefined;

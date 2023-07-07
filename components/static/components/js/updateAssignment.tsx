@@ -2,7 +2,7 @@ import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
 //functions
-import { submitData } from "./ajax";
+import { get, submitData } from "./ajax";
 
 //material ui components
 import Box from "@mui/material/Box";
@@ -37,8 +37,6 @@ import saltise, { formTheme } from "./theme";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-import { detailedAssignment as assignment, teacher } from "./data";
-
 export class App extends Component<
   UpdateAssignmentAppProps,
   UpdateAssignmentAppState
@@ -46,17 +44,56 @@ export class App extends Component<
   constructor(props: UpdateAssignmentAppProps) {
     super(props);
     this.state = {
-      assignment,
       questions: [],
       questionsLoading: false,
       groups: [],
       groupsLoading: false,
-      teacher,
+      teacher: undefined,
     };
   }
 
+  loadQuestions = async (): Promise<void> => {
+    try {
+      this.setState({ questionsLoading: true });
+
+      const data = await get(this.props.urls.questions);
+      const questions = data.questions.map(
+        (qr) => qr.question,
+      ) as QuestionType[];
+
+      this.setState(
+        {
+          questions,
+          questionsLoading: false,
+        },
+        () => console.info(this.state),
+      );
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  loadGroups = async (): Promise<void> => {
+    try {
+      this.setState({ groupsLoading: true });
+
+      const groups = (await get(this.props.urls.groups)) as GroupType[];
+
+      this.setState(
+        {
+          groups,
+          groupsLoading: false,
+        },
+        () => console.info(this.state),
+      );
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
   componentDidMount(): void {
-    // Fetch data from db to overwrite placeholders
+    this.loadQuestions();
+    // this.loadGroups();
   }
 
   handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
@@ -93,13 +130,11 @@ export class App extends Component<
     return (
       <Box sx={{ mt: "30px" }}>
         {!this.state.groupsLoading ? (
-          this.state.assignment.groups?.length > 0 ? (
+          this.state.groups?.length > 0 ? (
             <Stack spacing={"10px"}>
-              {this.state.assignment.groups.map(
-                (group: GroupType, i: number) => (
-                  <Group key={i} gettext={this.props.gettext} group={group} />
-                ),
-              )}
+              {this.state.groups.map((group: GroupType, i: number) => (
+                <Group key={i} gettext={this.props.gettext} group={group} />
+              ))}
             </Stack>
           ) : (
             <Typography>
@@ -124,9 +159,9 @@ export class App extends Component<
     return (
       <Box sx={{ marginTop: "30px" }}>
         {!this.state.questionsLoading ? (
-          this.state.assignment.questions?.length > 0 ? (
+          this.state.questions?.length > 0 ? (
             <Stack spacing={"10px"}>
-              {this.state.assignment.questions.map(
+              {this.state.questions.map(
                 (question: QuestionType, i: number) => (
                   <Question
                     key={i}
@@ -186,7 +221,8 @@ export class App extends Component<
                 <ThemeProvider theme={saltise}>
                   <Toolbar
                     gettext={this.props.gettext}
-                    groups={this.state.assignment.groups.map((g) => ({
+                    enableEditMode={this.props.editableByUser}
+                    groups={this.state.groups.map((g) => ({
                       title: g.title,
                       pk: g.pk,
                     }))}
@@ -196,7 +232,7 @@ export class App extends Component<
             </Paper>
             <Container sx={{ width: "65%" }}>
               <Typography variant="h1" align="left">
-                {this.state.assignment.title}
+                {this.props.assignment.title}
               </Typography>
               <Stack spacing={"50px"}>
                 <Box>
@@ -205,24 +241,22 @@ export class App extends Component<
                   </Typography>
                   <GeneralDescription
                     gettext={this.props.gettext}
-                    author={this.state.assignment.author}
-                    title={this.state.assignment.title}
-                    description={this.state.assignment.description}
-                    instructions={this.state.assignment.specialInstructions}
-                    notes={this.state.assignment.postAssignmentNotes}
+                    identifier={this.props.assignment.pk}
+                    owner={this.props.assignment.owner}
+                    description={this.props.assignment.description || ""}
+                    instructions={this.props.assignment.intro_page || ""}
+                    notes={this.props.assignment.conclusion_page || ""}
                   />
                 </Box>
                 <Box>
-                  {this.state.assignment.is_owner ? (
-                    <Box>
-                      <Typography variant="h2" sx={{ mt: "0px", mb: "30px" }}>
-                        {this.props.gettext("Groups")}
-                      </Typography>
-                      <ThemeProvider theme={saltise}>
-                        {this.groups()}
-                      </ThemeProvider>
-                    </Box>
-                  ) : null}
+                  <Box>
+                    <Typography variant="h2" sx={{ mt: "0px", mb: "30px" }}>
+                      {this.props.gettext("Groups")}
+                    </Typography>
+                    <ThemeProvider theme={saltise}>
+                      {this.groups()}
+                    </ThemeProvider>
+                  </Box>
                 </Box>
                 <Box>
                   <Typography variant="h2" sx={{ mt: "0px", mb: "30px" }}>
@@ -246,3 +280,7 @@ export class App extends Component<
     );
   }
 }
+
+App.defaultProps = {
+  editableByUser: false,
+};

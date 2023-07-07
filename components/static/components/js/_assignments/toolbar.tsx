@@ -15,7 +15,11 @@ import { ToolbarProps } from "./types";
 import DistributeModal from "./distributeModal";
 import ShareModal from "./shareModal";
 
-export function Toolbar({ gettext, groups }: ToolbarProps): JSX.Element {
+export function Toolbar({
+  gettext,
+  enableEditMode = false,
+  groups,
+}: ToolbarProps): JSX.Element {
   const [openShareModal, setOpenShareModal] = useState(false);
   const handleOpenShareModal = () => setOpenShareModal(true);
   const handleCloseShareModal = () => setOpenShareModal(false);
@@ -39,9 +43,11 @@ export function Toolbar({ gettext, groups }: ToolbarProps): JSX.Element {
       <IconButton color="primary" onClick={handleOpenShareModal}>
         <ShareIcon />
       </IconButton>
-      <IconButton color="primary">
-        <EditIcon />
-      </IconButton>
+      {enableEditMode ? (
+        <IconButton color="primary">
+          <EditIcon />
+        </IconButton>
+      ) : null}
       <IconButton color="primary">
         <MoreHorizIcon />
       </IconButton>

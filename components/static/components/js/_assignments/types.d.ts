@@ -5,8 +5,8 @@ export type TextBoxProps = {
 
 export type GeneralProps = {
   gettext: (a: string) => string;
-  author: string;
-  title: string;
+  identifier: string;
+  owner: string[];
   description: string;
   instructions: string;
   notes: string;
@@ -14,6 +14,7 @@ export type GeneralProps = {
 
 export type ToolbarProps = {
   gettext: (a: string) => string;
+  enableEditMode?: boolean;
   groups: { title: string; pk: number }[];
 };
 

@@ -1,4 +1,4 @@
-import { h } from "preact";
+import { Fragment, h } from "preact";
 
 import { useState } from "preact/hooks";
 
@@ -9,15 +9,15 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 
 //components
-import { TextBox } from "./textBox";
+import { HTMLTextBox, TextBox } from "./htmlTextBox";
 
 //types
 import { GeneralProps } from "./types";
 
 export function GeneralDescription({
   gettext,
-  author,
-  title,
+  identifier,
+  owner,
   description,
   instructions,
   notes,
@@ -32,30 +32,50 @@ export function GeneralDescription({
     }));
   };
 
+  const show = () => {
+    if (showMore) {
+      return (
+        <Link onClick={handleClick} sx={{ cursor: "pointer", mt: "12px" }}>
+          <Typography color="primary">{gettext("Show less")}</Typography>
+        </Link>
+      );
+    }
+    return (
+      <Link onClick={handleClick} sx={{ cursor: "pointer", mt: "12px" }}>
+        <Typography color="primary">{gettext("Show more")}</Typography>
+      </Link>
+    );
+  };
+
   return (
     <Box display="flex" sx={{ gap: "20px" }}>
       <Box display="flex" flexDirection={"column"} flex={2}>
-        <TextBox title={gettext("Identifier")} text={author} />
-        <TextBox title={gettext("Title")} text={title} />
+        <TextBox title={gettext("Identifier")} text={identifier} />
+        <TextBox
+          title={owner.length < 2 ? gettext("Author") : gettext("Authors")}
+          text={owner.join(", ")}
+        />
       </Box>
       <Box display="flex" flexDirection={"column"} flex={5}>
-        <TextBox title={gettext("Description")} text={description} />
-        <Collapse in={showMore} timeout={500} unmountOnExit>
-          <TextBox
-            title={gettext("Special instructions")}
-            text={instructions}
-          />
-          <TextBox title={gettext("Post assignment notes")} text={notes} />
-        </Collapse>
-        {showMore ? (
-          <Link onClick={handleClick} sx={{ cursor: "pointer", mt: "12px" }}>
-            <Typography color="primary">{gettext("Show less")}</Typography>
-          </Link>
-        ) : (
-          <Link onClick={handleClick} sx={{ cursor: "pointer", mt: "12px" }}>
-            <Typography color="primary">{gettext("Show more")}</Typography>
-          </Link>
-        )}
+        <HTMLTextBox
+          title={gettext("Description")}
+          text={description || gettext("N/A")}
+        />
+        {instructions || notes ? (
+          <Fragment>
+            <Collapse in={showMore} timeout={500} unmountOnExit>
+              <HTMLTextBox
+                title={gettext("Special instructions")}
+                text={instructions}
+              />
+              <HTMLTextBox
+                title={gettext("Post assignment notes")}
+                text={notes}
+              />
+            </Collapse>
+            {show()}
+          </Fragment>
+        ) : null}
       </Box>
     </Box>
   );

@@ -26,19 +26,25 @@ export type UserType = {
   username: string;
 };
 
-export type AssignmentType = {
+export interface AssignmentDatabaseFields {
+  conclusion_page?: string;
+  description?: string;
+  intro_page?: string;
+  owner?: UserType[];
+  pk: string;
+  title: string;
+}
+
+export interface AssignmentType extends AssignmentDatabaseFields {
   answer_count: number;
   editable?: boolean;
   is_owner?: boolean;
-  owner: UserType[];
-  pk: string;
   question_count: number;
-  title: string;
   urls?: {
     preview?: string;
     update?: string;
   };
-};
+}
 
 export type GroupAssignmentType = {
   active: boolean;
@@ -70,18 +76,6 @@ export type GroupedAssignmentType = {
   progress: number;
   questionCount: number;
   title: string;
-};
-
-export type DetailedAssignmentType = {
-  author: string;
-  is_owner: boolean;
-  title: string;
-  description: string;
-  distributionState: DistributionState;
-  specialInstructions: string;
-  postAssignmentNotes: string;
-  groups: GroupType[];
-  questions: QuestionType[];
 };
 
 type DisciplineType = { pk: number; title: string };

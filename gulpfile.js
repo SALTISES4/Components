@@ -102,7 +102,7 @@ function buildScript(module) {
           ],
         ],
       }),
-      strip(),
+      // strip(),
     ],
   };
   const outputOptions = {

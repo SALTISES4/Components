@@ -5,6 +5,7 @@ import { useState } from "preact/hooks";
 import { modal as style } from "./styles";
 
 //material ui components
+import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
@@ -39,6 +40,7 @@ export default function DistributeModal({
   onClose,
 }: DistributeModalProps): JSX.Element {
   const [group, setGroup] = useState("");
+  const [datetime, setDateTime] = useState(dayjs());
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -85,9 +87,11 @@ export default function DistributeModal({
               disablePast={true}
               id="due-date-and-time-picker"
               label={`${gettext("Due date and time")}*`}
+              onChange={(newDateTime: Dayjs) => setDateTime(newDateTime)}
               required={true}
               timeSteps={{ hours: 1, minutes: 15 }}
               sx={{ width: "100%" }}
+              value={datetime}
             />
           </LocalizationProvider>
 
@@ -102,7 +106,10 @@ export default function DistributeModal({
             <CancelButton onClick={onClose}>
               <Typography>{gettext("Cancel")}</Typography>
             </CancelButton>
-            <ValidateButton variant="contained">
+            <ValidateButton
+              disabled={group == "" || datetime < dayjs()}
+              variant="contained"
+            >
               <Typography>{gettext("Share")}</Typography>
             </ValidateButton>
           </FormButtonBox>

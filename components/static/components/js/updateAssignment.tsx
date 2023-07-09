@@ -125,7 +125,7 @@ export class App extends Component<
     }
 
     this.loadQuestions();
-    // this.loadGroups();
+    this.loadGroups();
   };
 
   componentDidMount(): void {
@@ -247,10 +247,7 @@ export class App extends Component<
                   <Toolbar
                     gettext={this.props.gettext}
                     enableEditMode={this.props.editableByUser}
-                    groups={this.state.groups.map((g) => ({
-                      title: g.title,
-                      pk: g.pk,
-                    }))}
+                    groups={this.state.teacher?.current_groups}
                   />
                 </ThemeProvider>
               </Container>

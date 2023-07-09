@@ -16,6 +16,13 @@ type TeacherType = {
   assignment_pks?: string[];
   bookmarked_collections: number[];
   createdQuestionCount: number;
+  current_groups?: {
+    name: string;
+    pk: number;
+    semester: string;
+    title: string;
+    year: number;
+  }[];
   favourite_questions: number[];
   user?: UserType;
 };

@@ -15,7 +15,7 @@ export type GeneralProps = {
 export type ToolbarProps = {
   gettext: (a: string) => string;
   enableEditMode?: boolean;
-  groups: { title: string; pk: number }[];
+  groups?: { title: string; pk: number }[];
 };
 
 export type ShareModalProps = {

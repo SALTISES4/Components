@@ -37,7 +37,11 @@ export function Toolbar({
         gap: "35px",
       }}
     >
-      <IconButton color="primary" onClick={handleOpenDistributeModal}>
+      <IconButton
+        color="primary"
+        disabled={groups === undefined || groups.length == 0}
+        onClick={handleOpenDistributeModal}
+      >
         <SendIcon />
       </IconButton>
       <IconButton color="primary" onClick={handleOpenShareModal}>
@@ -58,14 +62,16 @@ export function Toolbar({
         aria-describedby="share with colleagues"
         gettext={gettext}
       />
-      <DistributeModal
-        gettext={gettext}
-        groups={groups}
-        open={openDistributeModal}
-        onClose={handleCloseDistributeModal}
-        aria-labelledby="distribute"
-        aria-describedby="distribute to students"
-      />
+      {groups ? (
+        <DistributeModal
+          gettext={gettext}
+          groups={groups}
+          open={openDistributeModal}
+          onClose={handleCloseDistributeModal}
+          aria-labelledby="distribute"
+          aria-describedby="distribute to students"
+        />
+      ) : null}
     </Box>
   );
 }

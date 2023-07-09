@@ -31,7 +31,7 @@ const tsProject = ts.createProject("tsconfig.json");
 // "createAssignment",
 // ];
 
-const modules = ["library"];
+const modules = ["updateAssignment"];
 
 function typescript() {
   const build = gulp

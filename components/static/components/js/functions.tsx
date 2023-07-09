@@ -72,7 +72,12 @@ export const updateCollections = async (
 
 export const handleQuestionBookmarkClick = async (
   gettext: (a: string) => string,
-  callback: (teacher: TeacherType, message?: string) => void,
+  callback: (
+    teacher: TeacherType,
+    message?: string,
+    index?: number,
+    newFavouriteQuestions?: number[],
+  ) => void,
   pk: number,
   teacher: TeacherType | undefined,
   url: string,
@@ -96,7 +101,7 @@ export const handleQuestionBookmarkClick = async (
         "PUT",
       )) as TeacherType;
 
-      callback(teacher, message);
+      callback(teacher, message, index, newFavouriteQuestions);
     } catch (e: any) {
       error(e);
     }

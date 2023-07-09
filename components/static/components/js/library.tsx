@@ -3,7 +3,10 @@ import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
 import { get, submitData } from "./ajax";
-import { handleCollectionBookmarkClick } from "./functions";
+import {
+  handleCollectionBookmarkClick,
+  handleQuestionBookmarkClick,
+} from "./functions";
 
 //mui
 import Box from "@mui/material/Box";
@@ -288,55 +291,38 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     }
   };
 
-  handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
+  handleQuestionBookmarkClickCallback = (
+    teacher: TeacherType,
+    index: number,
+    newFavouriteQuestions: number[],
+    pk: number,
+  ) => {
     // Some extra logic needed here:
     // - If user unbookmarks a question they don't own, drop from state
     // - If user bookmarks or unbookmarks a question they own, resort
+    let _questions = [...this.state.questions];
 
-    if (this.state.teacher) {
-      const index = this.state.teacher.favourite_questions.indexOf(pk);
-      const newFavouriteQuestions = [
-        ...this.state.teacher.favourite_questions,
-      ];
-      if (index >= 0) {
-        newFavouriteQuestions.splice(index, 1);
-      } else {
-        newFavouriteQuestions.unshift(pk);
-      }
-      try {
-        const teacher = (await submitData(
-          this.props.urls.teacher,
-          { favourite_questions: newFavouriteQuestions },
-          "PUT",
-        )) as TeacherType;
-
-        let _questions = [...this.state.questions];
-
-        if (
-          _questions.filter((q) => q.pk == pk)[0].user.username ==
-          this.props.user.username
-        ) {
-          _questions.sort((a: QuestionType, b: QuestionType) => {
-            return (
-              +newFavouriteQuestions.includes(b.pk) -
-              +newFavouriteQuestions.includes(a.pk)
-            );
-          });
-        } else if (index >= 0) {
-          _questions = _questions.filter((q) => q.pk != pk);
-        }
-
-        this.setState(
-          {
-            questions: _questions,
-            teacher,
-          },
-          () => console.info(this.state),
+    if (
+      _questions.filter((q) => q.pk == pk)[0].user.username ==
+      this.props.user.username
+    ) {
+      _questions.sort((a: QuestionType, b: QuestionType) => {
+        return (
+          +newFavouriteQuestions.includes(b.pk) -
+          +newFavouriteQuestions.includes(a.pk)
         );
-      } catch (error) {
-        console.error(error);
-      }
+      });
+    } else if (index >= 0) {
+      _questions = _questions.filter((q) => q.pk != pk);
     }
+
+    this.setState(
+      {
+        questions: _questions,
+        teacher,
+      },
+      () => console.info(this.state),
+    );
   };
 
   collectionUpdate = (pk: number): void => {
@@ -468,8 +454,23 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                       ? !question.is_owner
                       : false
                   }
-                  toggleBookmarked={() =>
-                    this.handleQuestionBookmarkClick(question.pk)
+                  toggleBookmarked={async () =>
+                    await handleQuestionBookmarkClick(
+                      this.props.gettext,
+                      (teacher, message, index, newFavouriteQuestions) => {
+                        if (index && newFavouriteQuestions) {
+                          this.handleQuestionBookmarkClickCallback(
+                            teacher,
+                            index,
+                            newFavouriteQuestions,
+                            question.pk,
+                          );
+                        }
+                      },
+                      question.pk,
+                      this.state.teacher,
+                      this.props.urls.teacher,
+                    )
                   }
                 />
               ),

@@ -162,7 +162,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
             accumulator[currentValue.assignment_pk].groups = [];
           }
           accumulator[currentValue.assignment_pk].groups.unshift({
-            title: currentValue.group,
+            title: currentValue.group.title,
             due_date: currentValue.due_date,
             progress: currentValue.progress,
             url: currentValue.url,

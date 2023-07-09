@@ -99,7 +99,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
           }
           // TODO: clean this up and refactor to a separate function
           accumulator[currentValue.assignment_pk].groups.unshift({
-            title: currentValue.group,
+            title: currentValue.group.title,
             due_date: currentValue.due_date,
             progress: currentValue.progress,
             url: currentValue.url,

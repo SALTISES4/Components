@@ -54,7 +54,7 @@ export type GroupAssignmentType = {
   difficulty: string;
   distributionState: DistributionState;
   due_date: Date; //
-  group: string;
+  group: GroupType;
   issueCount: number;
   progress: number;
   questionCount: number;

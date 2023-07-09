@@ -2,13 +2,17 @@ import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
 //functions
-import { get, submitData } from "./ajax";
+import { get } from "./ajax";
+import { handleQuestionBookmarkClick } from "./functions";
 
 //material ui components
 import Box from "@mui/material/Box";
+import CloseIcon from "@mui/icons-material/Close";
 import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
 import Typography from "@mui/material/Typography";
 
 //components
@@ -48,9 +52,29 @@ export class App extends Component<
       questionsLoading: false,
       groups: [],
       groupsLoading: false,
+      snackbarIsOpen: false,
+      snackbarMessage: "",
       teacher: undefined,
     };
   }
+
+  cache = createCache({
+    key: "nonced",
+    nonce: this.props.nonce,
+    prepend: true,
+    stylisPlugins: [prefixer],
+  });
+
+  error = (e: any): void => {
+    const message = this.props.gettext(
+      "An error occurred.  Try refreshing this page.",
+    );
+    console.error(e);
+    this.setState({
+      snackbarIsOpen: true,
+      snackbarMessage: message,
+    });
+  };
 
   loadQuestions = async (): Promise<void> => {
     try {
@@ -69,7 +93,7 @@ export class App extends Component<
         () => console.info(this.state),
       );
     } catch (error: any) {
-      console.error(error);
+      this.error(error);
     }
   };
 
@@ -87,44 +111,27 @@ export class App extends Component<
         () => console.info(this.state),
       );
     } catch (error: any) {
-      console.error(error);
+      this.error(error);
     }
+  };
+
+  sync = async (): Promise<void> => {
+    // Load teacher info
+    try {
+      const teacher = (await get(this.props.urls.teacher)) as TeacherType;
+      this.setState({ teacher });
+    } catch (error: any) {
+      this.error(error);
+    }
+
+    this.loadQuestions();
+    // this.loadGroups();
   };
 
   componentDidMount(): void {
-    this.loadQuestions();
-    // this.loadGroups();
+    // Fetch data from db
+    this.sync();
   }
-
-  handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
-    if (this.state.teacher) {
-      const index = this.state.teacher.favourite_questions.indexOf(pk);
-      const newFavouriteQuestions = [
-        ...this.state.teacher.favourite_questions,
-      ];
-      if (index >= 0) {
-        newFavouriteQuestions.splice(index, 1);
-      } else {
-        newFavouriteQuestions.unshift(pk);
-      }
-      try {
-        const teacher = (await submitData(
-          this.props.urls.teacher,
-          { favourite_questions: newFavouriteQuestions },
-          "PUT",
-        )) as TeacherType;
-
-        this.setState(
-          {
-            teacher,
-          },
-          () => console.info(this.state),
-        );
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
 
   groups = () => {
     return (
@@ -176,8 +183,19 @@ export class App extends Component<
                         ? !question.is_owner
                         : false
                     }
-                    toggleBookmarked={() =>
-                      this.handleQuestionBookmarkClick(question.pk)
+                    toggleBookmarked={async () =>
+                      await handleQuestionBookmarkClick(
+                        this.props.gettext,
+                        (teacher, message) =>
+                          this.setState({
+                            teacher,
+                            snackbarIsOpen: true,
+                            snackbarMessage: message,
+                          }),
+                        question.pk,
+                        this.state.teacher,
+                        this.props.urls.teacher,
+                      )
                     }
                   />
                 ),
@@ -204,12 +222,19 @@ export class App extends Component<
     );
   };
 
-  cache = createCache({
-    key: "nonced",
-    nonce: this.props.nonce,
-    prepend: true,
-    stylisPlugins: [prefixer],
-  });
+  action = () => (
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={() =>
+        this.setState({ snackbarIsOpen: false, snackbarMessage: "" })
+      }
+      sx={{ color: "#fff" }}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  );
 
   render() {
     return (
@@ -275,6 +300,15 @@ export class App extends Component<
               </Stack>
             </Container>
           </Box>
+          <Snackbar
+            action={this.action()}
+            autoHideDuration={6000}
+            message={this.state.snackbarMessage}
+            onClose={() =>
+              this.setState({ snackbarIsOpen: false, snackbarMessage: "" })
+            }
+            open={this.state.snackbarIsOpen}
+          />
         </CacheProvider>
       </ThemeProvider>
     );

@@ -3,7 +3,11 @@ import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
 import { get, submitData } from "./ajax";
-import { handleCollectionBookmarkClick, updateCollections } from "./functions";
+import {
+  handleCollectionBookmarkClick,
+  handleQuestionBookmarkClick,
+  updateCollections,
+} from "./functions";
 
 import Box from "@mui/material/Box";
 import CategoryIcon from "@mui/icons-material/Category";
@@ -500,36 +504,6 @@ export class App extends Component<SearchAppProps, SearchAppState> {
     }
   };
 
-  handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
-    if (this.state.teacher) {
-      const index = this.state.teacher.favourite_questions.indexOf(pk);
-      const newFavouriteQuestions = [
-        ...this.state.teacher.favourite_questions,
-      ];
-      if (index >= 0) {
-        newFavouriteQuestions.splice(index, 1);
-      } else {
-        newFavouriteQuestions.unshift(pk);
-      }
-      try {
-        const teacher = (await submitData(
-          this.props.urls.teacher,
-          { favourite_questions: newFavouriteQuestions },
-          "PUT",
-        )) as TeacherType;
-
-        this.setState(
-          {
-            teacher,
-          },
-          () => console.info(this.state),
-        );
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
   assignmentResults = () => {
     if (
       this.state.selectedTypes.includes("Assignment") ||
@@ -717,8 +691,19 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                                   .includes(this.props.user.username)
                               : false)
                       }
-                      toggleBookmarked={() =>
-                        this.handleQuestionBookmarkClick(question.pk)
+                      toggleBookmarked={async () =>
+                        await handleQuestionBookmarkClick(
+                          this.props.gettext,
+                          (teacher, message) =>
+                            this.setState({
+                              teacher,
+                              snackbarIsOpen: true,
+                              snackbarMessage: message,
+                            }),
+                          question.pk,
+                          this.state.teacher,
+                          this.props.urls.teacher,
+                        )
                       }
                     />
                   ),

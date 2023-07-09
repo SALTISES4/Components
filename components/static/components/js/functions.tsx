@@ -69,3 +69,36 @@ export const updateCollections = async (
     console.error(error);
   }
 };
+
+export const handleQuestionBookmarkClick = async (
+  gettext: (a: string) => string,
+  callback: (teacher: TeacherType, message?: string) => void,
+  pk: number,
+  teacher: TeacherType | undefined,
+  url: string,
+  error: (error: Error) => void = (error) => console.error(error),
+): Promise<void> => {
+  if (teacher) {
+    let message = "";
+    const index = teacher.favourite_questions.indexOf(pk);
+    const newFavouriteQuestions = [...teacher.favourite_questions];
+    if (index >= 0) {
+      newFavouriteQuestions.splice(index, 1);
+      message = `Q${pk} ${gettext("removed from your library")}`;
+    } else {
+      newFavouriteQuestions.unshift(pk);
+      message = `Q${pk} ${gettext("added to your library")}`;
+    }
+    try {
+      const teacher = (await submitData(
+        url,
+        { favourite_questions: newFavouriteQuestions },
+        "PUT",
+      )) as TeacherType;
+
+      callback(teacher, message);
+    } catch (e: any) {
+      error(e);
+    }
+  }
+};

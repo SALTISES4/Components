@@ -259,9 +259,11 @@ export type UpdateAssignmentAppProps = {
 };
 
 export type UpdateAssignmentAppState = {
-  questionsLoading: boolean;
-  questions: QuestionType[];
-  teacher: TeacherType | undefined;
   groupsLoading: boolean;
   groups: GroupType[];
+  questionsLoading: boolean;
+  questions: QuestionType[];
+  snackbarIsOpen: boolean;
+  snackbarMessage: string;
+  teacher: TeacherType | undefined;
 };

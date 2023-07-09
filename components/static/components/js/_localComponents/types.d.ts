@@ -53,13 +53,13 @@ export type GroupAssignmentType = {
   author: string;
   difficulty: string;
   distributionState: DistributionState;
-  due_date: Date;
+  due_date: Date; //
   group: string;
   issueCount: number;
   progress: number;
   questionCount: number;
   title: string;
-  url: string;
+  url: string; //
 };
 
 export type GroupedAssignmentType = {
@@ -69,7 +69,7 @@ export type GroupedAssignmentType = {
   author: string;
   difficulty: string;
   distributionState: DistributionState;
-  dueDate: Date | undefined;
+  dueDate: Date | undefined; //
   groups: GroupType[];
   issueCount: number;
   pk: number;

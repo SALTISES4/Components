@@ -4,8 +4,8 @@ import {
   AssignmentDatabaseFields,
   AssignmentType,
   CollectionType,
-  GroupAssignmentType,
-  GroupedAssignmentType,
+  StudentGroupAssignmentType,
+  StudentGroupsAssignmentType,
   QuestionType,
   UserType,
 } from "./_localComponents/types";
@@ -42,8 +42,8 @@ export type DashboardAppProps = {
   logo: string;
   nonce: string;
   urls: {
-    assignments: string;
-    assignmentsLink: string;
+    studentgroupassignments: string;
+    studentgroupassignmentsLink: string;
     collection: string;
     collections: string;
     collectionsLink: string;
@@ -55,8 +55,8 @@ export type DashboardAppProps = {
 };
 
 export type DashboardAppState = {
-  assignments: GroupedAssignmentType[];
-  assignmentsLoading: boolean;
+  studentgroupassignmentsLoading: boolean;
+  studentgroupsassignments: StudentGroupsAssignmentType[];
   collections: CollectionType[];
   collectionsLoading: boolean;
   questions: QuestionType[];
@@ -64,12 +64,15 @@ export type DashboardAppState = {
   teacher: TeacherType | undefined;
 };
 
-type PaginatedData = {
+interface PaginatedData {
   count: number;
   next: null | number;
   previous: null | number;
-  results: QuestionType[] | AssignmentType[] | CollectionType[];
-};
+}
+
+interface CollectionsPaginatedData extends PaginatedData {
+  results: CollectionType[];
+}
 
 type SearchData = {
   // To do: replace with native types
@@ -155,7 +158,7 @@ export type LibraryAppProps = {
   urls: {
     assignments: string;
     collections: string;
-    group_assignments: string;
+    studentgroupassignments: string;
     questions: string;
     teacher: string;
   };
@@ -167,8 +170,8 @@ export type LibraryAppState = {
   assignmentsLoading: boolean;
   collections: CollectionType[];
   collectionsLoading: boolean;
-  groupAssignments: GroupedAssignmentType[];
-  groupAssignmentsLoading: boolean;
+  studentgroupsassignments: StudentGroupsAssignmentType[];
+  studentgroupassignmentsLoading: boolean;
   questions: QuestionType[];
   questionsExpanded: boolean;
   questionsLoading: boolean;
@@ -267,7 +270,7 @@ export type UpdateAssignmentAppProps = {
 };
 
 export type UpdateAssignmentAppState = {
-  studentgroupassignments: GroupAssignmentType[];
+  studentgroupassignments: StudentGroupAssignmentType[];
   studentgroupassignmentsLoading: boolean;
   questions: QuestionType[];
   questionsLoading: boolean;

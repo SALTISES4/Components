@@ -20,7 +20,7 @@ import { ValidateButton } from "./styledComponents";
 import { GeneralDescription } from "./_assignments/generalDescription";
 import { QuestionType } from "./_localComponents/types";
 import { Question } from "./_localComponents/question";
-import { Group } from "./_localComponents/group";
+import { StudentGroupAssignment } from "./_localComponents/assignment";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { Group as GroupSkeleton } from "./_skeletons/group";
 import { Toolbar } from "./_assignments/toolbar";
@@ -70,6 +70,7 @@ export class App extends Component<
       "An error occurred.  Try refreshing this page.",
     );
     console.error(e);
+    // deepcode ignore ReactNextState: allow use of gettext props in setState
     this.setState({
       snackbarIsOpen: true,
       snackbarMessage: message,
@@ -96,7 +97,7 @@ export class App extends Component<
     }
   };
 
-  loadGroups = async (): Promise<void> => {
+  loadStudentGroupAssignments = async (): Promise<void> => {
     try {
       this.setState({ studentgroupassignmentsLoading: true });
 
@@ -136,7 +137,7 @@ export class App extends Component<
     }
 
     this.loadQuestions();
-    this.loadGroups();
+    this.loadStudentGroupAssignments();
   };
 
   componentDidMount(): void {
@@ -151,7 +152,7 @@ export class App extends Component<
           this.state.studentgroupassignments?.length > 0 ? (
             <Stack spacing={"10px"}>
               {this.state.studentgroupassignments.map((sga, i: number) => (
-                <Group
+                <StudentGroupAssignment
                   key={i}
                   gettext={this.props.gettext}
                   group={sga}

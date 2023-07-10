@@ -28,7 +28,10 @@ import {
   groups,
 } from "./data.js";
 import { DashboardAppProps, DashboardAppState } from "./types";
-import { GroupAssignmentType, GroupType } from "./_localComponents/types";
+import {
+  StudentGroupAssignmentType,
+  StudentGroupType,
+} from "./_localComponents/types";
 
 export class App extends Component<DashboardAppProps, DashboardAppState> {
   constructor(props: DashboardAppProps) {
@@ -70,7 +73,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
               </Subtitle>
               <Stack spacing="10px">
                 {this.state.assignments.map(
-                  (assignment: GroupAssignmentType, i: number) => (
+                  (assignment: StudentGroupAssignmentType, i: number) => (
                     <AssignmentStudent
                       key={i}
                       assignment={assignment}
@@ -91,7 +94,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
               </Subtitle>
               <Stack spacing="10px">
                 {this.state.assignments.map(
-                  (assignment: GroupAssignmentType, i: number) => (
+                  (assignment: StudentGroupAssignmentType, i: number) => (
                     <AssignmentStudentCompleted
                       key={i}
                       assignment={assignment}
@@ -108,11 +111,16 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                 </Typography>
               </Subtitle>
               <Grid container spacing="20px">
-                {this.state.groups.map((group: GroupType, i: number) => (
-                  <Grid key={i} item xs={6}>
-                    <GroupStudent group={group} gettext={this.props.gettext} />
-                  </Grid>
-                ))}
+                {this.state.groups.map(
+                  (group: StudentGroupType, i: number) => (
+                    <Grid key={i} item xs={6}>
+                      <GroupStudent
+                        group={group}
+                        gettext={this.props.gettext}
+                      />
+                    </Grid>
+                  ),
+                )}
               </Grid>
             </Container>
           </Box>

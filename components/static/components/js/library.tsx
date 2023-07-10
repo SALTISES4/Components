@@ -20,7 +20,7 @@ import Stack from "@mui/material/Stack";
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { AssignmentBis } from "./_localComponents/assignment_bis";
 import { CollectionBlock } from "./_localComponents/collection";
-import { GroupAssignment } from "./_localComponents/assignment";
+import { StudentGroupsAssignment } from "./_localComponents/assignment";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 
@@ -28,14 +28,14 @@ import { Question as QuestionSkeleton } from "./_skeletons/question";
 import {
   LibraryAppProps,
   LibraryAppState,
-  PaginatedData,
+  CollectionsPaginatedData,
   TeacherType,
 } from "./types";
 import {
   AssignmentType,
   CollectionType,
-  GroupAssignmentType,
-  GroupedAssignmentType,
+  StudentGroupAssignmentType,
+  StudentGroupsAssignmentType,
   QuestionType,
 } from "./_localComponents/types";
 
@@ -66,8 +66,8 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
       assignmentsLoading: true,
       collections: [],
       collectionsLoading: true,
-      groupAssignments: [],
-      groupAssignmentsLoading: true,
+      studentgroupsassignments: [],
+      studentgroupassignmentsLoading: true,
       questions: [],
       questionsExpanded: false,
       questionsLoading: true,
@@ -89,7 +89,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     window.history.pushState({}, "", url);
   };
 
-  loadAssignments = async (): Promise<void> => {
+  getAssignments = async (): Promise<void> => {
     try {
       this.setState({ assignmentsLoading: true });
 
@@ -113,7 +113,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     }
   };
 
-  loadCollections = async (): Promise<void> => {
+  getCollections = async (): Promise<void> => {
     try {
       this.setState({ collectionsLoading: true });
 
@@ -121,17 +121,17 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
 
       this.setState(
         {
-          collections: (collections as PaginatedData).results.sort(
-            (a: CollectionType, b: CollectionType) => {
-              if (this.state.teacher?.user?.username !== undefined) {
-                return (
-                  +(this.state.teacher.user.username == a.user.username) -
-                  +(this.state.teacher.user.username == b.user.username)
-                );
-              }
-              return 0;
-            },
-          ) as CollectionType[],
+          collections: (
+            collections as unknown as CollectionsPaginatedData
+          ).results.sort((a: CollectionType, b: CollectionType) => {
+            if (this.state.teacher?.user?.username !== undefined) {
+              return (
+                +(this.state.teacher.user.username == a.user.username) -
+                +(this.state.teacher.user.username == b.user.username)
+              );
+            }
+            return 0;
+          }) as CollectionType[],
           collectionsLoading: false,
         },
         () => console.info(this.state),
@@ -141,36 +141,46 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     }
   };
 
-  loadGroupAssignments = async (): Promise<void> => {
+  getStudentGroupAssignments = async (): Promise<void> => {
     try {
-      this.setState({ groupAssignmentsLoading: true });
+      this.setState({ studentgroupassignmentsLoading: true });
 
-      const groupAssignments = (await get(
-        this.props.urls.group_assignments,
-      )) as GroupAssignmentType;
+      const sga = (await get(
+        this.props.urls.studentgroupassignments,
+      )) as StudentGroupAssignmentType[];
 
       // Groupby operation on assignment by pk
-      const groupedAssignments = groupAssignments.reduce(
-        (accumulator: {}, currentValue: {}) => {
+      const sgaGroupedbyAssignment = sga.reduce(
+        (
+          accumulator: Record<string, StudentGroupsAssignmentType>,
+          currentValue: StudentGroupAssignmentType,
+        ) => {
           if (
             !Object.prototype.hasOwnProperty.call(
               accumulator,
-              currentValue.assignment_pk,
+              currentValue.assignment.pk,
             )
           ) {
-            accumulator[currentValue.assignment_pk] = { ...currentValue };
-            accumulator[currentValue.assignment_pk].groups = [];
+            accumulator[currentValue.assignment.pk] = {
+              assignment: currentValue.assignment,
+              author: currentValue.author,
+              distributionState: currentValue.distributionState,
+              groups: [],
+              questionCount: currentValue.questionCount,
+              title: currentValue.title,
+            };
           }
-          accumulator[currentValue.assignment_pk].groups.unshift({
+
+          accumulator[currentValue.assignment.pk].groups.unshift({
+            assignment: currentValue.assignment,
+            distributionState: currentValue.distributionState,
+            group: currentValue.group,
             title: currentValue.group.title,
             due_date: currentValue.due_date,
             progress: currentValue.progress,
             url: currentValue.url,
           });
-          delete accumulator[currentValue.assignment_pk].due_date;
-          delete accumulator[currentValue.assignment_pk].group;
-          delete accumulator[currentValue.assignment_pk].progress;
-          delete accumulator[currentValue.assignment_pk].url;
+
           return accumulator;
         },
         {},
@@ -178,10 +188,10 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
 
       this.setState(
         {
-          groupAssignments: Object.values(
-            groupedAssignments,
-          ) as GroupedAssignmentType[],
-          groupAssignmentsLoading: false,
+          studentgroupsassignments: Object.values(
+            sgaGroupedbyAssignment,
+          ) as StudentGroupsAssignmentType[],
+          studentgroupassignmentsLoading: false,
         },
         () => console.info(this.state),
       );
@@ -190,7 +200,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     }
   };
 
-  loadQuestions = async (): Promise<void> => {
+  getQuestions = async (): Promise<void> => {
     try {
       this.setState({ questionsLoading: true });
       const questions = (await get(
@@ -230,14 +240,14 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     }
 
     // Load collections
-    this.loadCollections();
+    this.getCollections();
 
     // Load assignments
-    this.loadGroupAssignments();
-    this.loadAssignments();
+    this.getStudentGroupAssignments();
+    this.getAssignments();
 
     // Load questions
-    this.loadQuestions();
+    this.getQuestions();
   };
 
   componentDidMount(): void {
@@ -347,12 +357,12 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     // Combined list of GroupAssignments and Assignments
     return (
       <Stack spacing="10px">
-        {!this.state.groupAssignmentsLoading ? (
-          this.state.groupAssignments.map(
-            (assignment: GroupedAssignmentType, i: number) => (
-              <GroupAssignment
+        {!this.state.studentgroupassignmentsLoading ? (
+          this.state.studentgroupsassignments.map(
+            (assignment: StudentGroupsAssignmentType, i: number) => (
+              <StudentGroupsAssignment
                 key={i}
-                assignment={assignment}
+                studentgroupsassignment={assignment}
                 gettext={this.props.gettext}
               />
             ),
@@ -368,8 +378,8 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
           this.state.assignments
             .filter(
               (assignment) =>
-                !this.state.groupAssignments
-                  .map((ga) => ga.assignment_pk)
+                !this.state.studentgroupsassignments
+                  .map((sga) => sga.assignment.pk)
                   .includes(assignment.pk),
             )
             .map((assignment: AssignmentType, i: number) => (

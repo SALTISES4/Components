@@ -17,22 +17,22 @@ import Container from "@mui/system/Container";
 import { Subtitle } from "./styledComponents";
 import { SuperUserBar } from "./_dashboard/superUserBar";
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
-import { GroupAssignment } from "./_localComponents/assignment";
+import { StudentGroupsAssignment } from "./_localComponents/assignment";
 import { CollectionBlock } from "./_localComponents/collection";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 
 //types
 import {
-  GroupAssignmentType,
-  GroupedAssignmentType,
+  StudentGroupAssignmentType,
+  StudentGroupsAssignmentType,
   CollectionType,
   QuestionType,
 } from "./_localComponents/types";
 import {
+  CollectionsPaginatedData,
   DashboardAppProps,
   DashboardAppState,
-  PaginatedData,
   TeacherType,
 } from "./types";
 
@@ -49,12 +49,12 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
   constructor(props: DashboardAppProps) {
     super(props);
     this.state = {
-      assignments: [],
-      assignmentsLoading: true,
       collections: [],
       collectionsLoading: true,
       questions: [],
       questionsLoading: true,
+      studentgroupsassignments: [],
+      studentgroupassignmentsLoading: true,
       teacher: undefined,
     };
   }
@@ -66,62 +66,63 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     stylisPlugins: [prefixer],
   });
 
-  getAssignments = async (): Promise<void> => {
-    // Load group assignments and regroup by assignment
+  getStudentGroupAssignments = async (): Promise<void> => {
+    // Load studentgroupassignments and regroup by assignment
     try {
       this.setState({
-        assignmentsLoading: true,
+        studentgroupassignmentsLoading: true,
       });
 
-      const assignments = (await get(
-        this.props.urls.assignments,
-      )) as GroupAssignmentType[];
+      const sga = (await get(
+        this.props.urls.studentgroupassignments,
+      )) as StudentGroupAssignmentType[];
 
       // Groupby operation on assignment by pk
-      const groupedAssignments = assignments.reduce(
+      const sgaGroupedbyAssignment = sga.reduce(
         (
-          accumulator: Record<string, GroupedAssignmentType>,
-          currentValue: GroupAssignmentType,
+          accumulator: Record<string, StudentGroupsAssignmentType>,
+          currentValue: StudentGroupAssignmentType,
         ) => {
           if (
             !Object.prototype.hasOwnProperty.call(
               accumulator,
-              currentValue.assignment_pk,
+              currentValue.assignment.pk,
             )
           ) {
-            accumulator[currentValue.assignment_pk] = {
-              ...currentValue,
-              title: currentValue.title,
+            accumulator[currentValue.assignment.pk] = {
+              assignment: currentValue.assignment,
+              author: currentValue.author,
+              distributionState: currentValue.distributionState,
               groups: [],
-              dueDate: undefined, // Needed?
-              pk: 0,
+              questionCount: currentValue.questionCount,
+              title: currentValue.title,
             };
           }
-          // TODO: clean this up and refactor to a separate function
-          accumulator[currentValue.assignment_pk].groups.unshift({
+
+          accumulator[currentValue.assignment.pk].groups.unshift({
+            assignment: currentValue.assignment,
+            distributionState: currentValue.distributionState,
+            group: currentValue.group,
             title: currentValue.group.title,
             due_date: currentValue.due_date,
             progress: currentValue.progress,
             url: currentValue.url,
           });
-          delete accumulator[currentValue.assignment_pk].due_date;
-          delete accumulator[currentValue.assignment_pk].group;
-          delete accumulator[currentValue.assignment_pk].progress;
-          delete accumulator[currentValue.assignment_pk].url;
+
           return accumulator;
         },
         {},
       );
       this.setState({
-        assignments: Object.values(
-          groupedAssignments,
-        ) as GroupedAssignmentType[],
+        studentgroupsassignments: Object.values(
+          sgaGroupedbyAssignment,
+        ) as StudentGroupsAssignmentType[],
       });
     } catch (error: any) {
       console.error(error);
     } finally {
       this.setState({
-        assignmentsLoading: false,
+        studentgroupassignmentsLoading: false,
       });
     }
   };
@@ -134,7 +135,9 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
       });
 
       const collections = (
-        (await get(this.props.urls.collections)) as PaginatedData
+        (await get(
+          this.props.urls.collections,
+        )) as unknown as CollectionsPaginatedData
       ).results as CollectionType[];
 
       this.setState({ collections });
@@ -176,8 +179,8 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
       console.error(error);
     }
 
-    // Load assignments
-    this.getAssignments();
+    // Load studentgroupassignments
+    this.getStudentGroupAssignments();
 
     // Load a set of recommended collections
     this.getRecommendedCollections();
@@ -224,13 +227,13 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
   assignments = () => {
     return (
       <Stack spacing="10px">
-        {!this.state.assignmentsLoading ? (
-          this.state.assignments?.length > 0 ? (
-            this.state.assignments.map(
-              (assignment: GroupedAssignmentType, i: number) => (
-                <GroupAssignment
+        {!this.state.studentgroupassignmentsLoading ? (
+          this.state.studentgroupsassignments?.length > 0 ? (
+            this.state.studentgroupsassignments.map(
+              (sga: StudentGroupsAssignmentType, i: number) => (
+                <StudentGroupsAssignment
                   key={i}
-                  assignment={assignment}
+                  studentgroupsassignment={sga}
                   gettext={this.props.gettext}
                 />
               ),
@@ -285,7 +288,10 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                 <Typography variant="h2">
                   {this.props.gettext("Recent Assignments")}
                 </Typography>
-                <Link variant="h4" href={this.props.urls.assignmentsLink}>
+                <Link
+                  variant="h4"
+                  href={this.props.urls.studentgroupassignmentsLink}
+                >
                   {this.props.gettext("See my assignments")}
                 </Link>
               </Subtitle>

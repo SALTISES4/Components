@@ -21,6 +21,8 @@ import {
 
 import { TeacherType } from "../types";
 
+/* Type declarations */
+
 export type UserType = {
   avatar?: string;
   username: string;
@@ -32,49 +34,59 @@ export interface AssignmentDatabaseFields {
   intro_page?: string;
   owner?: UserType[];
   pk: string;
-  title: string;
+  title?: string;
 }
 
 export interface AssignmentType extends AssignmentDatabaseFields {
-  answer_count: number;
+  answer_count?: number;
   editable?: boolean;
   is_owner?: boolean;
-  question_count: number;
+  question_count?: number;
   urls?: {
     preview?: string;
     update?: string;
   };
 }
 
-export type GroupAssignmentType = {
+export type StudentGroupType = {
+  assignmentCount?: number;
+  active?: boolean;
+  author?: string;
+  pk?: number;
+  session?: string;
+  studentCount?: number;
+  subject?: string[];
+  tags?: string[];
+  teacher?: number[];
+  title: string;
+  url: string;
+};
+
+export type StudentGroupAssignmentType = {
   active?: boolean;
   answerCount?: number;
-  assignment_pk?: string;
+  assignment: AssignmentType;
   author?: string;
   difficulty?: string;
-  distributionState?: DistributionState;
-  due_date: Date; //
-  group: GroupType;
+  distributionState: DistributionState;
+  due_date: Date;
+  group: StudentGroupType;
   issueCount?: number;
+  pk?: number;
   progress: number;
   questionCount?: number;
   title: string;
-  url?: string; //
+  url: string;
 };
 
-export type GroupedAssignmentType = {
-  active: boolean;
-  answerCount: number;
-  assignment_pk: string;
-  author: string;
-  difficulty: string;
+export type StudentGroupsAssignmentType = {
+  // This type represents a bunch of StudentGroupAssignment objects regrouped
+  // by assignment pk
+  assignment: AssignmentType;
+  author?: string;
   distributionState: DistributionState;
-  dueDate: Date | undefined; //
-  groups: GroupType[];
-  issueCount: number;
-  pk: number;
-  progress: number;
-  questionCount: number;
+  groups: StudentGroupAssignmentType[];
+  questionCount?: number;
   title: string;
 };
 
@@ -127,18 +139,7 @@ export type QuestionType = {
   video_url: string;
 };
 
-export type GroupType = {
-  title: string;
-  author?: string;
-  session?: string;
-  studentCount?: number;
-  assignmentCount?: number;
-  active?: boolean;
-  subject?: string[];
-  pk?: number;
-  tags?: string[];
-  url: string;
-};
+/* Props and state type declarations */
 
 export type AssignmentBisProps = {
   assignment: AssignmentType;
@@ -148,14 +149,9 @@ export type AssignmentBisProps = {
   toggleBookmarked: () => void;
 };
 
-export type GroupAssignmentProps = {
-  gettext: (a: string) => string;
-  assignment: GroupedAssignmentType;
-};
-
 export type AssignmentStudentProps = {
   gettext: (a: string) => string;
-  assignment: GroupAssignmentType;
+  assignment: StudentGroupAssignmentType;
 };
 
 export type AssignmentStudentCompletedProps = {
@@ -189,15 +185,9 @@ export type CollectionBlockState = {
   height: number;
 };
 
-export type GroupProps = {
-  gettext: (a: string) => string;
-  group: GroupType;
-  showGroup?: boolean;
-};
-
 export type GroupStudentProps = {
   gettext: (a: string) => string;
-  group: GroupType;
+  group: StudentGroupType;
 };
 
 export type QuestionProps = {
@@ -208,4 +198,15 @@ export type QuestionProps = {
   question: QuestionType;
   showBookmark: boolean;
   toggleBookmarked: () => void;
+};
+
+export type StudentGroupAssignmentProps = {
+  gettext: (a: string) => string;
+  studentgroupassignment: StudentGroupAssignmentType;
+  showGroup?: boolean;
+};
+
+export type StudentGroupsAssignmentProps = {
+  gettext: (a: string) => string;
+  studentgroupsassignment: StudentGroupsAssignmentType;
 };

@@ -4,8 +4,8 @@ import {
   AssignmentDatabaseFields,
   AssignmentType,
   CollectionType,
+  GroupAssignmentType,
   GroupedAssignmentType,
-  GroupType,
   QuestionType,
   UserType,
 } from "./_localComponents/types";
@@ -259,17 +259,18 @@ export type UpdateAssignmentAppProps = {
   assignment: AssignmentDatabaseFields;
   editableByUser?: boolean;
   urls: {
-    groups: string;
+    distribute: string;
+    studentgroupassignments: string;
     questions: string;
     teacher: string;
   };
 };
 
 export type UpdateAssignmentAppState = {
-  groupsLoading: boolean;
-  groups: GroupType[];
-  questionsLoading: boolean;
+  studentgroupassignments: GroupAssignmentType[];
+  studentgroupassignmentsLoading: boolean;
   questions: QuestionType[];
+  questionsLoading: boolean;
   snackbarIsOpen: boolean;
   snackbarMessage: string;
   teacher: TeacherType | undefined;

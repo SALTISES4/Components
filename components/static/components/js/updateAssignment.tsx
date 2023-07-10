@@ -18,7 +18,7 @@ import Typography from "@mui/material/Typography";
 //components
 import { ValidateButton } from "./styledComponents";
 import { GeneralDescription } from "./_assignments/generalDescription";
-import { GroupType, QuestionType } from "./_localComponents/types";
+import { QuestionType } from "./_localComponents/types";
 import { Question } from "./_localComponents/question";
 import { Group } from "./_localComponents/group";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
@@ -50,8 +50,8 @@ export class App extends Component<
     this.state = {
       questions: [],
       questionsLoading: false,
-      groups: [],
-      groupsLoading: false,
+      studentgroupassignments: [],
+      studentgroupassignmentsLoading: false,
       snackbarIsOpen: false,
       snackbarMessage: "",
       teacher: undefined,
@@ -80,8 +80,7 @@ export class App extends Component<
     try {
       this.setState({ questionsLoading: true });
 
-      const data = await get(this.props.urls.questions);
-      const questions = data.questions.map(
+      const questions = (await get(this.props.urls.questions)).questions.map(
         (qr) => qr.question,
       ) as QuestionType[];
 
@@ -99,14 +98,26 @@ export class App extends Component<
 
   loadGroups = async (): Promise<void> => {
     try {
-      this.setState({ groupsLoading: true });
+      this.setState({ studentgroupassignmentsLoading: true });
 
-      const groups = (await get(this.props.urls.groups)) as GroupType[];
+      const studentgroupassignments = (await get(
+        this.props.urls.studentgroupassignments,
+      )) as {
+        due_date: Date;
+        group: {
+          pk: number;
+          teacher: number[];
+          title: string;
+          url: string;
+        };
+        progress: number;
+        title: string;
+      }[];
 
       this.setState(
         {
-          groups,
-          groupsLoading: false,
+          studentgroupassignments,
+          studentgroupassignmentsLoading: false,
         },
         () => console.info(this.state),
       );
@@ -136,11 +147,16 @@ export class App extends Component<
   groups = () => {
     return (
       <Box sx={{ mt: "30px" }}>
-        {!this.state.groupsLoading ? (
-          this.state.groups?.length > 0 ? (
+        {!this.state.studentgroupassignmentsLoading ? (
+          this.state.studentgroupassignments?.length > 0 ? (
             <Stack spacing={"10px"}>
-              {this.state.groups.map((group: GroupType, i: number) => (
-                <Group key={i} gettext={this.props.gettext} group={group} />
+              {this.state.studentgroupassignments.map((sga, i: number) => (
+                <Group
+                  key={i}
+                  gettext={this.props.gettext}
+                  group={sga}
+                  showGroup={true}
+                />
               ))}
             </Stack>
           ) : (

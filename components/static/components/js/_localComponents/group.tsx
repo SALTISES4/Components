@@ -9,7 +9,11 @@ import { CircleProgressIcon } from "../_reusableComponents/circularProgressIcon"
 
 import { GroupProps } from "./types";
 
-export function Group({ gettext, group }: GroupProps): JSX.Element {
+export function Group({
+  gettext,
+  group,
+  showGroup = false,
+}: GroupProps): JSX.Element {
   return (
     <Card sx={{ pr: "62px", pl: "40px", pt: "2px", pb: "2px" }}>
       <Box display="flex" justifyContent="space-between">
@@ -19,7 +23,7 @@ export function Group({ gettext, group }: GroupProps): JSX.Element {
             onClick={() => (window.location.href = group.url)}
             sx={{ cursor: "pointer" }}
           >
-            {group.title}
+            {showGroup ? group.group.title : group.title}
           </Typography>
         </Box>
         <Box display="flex" alignItems="center">

@@ -47,19 +47,19 @@ export interface AssignmentType extends AssignmentDatabaseFields {
 }
 
 export type GroupAssignmentType = {
-  active: boolean;
-  answerCount: number;
-  assignment_pk: string;
-  author: string;
-  difficulty: string;
-  distributionState: DistributionState;
+  active?: boolean;
+  answerCount?: number;
+  assignment_pk?: string;
+  author?: string;
+  difficulty?: string;
+  distributionState?: DistributionState;
   due_date: Date; //
   group: GroupType;
-  issueCount: number;
+  issueCount?: number;
   progress: number;
-  questionCount: number;
+  questionCount?: number;
   title: string;
-  url: string; //
+  url?: string; //
 };
 
 export type GroupedAssignmentType = {
@@ -135,9 +135,7 @@ export type GroupType = {
   assignmentCount?: number;
   active?: boolean;
   subject?: string[];
-  due_date: Date;
   pk?: number;
-  progress: number;
   tags?: string[];
   url: string;
 };
@@ -194,6 +192,7 @@ export type CollectionBlockState = {
 export type GroupProps = {
   gettext: (a: string) => string;
   group: GroupType;
+  showGroup?: boolean;
 };
 
 export type GroupStudentProps = {

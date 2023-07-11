@@ -5,6 +5,8 @@ import { useState } from "preact/hooks";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardContent from "@mui/material/CardContent";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import IconButton from "@mui/material/IconButton";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -31,10 +33,17 @@ export function StudentGroupsAssignment({
     open: boolean;
   }>({ open: false });
 
-  const handleClick = () => {
+  const handleClick = (evt: MouseEvent) => {
+    evt.stopPropagation();
     setOpen((prevState) => ({
       open: !prevState.open,
     }));
+  };
+
+  const handlePreview = () => {
+    if (studentgroupsassignment.assignment.urls?.preview) {
+      window.location.assign(studentgroupsassignment.assignment.urls.preview);
+    }
   };
 
   const groups = () => {
@@ -68,49 +77,63 @@ export function StudentGroupsAssignment({
 
   return (
     <Fragment>
-      <Card sx={{ padding: "10px 20px" }}>
-        <Box display="flex" justifyContent="space-between">
-          <Box>
-            <Typography variant="h3">
-              {studentgroupsassignment.title}
-            </Typography>
-            <Typography variant="caption">
-              {gettext("By")} {studentgroupsassignment.author}
-            </Typography>
-          </Box>
-          <Box display="flex" alignItems="center">
-            <Tag
-              sx={{
-                mx: "10px",
-                minWidth: "102px",
-                boxSizing: "border-box",
-                display: "flex",
-                justifyContent: "space-around",
-              }}
-            >
-              <FormatListBulletedIcon fontSize="small" />
-              <Typography>
-                {studentgroupsassignment.questionCount} {gettext("questions")}
-              </Typography>
-            </Tag>
-            <Box
-              display="flex"
-              sx={{ ml: "10px", mr: "10px", width: "102px" }}
-            >
-              <AssignmentStateIcon
-                state={studentgroupsassignment.distributionState}
-              />
-              <Typography variant="h4">
-                {studentgroupsassignment.distributionState}
-              </Typography>
+      <Card>
+        <CardActionArea
+          disableRipple={true}
+          onClick={handlePreview}
+          title={gettext("Preview assignment")}
+        >
+          {" "}
+          <CardContent sx={{ padding: "10px 20px" }}>
+            <Box display="flex" justifyContent="space-between">
+              <Box>
+                <Typography variant="h3">
+                  {studentgroupsassignment.title}
+                </Typography>
+                <Typography variant="caption">
+                  {gettext("By")} {studentgroupsassignment.author}
+                </Typography>
+              </Box>
+              <Box display="flex" alignItems="center">
+                <Tag
+                  sx={{
+                    mx: "10px",
+                    minWidth: "102px",
+                    boxSizing: "border-box",
+                    display: "flex",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <FormatListBulletedIcon fontSize="small" />
+                  <Typography>
+                    {studentgroupsassignment.questionCount}{" "}
+                    {gettext("questions")}
+                  </Typography>
+                </Tag>
+                <Box
+                  display="flex"
+                  sx={{ ml: "10px", mr: "10px", width: "102px" }}
+                >
+                  <AssignmentStateIcon
+                    state={studentgroupsassignment.distributionState}
+                  />
+                  <Typography variant="h4">
+                    {studentgroupsassignment.distributionState}
+                  </Typography>
+                </Box>
+                <Box
+                  display="flex"
+                  justifyContent="end"
+                  sx={{ width: "118px" }}
+                >
+                  {studentgroupsassignment.distributionState == "Distributed"
+                    ? icon()
+                    : null}
+                </Box>
+              </Box>
             </Box>
-            <Box display="flex" justifyContent="end" sx={{ width: "118px" }}>
-              {studentgroupsassignment.distributionState == "Distributed"
-                ? icon()
-                : null}
-            </Box>
-          </Box>
-        </Box>
+          </CardContent>
+        </CardActionArea>
       </Card>
       {groups()}
     </Fragment>

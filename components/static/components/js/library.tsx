@@ -275,9 +275,12 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
 
         let _assignments = [...this.state.assignments];
 
-        if (
-          _assignments.filter((a) => a.pk == pk)[0].owner[0] == this.props.user
-        ) {
+        const owner = _assignments
+          .filter((a) => a.pk == pk)
+          .at(0)
+          ?.owner?.at(0);
+
+        if (owner && owner.username == this.props.user.username) {
           _assignments.sort((a: AssignmentType, b: AssignmentType) => {
             return (
               +newAssignmentPks.includes(b.pk) -

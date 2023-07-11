@@ -45,7 +45,6 @@ export type CustomTextFieldProps = {
   id: string;
   title: string;
   defaultValue: string;
-  error?: boolean;
   helperText?: string;
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
@@ -56,6 +55,7 @@ export type CustomTextFieldProps = {
   setValue: (a: string) => void;
   sx?: Record<string, string>;
   tooltip?: string;
+  validator?: (a: string) => boolean;
   value: string;
 };
 

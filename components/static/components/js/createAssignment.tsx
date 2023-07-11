@@ -97,15 +97,15 @@ export class App extends Component<
     this.setState({ errorsOpen });
   };
 
-  identifierValidator = () => {
+  identifierValidator = (identifier: string) => {
     return (
-      lettersNumbersUnderscoreOnlyValidator(this.state.identifier) &&
-      lengthValidator(this.state.identifier, 2, 100)
+      lettersNumbersUnderscoreOnlyValidator(identifier) &&
+      lengthValidator(identifier, 2, 100)
     );
   };
 
-  titleValidator = () => {
-    return lengthValidator(this.state.title, 1, 200);
+  titleValidator = (title: string) => {
+    return lengthValidator(title, 1, 200);
   };
 
   render() {
@@ -147,7 +147,6 @@ export class App extends Component<
                     id="identifier"
                     title="Identifier *"
                     defaultValue=""
-                    error={!this.identifierValidator()}
                     icon={HelpOutlineIcon}
                     helperText={this.props.gettext(
                       "Between 2 and 100 characters (letters, numbers and underscore only).",
@@ -155,6 +154,7 @@ export class App extends Component<
                     minLength={2}
                     maxLength={100}
                     setValue={(identifier) => this.setState({ identifier })}
+                    validator={this.identifierValidator}
                     value={this.state.identifier}
                   />
                   <CustomTextField
@@ -162,11 +162,11 @@ export class App extends Component<
                     id="title"
                     title="Title *"
                     defaultValue=""
-                    error={!this.titleValidator()}
                     icon={HelpOutlineIcon}
                     minLength={1}
                     maxLength={200}
                     setValue={(title) => this.setState({ title })}
+                    validator={this.titleValidator}
                     value={this.state.title}
                   />
                   <CustomEditorField
@@ -225,9 +225,10 @@ export class App extends Component<
                 onClick={this.submitForm}
                 variant="contained"
                 disabled={
-                  ![this.identifierValidator(), this.titleValidator()].every(
-                    (test) => test,
-                  ) || this.state.submitting
+                  ![
+                    this.identifierValidator(this.state.identifier),
+                    this.titleValidator(this.state.title),
+                  ].every((test) => test) || this.state.submitting
                 }
               >
                 <Typography>

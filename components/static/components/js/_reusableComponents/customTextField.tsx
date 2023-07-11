@@ -1,10 +1,16 @@
-import { Box, SvgIcon, TextField, Typography } from "@mui/material";
 import { h } from "preact";
-import { CustomTextFieldProps } from "./types";
-import { formTheme } from "../theme";
+import { useState } from "preact/hooks";
 
+//components
+import { Box, SvgIcon, TextField, Typography } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import Zoom from "@mui/material/Zoom";
+
+//types
+import { CustomTextFieldProps } from "./types";
+
+//style
+import { formTheme } from "../theme";
 
 export const CustomTextField = ({
   gettext,
@@ -12,7 +18,6 @@ export const CustomTextField = ({
   id,
   title,
   defaultValue,
-  error = false,
   helperText,
   icon,
   minLength = 0,
@@ -20,9 +25,12 @@ export const CustomTextField = ({
   required = true,
   setValue,
   tooltip = "",
+  validator = () => true,
   value,
   sx = {},
 }: CustomTextFieldProps) => {
+  const [error, setError] = useState(false);
+
   return (
     <Box>
       <Box sx={{ display: "flex", flexDirection: "row", gap: "5px" }}>
@@ -62,6 +70,7 @@ export const CustomTextField = ({
         onChange={(evt: Event) => {
           if (evt.target && evt.target instanceof HTMLInputElement) {
             setValue(evt.target.value);
+            setError(!validator(evt.target.value));
           }
         }}
         sx={sx}

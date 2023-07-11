@@ -477,7 +477,7 @@ export const formTheme = createTheme(saltise, {
       styleOverrides: {
         title: {
           fontSize: "18px",
-          fontWeight: 600,
+          fontWeight: 500,
           lineHeight: "28px",
           padding: "0px",
         },

@@ -11,6 +11,7 @@ import {
 //components
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import Collapse from "@mui/material/Collapse";
 import Container from "@mui/material/Container";
@@ -33,7 +34,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { Card, CardContent, CardHeader, Divider, Stack } from "@mui/material";
 import { CustomTextField } from "./_reusableComponents/customTextField";
 import { CustomEditorField } from "./_reusableComponents/customEditorField";
-import { CancelButton, ValidateButton } from "./styledComponents";
+import { CancelButton } from "./styledComponents";
 
 export class App extends Component<
   CreateAssignmentAppProps,
@@ -221,7 +222,7 @@ export class App extends Component<
               <CancelButton onClick={() => history.back()}>
                 <Typography>{this.props.gettext("Cancel")}</Typography>
               </CancelButton>
-              <ValidateButton
+              <Button
                 onClick={this.submitForm}
                 variant="contained"
                 disabled={
@@ -234,7 +235,7 @@ export class App extends Component<
                 <Typography>
                   {this.props.gettext("Create assignment")}
                 </Typography>
-              </ValidateButton>
+              </Button>
             </Box>
           </Container>
         </CacheProvider>

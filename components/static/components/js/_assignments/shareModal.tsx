@@ -9,15 +9,12 @@ import { modal as style } from "./styles";
 
 //material ui components
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 
 //components
-import {
-  CancelButton,
-  FormButtonBox,
-  ValidateButton,
-} from "../styledComponents";
+import { CancelButton, FormButtonBox } from "../styledComponents";
 import { CustomTextField } from "../_reusableComponents/customTextField";
 
 //types
@@ -60,12 +57,9 @@ export default function ShareModal({
           <CancelButton onClick={onClose}>
             <Typography>{gettext("Cancel")}</Typography>
           </CancelButton>
-          <ValidateButton
-            variant="contained"
-            disabled={!emailValidator(email)}
-          >
+          <Button variant="contained" disabled={!emailValidator(email)}>
             <Typography>{gettext("Share")}</Typography>
-          </ValidateButton>
+          </Button>
         </FormButtonBox>
       </Box>
     </Modal>

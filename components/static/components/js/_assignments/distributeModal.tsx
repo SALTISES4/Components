@@ -8,6 +8,7 @@ import { modal as style } from "./styles";
 import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -24,11 +25,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 //components
-import {
-  CancelButton,
-  FormButtonBox,
-  ValidateButton,
-} from "../styledComponents";
+import { CancelButton, FormButtonBox } from "../styledComponents";
 
 //types
 import { DistributeModalProps } from "./types";
@@ -106,12 +103,12 @@ export default function DistributeModal({
             <CancelButton onClick={onClose}>
               <Typography>{gettext("Cancel")}</Typography>
             </CancelButton>
-            <ValidateButton
+            <Button
               disabled={group == "" || datetime < dayjs()}
               variant="contained"
             >
               <Typography>{gettext("Share")}</Typography>
-            </ValidateButton>
+            </Button>
           </FormButtonBox>
         </Stack>
       </Box>

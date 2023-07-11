@@ -141,12 +141,6 @@ export const CancelButton = styled(Button)({
   borderColor: theme.palette.secondary4.main,
 });
 
-export const ValidateButton = styled(Button)({
-  color: theme.palette.primary.main,
-  borderColor: theme.palette.primary.main,
-  border: "solid 2px",
-});
-
 export const FormButtonBox = styled(Box)({
   display: "flex",
   justifyContent: "flex-end",

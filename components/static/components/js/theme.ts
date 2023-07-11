@@ -283,6 +283,12 @@ const saltise = createTheme({
           "&:hover": {
             boxShadow: "none",
           },
+          "&:disabled": {
+            backgroundColor: "#E9EBF2",
+            " .MuiTypography-root": {
+              color: "#AEAEBF",
+            },
+          },
         },
         contained: {
           " .MuiTypography-root": {

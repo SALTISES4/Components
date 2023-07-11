@@ -8,7 +8,6 @@ import { emailValidator } from "../validators";
 import { modal as style } from "./styles";
 
 //material ui components
-import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
@@ -30,10 +29,6 @@ export default function ShareModal({
   onClose,
 }: ShareModalProps): JSX.Element {
   const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const emailValidation = () => {
-    return emailValidator(email);
-  };
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -49,8 +44,6 @@ export default function ShareModal({
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
           )}
         </Typography>
-        {error != "" ? <Alert severity="error">{error}</Alert> : null}
-
         <CustomTextField
           gettext={gettext}
           autoFocus={true}
@@ -58,19 +51,19 @@ export default function ShareModal({
           title={gettext("Email address")}
           defaultValue=""
           maxLength={100}
-          error={!emailValidation()}
-          value={email}
-          setValue={(email) => {
-            setEmail(email);
-            setError("");
-          }}
+          setValue={(email) => setEmail(email)}
           sx={{ width: "100%" }}
+          validator={emailValidator}
+          value={email}
         />
         <FormButtonBox sx={{ margin: "0px" }}>
           <CancelButton onClick={onClose}>
             <Typography>{gettext("Cancel")}</Typography>
           </CancelButton>
-          <ValidateButton variant="contained" disabled={!emailValidation()}>
+          <ValidateButton
+            variant="contained"
+            disabled={!emailValidator(email)}
+          >
             <Typography>{gettext("Share")}</Typography>
           </ValidateButton>
         </FormButtonBox>

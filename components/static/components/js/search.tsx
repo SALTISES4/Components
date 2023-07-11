@@ -40,7 +40,7 @@ import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { SearchFilter } from "./_search/searchFilter";
 import {
-  PaginatedData,
+  CollectionsPaginatedData,
   SearchAppProps,
   SearchAppState,
   SearchData,
@@ -402,7 +402,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       const collections = (
         (await get(
           this.props.urls.recommendations.collections,
-        )) as PaginatedData
+        )) as unknown as CollectionsPaginatedData
       ).results as CollectionType[];
 
       this.setState({
@@ -854,7 +854,6 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               display="flex"
               justifyContent="center"
               sx={{
-                mt: "-24px",
                 padding: "15px 15px 16px",
                 backgroundImage: `url(${this.props.urls.backgroundImage})`,
                 backgroundSize: "cover",

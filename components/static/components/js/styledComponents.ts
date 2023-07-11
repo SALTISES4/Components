@@ -139,6 +139,12 @@ export const CancelButton = styled(Button)({
   color: theme.palette.secondary4.main,
   border: "solid 1px",
   borderColor: theme.palette.secondary4.main,
+  "&:hover": {
+    backgroundColor: theme.palette.secondary4.main,
+    " .MuiTypography-root": {
+      color: theme.palette.background.paper,
+    },
+  },
 });
 
 export const FormButtonBox = styled(Box)({

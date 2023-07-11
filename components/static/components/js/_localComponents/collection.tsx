@@ -220,11 +220,11 @@ export class Collection extends Component<CollectionProps> {
                 ""
               )
             }
-            title={this.props.collection.title}
             subheader={this.props.gettext(
               "From ".concat(this.props.collection.user.username),
             )}
-            sx={{ cursor: "pointer" }}
+            sx={{ cursor: "pointer", padding: "20px" }}
+            title={this.props.collection.title}
           />
           <CardContent ref={this.ref} sx={{ minHeight: this.props.minHeight }}>
             <Typography tag="p">

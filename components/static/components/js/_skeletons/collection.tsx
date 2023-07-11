@@ -18,6 +18,7 @@ export function Collection(): JSX.Element {
         }
         title={<Skeleton />}
         subheader={<Skeleton />}
+        sx={{ padding: "20px" }}
       />
       <CardContent>
         <Typography tag="p">

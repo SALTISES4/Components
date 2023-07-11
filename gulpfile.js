@@ -31,7 +31,7 @@ const tsProject = ts.createProject("tsconfig.json");
 //   "createAssignment",
 // ];
 
-const modules = ["createAssignment"];
+const modules = ["search"];
 
 function typescript() {
   const build = gulp

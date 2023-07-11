@@ -36,6 +36,7 @@ import { Action, Subtitle } from "./styledComponents";
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { AssignmentBis } from "./_localComponents/assignment_bis";
 import { CollectionBlock } from "./_localComponents/collection";
+import { Pager } from "./_reusableComponents/pager";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { SearchFilter } from "./_search/searchFilter";
@@ -724,68 +725,24 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           {this.state.selectedTypes.length == 1 &&
           this.state.selectedTypes.includes("Question") &&
           this.state.questionHitCount !== undefined ? (
-            <Stack
-              direction="row"
-              spacing={2}
-              mt="12px"
-              sx={{ justifyContent: "center" }}
-            >
-              <Link
-                color={this.state.questionPage == 0 ? "disabled" : "primary"}
-                variant="h4"
-                onClick={() => {
-                  this.setState(
-                    { questionPage: this.state.questionPage - 1 },
-                    this.submitQuestionSearch,
-                  );
-                }}
-                sx={{
-                  cursor:
-                    this.state.questionPage == 0 ? "not-allowed" : "pointer",
-                }}
-                underline={this.state.questionPage == 0 ? "none" : "always"}
-              >
-                {this.props.gettext("Previous")}
-              </Link>
-
-              <Typography>
-                {this.state.questionPage + 1}/
-                {Math.ceil(
-                  this.state.questionHitCount / this.state.questionPageSize,
-                )}
-              </Typography>
-
-              <Link
-                color={
-                  this.state.questionHitCount >
-                  (this.state.questionPage + 1) * this.state.questionPageSize
-                    ? "primary"
-                    : "disabled"
-                }
-                variant="h4"
-                onClick={() => {
-                  this.setState(
-                    { questionPage: this.state.questionPage + 1 },
-                    this.submitQuestionSearch,
-                  );
-                }}
-                sx={{
-                  cursor:
-                    this.state.questionHitCount >
-                    (this.state.questionPage + 1) * this.state.questionPageSize
-                      ? "pointer"
-                      : "not-allowed",
-                }}
-                underline={
-                  this.state.questionHitCount >
-                  (this.state.questionPage + 1) * this.state.questionPageSize
-                    ? "always"
-                    : "none"
-                }
-              >
-                {this.props.gettext("Next")}
-              </Link>
-            </Stack>
+            <Pager
+              gettext={this.props.gettext}
+              back={() => {
+                this.setState(
+                  { questionPage: this.state.questionPage - 1 },
+                  this.submitQuestionSearch,
+                );
+              }}
+              forward={() => {
+                this.setState(
+                  { questionPage: this.state.questionPage + 1 },
+                  this.submitQuestionSearch,
+                );
+              }}
+              currentPage={this.state.questionPage}
+              hits={this.state.questionHitCount}
+              pageSize={this.state.questionPageSize}
+            />
           ) : null}
         </Fragment>
       );

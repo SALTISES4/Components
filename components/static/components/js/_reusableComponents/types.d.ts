@@ -71,3 +71,12 @@ export type CustomEditorFieldProps = {
   tooltip?: string;
   value: string;
 };
+
+export type PagerProps = {
+  gettext: (a: string) => string;
+  back: () => void;
+  forward: () => void;
+  currentPage: number;
+  pageSize: number;
+  hits: number;
+};

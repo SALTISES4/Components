@@ -216,7 +216,7 @@ export class App extends Component<
                 display: "flex",
                 justifyContent: "flex-end",
                 gap: "10px",
-                margin: "50px 0px",
+                margin: "50px 0px 0px 0px",
               }}
             >
               <CancelButton onClick={() => history.back()}>

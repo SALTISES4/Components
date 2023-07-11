@@ -449,6 +449,17 @@ const saltise = createTheme({
         },
       },
     },
+    MuiTooltip: {
+      styleOverrides: {
+        arrow: {
+          color: "#0D2666",
+        },
+        tooltip: {
+          backgroundColor: "#0D2666",
+          fontSize: "014px",
+        },
+      },
+    },
   },
 });
 
@@ -496,7 +507,7 @@ export const formTheme = createTheme(saltise, {
           padding: "0px",
           "& .MuiTypography-root": {
             color: saltise.palette.secondary4.main,
-            fontSize: "12px",
+            fontSize: "14px",
           },
         },
       },

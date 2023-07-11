@@ -33,8 +33,15 @@ export const CustomTextField = ({
 
   return (
     <Box>
-      <Box sx={{ display: "flex", flexDirection: "row", gap: "5px" }}>
-        <Typography fontSize={"12px"} sx={{ marginLeft: "14px" }}>
+      <Box
+        sx={{
+          alignItems: "center",
+          display: "flex",
+          flexDirection: "row",
+          gap: "5px",
+        }}
+      >
+        <Typography sx={{ marginBottom: "2px", marginLeft: "14px" }}>
           {title}
         </Typography>
         {icon && tooltip.length > 0 ? (

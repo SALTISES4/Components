@@ -1,3 +1,5 @@
+import { UserType } from "../_localComponents";
+
 export type TextBoxProps = {
   title: string;
   text: string;
@@ -6,7 +8,7 @@ export type TextBoxProps = {
 export type GeneralProps = {
   gettext: (a: string) => string;
   identifier: string;
-  owner: string[];
+  owner: UserType[];
   description: string;
   instructions: string;
   notes: string;

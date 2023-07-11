@@ -262,9 +262,9 @@ export type UpdateAssignmentAppProps = {
   assignment: AssignmentDatabaseFields;
   editableByUser?: boolean;
   urls: {
+    assignment: string;
     distribute: string;
     studentgroupassignments: string;
-    questions: string;
     teacher: string;
   };
 };

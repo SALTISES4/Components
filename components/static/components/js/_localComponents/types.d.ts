@@ -42,6 +42,12 @@ export interface AssignmentType extends AssignmentDatabaseFields {
   editable?: boolean;
   is_owner?: boolean;
   question_count?: number;
+  questions?: {
+    assignment: string;
+    pk: number;
+    question: QuestionType;
+    rank: number;
+  }[];
   urls?: {
     preview?: string;
     update?: string;

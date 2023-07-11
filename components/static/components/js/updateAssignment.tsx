@@ -16,11 +16,9 @@ import Snackbar from "@mui/material/Snackbar";
 import Typography from "@mui/material/Typography";
 
 //components
-import { ValidateButton } from "./styledComponents";
 import { GeneralDescription } from "./_assignments/generalDescription";
-import { QuestionType } from "./_localComponents/types";
 import { Question } from "./_localComponents/question";
-import { StudentGroupAssignment } from "./_localComponents/assignment";
+import { StudentGroupAssignment } from "./_localComponents/group";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { Group as GroupSkeleton } from "./_skeletons/group";
 import { Toolbar } from "./_assignments/toolbar";
@@ -31,6 +29,11 @@ import {
   UpdateAssignmentAppState,
   TeacherType,
 } from "./types";
+import {
+  AssignmentType,
+  QuestionType,
+  StudentGroupAssignmentType,
+} from "./_localComponents/types";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -81,9 +84,11 @@ export class App extends Component<
     try {
       this.setState({ questionsLoading: true });
 
-      const questions = (await get(this.props.urls.questions)).questions.map(
-        (qr) => qr.question,
-      ) as QuestionType[];
+      const assignment = (await get(
+        this.props.urls.assignment,
+      )) as unknown as AssignmentType;
+
+      const questions = assignment.questions?.map((qr) => qr.question);
 
       this.setState(
         {
@@ -103,17 +108,7 @@ export class App extends Component<
 
       const studentgroupassignments = (await get(
         this.props.urls.studentgroupassignments,
-      )) as {
-        due_date: Date;
-        group: {
-          pk: number;
-          teacher: number[];
-          title: string;
-          url: string;
-        };
-        progress: number;
-        title: string;
-      }[];
+      )) as StudentGroupAssignmentType[];
 
       this.setState(
         {
@@ -155,7 +150,7 @@ export class App extends Component<
                 <StudentGroupAssignment
                   key={i}
                   gettext={this.props.gettext}
-                  group={sga}
+                  studentgroupassignment={sga}
                   showGroup={true}
                 />
               ))}
@@ -280,11 +275,11 @@ export class App extends Component<
                   </Typography>
                   <GeneralDescription
                     gettext={this.props.gettext}
-                    identifier={this.props.assignment.pk}
-                    owner={this.props.assignment.owner}
                     description={this.props.assignment.description || ""}
+                    identifier={this.props.assignment.pk}
                     instructions={this.props.assignment.intro_page || ""}
                     notes={this.props.assignment.conclusion_page || ""}
+                    owner={this.props.assignment.owner || [""]}
                   />
                 </Box>
                 <Box>
@@ -304,12 +299,6 @@ export class App extends Component<
                   <ThemeProvider theme={saltise}>
                     {this.questions()}
                   </ThemeProvider>
-                  <ValidateButton
-                    variant="contained"
-                    sx={{ margin: "30px 0px" }}
-                  >
-                    <Typography> {this.props.gettext("Search")}</Typography>
-                  </ValidateButton>
                 </Box>
               </Stack>
             </Container>

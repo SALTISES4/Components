@@ -8,6 +8,7 @@ import {
   lettersNumbersUnderscoreOnlyValidator,
 } from "./validators";
 
+//components
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import CloseIcon from "@mui/icons-material/Close";
@@ -15,6 +16,9 @@ import Collapse from "@mui/material/Collapse";
 import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+
+//types
+import { AssignmentType } from "./_localComponents/types";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -49,10 +53,6 @@ export class App extends Component<
     };
   }
 
-  componentDidMount(): void {
-    // Fetch data from db to overwrite placeholders
-  }
-
   cache = createCache({
     key: "nonced",
     nonce: this.props.nonce,
@@ -63,7 +63,7 @@ export class App extends Component<
   submitForm = async () => {
     try {
       this.setState({ submitting: true });
-      const newAssignment = await submitData(
+      const newAssignment = (await submitData(
         this.props.urls.create,
         {
           conclusion_page: this.state.postAssignmentNotes,
@@ -75,13 +75,17 @@ export class App extends Component<
           title: this.state.title,
         },
         "POST",
-      );
-      window.location.assign(newAssignment.urls.update);
-    } catch (error) {
-      const e = Object.values(error);
-      this.setState({ errors: e, errorsOpen: e.map(() => true) }, () =>
-        console.info(this.state, error),
-      );
+      )) as unknown as AssignmentType;
+      if (newAssignment.urls?.update) {
+        window.location.assign(newAssignment.urls.update);
+      }
+    } catch (error: any) {
+      if (typeof error === "object") {
+        const e = Object.values(error) as string[];
+        this.setState({ errors: e, errorsOpen: e.map(() => true) }, () =>
+          console.info(this.state, error),
+        );
+      }
     } finally {
       this.setState({ submitting: false });
     }
@@ -109,7 +113,7 @@ export class App extends Component<
       <ThemeProvider theme={formTheme}>
         <CacheProvider value={this.cache}>
           <Container sx={{ maxWidth: "780px!important" }}>
-            <Typography variant="h1" align="left" mt={0}>
+            <Typography variant="h1" align="left">
               {this.props.gettext("Create Assignment")}
             </Typography>
             <Card>

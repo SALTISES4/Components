@@ -39,7 +39,15 @@ const NumberButton = ({
       }}
     >
       <Box sx={{ fontSize: "16px", width: "20px", height: "20px" }}>
-        <Typography tag={"p"} color={"inherit"}>
+        <Typography
+          tag={"p"}
+          color={"inherit"}
+          sx={{
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+          }}
+        >
           {number}
         </Typography>
       </Box>
@@ -55,6 +63,7 @@ export const Pager = ({
   pageSize,
   hits,
 }: PagerProps) => {
+  const MAX_DOTS = 15; // Off by one error somewhere
   const MAX_NODES = 10;
   const N = Math.ceil(hits / pageSize);
 
@@ -72,29 +81,48 @@ export const Pager = ({
 
   const someNodes = () => {
     // Show 5 max (first, last, current, next, previous)
-
     // Need to limit number of placeholder dots when we have large number of search results
-    let backwardCount = 0;
-    let forwardCount = 0;
+    const dots = Math.min(MAX_DOTS, N - 5);
+    const x = currentPage + 1;
+    const leadingDots = Math.max(0, Math.floor((dots * (x - 3)) / (N - 5)));
+    const trailingDots = Math.max(
+      0,
+      Math.floor((dots * (N - x - 2)) / (N - 5)),
+    );
+    let leadingDotCount = 0;
+    let trailingDotCount = 0;
+
     return [...Array(N).keys()].slice(2).map((index) => {
       if (index < currentPage || index > currentPage + 2) {
-        if (index < currentPage) {
-          backwardCount = backwardCount + 1;
-        } else {
-          forwardCount = forwardCount + 1;
+        if (index < currentPage && leadingDotCount <= leadingDots) {
+          leadingDotCount = leadingDotCount + 1;
+          return (
+            <Box
+              key={index}
+              width="5px"
+              height="5px"
+              sx={{
+                backgroundColor: saltise.palette.primary.main,
+                borderRadius: "50%",
+              }}
+            />
+          );
         }
-
-        return (
-          <Box
-            key={index}
-            width="5px"
-            height="5px"
-            sx={{
-              backgroundColor: saltise.palette.primary.main,
-              borderRadius: "50%",
-            }}
-          />
-        );
+        if (index > currentPage + 2 && trailingDotCount <= trailingDots) {
+          trailingDotCount = trailingDotCount + 1;
+          return (
+            <Box
+              key={index}
+              width="5px"
+              height="5px"
+              sx={{
+                backgroundColor: saltise.palette.primary.main,
+                borderRadius: "50%",
+              }}
+            />
+          );
+        }
+        return null;
       }
       return (
         <NumberButton

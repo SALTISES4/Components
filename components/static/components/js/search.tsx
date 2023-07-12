@@ -726,7 +726,6 @@ export class App extends Component<SearchAppProps, SearchAppState> {
           this.state.selectedTypes.includes("Question") &&
           this.state.questionHitCount !== undefined ? (
             <Pager
-              gettext={this.props.gettext}
               back={() => {
                 this.setState(
                   { questionPage: this.state.questionPage - 1 },
@@ -738,6 +737,9 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   { questionPage: this.state.questionPage + 1 },
                   this.submitQuestionSearch,
                 );
+              }}
+              toPage={(questionPage) => {
+                this.setState({ questionPage }, this.submitQuestionSearch);
               }}
               currentPage={this.state.questionPage}
               hits={this.state.questionHitCount}

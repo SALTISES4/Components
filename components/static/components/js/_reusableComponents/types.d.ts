@@ -73,9 +73,9 @@ export type CustomEditorFieldProps = {
 };
 
 export type PagerProps = {
-  gettext: (a: string) => string;
   back: () => void;
   forward: () => void;
+  toPage: (a: number) => void;
   currentPage: number;
   pageSize: number;
   hits: number;

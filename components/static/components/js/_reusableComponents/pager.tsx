@@ -1,56 +1,148 @@
 import { h } from "preact";
 
 //components
-import Link from "@mui/material/Link";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+
+//styles
+import saltise from "../theme";
 
 //types
 import { PagerProps } from "./types";
 
+const NumberButton = ({
+  number,
+  onClick,
+  selected,
+}: {
+  number: number;
+  onClick: (a: number) => void;
+  selected: boolean;
+}): JSX.Element => {
+  return (
+    <IconButton
+      aria-label="select-page"
+      onClick={() => onClick(number - 1)}
+      sx={{
+        backgroundColor: selected ? saltise.palette.primary.main : "unset",
+        border: "solid",
+        borderColor: saltise.palette.primary.main,
+        borderWidth: "thin",
+        color: selected
+          ? saltise.palette.background.paper
+          : saltise.palette.primary.main,
+        pointerEvents: selected ? "none" : "auto",
+      }}
+    >
+      <Box sx={{ fontSize: "16px", width: "20px", height: "20px" }}>
+        <Typography tag={"p"} color={"inherit"}>
+          {number}
+        </Typography>
+      </Box>
+    </IconButton>
+  );
+};
+
 export const Pager = ({
-  gettext,
   back,
   forward,
+  toPage,
   currentPage,
   pageSize,
   hits,
 }: PagerProps) => {
+  const MAX_NODES = 10;
+  const N = Math.ceil(hits / pageSize);
+
+  const allNodes = () =>
+    [...Array(N).keys()]
+      .slice(2)
+      .map((index) => (
+        <NumberButton
+          key={index}
+          number={index}
+          selected={currentPage == index - 1}
+          onClick={toPage}
+        />
+      ));
+
+  const someNodes = () => {
+    // Show 5 max (first, last, current, next, previous)
+
+    // Need to limit number of placeholder dots when we have large number of search results
+    let backwardCount = 0;
+    let forwardCount = 0;
+    return [...Array(N).keys()].slice(2).map((index) => {
+      if (index < currentPage || index > currentPage + 2) {
+        if (index < currentPage) {
+          backwardCount = backwardCount + 1;
+        } else {
+          forwardCount = forwardCount + 1;
+        }
+
+        return (
+          <Box
+            key={index}
+            width="5px"
+            height="5px"
+            sx={{
+              backgroundColor: saltise.palette.primary.main,
+              borderRadius: "50%",
+            }}
+          />
+        );
+      }
+      return (
+        <NumberButton
+          key={index}
+          number={index}
+          selected={currentPage == index - 1}
+          onClick={toPage}
+        />
+      );
+    });
+  };
+
   return (
     <Stack
       direction="row"
-      spacing={2}
-      mt="12px"
-      sx={{ justifyContent: "center" }}
+      spacing={1}
+      mt="32px"
+      sx={{ alignItems: "center", justifyContent: "center" }}
     >
-      <Link
-        color={currentPage == 0 ? "disabled" : "primary"}
-        variant="h4"
+      <IconButton
+        aria-label="previous"
+        disabled={currentPage == 0}
         onClick={back}
-        sx={{
-          cursor: currentPage == 0 ? "not-allowed" : "pointer",
-        }}
-        underline={currentPage == 0 ? "none" : "always"}
+        sx={{ border: "solid", borderWidth: "thin" }}
       >
-        {gettext("Previous")}
-      </Link>
+        <ArrowLeftIcon />
+      </IconButton>
 
-      <Typography>
-        {currentPage + 1}/{Math.ceil(hits / pageSize)}
-      </Typography>
+      <NumberButton number={1} selected={currentPage == 0} onClick={toPage} />
 
-      <Link
-        color={hits > (currentPage + 1) * pageSize ? "primary" : "disabled"}
-        variant="h4"
+      {N <= MAX_NODES ? allNodes() : someNodes()}
+
+      {hits > pageSize ? (
+        <NumberButton
+          number={N}
+          selected={currentPage == N - 1}
+          onClick={toPage}
+        />
+      ) : null}
+
+      <IconButton
+        aria-label="next"
+        disabled={currentPage == N - 1}
         onClick={forward}
-        sx={{
-          cursor:
-            hits > (currentPage + 1) * pageSize ? "pointer" : "not-allowed",
-        }}
-        underline={hits > (currentPage + 1) * pageSize ? "always" : "none"}
+        sx={{ border: "solid", borderWidth: "thin" }}
       >
-        {gettext("Next")}
-      </Link>
+        <ArrowRightIcon />
+      </IconButton>
     </Stack>
   );
 };

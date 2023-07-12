@@ -95,7 +95,7 @@ declare module "@mui/material/SvgIcon" {
   }
 }
 
-const saltise = createTheme({
+const paletteAndTypography = createTheme({
   palette: {
     background: {
       paper: "#fff",
@@ -221,12 +221,15 @@ const saltise = createTheme({
       color: "#90929B",
     },
   },
+});
+
+const saltise = createTheme(paletteAndTypography, {
   components: {
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "#FFF",
-          color: "#1743B3",
+          backgroundColor: paletteAndTypography.palette.background.paper,
+          color: paletteAndTypography.palette.primary.main,
           paddingLeft: 2,
           " .MuiAvatar-root": {
             height: 30,
@@ -238,20 +241,13 @@ const saltise = createTheme({
           " .MuiIconButton-root": {
             marginLeft: "15px",
             marginRight: "15px",
-            color: "#1743B3",
+            color: paletteAndTypography.palette.primary.main,
             "&:hover": {
               backgroundColor: "#1743B320",
             },
           },
           " .MuiList-root": {
             padding: "10px 0px",
-          },
-          " .MuiListItemButton-root": {
-            padding: "3px 17px",
-            color: "rgb(185 208 228)",
-            "&:hover": {
-              backgroundColor: "#E9F5FF",
-            },
           },
           " .MuiListItemIcon-root": {
             minWidth: "0px",
@@ -292,7 +288,7 @@ const saltise = createTheme({
         },
         contained: {
           " .MuiTypography-root": {
-            color: "#fff",
+            color: paletteAndTypography.palette.background.paper,
           },
         },
         outlined: {
@@ -348,8 +344,8 @@ const saltise = createTheme({
     MuiChip: {
       styleOverrides: {
         root: {
-          borderColor: "#1743B3",
-          color: "#1743B3",
+          borderColor: paletteAndTypography.palette.primary.main,
+          color: paletteAndTypography.palette.primary.main,
           fontSize: "16px",
         },
       },
@@ -357,8 +353,8 @@ const saltise = createTheme({
         {
           props: { variant: "selected" },
           style: {
-            backgroundColor: "#1743B3",
-            color: "#fff",
+            backgroundColor: paletteAndTypography.palette.primary.main,
+            color: paletteAndTypography.palette.background.paper,
           },
         },
       ],
@@ -380,7 +376,7 @@ const saltise = createTheme({
         paper: {
           padding: "20px 10px",
           backgroundColor: "#0D2666",
-          color: "#fff",
+          color: paletteAndTypography.palette.background.paper,
         },
         root: {
           " img.logo": {
@@ -405,10 +401,10 @@ const saltise = createTheme({
             },
           },
           " .MuiListItemIcon-root": {
-            color: "#fff",
+            color: paletteAndTypography.palette.background.paper,
           },
           " .MuiTypography-root": {
-            color: "#fff",
+            color: paletteAndTypography.palette.background.paper,
             fontSize: "0.9rem",
           },
         },
@@ -425,7 +421,7 @@ const saltise = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: {
-          color: "#1743B3",
+          color: paletteAndTypography.palette.primary.main,
         },
       },
     },

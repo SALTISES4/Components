@@ -36,6 +36,9 @@ const NumberButton = ({
           ? saltise.palette.background.paper
           : saltise.palette.primary.main,
         pointerEvents: selected ? "none" : "auto",
+        "&:hover": {
+          backgroundColor: "#fff",
+        },
       }}
     >
       <Box sx={{ fontSize: "16px", width: "20px", height: "20px" }}>
@@ -55,6 +58,19 @@ const NumberButton = ({
   );
 };
 
+const Dot = (): JSX.Element => {
+  return (
+    <Box
+      width="5px"
+      height="5px"
+      sx={{
+        backgroundColor: saltise.palette.primary.main,
+        borderRadius: "50%",
+      }}
+    />
+  );
+};
+
 export const Pager = ({
   back,
   forward,
@@ -63,7 +79,7 @@ export const Pager = ({
   pageSize,
   hits,
 }: PagerProps) => {
-  const MAX_DOTS = 15; // Off by one error somewhere
+  const MAX_DOTS = 15; // Off by one error somewhere?  MAX_DOTS + 1 are always displayed.
   const MAX_NODES = 10;
   const N = Math.ceil(hits / pageSize);
 
@@ -89,6 +105,7 @@ export const Pager = ({
       0,
       Math.floor((dots * (N - x - 2)) / (N - 5)),
     );
+    console.info(leadingDots, trailingDots);
     let leadingDotCount = 0;
     let trailingDotCount = 0;
 
@@ -96,31 +113,11 @@ export const Pager = ({
       if (index < currentPage || index > currentPage + 2) {
         if (index < currentPage && leadingDotCount <= leadingDots) {
           leadingDotCount = leadingDotCount + 1;
-          return (
-            <Box
-              key={index}
-              width="5px"
-              height="5px"
-              sx={{
-                backgroundColor: saltise.palette.primary.main,
-                borderRadius: "50%",
-              }}
-            />
-          );
+          return <Dot key={index} />;
         }
         if (index > currentPage + 2 && trailingDotCount <= trailingDots) {
           trailingDotCount = trailingDotCount + 1;
-          return (
-            <Box
-              key={index}
-              width="5px"
-              height="5px"
-              sx={{
-                backgroundColor: saltise.palette.primary.main,
-                borderRadius: "50%",
-              }}
-            />
-          );
+          return <Dot key={index} />;
         }
         return null;
       }
@@ -146,7 +143,13 @@ export const Pager = ({
         aria-label="previous"
         disabled={currentPage == 0}
         onClick={back}
-        sx={{ border: "solid", borderWidth: "thin" }}
+        sx={{
+          border: "solid",
+          borderWidth: "thin",
+          "&:hover": {
+            backgroundColor: "#fff",
+          },
+        }}
       >
         <ArrowLeftIcon />
       </IconButton>
@@ -167,7 +170,13 @@ export const Pager = ({
         aria-label="next"
         disabled={currentPage == N - 1}
         onClick={forward}
-        sx={{ border: "solid", borderWidth: "thin" }}
+        sx={{
+          border: "solid",
+          borderWidth: "thin",
+          "&:hover": {
+            backgroundColor: "#fff",
+          },
+        }}
       >
         <ArrowRightIcon />
       </IconButton>

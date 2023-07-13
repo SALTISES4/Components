@@ -33,14 +33,14 @@ export function Assignment({
 
   const handleUpdate = (evt: MouseEvent) => {
     evt.stopPropagation();
-    if (assignment.urls) {
+    if (assignment.urls?.update) {
       window.location.assign(assignment.urls.update);
     }
   };
 
   const handleView = (evt: MouseEvent) => {
     evt.stopPropagation();
-    if (assignment.urls) {
+    if (assignment.urls?.view) {
       window.location.assign(assignment.urls.view);
     }
   };
@@ -73,7 +73,11 @@ export function Assignment({
   };
 
   const updateOrViewIcon = () => {
-    if (assignment.is_owner && assignment.editable) {
+    if (
+      assignment.is_owner &&
+      assignment.editable &&
+      assignment.urls?.update
+    ) {
       return (
         <IconButton
           aria-label="edit"
@@ -85,16 +89,18 @@ export function Assignment({
         </IconButton>
       );
     }
-    return (
-      <IconButton
-        aria-label="edit"
-        color="primary"
-        onClick={handleView}
-        title={gettext("View assignment")}
-      >
-        <VisibilityIcon />
-      </IconButton>
-    );
+    if (assignment.urls?.view) {
+      return (
+        <IconButton
+          aria-label="edit"
+          color="primary"
+          onClick={handleView}
+          title={gettext("View assignment")}
+        >
+          <VisibilityIcon />
+        </IconButton>
+      );
+    }
   };
 
   return (

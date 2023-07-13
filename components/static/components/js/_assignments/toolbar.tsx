@@ -5,7 +5,6 @@ import { useState } from "preact/hooks";
 import SendIcon from "@mui/icons-material/Send";
 import ShareIcon from "@mui/icons-material/Share";
 import EditIcon from "@mui/icons-material/Edit";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import Box from "@mui/system/Box";
 import IconButton from "@mui/material/IconButton";
@@ -42,19 +41,16 @@ export function Toolbar({
         disabled={groups === undefined || groups.length == 0}
         onClick={handleOpenDistributeModal}
       >
-        <SendIcon />
+        <ShareIcon />
       </IconButton>
       <IconButton color="primary" onClick={handleOpenShareModal}>
-        <ShareIcon />
+        <SendIcon />
       </IconButton>
       {enableEditMode ? (
         <IconButton color="primary">
           <EditIcon />
         </IconButton>
       ) : null}
-      <IconButton color="primary">
-        <MoreHorizIcon />
-      </IconButton>
       <ShareModal
         open={openShareModal}
         onClose={handleCloseShareModal}

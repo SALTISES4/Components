@@ -49,12 +49,12 @@ export interface AssignmentType extends AssignmentDatabaseFields {
     rank: number;
   }[];
   urls?: {
-    copy: string;
-    distribute: string;
-    fix: string;
-    preview: string;
-    update: string;
-    view: string;
+    copy?: string;
+    distribute?: string;
+    fix?: string;
+    preview?: string;
+    update?: string;
+    view?: string;
   };
 }
 

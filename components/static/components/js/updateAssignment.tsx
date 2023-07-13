@@ -2,7 +2,7 @@ import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
 //functions
-import { get } from "./ajax";
+import { get, submitData } from "./ajax";
 import { handleQuestionBookmarkClick } from "./functions";
 
 //material ui components
@@ -141,8 +141,16 @@ export class App extends Component<
     this.sync();
   }
 
-  handleDistribute = (form: StudentGroupAssignmentCreateForm) => {
-    console.info(form);
+  handleDistribute = async (partialForm: StudentGroupAssignmentCreateForm) => {
+    // Append assignment pk to form
+    const form = Object.assign(partialForm, {
+      assignment_pk: this.props.assignment.pk,
+    });
+
+    try {
+      const sga = await submitData(this.props.urls.distribute, form, "POST");
+      console.info(sga);
+    } catch {}
   };
 
   groups = () => {
@@ -264,7 +272,12 @@ export class App extends Component<
                   <Toolbar
                     gettext={this.props.gettext}
                     enableEditMode={this.props.editableByUser}
-                    groups={this.state.teacher?.assignable_groups}
+                    groups={this.state.teacher?.assignable_groups?.filter(
+                      (group) =>
+                        !this.state.studentgroupassignments
+                          .map((sga) => sga.group.pk)
+                          .includes(group.pk),
+                    )}
                     handleDistribute={this.handleDistribute}
                   />
                 </ThemeProvider>

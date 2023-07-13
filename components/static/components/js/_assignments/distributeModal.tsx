@@ -115,7 +115,7 @@ export default function DistributeModal({
               onClick={() =>
                 handleSubmit({
                   due_date: dueDate.utc().format(), // Convert to UTC!
-                  group: parseInt(group),
+                  group_pk: parseInt(group),
                   show_correct_answers: showCorrectAnswers,
                 })
               }

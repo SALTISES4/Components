@@ -2,7 +2,7 @@ import { UserType } from "../_localComponents";
 
 export type StudentGroupAssignmentCreateForm = {
   due_date: string;
-  group: number;
+  group_pk: number;
   show_correct_answers: boolean;
 };
 

@@ -34,7 +34,7 @@ import { CacheProvider } from "@emotion/react";
 
 import { Action, Subtitle } from "./styledComponents";
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
-import { AssignmentBis } from "./_localComponents/assignment_bis";
+import { Assignment } from "./_localComponents/assignment_bis";
 import { CollectionBlock } from "./_localComponents/collection";
 import { Pager } from "./_reusableComponents/pager";
 import { Question } from "./_localComponents/question";
@@ -530,7 +530,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               this.state.assignments.length > 0 ? (
                 this.state.assignments.map(
                   (assignment: AssignmentType, i: number) => (
-                    <AssignmentBis
+                    <Assignment
                       key={i}
                       assignment={assignment}
                       bookmarked={this.state.teacher?.assignment_pks?.includes(

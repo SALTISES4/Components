@@ -16,15 +16,15 @@ import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import { Tag } from "../styledComponents";
-import { AssignmentBisProps } from "./types";
+import { AssignmentProps } from "./types";
 
-export function AssignmentBis({
+export function Assignment({
   gettext,
   assignment,
   bookmarked,
   showBookmark,
   toggleBookmarked,
-}: AssignmentBisProps): JSX.Element {
+}: AssignmentProps): JSX.Element {
   const handlePreview = () => {
     if (assignment?.urls?.preview) {
       window.location.assign(assignment.urls.preview);
@@ -102,7 +102,7 @@ export function AssignmentBis({
       <CardActionArea
         disableRipple={true}
         onClick={handlePreview}
-        title={gettext("Preview assignment")}
+        title={gettext("Preview as student")}
       >
         <CardContent sx={{ padding: "10px 20px" }}>
           <Box display="flex" justifyContent="space-between">

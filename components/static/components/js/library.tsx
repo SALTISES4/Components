@@ -18,7 +18,7 @@ import Stack from "@mui/material/Stack";
 
 //components
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
-import { AssignmentBis } from "./_localComponents/assignment_bis";
+import { Assignment } from "./_localComponents/assignment_bis";
 import { CollectionBlock } from "./_localComponents/collection";
 import { StudentGroupsAssignment } from "./_localComponents/assignment";
 import { Question } from "./_localComponents/question";
@@ -386,7 +386,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                   .includes(assignment.pk),
             )
             .map((assignment: AssignmentType, i: number) => (
-              <AssignmentBis
+              <Assignment
                 key={i}
                 assignment={assignment}
                 bookmarked={this.state.teacher?.assignment_pks?.includes(

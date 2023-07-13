@@ -151,7 +151,7 @@ export type QuestionType = {
 
 /* Props and state type declarations */
 
-export type AssignmentBisProps = {
+export type AssignmentProps = {
   assignment: AssignmentType;
   bookmarked?: boolean;
   gettext: (a: string) => string;

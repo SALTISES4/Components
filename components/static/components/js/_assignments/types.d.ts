@@ -1,5 +1,11 @@
 import { UserType } from "../_localComponents";
 
+export type StudentGroupAssignmentCreateForm = {
+  due_date: string;
+  group: number;
+  show_correct_answers: boolean;
+};
+
 export type TextBoxProps = {
   title: string;
   text: string;
@@ -18,6 +24,7 @@ export type ToolbarProps = {
   gettext: (a: string) => string;
   enableEditMode?: boolean;
   groups?: { title: string; pk: number }[];
+  handleDistribute: (form: StudentGroupAssignmentCreateForm) => void;
 };
 
 export type ShareModalProps = {
@@ -29,6 +36,7 @@ export type ShareModalProps = {
 export type DistributeModalProps = {
   gettext: (a: string) => string;
   groups: { title: string; pk: number }[];
+  handleSubmit: (form: StudentGroupAssignmentCreateForm) => void;
   open: any;
   onClose: any;
 };

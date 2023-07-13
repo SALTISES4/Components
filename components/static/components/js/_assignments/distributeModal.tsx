@@ -1,11 +1,14 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
 
+//functions
+import dayjs, { Dayjs } from "dayjs";
+import utc from "dayjs/plugin/utc";
+
 //styles
 import { modal as style } from "./styles";
 
 //material ui components
-import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -33,12 +36,15 @@ import { DistributeModalProps } from "./types";
 export default function DistributeModal({
   gettext,
   groups,
+  handleSubmit,
   open,
   onClose,
 }: DistributeModalProps): JSX.Element {
+  const [dueDate, setDueDate] = useState(dayjs());
   const [group, setGroup] = useState("");
-  const [datetime, setDateTime] = useState(dayjs());
+  const [showCorrectAnswers, setShowCorrectAnswers] = useState(true);
 
+  dayjs.extend(utc);
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
@@ -84,11 +90,11 @@ export default function DistributeModal({
               disablePast={true}
               id="due-date-and-time-picker"
               label={`${gettext("Due date and time")}*`}
-              onChange={(newDateTime: Dayjs) => setDateTime(newDateTime)}
+              onChange={(newDateTime: Dayjs) => setDueDate(newDateTime)}
               required={true}
               timeSteps={{ hours: 1, minutes: 15 }}
               sx={{ width: "100%" }}
-              value={datetime}
+              value={dueDate}
             />
           </LocalizationProvider>
 
@@ -96,6 +102,7 @@ export default function DistributeModal({
             <FormControlLabel
               control={<Checkbox defaultChecked />}
               label={gettext("Show correct answers")}
+              onChange={() => setShowCorrectAnswers(!showCorrectAnswers)}
             />
           </FormGroup>
 
@@ -104,7 +111,14 @@ export default function DistributeModal({
               <Typography>{gettext("Cancel")}</Typography>
             </CancelButton>
             <Button
-              disabled={group == "" || datetime < dayjs()}
+              disabled={group == "" || dueDate < dayjs()}
+              onClick={() =>
+                handleSubmit({
+                  due_date: dueDate.utc().format(), // Convert to UTC!
+                  group: parseInt(group),
+                  show_correct_answers: showCorrectAnswers,
+                })
+              }
               variant="contained"
             >
               <Typography>{gettext("Share")}</Typography>

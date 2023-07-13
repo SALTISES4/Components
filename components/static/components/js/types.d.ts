@@ -13,10 +13,19 @@ import {
 type TeacherType = {
   activeAssignmentCount: number;
   activeGroupCount: number;
+  assignable_groups?: {
+    // Replace with StudentGroup type
+    name: string;
+    pk: number;
+    semester: string;
+    title: string;
+    year: number;
+  }[];
   assignment_pks?: string[];
   bookmarked_collections: number[];
   createdQuestionCount: number;
   current_groups?: {
+    // Replace with StudentGroup type
     name: string;
     pk: number;
     semester: string;

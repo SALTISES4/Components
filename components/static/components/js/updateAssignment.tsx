@@ -25,15 +25,16 @@ import { Toolbar } from "./_assignments/toolbar";
 
 //types
 import {
+  TeacherType,
   UpdateAssignmentAppProps,
   UpdateAssignmentAppState,
-  TeacherType,
 } from "./types";
 import {
   AssignmentType,
   QuestionType,
   StudentGroupAssignmentType,
 } from "./_localComponents/types";
+import { StudentGroupAssignmentCreateForm } from "./_assignments/types";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -139,6 +140,10 @@ export class App extends Component<
     // Fetch data from db
     this.sync();
   }
+
+  handleDistribute = (form: StudentGroupAssignmentCreateForm) => {
+    console.info(form);
+  };
 
   groups = () => {
     return (
@@ -259,7 +264,8 @@ export class App extends Component<
                   <Toolbar
                     gettext={this.props.gettext}
                     enableEditMode={this.props.editableByUser}
-                    groups={this.state.teacher?.current_groups}
+                    groups={this.state.teacher?.assignable_groups}
+                    handleDistribute={this.handleDistribute}
                   />
                 </ThemeProvider>
               </Container>

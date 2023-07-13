@@ -18,6 +18,7 @@ export function Toolbar({
   gettext,
   enableEditMode = false,
   groups,
+  handleDistribute,
 }: ToolbarProps): JSX.Element {
   const [openShareModal, setOpenShareModal] = useState(false);
   const handleOpenShareModal = () => setOpenShareModal(true);
@@ -62,6 +63,7 @@ export function Toolbar({
         <DistributeModal
           gettext={gettext}
           groups={groups}
+          handleSubmit={handleDistribute}
           open={openDistributeModal}
           onClose={handleCloseDistributeModal}
           aria-labelledby="distribute"

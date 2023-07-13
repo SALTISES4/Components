@@ -10,10 +10,10 @@ import Typography from "@mui/material/Typography";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import EditIcon from "@mui/icons-material/Edit";
-import EditOffIcon from "@mui/icons-material/EditOff";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import IconButton from "@mui/material/IconButton";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import { Tag } from "../styledComponents";
 import { AssignmentBisProps } from "./types";
@@ -33,8 +33,15 @@ export function AssignmentBis({
 
   const handleUpdate = (evt: MouseEvent) => {
     evt.stopPropagation();
-    if (assignment?.urls?.update) {
+    if (assignment.urls) {
       window.location.assign(assignment.urls.update);
+    }
+  };
+
+  const handleView = (evt: MouseEvent) => {
+    evt.stopPropagation();
+    if (assignment.urls) {
+      window.location.assign(assignment.urls.view);
     }
   };
 
@@ -52,7 +59,7 @@ export function AssignmentBis({
             "&.Mui-checked": {
               color: "primary.main",
             },
-            ml: "80px",
+            ml: "44px",
           }}
           title={
             bookmarked
@@ -65,26 +72,29 @@ export function AssignmentBis({
     return <Box height="38px" ml="44px" width="38px" />;
   };
 
-  const editIcon = () => {
-    if (assignment.is_owner) {
-      if (assignment.editable) {
-        return (
-          <IconButton
-            aria-label="edit"
-            color="primary"
-            onClick={handleUpdate}
-            title={gettext("Edit assignment")}
-          >
-            <EditIcon />
-          </IconButton>
-        );
-      }
+  const updateOrViewIcon = () => {
+    if (assignment.is_owner && assignment.editable) {
       return (
-        <IconButton aria-label="edit" disabled color="primary">
-          <EditOffIcon />
+        <IconButton
+          aria-label="edit"
+          color="primary"
+          onClick={handleUpdate}
+          title={gettext("Edit assignment")}
+        >
+          <EditIcon />
         </IconButton>
       );
     }
+    return (
+      <IconButton
+        aria-label="edit"
+        color="primary"
+        onClick={handleView}
+        title={gettext("View assignment")}
+      >
+        <VisibilityIcon />
+      </IconButton>
+    );
   };
 
   return (
@@ -143,7 +153,7 @@ export function AssignmentBis({
                 </Typography>
               </Tag>
               {bookmarkIcon()}
-              {editIcon()}
+              {updateOrViewIcon()}
             </Box>
           </Box>
         </CardContent>

@@ -22,6 +22,7 @@ export type GeneralProps = {
 
 export type ToolbarProps = {
   gettext: (a: string) => string;
+  enableDistribute?: boolean;
   enableEditMode?: boolean;
   groups?: { title: string; pk: number }[];
   handleDistribute: (form: StudentGroupAssignmentCreateForm) => void;

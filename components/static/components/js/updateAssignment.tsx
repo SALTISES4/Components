@@ -52,6 +52,7 @@ export class App extends Component<
   constructor(props: UpdateAssignmentAppProps) {
     super(props);
     this.state = {
+      assignment: undefined,
       questions: [],
       questionsLoading: false,
       studentgroupassignments: [],
@@ -93,6 +94,7 @@ export class App extends Component<
 
       this.setState(
         {
+          assignment,
           questions,
           questionsLoading: false,
         },
@@ -271,9 +273,11 @@ export class App extends Component<
                 <ThemeProvider theme={saltise}>
                   <Toolbar
                     gettext={this.props.gettext}
+                    enableDistribute={this.state.assignment?.is_valid}
                     enableEditMode={this.props.editableByUser}
                     groups={this.state.teacher?.assignable_groups?.filter(
                       (group) =>
+                        // Remove groups that already have this assignment
                         !this.state.studentgroupassignments
                           .map((sga) => sga.group.pk)
                           .includes(group.pk),

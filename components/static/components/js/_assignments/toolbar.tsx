@@ -16,6 +16,7 @@ import ShareModal from "./shareModal";
 
 export function Toolbar({
   gettext,
+  enableDistribute = false,
   enableEditMode = false,
   groups,
   handleDistribute,
@@ -39,7 +40,9 @@ export function Toolbar({
     >
       <IconButton
         color="primary"
-        disabled={groups === undefined || groups.length == 0}
+        disabled={
+          groups === undefined || groups.length == 0 || !enableDistribute
+        }
         onClick={handleOpenDistributeModal}
       >
         <ShareIcon />

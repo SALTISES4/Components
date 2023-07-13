@@ -17,7 +17,7 @@ import Container from "@mui/system/Container";
 import { Subtitle } from "./styledComponents";
 import { SuperUserBar } from "./_dashboard/superUserBar";
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
-import { StudentGroupsAssignment } from "./_localComponents/assignment";
+import { StudentGroupsAssignment } from "./_localComponents/studentgroupsassignment";
 import { CollectionBlock } from "./_localComponents/collection";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";

@@ -20,7 +20,7 @@ import Stack from "@mui/material/Stack";
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { Assignment } from "./_localComponents/assignment_bis";
 import { CollectionBlock } from "./_localComponents/collection";
-import { StudentGroupsAssignment } from "./_localComponents/assignment";
+import { StudentGroupsAssignment } from "./_localComponents/studentgroupsassignment";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 

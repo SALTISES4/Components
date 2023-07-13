@@ -18,7 +18,7 @@ import Stack from "@mui/material/Stack";
 
 //components
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
-import { Assignment } from "./_localComponents/assignment_bis";
+import { Assignment } from "./_localComponents/assignment";
 import { CollectionBlock } from "./_localComponents/collection";
 import { StudentGroupsAssignment } from "./_localComponents/studentgroupsassignment";
 import { Question } from "./_localComponents/question";

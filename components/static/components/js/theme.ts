@@ -1,3 +1,6 @@
+// https://mui.com/material-ui/about-the-lab/#typescript
+import type {} from "@mui/lab/themeAugmentation";
+
 //import { CSSProperties } from "preact/compat";
 import { createTheme } from "@mui/material/styles";
 

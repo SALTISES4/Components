@@ -53,6 +53,7 @@
     "@babel/runtime": "^7.13.10",
     "@babel/runtime-corejs3": "^7.13.10",
     "@mui/icons-material": "^5.8.4",
+    "@mui/lab": "^5.0.0-alpha.136",
     "@mui/material": "^5.9.0",
     "@mui/styled-engine": "^5.8.0",
     "@mui/x-date-pickers": "^6.9.1",

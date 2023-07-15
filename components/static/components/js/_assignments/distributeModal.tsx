@@ -13,7 +13,6 @@ import { modal as style } from "./styles";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import CloseIcon from "@mui/icons-material/Close";
 import Collapse from "@mui/material/Collapse";
@@ -25,9 +24,11 @@ import FormHelperText from "@mui/material/FormHelperText";
 import IconButton from "@mui/material/IconButton";
 import InputLabel from "@mui/material/InputLabel";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import LoadingButton from "@mui/lab/LoadingButton";
 import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import ShareIcon from "@mui/icons-material/Share";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
@@ -44,6 +45,7 @@ export default function DistributeModal({
   handleSubmit,
   open,
   onClose,
+  waiting,
 }: DistributeModalProps): JSX.Element {
   const [dueDate, setDueDate] = useState(dayjs().add(7, "day"));
   const [errorsOpen, setErrorsOpen] = useState<boolean[]>([]);
@@ -145,19 +147,28 @@ export default function DistributeModal({
             <CancelButton onClick={onClose}>
               <Typography>{gettext("Cancel")}</Typography>
             </CancelButton>
-            <Button
+            <LoadingButton
               disabled={group == "" || dueDate < dayjs()}
+              loadingPosition="end"
               onClick={() =>
-                handleSubmit({
-                  due_date: dueDate.utc().format(), // Convert to UTC!
-                  group_pk: parseInt(group),
-                  show_correct_answers: showCorrectAnswers,
-                })
+                handleSubmit(
+                  {
+                    due_date: dueDate.utc().format(), // Convert to UTC!
+                    group_pk: parseInt(group),
+                    show_correct_answers: showCorrectAnswers,
+                  },
+                  onClose,
+                )
               }
+              loading={waiting}
+              endIcon={<ShareIcon />}
+              sx={{
+                " .MuiLoadingButton-loadingIndicatorEnd": { right: "28px" }, // Layout fix
+              }}
               variant="contained"
             >
-              <Typography>{gettext("Share")}</Typography>
-            </Button>
+              <Typography tag={"span"}>{gettext("Share")}</Typography>
+            </LoadingButton>
           </FormButtonBox>
         </Stack>
       </Box>

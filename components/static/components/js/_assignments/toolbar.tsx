@@ -17,6 +17,7 @@ import ShareModal from "./shareModal";
 export function Toolbar({
   gettext,
   distributeErrors,
+  distributeWaiting,
   enableDistribute = false,
   enableEditMode = false,
   groups,
@@ -71,6 +72,7 @@ export function Toolbar({
           handleSubmit={handleDistribute}
           open={openDistributeModal}
           onClose={handleCloseDistributeModal}
+          waiting={distributeWaiting}
           aria-labelledby="distribute"
           aria-describedby="distribute to students"
         />

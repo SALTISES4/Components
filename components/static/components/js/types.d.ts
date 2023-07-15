@@ -269,7 +269,8 @@ export type UpdateAssignmentAppProps = {
   gettext: (a: string) => string;
   nonce: string;
   assignment: AssignmentDatabaseFields;
-  editableByUser?: boolean;
+  metaEditableByUser?: boolean;
+  questionsEditableByUser?: boolean;
   urls: {
     assignment: string;
     distribute: string;
@@ -281,6 +282,7 @@ export type UpdateAssignmentAppProps = {
 export type UpdateAssignmentAppState = {
   assignment: AssignmentType | undefined;
   distributeErrors: string[];
+  distributeWaiting: boolean;
   questions: QuestionType[];
   questionsLoading: boolean;
   snackbarIsOpen: boolean;

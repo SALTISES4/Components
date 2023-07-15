@@ -54,6 +54,7 @@ export class App extends Component<
     this.state = {
       assignment: undefined,
       distributeErrors: [],
+      distributeWaiting: false,
       questions: [],
       questionsLoading: false,
       studentgroupassignments: [],
@@ -144,14 +145,21 @@ export class App extends Component<
     this.sync();
   }
 
-  handleDistribute = async (partialForm: StudentGroupAssignmentCreateForm) => {
+  handleDistribute = async (
+    partialForm: StudentGroupAssignmentCreateForm,
+    callback: () => void,
+  ) => {
     // Append assignment pk to form
     const form = Object.assign(partialForm, {
       assignment_pk: this.props.assignment.pk,
     });
 
+    this.setState({ distributeWaiting: true });
+
     try {
       const sga = await submitData(this.props.urls.distribute, form, "POST");
+      this.loadStudentGroupAssignments();
+      callback();
       console.info(sga);
     } catch (error: any) {
       if (typeof error === "object") {
@@ -160,6 +168,8 @@ export class App extends Component<
           console.info(this.state, error),
         );
       }
+    } finally {
+      this.setState({ distributeWaiting: false });
     }
   };
 
@@ -282,8 +292,12 @@ export class App extends Component<
                   <Toolbar
                     gettext={this.props.gettext}
                     distributeErrors={this.state.distributeErrors}
+                    distributeWaiting={this.state.distributeWaiting}
                     enableDistribute={this.state.assignment?.is_valid}
-                    enableEditMode={this.props.editableByUser}
+                    enableEditMode={
+                      this.props.questionsEditableByUser ||
+                      this.props.metaEditableByUser
+                    }
                     groups={this.state.teacher?.assignable_groups?.filter(
                       (group) =>
                         // Remove groups that already have this assignment

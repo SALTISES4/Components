@@ -280,6 +280,7 @@ export type UpdateAssignmentAppProps = {
 
 export type UpdateAssignmentAppState = {
   assignment: AssignmentType | undefined;
+  distributeErrors: string[];
   questions: QuestionType[];
   questionsLoading: boolean;
   snackbarIsOpen: boolean;

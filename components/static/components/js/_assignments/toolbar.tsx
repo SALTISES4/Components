@@ -16,6 +16,7 @@ import ShareModal from "./shareModal";
 
 export function Toolbar({
   gettext,
+  distributeErrors,
   enableDistribute = false,
   enableEditMode = false,
   groups,
@@ -65,6 +66,7 @@ export function Toolbar({
       {groups ? (
         <DistributeModal
           gettext={gettext}
+          errors={distributeErrors}
           groups={groups}
           handleSubmit={handleDistribute}
           open={openDistributeModal}

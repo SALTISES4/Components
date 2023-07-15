@@ -1,31 +1,35 @@
 import { h } from "preact";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 
 //functions
 import dayjs, { Dayjs } from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { titlecase } from "../functions";
 
 //styles
 import { modal as style } from "./styles";
 
 //material ui components
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
+import CloseIcon from "@mui/icons-material/Close";
+import Collapse from "@mui/material/Collapse";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
+import FormHelperText from "@mui/material/FormHelperText";
+import IconButton from "@mui/material/IconButton";
+import InputLabel from "@mui/material/InputLabel";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormHelperText from "@mui/material/FormHelperText";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 //components
 import { CancelButton, FormButtonBox } from "../styledComponents";
@@ -35,16 +39,29 @@ import { DistributeModalProps } from "./types";
 
 export default function DistributeModal({
   gettext,
+  errors,
   groups,
   handleSubmit,
   open,
   onClose,
 }: DistributeModalProps): JSX.Element {
-  const [dueDate, setDueDate] = useState(dayjs());
+  const [dueDate, setDueDate] = useState(dayjs().add(7, "day"));
+  const [errorsOpen, setErrorsOpen] = useState<boolean[]>([]);
   const [group, setGroup] = useState("");
   const [showCorrectAnswers, setShowCorrectAnswers] = useState(true);
 
+  useEffect(() => {
+    setErrorsOpen(errors.map(() => true));
+  }, [errors]);
+
+  const closeError = (index: number) => {
+    const _errorsOpen = [...errorsOpen];
+    _errorsOpen[index] = false;
+    setErrorsOpen(_errorsOpen);
+  };
+
   dayjs.extend(utc);
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
@@ -61,6 +78,24 @@ export default function DistributeModal({
         </Typography>
 
         <Stack spacing={3}>
+          {errors.map((e, i) => (
+            <Collapse key={i} in={errorsOpen[i]}>
+              <Alert
+                severity="error"
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="error"
+                    onClick={() => closeError(i)}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                }
+              >
+                {titlecase(e[0])}
+              </Alert>
+            </Collapse>
+          ))}
           <FormControl required>
             <InputLabel id="group-select">{gettext("Group")}</InputLabel>
             <Select

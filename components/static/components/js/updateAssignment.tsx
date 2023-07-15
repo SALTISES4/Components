@@ -53,6 +53,7 @@ export class App extends Component<
     super(props);
     this.state = {
       assignment: undefined,
+      distributeErrors: [],
       questions: [],
       questionsLoading: false,
       studentgroupassignments: [],
@@ -152,7 +153,14 @@ export class App extends Component<
     try {
       const sga = await submitData(this.props.urls.distribute, form, "POST");
       console.info(sga);
-    } catch {}
+    } catch (error: any) {
+      if (typeof error === "object") {
+        const e = Object.values(error) as string[];
+        this.setState({ distributeErrors: e }, () =>
+          console.info(this.state, error),
+        );
+      }
+    }
   };
 
   groups = () => {
@@ -273,6 +281,7 @@ export class App extends Component<
                 <ThemeProvider theme={saltise}>
                   <Toolbar
                     gettext={this.props.gettext}
+                    distributeErrors={this.state.distributeErrors}
                     enableDistribute={this.state.assignment?.is_valid}
                     enableEditMode={this.props.editableByUser}
                     groups={this.state.teacher?.assignable_groups?.filter(

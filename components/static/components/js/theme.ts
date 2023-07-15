@@ -225,6 +225,19 @@ const paletteAndTypography = createTheme({
 
 const saltise = createTheme(paletteAndTypography, {
   components: {
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          " .MuiIconButton-root": {
+            padding: "4px",
+          },
+        },
+        standardError: {
+          backgroundColor: paletteAndTypography.palette.errorTint.main,
+          color: paletteAndTypography.palette.error.main,
+        },
+      },
+    },
     MuiAppBar: {
       styleOverrides: {
         root: {
@@ -418,13 +431,6 @@ const saltise = createTheme(paletteAndTypography, {
         },
       },
     },
-    MuiIconButton: {
-      styleOverrides: {
-        root: {
-          color: paletteAndTypography.palette.primary.main,
-        },
-      },
-    },
     MuiSvgIcon: {
       styleOverrides: {
         fontSizeSmall: {
@@ -461,14 +467,6 @@ const saltise = createTheme(paletteAndTypography, {
 
 export const formTheme = createTheme(saltise, {
   components: {
-    MuiAlert: {
-      styleOverrides: {
-        standardError: {
-          backgroundColor: saltise.palette.errorTint.main,
-          color: saltise.palette.error.main,
-        },
-      },
-    },
     MuiCard: {
       styleOverrides: {
         root: {
@@ -505,14 +503,6 @@ export const formTheme = createTheme(saltise, {
             color: saltise.palette.secondary4.main,
             fontSize: "14px",
           },
-        },
-      },
-    },
-    MuiIconButton: {
-      styleOverrides: {
-        root: {
-          color: "inherit",
-          padding: "4px",
         },
       },
     },

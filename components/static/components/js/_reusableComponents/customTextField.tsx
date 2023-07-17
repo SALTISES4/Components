@@ -41,7 +41,7 @@ export const CustomTextField = ({
           gap: "5px",
         }}
       >
-        <Typography sx={{ marginBottom: "2px", marginLeft: "14px" }}>
+        <Typography variant="h5" sx={{ marginBottom: "2px" }}>
           {title}
         </Typography>
         {icon && tooltip.length > 0 ? (

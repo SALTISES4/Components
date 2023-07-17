@@ -192,6 +192,7 @@ export function Question({
     if (showDetails) {
       return (
         <IconButton
+          color="primary"
           onClick={(evt: MouseEvent) => evt.stopPropagation()}
           title={gettext("Add to assignment")}
         >

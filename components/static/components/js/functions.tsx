@@ -1,8 +1,15 @@
 import { get, submitData } from "./ajax";
 
+import DOMPurify from "dompurify";
 import { TeacherType } from "./types";
 
 import { CollectionType } from "./_localComponents/types";
+
+export const purify = (html: string) => {
+  return DOMPurify.sanitize(html, {
+    USE_PROFILES: { html: true },
+  });
+};
 
 export function titlecase(title: string) {
   return title.slice(0, 1).toUpperCase() + title.slice(1);

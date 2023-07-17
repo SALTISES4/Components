@@ -1,10 +1,12 @@
-import { h } from "preact";
+import { Fragment, h } from "preact";
 
 import { useState } from "preact/hooks";
 
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SendIcon from "@mui/icons-material/Send";
 import ShareIcon from "@mui/icons-material/Share";
 import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
 
 import Box from "@mui/system/Box";
 import IconButton from "@mui/material/IconButton";
@@ -18,10 +20,13 @@ export function Toolbar({
   gettext,
   distributeErrors,
   distributeWaiting,
+  editing = false,
   enableDistribute = false,
-  enableEditMode = false,
+  enableEdit = false,
   groups,
   handleDistribute,
+  handleEdit,
+  handleSave,
 }: ToolbarProps): JSX.Element {
   const [openShareModal, setOpenShareModal] = useState(false);
   const handleOpenShareModal = () => setOpenShareModal(true);
@@ -40,22 +45,55 @@ export function Toolbar({
         gap: "35px",
       }}
     >
-      <IconButton
-        color="primary"
-        disabled={
-          groups === undefined || groups.length == 0 || !enableDistribute
-        }
-        onClick={handleOpenDistributeModal}
-      >
-        <ShareIcon />
-      </IconButton>
-      <IconButton color="primary" onClick={handleOpenShareModal}>
-        <SendIcon />
-      </IconButton>
-      {enableEditMode ? (
-        <IconButton color="primary">
-          <EditIcon />
-        </IconButton>
+      {!editing ? (
+        <Fragment>
+          <IconButton
+            color="primary"
+            disabled={
+              groups === undefined || groups.length == 0 || !enableDistribute
+            }
+            onClick={handleOpenDistributeModal}
+            title={gettext("Distribute")}
+          >
+            <ShareIcon />
+          </IconButton>
+          <IconButton
+            color="primary"
+            disabled={editing}
+            onClick={handleOpenShareModal}
+            title={gettext("Share with a colleague")}
+          >
+            <SendIcon />
+          </IconButton>
+        </Fragment>
+      ) : null}
+      {enableEdit ? (
+        editing ? (
+          <Fragment>
+            <IconButton
+              color="primary"
+              onClick={() => handleEdit(!editing)}
+              title={gettext("Cancel changes")}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            <IconButton
+              color="primary"
+              onClick={handleSave}
+              title={gettext("Save changes")}
+            >
+              <SaveIcon />
+            </IconButton>
+          </Fragment>
+        ) : (
+          <IconButton
+            color="primary"
+            onClick={() => handleEdit(!editing)}
+            title={gettext("Edit")}
+          >
+            <EditIcon />
+          </IconButton>
+        )
       ) : null}
       <ShareModal
         open={openShareModal}

@@ -1,13 +1,13 @@
 import { Component, h } from "preact";
 import { formTheme } from "../theme";
+import { purify } from "../functions";
 
-import { EditorState, convertToRaw } from "draft-js";
+import { ContentState, EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { CustomEditorProps, CustomEditorState } from "./types";
 
-import DOMPurify from "dompurify";
 import draftToHtml from "draftjs-to-html";
-// import htmlToDraft from "html-to-draftjs"; // Will be needed when editing an initial value
+import htmlToDraft from "html-to-draftjs";
 
 export class CustomEditor extends Component<
   CustomEditorProps,
@@ -15,8 +15,16 @@ export class CustomEditor extends Component<
 > {
   constructor(props: CustomEditorProps) {
     super(props);
+
+    const { contentBlocks, entityMap } = htmlToDraft(this.props.value);
+    const contentState = ContentState.createFromBlockArray(
+      contentBlocks,
+      entityMap,
+    );
+    const editorState = EditorState.createWithContent(contentState);
+
     this.state = {
-      editorState: EditorState.createEmpty(),
+      editorState,
     };
   }
 
@@ -28,12 +36,7 @@ export class CustomEditor extends Component<
       },
       () =>
         this.props.setValue(
-          DOMPurify.sanitize(
-            draftToHtml(convertToRaw(editorState.getCurrentContent())),
-            {
-              USE_PROFILES: { html: true },
-            },
-          ),
+          purify(draftToHtml(convertToRaw(editorState.getCurrentContent()))),
         ),
     );
   };

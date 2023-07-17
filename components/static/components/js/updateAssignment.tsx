@@ -34,7 +34,10 @@ import {
   QuestionType,
   StudentGroupAssignmentType,
 } from "./_localComponents/types";
-import { StudentGroupAssignmentCreateForm } from "./_assignments/types";
+import {
+  AssignmentMetaFieldsForm,
+  StudentGroupAssignmentCreateForm,
+} from "./_assignments/types";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -52,9 +55,21 @@ export class App extends Component<
   constructor(props: UpdateAssignmentAppProps) {
     super(props);
     this.state = {
-      assignment: undefined,
+      assignment: {
+        description: this.props.assignment.description,
+        intro_page: this.props.assignment.intro_page,
+        conclusion_page: this.props.assignment.conclusion_page,
+        pk: this.props.assignment.pk,
+        title: this.props.assignment.title,
+      },
       distributeErrors: [],
       distributeWaiting: false,
+      editing: false,
+      form: {
+        description: this.props.assignment.description,
+        intro_page: this.props.assignment.intro_page,
+        conclusion_page: this.props.assignment.conclusion_page,
+      },
       questions: [],
       questionsLoading: false,
       studentgroupassignments: [],
@@ -157,10 +172,9 @@ export class App extends Component<
     this.setState({ distributeWaiting: true });
 
     try {
-      const sga = await submitData(this.props.urls.distribute, form, "POST");
+      await submitData(this.props.urls.distribute, form, "POST");
       this.loadStudentGroupAssignments();
       callback();
-      console.info(sga);
     } catch (error: any) {
       if (typeof error === "object") {
         const e = Object.values(error) as string[];
@@ -171,6 +185,40 @@ export class App extends Component<
     } finally {
       this.setState({ distributeWaiting: false });
     }
+  };
+
+  handleEdit = (mode: boolean) => {
+    this.setState({ editing: mode });
+  };
+
+  handleSave = async () => {
+    console.info(this.state.form);
+    try {
+      const assignment = (await submitData(
+        this.props.urls.assignment,
+        this.state.form,
+        "PATCH",
+      )) as unknown as AssignmentType;
+      // deepcode ignore ReactNextState: gettext is a constant
+      this.setState({
+        assignment,
+        editing: false,
+        snackbarIsOpen: true,
+        snackbarMessage: this.props.gettext("Assignment updated"),
+      });
+    } catch (error: any) {
+      // deepcode ignore ReactNextState: gettext is a constant
+      this.setState({
+        snackbarIsOpen: true,
+        snackbarMessage: this.props.gettext("An error occurred"),
+      });
+    }
+  };
+
+  updateForm = (field: keyof AssignmentMetaFieldsForm, value: string) => {
+    const _form = { ...this.state.form };
+    _form[field] = value;
+    this.setState({ form: _form });
   };
 
   groups = () => {
@@ -293,8 +341,9 @@ export class App extends Component<
                     gettext={this.props.gettext}
                     distributeErrors={this.state.distributeErrors}
                     distributeWaiting={this.state.distributeWaiting}
+                    editing={this.state.editing}
                     enableDistribute={this.state.assignment?.is_valid}
-                    enableEditMode={
+                    enableEdit={
                       this.props.questionsEditableByUser ||
                       this.props.metaEditableByUser
                     }
@@ -306,6 +355,8 @@ export class App extends Component<
                           .includes(group.pk),
                     )}
                     handleDistribute={this.handleDistribute}
+                    handleEdit={this.handleEdit}
+                    handleSave={this.handleSave}
                   />
                 </ThemeProvider>
               </Container>
@@ -321,11 +372,24 @@ export class App extends Component<
                   </Typography>
                   <GeneralDescription
                     gettext={this.props.gettext}
-                    description={this.props.assignment.description || ""}
+                    editing={this.state.editing}
+                    EditorIcons={this.props.EditorIcons}
                     identifier={this.props.assignment.pk}
-                    instructions={this.props.assignment.intro_page || ""}
-                    notes={this.props.assignment.conclusion_page || ""}
                     owner={this.props.assignment.owner || [""]}
+                    description={this.state.assignment.description || "N/A"}
+                    intro_page={this.state.assignment.intro_page || ""}
+                    conclusion_page={
+                      this.state.assignment.conclusion_page || ""
+                    }
+                    form={this.state.form}
+                    setters={{
+                      description: (value) =>
+                        this.updateForm("description", value),
+                      intro_page: (value) =>
+                        this.updateForm("intro_page", value),
+                      conclusion_page: (value) =>
+                        this.updateForm("conclusion_page", value),
+                    }}
                   />
                 </Box>
                 <Box>

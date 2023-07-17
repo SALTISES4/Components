@@ -1,26 +1,33 @@
 import { Fragment, h } from "preact";
-
 import { useState } from "preact/hooks";
+
+import { purify } from "../functions";
 
 //material ui components
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 
 //components
-import { HTMLTextBox, TextBox } from "./htmlTextBox";
+import { TextBox } from "./textBox";
+import { CustomEditorField } from "../_reusableComponents/customEditorField";
 
 //types
 import { GeneralProps } from "./types";
 
 export function GeneralDescription({
   gettext,
+  editing = false,
+  EditorIcons,
   identifier,
   owner,
   description,
-  instructions,
-  notes,
+  intro_page,
+  conclusion_page,
+  form,
+  setters,
 }: GeneralProps): JSX.Element {
   const [{ showMore }, setShowMore] = useState<{
     showMore: boolean;
@@ -47,31 +54,120 @@ export function GeneralDescription({
     );
   };
 
+  const descriptionSection = () => {
+    if (editing) {
+      return (
+        <TextBox>
+          <CustomEditorField
+            title="Description"
+            icon={HelpOutlineIcon}
+            EditorIcons={EditorIcons}
+            value={form.description || ""}
+            setValue={(value) => setters.description(purify(value))}
+            tooltip={gettext(
+              "Notes you would like keep for yourself (or other teachers) regarding this assignment.",
+            )}
+          />
+        </TextBox>
+      );
+    }
+    return (
+      <TextBox title={gettext("Description")}>
+        <Typography
+          dangerouslySetInnerHTML={{ __html: purify(description) }}
+          sx={{
+            "p:first-of-type": { marginTop: "0px" },
+            "p:last-of-type": { marginBottom: "0px" },
+          }}
+        />
+      </TextBox>
+    );
+  };
+
+  const instructionsSection = () => {
+    if (editing) {
+      return (
+        <TextBox>
+          <CustomEditorField
+            title="Special instructions"
+            icon={HelpOutlineIcon}
+            EditorIcons={EditorIcons}
+            value={form.intro_page || ""}
+            setValue={(value) => setters.intro_page(purify(value))}
+            tooltip={
+              "Any special instructions you would like students to read before they start the assignment."
+            }
+          />
+        </TextBox>
+      );
+    }
+    return (
+      <TextBox title={gettext("Special instructions")}>
+        <Typography
+          dangerouslySetInnerHTML={{ __html: purify(intro_page) }}
+          sx={{
+            "p:first-of-type": { marginTop: "0px" },
+            "p:last-of-type": { marginBottom: "0px" },
+          }}
+        />
+      </TextBox>
+    );
+  };
+
+  const notesSection = () => {
+    if (editing) {
+      return (
+        <TextBox>
+          <CustomEditorField
+            title="Post assignment notes"
+            icon={HelpOutlineIcon}
+            EditorIcons={EditorIcons}
+            value={form.conclusion_page || ""}
+            setValue={(value) => setters.conclusion_page(purify(value))}
+            tooltip={
+              "Any notes you would like to leave for students to read that will be shown after the last question of the assignment."
+            }
+          />
+        </TextBox>
+      );
+    }
+    return (
+      <TextBox title={gettext("Post assignment notes")}>
+        <Typography
+          dangerouslySetInnerHTML={{ __html: purify(conclusion_page) }}
+          sx={{
+            "p:first-of-type": { marginTop: "0px" },
+            "p:last-of-type": { marginBottom: "0px" },
+          }}
+        />
+      </TextBox>
+    );
+  };
+
   return (
     <Box display="flex" sx={{ gap: "20px" }}>
       <Box display="flex" flexDirection={"column"} flex={2}>
-        <TextBox title={gettext("Identifier")} text={identifier} />
+        <TextBox title={gettext("Identifier")}>
+          <Typography>{identifier}</Typography>
+        </TextBox>
         <TextBox
           title={owner.length < 2 ? gettext("Author") : gettext("Authors")}
-          text={owner.join(", ")}
-        />
+        >
+          <Typography>{owner.join(", ")}</Typography>
+        </TextBox>
       </Box>
       <Box display="flex" flexDirection={"column"} flex={5}>
-        <HTMLTextBox
-          title={gettext("Description")}
-          text={description || gettext("N/A")}
-        />
-        {instructions || notes ? (
+        {descriptionSection()}
+        {editing ? (
+          <Fragment>
+            {instructionsSection()}
+            {notesSection()}
+          </Fragment>
+        ) : intro_page || conclusion_page ? (
           <Fragment>
             <Collapse in={showMore} timeout={500} unmountOnExit>
-              <HTMLTextBox
-                title={gettext("Special instructions")}
-                text={instructions}
-              />
-              <HTMLTextBox
-                title={gettext("Post assignment notes")}
-                text={notes}
-              />
+              {instructionsSection()}
+              {notesSection()}
             </Collapse>
             {show()}
           </Fragment>

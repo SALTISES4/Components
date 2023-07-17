@@ -10,6 +10,8 @@ import {
   UserType,
 } from "./_localComponents/types";
 
+import { AssignmentMetaFieldsForm } from "./_assignments/types";
+
 type TeacherType = {
   activeAssignmentCount: number;
   activeGroupCount: number;
@@ -269,6 +271,7 @@ export type UpdateAssignmentAppProps = {
   gettext: (a: string) => string;
   nonce: string;
   assignment: AssignmentDatabaseFields;
+  EditorIcons: EditorIconsType;
   metaEditableByUser?: boolean;
   questionsEditableByUser?: boolean;
   urls: {
@@ -280,9 +283,11 @@ export type UpdateAssignmentAppProps = {
 };
 
 export type UpdateAssignmentAppState = {
-  assignment: AssignmentType | undefined;
+  assignment: AssignmentType;
   distributeErrors: string[];
   distributeWaiting: boolean;
+  editing: boolean;
+  form: AssignmentMetaFieldsForm;
   questions: QuestionType[];
   questionsLoading: boolean;
   snackbarIsOpen: boolean;

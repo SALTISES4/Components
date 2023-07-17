@@ -201,11 +201,19 @@ export class App extends Component<
         this.state.form,
         "PATCH",
       )) as unknown as AssignmentType;
+      // Update form
+      const form = {
+        description: assignment.description,
+        intro_page: assignment.intro_page,
+        conclusion_page: assignment.conclusion_page,
+        title: assignment.title,
+      };
       // deepcode ignore ReactNextState: gettext is a constant
       this.setState(
         {
           assignment,
           editing: false,
+          form,
           snackbarIsOpen: true,
           snackbarMessage: this.props.gettext("Assignment updated"),
         },

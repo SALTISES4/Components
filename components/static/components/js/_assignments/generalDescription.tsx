@@ -82,9 +82,11 @@ export function GeneralDescription({
       );
     }
     return (
-      <Typography variant="h1" align="left">
-        {title}
-      </Typography>
+      <Typography
+        variant="h1"
+        align="left"
+        dangerouslySetInnerHTML={{ __html: purify(title, false) }}
+      />
     );
   };
 

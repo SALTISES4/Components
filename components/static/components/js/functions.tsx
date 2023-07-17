@@ -5,9 +5,9 @@ import { TeacherType } from "./types";
 
 import { CollectionType } from "./_localComponents/types";
 
-export const purify = (html: string) => {
+export const purify = (html: string, allowHTML: boolean = true) => {
   return DOMPurify.sanitize(html, {
-    USE_PROFILES: { html: true },
+    USE_PROFILES: { html: allowHTML },
   });
 };
 

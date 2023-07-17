@@ -16,7 +16,7 @@ export class CustomEditor extends Component<
   constructor(props: CustomEditorProps) {
     super(props);
 
-    const { contentBlocks, entityMap } = htmlToDraft(this.props.value);
+    const { contentBlocks, entityMap } = htmlToDraft(purify(this.props.value));
     const contentState = ContentState.createFromBlockArray(
       contentBlocks,
       entityMap,
@@ -29,7 +29,6 @@ export class CustomEditor extends Component<
   }
 
   onEditorStateChange = (editorState: any) => {
-    console.log(editorState);
     this.setState(
       {
         editorState,

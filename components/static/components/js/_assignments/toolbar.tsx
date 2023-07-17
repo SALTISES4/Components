@@ -23,6 +23,7 @@ export function Toolbar({
   editing = false,
   enableDistribute = false,
   enableEdit = false,
+  enableSave,
   groups,
   handleDistribute,
   handleEdit,
@@ -73,12 +74,13 @@ export function Toolbar({
             <IconButton
               color="primary"
               onClick={() => handleEdit(!editing)}
-              title={gettext("Cancel changes")}
+              title={gettext("Go back")}
             >
               <ArrowBackIcon />
             </IconButton>
             <IconButton
               color="primary"
+              disabled={!enableSave}
               onClick={handleSave}
               title={gettext("Save changes")}
             >

@@ -44,6 +44,7 @@ export type ToolbarProps = {
   editing: boolean;
   enableDistribute?: boolean;
   enableEdit?: boolean;
+  enableSave: boolean;
   groups?: { title: string; pk: number }[];
   handleDistribute: (
     form: StudentGroupAssignmentCreateForm,

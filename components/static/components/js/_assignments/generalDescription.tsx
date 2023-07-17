@@ -63,7 +63,7 @@ export function GeneralDescription({
             icon={HelpOutlineIcon}
             EditorIcons={EditorIcons}
             value={form.description || ""}
-            setValue={(value) => setters.description(purify(value))}
+            setValue={setters.description}
             tooltip={gettext(
               "Notes you would like keep for yourself (or other teachers) regarding this assignment.",
             )}
@@ -93,7 +93,7 @@ export function GeneralDescription({
             icon={HelpOutlineIcon}
             EditorIcons={EditorIcons}
             value={form.intro_page || ""}
-            setValue={(value) => setters.intro_page(purify(value))}
+            setValue={setters.intro_page}
             tooltip={
               "Any special instructions you would like students to read before they start the assignment."
             }
@@ -123,7 +123,7 @@ export function GeneralDescription({
             icon={HelpOutlineIcon}
             EditorIcons={EditorIcons}
             value={form.conclusion_page || ""}
-            setValue={(value) => setters.conclusion_page(purify(value))}
+            setValue={setters.conclusion_page}
             tooltip={
               "Any notes you would like to leave for students to read that will be shown after the last question of the assignment."
             }

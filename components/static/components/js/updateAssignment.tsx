@@ -200,12 +200,15 @@ export class App extends Component<
         "PATCH",
       )) as unknown as AssignmentType;
       // deepcode ignore ReactNextState: gettext is a constant
-      this.setState({
-        assignment,
-        editing: false,
-        snackbarIsOpen: true,
-        snackbarMessage: this.props.gettext("Assignment updated"),
-      });
+      this.setState(
+        {
+          assignment,
+          editing: false,
+          snackbarIsOpen: true,
+          snackbarMessage: this.props.gettext("Assignment updated"),
+        },
+        () => console.info(console.info(this.state.assignment)),
+      );
     } catch (error: any) {
       // deepcode ignore ReactNextState: gettext is a constant
       this.setState({
@@ -346,6 +349,15 @@ export class App extends Component<
                     enableEdit={
                       this.props.questionsEditableByUser ||
                       this.props.metaEditableByUser
+                    }
+                    enableSave={
+                      // wysiwyg editor will pad end with a newline on focus
+                      this.state.assignment.description !=
+                        this.state.form.description?.trimEnd() ||
+                      this.state.assignment.intro_page !=
+                        this.state.form.intro_page?.trimEnd() ||
+                      this.state.assignment.conclusion_page !=
+                        this.state.form.conclusion_page?.trimEnd()
                     }
                     groups={this.state.teacher?.assignable_groups?.filter(
                       (group) =>

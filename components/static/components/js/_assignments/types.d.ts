@@ -6,6 +6,7 @@ export type AssignmentMetaFieldsForm = {
   description: string | undefined;
   intro_page: string | undefined;
   conclusion_page: string | undefined;
+  title: string | undefined;
 };
 export type StudentGroupAssignmentCreateForm = {
   due_date: string;
@@ -28,12 +29,14 @@ export type GeneralProps = {
   description: string;
   intro_page: string;
   conclusion_page: string;
+  title: string;
   // Form
   form: AssignmentMetaFieldsForm;
   setters: {
     description: (a: string) => void;
     intro_page: (a: string) => void;
     conclusion_page: (a: string) => void;
+    title: (a: string) => void;
   };
 };
 

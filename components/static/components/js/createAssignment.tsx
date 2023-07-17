@@ -4,8 +4,8 @@ export { h, render };
 import { submitData } from "./ajax";
 import { titlecase } from "./functions";
 import {
-  lengthValidator,
-  lettersNumbersUnderscoreOnlyValidator,
+  assignmentIdentifierValidator,
+  assignmentTitleValidator,
 } from "./validators";
 
 //components
@@ -98,17 +98,6 @@ export class App extends Component<
     this.setState({ errorsOpen });
   };
 
-  identifierValidator = (identifier: string) => {
-    return (
-      lettersNumbersUnderscoreOnlyValidator(identifier) &&
-      lengthValidator(identifier, 2, 100)
-    );
-  };
-
-  titleValidator = (title: string) => {
-    return lengthValidator(title, 1, 200);
-  };
-
   render() {
     return (
       <ThemeProvider theme={formTheme}>
@@ -155,7 +144,7 @@ export class App extends Component<
                     minLength={2}
                     maxLength={100}
                     setValue={(identifier) => this.setState({ identifier })}
-                    validator={this.identifierValidator}
+                    validator={assignmentIdentifierValidator}
                     value={this.state.identifier}
                   />
                   <CustomTextField
@@ -167,7 +156,7 @@ export class App extends Component<
                     minLength={1}
                     maxLength={200}
                     setValue={(title) => this.setState({ title })}
-                    validator={this.titleValidator}
+                    validator={assignmentTitleValidator}
                     value={this.state.title}
                   />
                   <CustomEditorField
@@ -227,8 +216,8 @@ export class App extends Component<
                 variant="contained"
                 disabled={
                   ![
-                    this.identifierValidator(this.state.identifier),
-                    this.titleValidator(this.state.title),
+                    assignmentIdentifierValidator(this.state.identifier),
+                    assignmentTitleValidator(this.state.title),
                   ].every((test) => test) || this.state.submitting
                 }
               >

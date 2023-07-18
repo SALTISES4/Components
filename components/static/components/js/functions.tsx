@@ -6,10 +6,20 @@ import { TeacherType } from "./types";
 import { CollectionType } from "./_localComponents/types";
 import { AssignmentQuestionCreateForm } from "./_reusableComponents/types";
 
-export const purify = (html: string) => {
-  return DOMPurify.sanitize(html, {
-    USE_PROFILES: { html: true },
-  });
+export const purifyHTML = (html: string | undefined): string => {
+  if (html) {
+    return DOMPurify.sanitize(html, {
+      USE_PROFILES: { html: true },
+    });
+  }
+  return "";
+};
+
+export const purifyText = (text: string | undefined): string => {
+  if (text) {
+    return DOMPurify.sanitize(text, { ALLOWED_TAGS: [] });
+  }
+  return "";
 };
 
 export function titlecase(title: string) {

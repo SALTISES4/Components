@@ -1,6 +1,6 @@
 import { Component, h } from "preact";
 import { formTheme } from "../theme";
-import { purify } from "../functions";
+import { purifyHTML } from "../functions";
 
 import { ContentState, EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
@@ -16,7 +16,9 @@ export class CustomEditor extends Component<
   constructor(props: CustomEditorProps) {
     super(props);
 
-    const { contentBlocks, entityMap } = htmlToDraft(purify(this.props.value));
+    const { contentBlocks, entityMap } = htmlToDraft(
+      purifyHTML(this.props.value),
+    );
     const contentState = ContentState.createFromBlockArray(
       contentBlocks,
       entityMap,
@@ -35,7 +37,9 @@ export class CustomEditor extends Component<
       },
       () =>
         this.props.setValue(
-          purify(draftToHtml(convertToRaw(editorState.getCurrentContent()))),
+          purifyHTML(
+            draftToHtml(convertToRaw(editorState.getCurrentContent())),
+          ),
         ),
     );
   };

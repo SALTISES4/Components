@@ -57,7 +57,7 @@ export type CustomTextFieldProps = {
   gettext: (a: string) => string;
   autoFocus?: boolean;
   id: string;
-  title: string;
+  title?: string;
   defaultValue: string;
   helperText?: string;
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {

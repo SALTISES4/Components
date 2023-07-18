@@ -47,6 +47,7 @@ import saltise, { formTheme } from "./theme";
 //cache
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
+import { assignmentTitleValidator } from "./validators";
 
 export class App extends Component<
   UpdateAssignmentAppProps,
@@ -69,6 +70,7 @@ export class App extends Component<
         description: this.props.assignment.description,
         intro_page: this.props.assignment.intro_page,
         conclusion_page: this.props.assignment.conclusion_page,
+        title: this.props.assignment.title,
       },
       questions: [],
       questionsLoading: false,
@@ -199,11 +201,19 @@ export class App extends Component<
         this.state.form,
         "PATCH",
       )) as unknown as AssignmentType;
+      // Update form
+      const form = {
+        description: assignment.description,
+        intro_page: assignment.intro_page,
+        conclusion_page: assignment.conclusion_page,
+        title: assignment.title,
+      };
       // deepcode ignore ReactNextState: gettext is a constant
       this.setState(
         {
           assignment,
           editing: false,
+          form,
           snackbarIsOpen: true,
           snackbarMessage: this.props.gettext("Assignment updated"),
         },
@@ -352,12 +362,15 @@ export class App extends Component<
                     }
                     enableSave={
                       // wysiwyg editor will pad end with a newline on focus
-                      this.state.assignment.description !=
+                      (this.state.assignment.description !=
                         this.state.form.description?.trimEnd() ||
-                      this.state.assignment.intro_page !=
-                        this.state.form.intro_page?.trimEnd() ||
-                      this.state.assignment.conclusion_page !=
-                        this.state.form.conclusion_page?.trimEnd()
+                        this.state.assignment.intro_page !=
+                          this.state.form.intro_page?.trimEnd() ||
+                        this.state.assignment.conclusion_page !=
+                          this.state.form.conclusion_page?.trimEnd() ||
+                        this.state.assignment.title !=
+                          this.state.form.title?.trimEnd()) &&
+                      assignmentTitleValidator(this.state.form.title)
                     }
                     groups={this.state.teacher?.assignable_groups?.filter(
                       (group) =>
@@ -374,14 +387,8 @@ export class App extends Component<
               </Container>
             </Paper>
             <Container sx={{ width: "65%" }}>
-              <Typography variant="h1" align="left">
-                {this.props.assignment.title}
-              </Typography>
               <Stack spacing={"50px"}>
                 <Box>
-                  <Typography variant="h2" sx={{ marginTop: "0px" }}>
-                    {this.props.gettext("General")}
-                  </Typography>
                   <GeneralDescription
                     gettext={this.props.gettext}
                     editing={this.state.editing}
@@ -393,6 +400,7 @@ export class App extends Component<
                     conclusion_page={
                       this.state.assignment.conclusion_page || ""
                     }
+                    title={this.state.assignment.title}
                     form={this.state.form}
                     setters={{
                       description: (value) =>
@@ -401,6 +409,7 @@ export class App extends Component<
                         this.updateForm("intro_page", value),
                       conclusion_page: (value) =>
                         this.updateForm("conclusion_page", value),
+                      title: (value) => this.updateForm("title", value),
                     }}
                   />
                 </Box>

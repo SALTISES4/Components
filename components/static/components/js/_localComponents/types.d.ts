@@ -34,7 +34,7 @@ export interface AssignmentDatabaseFields {
   intro_page?: string;
   owner?: UserType[];
   pk: string;
-  title?: string;
+  title: string;
 }
 
 export interface AssignmentType extends AssignmentDatabaseFields {

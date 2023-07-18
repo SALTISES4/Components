@@ -8,6 +8,20 @@ export type AssignmentStateIconProps = {
   state: string;
 };
 
+export type AssignmentQuestionCreateForm = {
+  assignment: string;
+  question_pk: number;
+}
+
+export type AddToAssignmentModalProps = {
+  gettext: (a: string) => string;
+  assignments: { title: string; identifier: string }[];
+  question_pk: number;
+  handleSubmit: (form: AssignmentQuestionCreateForm) => void;
+  open: boolean;
+  onClose: any;
+};
+
 export type CircleProgressionIconProps = {
   progress: number;
 };

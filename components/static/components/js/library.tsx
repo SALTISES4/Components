@@ -4,6 +4,7 @@ export { h, render };
 
 import { get, submitData } from "./ajax";
 import {
+  handleAddToAssignment,
   handleCollectionBookmarkClick,
   handleQuestionBookmarkClick,
 } from "./functions";
@@ -456,11 +457,13 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
               (question: QuestionType, i: number) => (
                 <Question
                   key={i}
+                  assignmentsAddable={this.state.assignments}
                   bookmarked={this.state.teacher?.favourite_questions?.includes(
                     question.pk,
                   )}
                   expanded={this.state.questionsExpanded}
                   gettext={this.props.gettext}
+                  handleAddToAssignment={handleAddToAssignment}
                   question={question}
                   showBookmark={
                     question.is_owner !== undefined

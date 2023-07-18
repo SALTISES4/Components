@@ -202,10 +202,12 @@ export type GroupStudentProps = {
 };
 
 export type QuestionProps = {
+  assignmentsAddable?: AssignmentType[];
   bookmarked?: boolean;
   difficultyLabels?: Record<string, string>;
   expanded?: boolean;
   gettext: (a: string) => string;
+  handleAddToAssignment: () => void;
   question: QuestionType;
   showBookmark: boolean;
   toggleBookmarked: () => void;

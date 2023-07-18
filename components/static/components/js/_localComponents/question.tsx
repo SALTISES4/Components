@@ -31,10 +31,12 @@ import { DifficultyCircleIcon } from "../_reusableComponents/difficultyIconQuest
 import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon";
 
 import { QuestionProps } from "./types";
+import AddToAssignmentModal from "../_reusableComponents/addToAssignmentModal";
 
 const theme = saltise;
 
 export function Question({
+  assignmentsAddable,
   gettext,
   bookmarked,
   difficultyLabels,
@@ -52,6 +54,13 @@ export function Question({
   const [{ showAllCategories }, setShowAllCategories] = useState<{
     showAllCategories: boolean;
   }>({ showAllCategories: false });
+
+  const [openAddToAssignmentModal, setOpenAddToAssignmentModal] =
+    useState(false);
+  const handleOpenAddToAssignmentModal = () =>
+    setOpenAddToAssignmentModal(true);
+  const handleCloseAddToAssignmentModal = () =>
+    setOpenAddToAssignmentModal(false);
 
   useEffect(() => {
     if (expanded !== undefined && showDetails != expanded) {
@@ -191,13 +200,25 @@ export function Question({
   const addToAssignmentIcon = () => {
     if (showDetails) {
       return (
-        <IconButton
-          color="primary"
-          onClick={(evt: MouseEvent) => evt.stopPropagation()}
-          title={gettext("Add to assignment")}
-        >
-          <PlaylistAddIcon fontSize="medium" />
-        </IconButton>
+        <Box>
+          <IconButton
+            color="primary"
+            onClick={handleOpenAddToAssignmentModal}
+            title={gettext("Add to assignment")}
+          >
+            <PlaylistAddIcon fontSize="medium" />
+          </IconButton>
+          <AddToAssignmentModal
+            gettext={gettext}
+            assignments={assignmentsAddable}
+            question_pk={question.pk}
+            handleSubmit={handleAddToAssignment}
+            open={openAddToAssignmentModal}
+            onClose={handleCloseAddToAssignmentModal}
+            aria-labelledby="add"
+            aria-describedby="add question to assignment"
+          />
+        </Box>
       );
     }
   };
@@ -373,7 +394,7 @@ export function Question({
             }}
           >
             {showDetailsIcon()}
-            {addToAssignmentIcon()}
+            {assignmentsAddable ? addToAssignmentIcon() : null}
             {bookmarkIcon()}
             {/* {moreIcon()} */}
           </Stack>

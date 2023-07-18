@@ -4,6 +4,7 @@ import DOMPurify from "dompurify";
 import { TeacherType } from "./types";
 
 import { CollectionType } from "./_localComponents/types";
+import { AssignmentQuestionCreateForm } from "./_reusableComponents/types";
 
 export const purify = (html: string) => {
   return DOMPurify.sanitize(html, {
@@ -111,6 +112,26 @@ export const handleQuestionBookmarkClick = async (
       callback(teacher, message, index, newFavouriteQuestions);
     } catch (e: any) {
       error(e);
+    }
+  }
+};
+
+export const handleAddToAssignment = async (
+  partialForm: AssignmentQuestionCreateForm,
+  assignment: string,
+  question: number,
+  addToAssignmentURL: string,
+): Promise<void> => {
+  const form = Object.assign(partialForm, {
+    assignment,
+    question,
+  });
+  try {
+    await submitData(addToAssignmentURL, form, "POST");
+  } catch (error: any) {
+    if (typeof error === "object") {
+      const e = Object.values(error) as string[];
+      console.info(e);
     }
   }
 };

@@ -172,6 +172,7 @@ export type LibraryAppProps = {
     studentgroupassignments: string;
     questions: string;
     teacher: string;
+    add_to_assignment: string;
   };
   user: UserType;
 };

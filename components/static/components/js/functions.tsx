@@ -4,6 +4,7 @@ import DOMPurify from "dompurify";
 import { TeacherType } from "./types";
 
 import { CollectionType } from "./_localComponents/types";
+import { AssignmentQuestionCreateForm } from "./_reusableComponents/types";
 
 export const purifyHTML = (html: string | undefined): string => {
   if (html) {
@@ -121,6 +122,28 @@ export const handleQuestionBookmarkClick = async (
       callback(teacher, message, index, newFavouriteQuestions);
     } catch (e: any) {
       error(e);
+    }
+  }
+};
+
+export const handleAddToAssignment = async (
+  assignment: string,
+  question_pk: number,
+  addToAssignmentURL: string,
+): Promise<void> => {
+  const form = Object.assign(
+    {},
+    {
+      assignment,
+      question_pk,
+    },
+  );
+  try {
+    await submitData(addToAssignmentURL, form, "POST");
+  } catch (error: any) {
+    if (typeof error === "object") {
+      const e = Object.values(error) as string[];
+      console.info(e);
     }
   }
 };

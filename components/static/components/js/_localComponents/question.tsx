@@ -31,14 +31,17 @@ import { DifficultyCircleIcon } from "../_reusableComponents/difficultyIconQuest
 import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon";
 
 import { QuestionProps } from "./types";
+import AddToAssignmentModal from "../_reusableComponents/addToAssignmentModal";
 
 const theme = saltise;
 
 export function Question({
-  gettext,
+  assignmentsAddable,
   bookmarked,
   difficultyLabels,
   expanded,
+  gettext,
+  handleAddToAssignment,
   question,
   showBookmark,
   toggleBookmarked,
@@ -52,6 +55,15 @@ export function Question({
   const [{ showAllCategories }, setShowAllCategories] = useState<{
     showAllCategories: boolean;
   }>({ showAllCategories: false });
+
+  const [openAddToAssignmentModal, setOpenAddToAssignmentModal] =
+    useState(false);
+  const handleOpenAddToAssignmentModal = () => {
+    setOpenAddToAssignmentModal(true);
+    console.info("click");
+  };
+  const handleCloseAddToAssignmentModal = () =>
+    setOpenAddToAssignmentModal(false);
 
   useEffect(() => {
     if (expanded !== undefined && showDetails != expanded) {
@@ -189,15 +201,29 @@ export function Question({
   };
 
   const addToAssignmentIcon = () => {
-    if (showDetails) {
+    if (showDetails && assignmentsAddable) {
       return (
-        <IconButton
-          color="primary"
-          onClick={(evt: MouseEvent) => evt.stopPropagation()}
-          title={gettext("Add to assignment")}
-        >
-          <PlaylistAddIcon fontSize="medium" />
-        </IconButton>
+        <Box>
+          <IconButton
+            color="primary"
+            onClick={(evt: MouseEvent) => {
+              evt.stopPropagation();
+              handleOpenAddToAssignmentModal();
+            }}
+            title={gettext("Add to assignment")}
+          >
+            <PlaylistAddIcon fontSize="medium" />
+          </IconButton>
+          <AddToAssignmentModal
+            gettext={gettext}
+            assignments={assignmentsAddable}
+            handleSubmit={handleAddToAssignment}
+            open={openAddToAssignmentModal}
+            onClose={handleCloseAddToAssignmentModal}
+            aria-labelledby="add"
+            aria-describedby="add question to assignment"
+          />
+        </Box>
       );
     }
   };
@@ -373,7 +399,7 @@ export function Question({
             }}
           >
             {showDetailsIcon()}
-            {addToAssignmentIcon()}
+            {assignmentsAddable ? addToAssignmentIcon() : null}
             {bookmarkIcon()}
             {/* {moreIcon()} */}
           </Stack>

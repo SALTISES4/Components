@@ -1,11 +1,25 @@
 import { EditorIconsType } from "../types";
 import {
+  AssignmentType,
   QuestionDifficulty,
   QuestionPeerImpact,
 } from "../_localComponents/types";
 
 export type AssignmentStateIconProps = {
   state: string;
+};
+
+export type AssignmentQuestionCreateForm = {
+  assignment: string;
+  question_pk: number;
+};
+
+export type AddToAssignmentModalProps = {
+  gettext: (a: string) => string;
+  assignments: AssignmentType[];
+  handleSubmit: (a: string) => void;
+  open: boolean;
+  onClose: any;
 };
 
 export type CircleProgressionIconProps = {

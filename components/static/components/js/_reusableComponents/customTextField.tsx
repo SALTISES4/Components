@@ -1,6 +1,5 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
-import { purify } from "../functions";
 
 //components
 import { Box, SvgIcon, TextField, Typography } from "@mui/material";
@@ -72,14 +71,14 @@ export const CustomTextField = ({
         defaultValue={defaultValue}
         error={error}
         inputProps={{ minLength, maxLength }}
-        value={purify(value, false)}
+        value={value}
         variant="outlined"
         helperText={`${helperText || ""}  ${
           value.length
         }/${maxLength} ${gettext("characters")}`}
         onChange={(evt: Event) => {
           if (evt.target && evt.target instanceof HTMLInputElement) {
-            setValue(purify(evt.target.value, false));
+            setValue(evt.target.value);
             setError(!validator(evt.target.value));
           }
         }}

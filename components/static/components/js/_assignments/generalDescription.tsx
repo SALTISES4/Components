@@ -1,7 +1,8 @@
+import he from "he";
 import { Fragment, h } from "preact";
 import { useState } from "preact/hooks";
 
-import { purify } from "../functions";
+import { purifyHTML, purifyText } from "../functions";
 import { assignmentTitleValidator } from "../validators";
 
 //material ui components
@@ -64,12 +65,13 @@ export function GeneralDescription({
           gettext={gettext}
           id="title"
           defaultValue=""
+          helperText={gettext("HTML tags not allowed.")}
           icon={HelpOutlineIcon}
           minLength={1}
           maxLength={200}
           setValue={setters.title}
           validator={assignmentTitleValidator}
-          value={form.title || ""}
+          value={he.decode(purifyText(form.title))}
           sx={{
             mb: "7px",
             mt: "27px",
@@ -85,7 +87,7 @@ export function GeneralDescription({
       <Typography
         variant="h1"
         align="left"
-        dangerouslySetInnerHTML={{ __html: purify(title, false) }}
+        dangerouslySetInnerHTML={{ __html: purifyText(title) }}
       />
     );
   };
@@ -110,7 +112,7 @@ export function GeneralDescription({
     return (
       <TextBox title={gettext("Description")}>
         <Typography
-          dangerouslySetInnerHTML={{ __html: purify(description) }}
+          dangerouslySetInnerHTML={{ __html: purifyHTML(description) }}
           sx={{
             "p:first-of-type": { marginTop: "0px" },
             "p:last-of-type": { marginBottom: "0px" },
@@ -140,7 +142,7 @@ export function GeneralDescription({
     return (
       <TextBox title={gettext("Special instructions")}>
         <Typography
-          dangerouslySetInnerHTML={{ __html: purify(intro_page) }}
+          dangerouslySetInnerHTML={{ __html: purifyHTML(intro_page) }}
           sx={{
             "p:first-of-type": { marginTop: "0px" },
             "p:last-of-type": { marginBottom: "0px" },
@@ -170,7 +172,7 @@ export function GeneralDescription({
     return (
       <TextBox title={gettext("Post assignment notes")}>
         <Typography
-          dangerouslySetInnerHTML={{ __html: purify(conclusion_page) }}
+          dangerouslySetInnerHTML={{ __html: purifyHTML(conclusion_page) }}
           sx={{
             "p:first-of-type": { marginTop: "0px" },
             "p:last-of-type": { marginBottom: "0px" },

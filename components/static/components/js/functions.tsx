@@ -5,10 +5,20 @@ import { TeacherType } from "./types";
 
 import { CollectionType } from "./_localComponents/types";
 
-export const purify = (html: string, allowHTML: boolean = true) => {
-  return DOMPurify.sanitize(html, {
-    USE_PROFILES: { html: allowHTML },
-  });
+export const purifyHTML = (html: string | undefined): string => {
+  if (html) {
+    return DOMPurify.sanitize(html, {
+      USE_PROFILES: { html: true },
+    });
+  }
+  return "";
+};
+
+export const purifyText = (text: string | undefined): string => {
+  if (text) {
+    return DOMPurify.sanitize(text, { ALLOWED_TAGS: [] });
+  }
+  return "";
 };
 
 export function titlecase(title: string) {

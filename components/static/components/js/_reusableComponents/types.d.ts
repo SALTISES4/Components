@@ -1,5 +1,6 @@
 import { EditorIconsType } from "../types";
 import {
+  AssignmentType,
   QuestionDifficulty,
   QuestionPeerImpact,
 } from "../_localComponents/types";
@@ -15,9 +16,8 @@ export type AssignmentQuestionCreateForm = {
 
 export type AddToAssignmentModalProps = {
   gettext: (a: string) => string;
-  assignments: { title: string; identifier: string }[];
-  question_pk: number;
-  handleSubmit: (form: AssignmentQuestionCreateForm) => void;
+  assignments: AssignmentType[];
+  handleSubmit: (a:string) => void;
   open: boolean;
   onClose: any;
 };

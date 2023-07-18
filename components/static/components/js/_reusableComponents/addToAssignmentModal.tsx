@@ -24,7 +24,6 @@ import { AddToAssignmentModalProps } from "./types";
 export default function AddToAssignmentModal({
   gettext,
   assignments,
-  question_pk,
   handleSubmit,
   open,
   onClose,
@@ -62,7 +61,7 @@ export default function AddToAssignmentModal({
               }}
             >
               {assignments.map((a, i) => (
-                <MenuItem key={i} value={a.identifier}>
+                <MenuItem key={i} value={a.pk}>
                   {a.title}
                 </MenuItem>
               ))}
@@ -80,12 +79,7 @@ export default function AddToAssignmentModal({
             </CancelButton>
             <Button
               disabled={assignment == ""}
-              onClick={() =>
-                handleSubmit({
-                  assignment,
-                  question_pk,
-                })
-              }
+              onClick={() => handleSubmit(assignment)}
               variant="contained"
             >
               <Typography>{gettext("Add to assignment")}</Typography>

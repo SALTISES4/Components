@@ -457,13 +457,21 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
               (question: QuestionType, i: number) => (
                 <Question
                   key={i}
-                  assignmentsAddable={this.state.assignments}
+                  assignmentsAddable={this.state.assignments.filter(
+                    (a) => a.is_owner && a.editable,
+                  )}
                   bookmarked={this.state.teacher?.favourite_questions?.includes(
                     question.pk,
                   )}
                   expanded={this.state.questionsExpanded}
                   gettext={this.props.gettext}
-                  handleAddToAssignment={handleAddToAssignment}
+                  handleAddToAssignment={(assignment: string) =>
+                    handleAddToAssignment(
+                      assignment,
+                      question.pk,
+                      this.props.urls.add_to_assignment,
+                    )
+                  }
                   question={question}
                   showBookmark={
                     question.is_owner !== undefined

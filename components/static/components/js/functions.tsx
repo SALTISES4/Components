@@ -127,15 +127,17 @@ export const handleQuestionBookmarkClick = async (
 };
 
 export const handleAddToAssignment = async (
-  partialForm: AssignmentQuestionCreateForm,
   assignment: string,
-  question: number,
+  question_pk: number,
   addToAssignmentURL: string,
 ): Promise<void> => {
-  const form = Object.assign(partialForm, {
-    assignment,
-    question,
-  });
+  const form = Object.assign(
+    {},
+    {
+      assignment,
+      question_pk,
+    },
+  );
   try {
     await submitData(addToAssignmentURL, form, "POST");
   } catch (error: any) {

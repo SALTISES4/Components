@@ -37,10 +37,11 @@ const theme = saltise;
 
 export function Question({
   assignmentsAddable,
-  gettext,
   bookmarked,
   difficultyLabels,
   expanded,
+  gettext,
+  handleAddToAssignment,
   question,
   showBookmark,
   toggleBookmarked,
@@ -57,8 +58,10 @@ export function Question({
 
   const [openAddToAssignmentModal, setOpenAddToAssignmentModal] =
     useState(false);
-  const handleOpenAddToAssignmentModal = () =>
+  const handleOpenAddToAssignmentModal = () => {
     setOpenAddToAssignmentModal(true);
+    console.info("click");
+  };
   const handleCloseAddToAssignmentModal = () =>
     setOpenAddToAssignmentModal(false);
 
@@ -198,12 +201,15 @@ export function Question({
   };
 
   const addToAssignmentIcon = () => {
-    if (showDetails) {
+    if (showDetails && assignmentsAddable) {
       return (
         <Box>
           <IconButton
             color="primary"
-            onClick={handleOpenAddToAssignmentModal}
+            onClick={(evt: MouseEvent) => {
+              evt.stopPropagation();
+              handleOpenAddToAssignmentModal();
+            }}
             title={gettext("Add to assignment")}
           >
             <PlaylistAddIcon fontSize="medium" />
@@ -211,7 +217,6 @@ export function Question({
           <AddToAssignmentModal
             gettext={gettext}
             assignments={assignmentsAddable}
-            question_pk={question.pk}
             handleSubmit={handleAddToAssignment}
             open={openAddToAssignmentModal}
             onClose={handleCloseAddToAssignmentModal}

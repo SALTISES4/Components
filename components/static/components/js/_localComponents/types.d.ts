@@ -207,7 +207,7 @@ export type QuestionProps = {
   difficultyLabels?: Record<string, string>;
   expanded?: boolean;
   gettext: (a: string) => string;
-  handleAddToAssignment: (a:string) => void;
+  handleAddToAssignment: (a: string) => void;
   question: QuestionType;
   showBookmark: boolean;
   toggleBookmarked: () => void;

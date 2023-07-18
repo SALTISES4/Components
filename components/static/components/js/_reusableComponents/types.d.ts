@@ -12,12 +12,12 @@ export type AssignmentStateIconProps = {
 export type AssignmentQuestionCreateForm = {
   assignment: string;
   question_pk: number;
-}
+};
 
 export type AddToAssignmentModalProps = {
   gettext: (a: string) => string;
   assignments: AssignmentType[];
-  handleSubmit: (a:string) => void;
+  handleSubmit: (a: string) => void;
   open: boolean;
   onClose: any;
 };

@@ -189,6 +189,7 @@ export type LibraryAppState = {
   questionsLoading: boolean;
   teacher: TeacherType | undefined;
   type: number;
+  waiting: Record<string, boolean>;
 };
 
 export type NavigationAppProps = {

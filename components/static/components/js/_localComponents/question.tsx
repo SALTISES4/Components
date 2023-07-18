@@ -45,6 +45,7 @@ export function Question({
   question,
   showBookmark,
   toggleBookmarked,
+  waiting = false,
 }: QuestionProps): JSX.Element {
   let maxCategoriesShown = 3;
 
@@ -216,12 +217,13 @@ export function Question({
           </IconButton>
           <AddToAssignmentModal
             gettext={gettext}
+            aria-labelledby="add"
+            aria-describedby="add question to assignment"
             assignments={assignmentsAddable}
             handleSubmit={handleAddToAssignment}
             open={openAddToAssignmentModal}
             onClose={handleCloseAddToAssignmentModal}
-            aria-labelledby="add"
-            aria-describedby="add question to assignment"
+            waiting={waiting}
           />
         </Box>
       );

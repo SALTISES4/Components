@@ -211,6 +211,7 @@ export type QuestionProps = {
   question: QuestionType;
   showBookmark: boolean;
   toggleBookmarked: () => void;
+  waiting?: boolean;
 };
 
 export type StudentGroupAssignmentProps = {

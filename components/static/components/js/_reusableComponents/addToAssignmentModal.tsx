@@ -5,15 +5,17 @@ import { useState } from "preact/hooks";
 import { modal as style } from "../_assignments/styles";
 
 //material ui components
+import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Stack from "@mui/material/Stack";
 
 //components
 import { CancelButton, FormButtonBox } from "../styledComponents";
@@ -27,6 +29,7 @@ export default function AddToAssignmentModal({
   handleSubmit,
   open,
   onClose,
+  waiting,
 }: AddToAssignmentModalProps): JSX.Element {
   const [assignment, setAssignment] = useState("");
 
@@ -45,7 +48,7 @@ export default function AddToAssignmentModal({
           )}
         </Typography>
 
-        <Box>
+        <Stack spacing={3}>
           <FormControl required>
             <InputLabel id="assignment-select">
               {gettext("Assignment")}
@@ -77,15 +80,21 @@ export default function AddToAssignmentModal({
             <CancelButton onClick={onClose}>
               <Typography>{gettext("Cancel")}</Typography>
             </CancelButton>
-            <Button
+            <LoadingButton
               disabled={assignment == ""}
+              endIcon={<AddIcon />}
+              loadingPosition="end"
+              loading={waiting}
               onClick={() => handleSubmit(assignment)}
+              sx={{
+                " .MuiLoadingButton-loadingIndicatorEnd": { right: "28px" }, // Layout fix
+              }}
               variant="contained"
             >
-              <Typography>{gettext("Add to assignment")}</Typography>
-            </Button>
+              <Typography>{gettext("Add")}</Typography>
+            </LoadingButton>
           </FormButtonBox>
-        </Box>
+        </Stack>
       </Box>
     </Modal>
   );

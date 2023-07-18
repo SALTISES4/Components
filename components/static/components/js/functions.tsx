@@ -4,7 +4,6 @@ import DOMPurify from "dompurify";
 import { TeacherType } from "./types";
 
 import { CollectionType } from "./_localComponents/types";
-import { AssignmentQuestionCreateForm } from "./_reusableComponents/types";
 
 export const purifyHTML = (html: string | undefined): string => {
   if (html) {

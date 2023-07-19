@@ -1,5 +1,7 @@
 import { h } from "preact";
 
+import { purifyText } from "../functions";
+
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
@@ -113,7 +115,12 @@ export function Assignment({
         <CardContent sx={{ padding: "10px 20px" }}>
           <Box display="flex" justifyContent="space-between">
             <Box>
-              <Typography variant="h3">{assignment.title}</Typography>
+              <Typography
+                variant="h3"
+                dangerouslySetInnerHTML={{
+                  __html: purifyText(assignment.title),
+                }}
+              />
               <Typography
                 variant="caption"
                 sx={{

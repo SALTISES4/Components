@@ -74,7 +74,6 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
       questionsLoading: true,
       teacher: undefined,
       type,
-      waiting: {},
     };
   }
 
@@ -458,26 +457,17 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
               (question: QuestionType, i: number) => (
                 <Question
                   key={i}
-                  assignmentsAddable={this.state.assignments.filter(
-                    (a) => a.is_owner && a.editable,
-                  )}
                   bookmarked={this.state.teacher?.favourite_questions?.includes(
                     question.pk,
                   )}
                   expanded={this.state.questionsExpanded}
                   gettext={this.props.gettext}
                   handleAddToAssignment={async (assignment: string) => {
-                    let _waiting = { ...this.state.waiting };
-                    _waiting[question.pk] = true;
-                    this.setState({ waiting: _waiting });
                     await handleAddToAssignment(
                       assignment,
                       question.pk,
                       this.props.urls.add_to_assignment,
                     );
-                    _waiting = { ...this.state.waiting };
-                    _waiting[question.pk] = false;
-                    this.setState({ waiting: _waiting });
                   }}
                   question={question}
                   showBookmark={
@@ -503,7 +493,6 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                       this.props.urls.teacher,
                     )
                   }
-                  waiting={this.state.waiting[question.pk] || false}
                 />
               ),
             )

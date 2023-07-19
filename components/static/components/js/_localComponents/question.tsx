@@ -19,7 +19,6 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-// import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -31,12 +30,11 @@ import { DifficultyCircleIcon } from "../_reusableComponents/difficultyIconQuest
 import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon";
 
 import { QuestionProps } from "./types";
-import AddToAssignmentModal from "../_reusableComponents/addToAssignmentModal";
+import { AddToAssignmentModal } from "../_reusableComponents/addToAssignmentModal";
 
 const theme = saltise;
 
 export function Question({
-  assignmentsAddable,
   bookmarked,
   difficultyLabels,
   expanded,
@@ -45,7 +43,6 @@ export function Question({
   question,
   showBookmark,
   toggleBookmarked,
-  waiting = false,
 }: QuestionProps): JSX.Element {
   let maxCategoriesShown = 3;
 
@@ -202,7 +199,7 @@ export function Question({
   };
 
   const addToAssignmentIcon = () => {
-    if (showDetails && assignmentsAddable) {
+    if (showDetails && question.urls?.addable_assignments) {
       return (
         <Box>
           <IconButton
@@ -212,6 +209,7 @@ export function Question({
               handleOpenAddToAssignmentModal();
             }}
             title={gettext("Add to assignment")}
+            sx={{ marginLeft: "0px!important" }}
           >
             <PlaylistAddIcon fontSize="medium" />
           </IconButton>
@@ -219,11 +217,13 @@ export function Question({
             gettext={gettext}
             aria-labelledby="add"
             aria-describedby="add question to assignment"
-            assignments={assignmentsAddable}
             handleSubmit={handleAddToAssignment}
             open={openAddToAssignmentModal}
             onClose={handleCloseAddToAssignmentModal}
-            waiting={waiting}
+            question={question}
+            urls={{
+              assignmentList: question.urls?.addable_assignments,
+            }}
           />
         </Box>
       );
@@ -254,16 +254,6 @@ export function Question({
       );
     }
   };
-
-  // const moreIcon = () => {
-  //   if (showDetails) {
-  //     return (
-  //       <IconButton>
-  //         <MoreHorizIcon fontSize="medium" />
-  //       </IconButton>
-  //     );
-  //   }
-  // };
 
   const discipline = () => {
     if (question?.discipline) {
@@ -401,9 +391,8 @@ export function Question({
             }}
           >
             {showDetailsIcon()}
-            {assignmentsAddable ? addToAssignmentIcon() : null}
+            {addToAssignmentIcon()}
             {bookmarkIcon()}
-            {/* {moreIcon()} */}
           </Stack>
         </CardActions>
       </CardActionArea>

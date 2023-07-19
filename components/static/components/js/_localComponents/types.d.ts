@@ -146,6 +146,9 @@ export type QuestionType = {
   pk: number;
   text: string;
   title: string;
+  urls?: {
+    addable_assignments?: string;
+  };
   user: UserType;
   video_url: string;
 };
@@ -202,7 +205,6 @@ export type GroupStudentProps = {
 };
 
 export type QuestionProps = {
-  assignmentsAddable?: AssignmentType[];
   bookmarked?: boolean;
   difficultyLabels?: Record<string, string>;
   expanded?: boolean;
@@ -211,7 +213,6 @@ export type QuestionProps = {
   question: QuestionType;
   showBookmark: boolean;
   toggleBookmarked: () => void;
-  waiting?: boolean;
 };
 
 export type StudentGroupAssignmentProps = {

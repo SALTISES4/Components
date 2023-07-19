@@ -1,6 +1,7 @@
 import { Fragment, h } from "preact";
-
 import { useState } from "preact/hooks";
+
+import { purifyText } from "../functions";
 
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
@@ -63,13 +64,17 @@ export function StudentGroupsAssignment({
   const icon = () => {
     if (open) {
       return (
-        <IconButton size="medium" title={gettext("Hide groups")}>
+        <IconButton
+          color="primary"
+          size="medium"
+          title={gettext("Hide groups")}
+        >
           <RemoveIcon fontSize="medium" onClick={handleClick} />
         </IconButton>
       );
     }
     return (
-      <IconButton size="medium" title={gettext("Show groups")}>
+      <IconButton color="primary" size="medium" title={gettext("Show groups")}>
         <AddIcon fontSize="medium" onClick={handleClick} />
       </IconButton>
     );
@@ -87,9 +92,12 @@ export function StudentGroupsAssignment({
           <CardContent sx={{ padding: "10px 20px" }}>
             <Box display="flex" justifyContent="space-between">
               <Box>
-                <Typography variant="h3">
-                  {studentgroupsassignment.title}
-                </Typography>
+                <Typography
+                  variant="h3"
+                  dangerouslySetInnerHTML={{
+                    __html: purifyText(studentgroupsassignment.title),
+                  }}
+                />
                 <Typography variant="caption">
                   {gettext("By")} {studentgroupsassignment.author}
                 </Typography>

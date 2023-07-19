@@ -1,9 +1,20 @@
 import { EditorIconsType } from "../types";
 import {
-  AssignmentType,
+  QuestionType,
   QuestionDifficulty,
   QuestionPeerImpact,
 } from "../_localComponents/types";
+
+interface Snackbar {
+  snackbarMessage: string;
+  snackbarOpen: boolean;
+}
+
+interface SnackbarProps {
+  message: string;
+  onClose: () => void;
+  open: boolean;
+}
 
 export type AssignmentStateIconProps = {
   state: string;
@@ -11,12 +22,21 @@ export type AssignmentStateIconProps = {
 
 export type AddToAssignmentModalProps = {
   gettext: (a: string) => string;
-  assignments: AssignmentType[];
   handleSubmit: (a: string) => void;
   open: boolean;
   onClose: any;
-  waiting?: boolean;
+  question: QuestionType;
+  urls: {
+    assignmentList: string;
+  };
 };
+
+interface AddToAssignmentModalState extends Snackbar {
+  assignment: string;
+  assignments: { pk: string; title: string }[];
+  loading: boolean;
+  waiting: boolean;
+}
 
 export type CircleProgressionIconProps = {
   progress: number;

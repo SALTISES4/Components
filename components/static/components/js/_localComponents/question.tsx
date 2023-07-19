@@ -199,7 +199,11 @@ export function Question({
   };
 
   const addToAssignmentIcon = () => {
-    if (showDetails && question.urls?.addable_assignments) {
+    if (
+      showDetails &&
+      question.urls?.addable_assignments &&
+      handleAddToAssignment
+    ) {
       return (
         <Box>
           <IconButton

@@ -74,6 +74,17 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     stylisPlugins: [prefixer],
   });
 
+  error = (e: any, message?: string): void => {
+    console.error(e);
+    // deepcode ignore ReactNextState: allow use of gettext props in setState
+    this.setState({
+      snackbarIsOpen: true,
+      snackbarMessage: message
+        ? message
+        : this.props.gettext("An error occurred.  Try refreshing this page."),
+    });
+  };
+
   getStudentGroupAssignments = async (): Promise<void> => {
     // Load studentgroupassignments and regroup by assignment
     try {
@@ -127,7 +138,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
         ) as StudentGroupsAssignmentType[],
       });
     } catch (error: any) {
-      console.error(error);
+      this.error(error);
     } finally {
       this.setState({
         studentgroupassignmentsLoading: false,
@@ -150,7 +161,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
 
       this.setState({ collections });
     } catch (error: any) {
-      console.error(error);
+      this.error(error);
     } finally {
       this.setState({
         collectionsLoading: false,
@@ -171,7 +182,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
 
       this.setState({ questions });
     } catch (error: any) {
-      console.error(error);
+      this.error(error);
     } finally {
       this.setState({
         questionsLoading: false,
@@ -184,7 +195,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
       const teacher = (await get(this.props.urls.teacher)) as TeacherType;
       this.setState({ teacher });
     } catch (error) {
-      console.error(error);
+      this.error(error);
     }
 
     // Load studentgroupassignments
@@ -291,12 +302,14 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                     pk,
                     this.state.teacher,
                     this.props.urls.teacher,
+                    this.error,
                   );
                   updateCollections(
                     pk,
                     (collections) => this.setState({ collections }),
                     this.props.urls.collection,
                     this.state.collections,
+                    this.error,
                   );
                 }}
                 loading={this.state.collectionsLoading}
@@ -349,6 +362,7 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                             question.pk,
                             this.state.teacher,
                             this.props.urls.teacher,
+                            this.error,
                           )
                         }
                       />

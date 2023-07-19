@@ -70,6 +70,7 @@ export const updateCollections = async (
   callback: (collections: CollectionType[]) => void,
   path: string,
   collections: CollectionType[],
+  error: (error: Error) => void = (error) => console.error(error),
 ): Promise<void> => {
   try {
     const url = new URL(path, window.location.origin);
@@ -82,8 +83,8 @@ export const updateCollections = async (
     _collections[index] = collection;
 
     callback(_collections);
-  } catch (error: any) {
-    console.error(error);
+  } catch (e: any) {
+    error(e);
   }
 };
 

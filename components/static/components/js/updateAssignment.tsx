@@ -89,15 +89,14 @@ export class App extends Component<
     stylisPlugins: [prefixer],
   });
 
-  error = (e: any): void => {
-    const message = this.props.gettext(
-      "An error occurred.  Try refreshing this page.",
-    );
+  error = (e: any, message?: string): void => {
     console.error(e);
     // deepcode ignore ReactNextState: allow use of gettext props in setState
     this.setState({
       snackbarIsOpen: true,
-      snackbarMessage: message,
+      snackbarMessage: message
+        ? message
+        : this.props.gettext("An error occurred.  Try refreshing this page."),
     });
   };
 
@@ -301,6 +300,7 @@ export class App extends Component<
                         question.pk,
                         this.state.teacher,
                         this.props.urls.teacher,
+                        this.error,
                       )
                     }
                   />

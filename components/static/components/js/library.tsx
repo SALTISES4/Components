@@ -72,6 +72,8 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
       questions: [],
       questionsExpanded: false,
       questionsLoading: true,
+      snackbarIsOpen: false,
+      snackbarMessage: "",
       teacher: undefined,
       type,
     };
@@ -83,6 +85,17 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     prepend: true,
     stylisPlugins: [prefixer],
   });
+
+  error = (e: any, message?: string): void => {
+    console.error(e);
+    // deepcode ignore ReactNextState: allow use of gettext props in setState
+    this.setState({
+      snackbarIsOpen: true,
+      snackbarMessage: message
+        ? message
+        : this.props.gettext("An error occurred.  Try refreshing this page."),
+    });
+  };
 
   updateLocation = () => {
     const url = new URL(window.location.href);
@@ -110,7 +123,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
         () => console.info(this.state),
       );
     } catch (error: any) {
-      console.error(error);
+      this.error(error);
     }
   };
 
@@ -138,7 +151,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
         () => console.info(this.state),
       );
     } catch (error: any) {
-      console.error(error);
+      this.error(error);
     }
   };
 
@@ -197,7 +210,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
         () => console.info(this.state),
       );
     } catch (error: any) {
-      console.error(error);
+      this.error(error);
     }
   };
 
@@ -224,7 +237,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
         () => console.info(this.state),
       );
     } catch (error: any) {
-      console.error(error);
+      this.error(error);
     }
   };
 
@@ -237,7 +250,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
         teacher,
       });
     } catch (error: any) {
-      console.error(error);
+      this.error(error);
     }
 
     // Load collections
@@ -300,7 +313,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
           () => console.info(this.state),
         );
       } catch (error) {
-        console.error(error);
+        this.error(error);
       }
     }
   };
@@ -491,6 +504,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                       question.pk,
                       this.state.teacher,
                       this.props.urls.teacher,
+                      this.error,
                     )
                   }
                 />
@@ -546,6 +560,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                       pk,
                       this.state.teacher,
                       this.props.urls.teacher,
+                      this.error,
                     );
                     this.collectionUpdate(pk);
                   }}

@@ -602,12 +602,14 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   pk,
                   this.state.teacher,
                   this.props.urls.teacher,
+                  this.error,
                 );
                 updateCollections(
                   pk,
                   (collections) => this.setState({ collections }),
                   this.props.urls.collection,
                   this.state.collections,
+                  this.error,
                 );
               }}
               loading={!this.state.collectionsLoaded}
@@ -712,6 +714,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                           question.pk,
                           this.state.teacher,
                           this.props.urls.teacher,
+                          this.error,
                         )
                       }
                     />

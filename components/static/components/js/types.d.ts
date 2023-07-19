@@ -177,7 +177,7 @@ export type LibraryAppProps = {
   user: UserType;
 };
 
-export type LibraryAppState = {
+interface LibraryAppState extends SnackbarType {
   assignments: AssignmentType[];
   assignmentsLoading: boolean;
   collections: CollectionType[];
@@ -189,7 +189,7 @@ export type LibraryAppState = {
   questionsLoading: boolean;
   teacher: TeacherType | undefined;
   type: number;
-};
+}
 
 export type NavigationAppProps = {
   logo: string;

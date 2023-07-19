@@ -2,6 +2,7 @@
 import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
+//functions
 import { get, submitData } from "./ajax";
 import {
   handleAddToAssignment,
@@ -9,7 +10,7 @@ import {
   handleQuestionBookmarkClick,
 } from "./functions";
 
-//mui
+//material ui components
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
@@ -21,23 +22,23 @@ import Stack from "@mui/material/Stack";
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { Assignment } from "./_localComponents/assignment";
 import { CollectionBlock } from "./_localComponents/collection";
-import { StudentGroupsAssignment } from "./_localComponents/studentgroupsassignment";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
+import { StudentGroupsAssignment } from "./_localComponents/studentgroupsassignment";
 
 //types
 import {
+  CollectionsPaginatedData,
   LibraryAppProps,
   LibraryAppState,
-  CollectionsPaginatedData,
   TeacherType,
 } from "./types";
 import {
   AssignmentType,
   CollectionType,
+  QuestionType,
   StudentGroupAssignmentType,
   StudentGroupsAssignmentType,
-  QuestionType,
 } from "./_localComponents/types";
 
 //style

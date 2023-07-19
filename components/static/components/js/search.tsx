@@ -2,6 +2,7 @@
 import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
+//functions
 import { get, submitData } from "./ajax";
 import {
   handleAddToAssignment,
@@ -10,6 +11,7 @@ import {
   updateCollections,
 } from "./functions";
 
+//material ui components
 import Box from "@mui/material/Box";
 import CategoryIcon from "@mui/icons-material/Category";
 import CloseIcon from "@mui/icons-material/Close";
@@ -25,22 +27,20 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-import { ThemeProvider } from "@mui/material/styles";
-import { prefixer } from "stylis";
-import saltise from "./theme";
-
-import createCache from "@emotion/cache";
-import { CacheProvider } from "@emotion/react";
-
+//components
 import { Action, Subtitle } from "./styledComponents";
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { Assignment } from "./_localComponents/assignment";
 import { CollectionBlock } from "./_localComponents/collection";
+import { DifficultyCircleIcon } from "./_reusableComponents/difficultyIconQuestion";
 import { Pager } from "./_reusableComponents/pager";
+import { PeerImpactIcon } from "./_reusableComponents/peerImpactIcon";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { SearchFilter } from "./_search/searchFilter";
 import { Snackbar } from "./_reusableComponents/snackbar";
+
+//types
 import {
   CollectionsPaginatedData,
   SearchAppProps,
@@ -54,8 +54,15 @@ import {
   CollectionType,
   QuestionType,
 } from "./_localComponents/types";
-import { DifficultyCircleIcon } from "./_reusableComponents/difficultyIconQuestion";
-import { PeerImpactIcon } from "./_reusableComponents/peerImpactIcon";
+
+//style
+import { prefixer } from "stylis";
+import { ThemeProvider } from "@mui/material/styles";
+import saltise from "./theme";
+
+//cache
+import createCache from "@emotion/cache";
+import { CacheProvider } from "@emotion/react";
 
 export class App extends Component<SearchAppProps, SearchAppState> {
   constructor(props: SearchAppProps) {

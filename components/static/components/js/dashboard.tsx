@@ -13,27 +13,27 @@ import {
 
 //material ui components
 import Box from "@mui/material/Box";
+import Container from "@mui/system/Container";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/system/Container";
 
 //components
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { CollectionBlock } from "./_localComponents/collection";
+import { Question } from "./_localComponents/question";
+import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { Snackbar } from "./_reusableComponents/snackbar";
 import { Subtitle } from "./styledComponents";
 import { SuperUserBar } from "./_dashboard/superUserBar";
 import { StudentGroupsAssignment } from "./_localComponents/studentgroupsassignment";
-import { Question } from "./_localComponents/question";
-import { Question as QuestionSkeleton } from "./_skeletons/question";
 
 //types
 import {
-  StudentGroupAssignmentType,
-  StudentGroupsAssignmentType,
   CollectionType,
   QuestionType,
+  StudentGroupAssignmentType,
+  StudentGroupsAssignmentType,
 } from "./_localComponents/types";
 import {
   CollectionsPaginatedData,

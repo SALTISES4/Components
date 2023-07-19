@@ -16,11 +16,11 @@ import Typography from "@mui/material/Typography";
 
 //components
 import { GeneralDescription } from "./_assignments/generalDescription";
+import { Group as GroupSkeleton } from "./_skeletons/group";
 import { Question } from "./_localComponents/question";
+import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { Snackbar } from "./_reusableComponents/snackbar";
 import { StudentGroupAssignment } from "./_localComponents/group";
-import { Question as QuestionSkeleton } from "./_skeletons/question";
-import { Group as GroupSkeleton } from "./_skeletons/group";
 import { Toolbar } from "./_assignments/toolbar";
 
 //types

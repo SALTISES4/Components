@@ -108,6 +108,7 @@ export type SearchAppProps = {
   nonce: string;
   type?: "question" | "assignment" | "collection";
   urls: {
+    add_to_assignment: string;
     assignments: string;
     backgroundImage: string;
     collection: string;
@@ -167,12 +168,12 @@ export type LibraryAppProps = {
   logo: string;
   nonce: string;
   urls: {
+    add_to_assignment: string;
     assignments: string;
     collections: string;
     studentgroupassignments: string;
     questions: string;
     teacher: string;
-    add_to_assignment: string;
   };
   user: UserType;
 };

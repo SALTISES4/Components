@@ -4,6 +4,7 @@ export { h, render };
 
 import { get, submitData } from "./ajax";
 import {
+  handleAddToAssignment,
   handleCollectionBookmarkClick,
   handleQuestionBookmarkClick,
   updateCollections,
@@ -680,6 +681,13 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                         this.state.selectedTypes.includes("Question")
                       }
                       gettext={this.props.gettext}
+                      handleAddToAssignment={async (assignment: string) => {
+                        await handleAddToAssignment(
+                          assignment,
+                          question.pk,
+                          this.props.urls.add_to_assignment,
+                        );
+                      }}
                       question={question}
                       showBookmark={
                         question.is_owner !== undefined

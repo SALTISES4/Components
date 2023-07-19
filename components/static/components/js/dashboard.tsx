@@ -4,7 +4,11 @@ export { h, render };
 
 //functions
 import { get, submitData } from "./ajax";
-import { handleCollectionBookmarkClick, updateCollections } from "./functions";
+import {
+  handleAddToAssignment,
+  handleCollectionBookmarkClick,
+  updateCollections,
+} from "./functions";
 
 //material ui components
 import Box from "@mui/material/Box";
@@ -346,6 +350,13 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                         )}
                         expanded={true}
                         gettext={this.props.gettext}
+                        handleAddToAssignment={async (assignment: string) => {
+                          await handleAddToAssignment(
+                            assignment,
+                            question.pk,
+                            this.props.urls.add_to_assignment,
+                          );
+                        }}
                         question={question}
                         showBookmark={
                           question.is_owner !== undefined

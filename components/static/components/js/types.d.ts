@@ -53,6 +53,7 @@ export type DashboardAppProps = {
   logo: string;
   nonce: string;
   urls: {
+    add_to_assignment: string;
     studentgroupassignments: string;
     studentgroupassignmentsLink: string;
     collection: string;

@@ -1,4 +1,5 @@
 import { h } from "preact";
+import { createPortal } from "preact/compat";
 
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
@@ -6,6 +7,8 @@ import { Snackbar as MUISnackbar } from "@mui/material";
 import { SnackbarProps } from "./types";
 
 export const Snackbar = ({ message, open, onClose }: SnackbarProps) => {
+  const container = document.querySelector("body");
+
   const action = () => (
     <IconButton
       size="small"
@@ -17,13 +20,16 @@ export const Snackbar = ({ message, open, onClose }: SnackbarProps) => {
       <CloseIcon fontSize="small" />
     </IconButton>
   );
-  return (
-    <MUISnackbar
-      action={action()}
-      autoHideDuration={6000}
-      message={message}
-      onClose={onClose}
-      open={open}
-    />
-  );
+  return container
+    ? createPortal(
+        <MUISnackbar
+          action={action()}
+          autoHideDuration={6000}
+          message={message}
+          onClose={onClose}
+          open={open}
+        />,
+        container,
+      )
+    : null;
 };

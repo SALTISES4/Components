@@ -37,7 +37,9 @@ const modules = [
   // "dashboard",
   // "search",
   // "createAssignment",
-  "updateAssignment",
+  "library",
+  "search",
+  "dashboard",
 ];
 
 function typescript() {

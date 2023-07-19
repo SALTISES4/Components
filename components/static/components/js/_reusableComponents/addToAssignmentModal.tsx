@@ -1,5 +1,5 @@
 import { Component, h } from "preact";
-import { createPortal } from "preact/compat";
+
 import { get } from "../ajax";
 
 //styles
@@ -40,8 +40,6 @@ export class AddToAssignmentModal extends Component<
       waiting: false,
     };
   }
-
-  container = document.querySelector("body");
 
   sync = async (): Promise<void> => {
     try {
@@ -153,18 +151,14 @@ export class AddToAssignmentModal extends Component<
             </Stack>
           </Box>
         </Modal>
-        {this.container
-          ? createPortal(
-              <Snackbar
-                message={this.state.snackbarMessage}
-                open={this.state.snackbarOpen}
-                onClose={() =>
-                  this.setState({ snackbarOpen: false, snackbarMessage: "" })
-                }
-              />,
-              this.container,
-            )
-          : null}
+
+        <Snackbar
+          message={this.state.snackbarMessage}
+          open={this.state.snackbarOpen}
+          onClose={() =>
+            this.setState({ snackbarOpen: false, snackbarMessage: "" })
+          }
+        />
       </Box>
     );
   }

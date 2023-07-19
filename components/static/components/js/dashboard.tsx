@@ -3,10 +3,11 @@ import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
 //functions
-import { get, submitData } from "./ajax";
+import { get } from "./ajax";
 import {
   handleAddToAssignment,
   handleCollectionBookmarkClick,
+  handleQuestionBookmarkClick,
   updateCollections,
 } from "./functions";
 
@@ -18,11 +19,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/system/Container";
 
 //components
+import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
+import { CollectionBlock } from "./_localComponents/collection";
+import { Snackbar } from "./_reusableComponents/snackbar";
 import { Subtitle } from "./styledComponents";
 import { SuperUserBar } from "./_dashboard/superUserBar";
-import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { StudentGroupsAssignment } from "./_localComponents/studentgroupsassignment";
-import { CollectionBlock } from "./_localComponents/collection";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 
@@ -57,6 +59,8 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
       collectionsLoading: true,
       questions: [],
       questionsLoading: true,
+      snackbarIsOpen: false,
+      snackbarMessage: "",
       studentgroupsassignments: [],
       studentgroupassignmentsLoading: true,
       teacher: undefined,
@@ -198,36 +202,6 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     this.sync();
   }
 
-  handleQuestionBookmarkClick = async (pk: number): Promise<void> => {
-    if (this.state.teacher) {
-      const index = this.state.teacher.favourite_questions.indexOf(pk);
-      const newFavouriteQuestions = [
-        ...this.state.teacher.favourite_questions,
-      ];
-      if (index >= 0) {
-        newFavouriteQuestions.splice(index, 1);
-      } else {
-        newFavouriteQuestions.unshift(pk);
-      }
-      try {
-        const teacher = (await submitData(
-          this.props.urls.teacher,
-          { favourite_questions: newFavouriteQuestions },
-          "PUT",
-        )) as TeacherType;
-
-        this.setState(
-          {
-            teacher,
-          },
-          () => console.info(this.state),
-        );
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
   assignments = () => {
     return (
       <Stack spacing="10px">
@@ -363,8 +337,19 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                             ? !question.is_owner
                             : false
                         }
-                        toggleBookmarked={() =>
-                          this.handleQuestionBookmarkClick(question.pk)
+                        toggleBookmarked={async () =>
+                          await handleQuestionBookmarkClick(
+                            this.props.gettext,
+                            (teacher, message) =>
+                              this.setState({
+                                teacher,
+                                snackbarIsOpen: true,
+                                snackbarMessage: message,
+                              }),
+                            question.pk,
+                            this.state.teacher,
+                            this.props.urls.teacher,
+                          )
                         }
                       />
                     ),
@@ -380,6 +365,13 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
               </Stack>
             </Container>
           </Box>
+          <Snackbar
+            message={this.state.snackbarMessage}
+            onClose={() =>
+              this.setState({ snackbarIsOpen: false, snackbarMessage: "" })
+            }
+            open={this.state.snackbarIsOpen}
+          />
         </CacheProvider>
       </ThemeProvider>
     );

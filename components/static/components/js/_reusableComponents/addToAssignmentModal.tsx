@@ -35,7 +35,7 @@ export class AddToAssignmentModal extends Component<
       assignment: "",
       assignments: [],
       loading: true,
-      snackbarOpen: false,
+      snackbarIsOpen: false,
       snackbarMessage: "",
       waiting: false,
     };
@@ -135,7 +135,7 @@ export class AddToAssignmentModal extends Component<
                       } ${this.props.gettext("added to")} ${
                         this.state.assignment
                       }`,
-                      snackbarOpen: true,
+                      snackbarIsOpen: true,
                     });
                   }}
                   sx={{
@@ -154,10 +154,10 @@ export class AddToAssignmentModal extends Component<
 
         <Snackbar
           message={this.state.snackbarMessage}
-          open={this.state.snackbarOpen}
           onClose={() =>
-            this.setState({ snackbarOpen: false, snackbarMessage: "" })
+            this.setState({ snackbarIsOpen: false, snackbarMessage: "" })
           }
+          open={this.state.snackbarIsOpen}
         />
       </Box>
     );

@@ -4,33 +4,35 @@ import { h } from "preact";
 
 import { useEffect, useState } from "preact/hooks";
 
+//material ui components
+import BarChartIcon from "@mui/icons-material/BarChart";
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
+import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
+import Box from "@mui/system/Box";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Checkbox from "@mui/material/Checkbox";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import IconButton from "@mui/material/IconButton";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-
-import Box from "@mui/system/Box";
-
-import BarChartIcon from "@mui/icons-material/BarChart";
-import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
-import BookmarkAddOutlinedIcon from "@mui/icons-material/BookmarkAddOutlined";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-import saltise from "../theme";
-
-import { Tag } from "../styledComponents";
+//components
+import { AddToAssignmentModal } from "../_reusableComponents/addToAssignmentModal";
 import { DifficultyCircleIcon } from "../_reusableComponents/difficultyIconQuestion";
 import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon";
+import { Tag } from "../styledComponents";
 
+//style
+import saltise from "../theme";
+
+// types
 import { QuestionProps } from "./types";
-import { AddToAssignmentModal } from "../_reusableComponents/addToAssignmentModal";
 
 const theme = saltise;
 

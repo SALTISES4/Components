@@ -21,7 +21,6 @@ import NetworkCheckIcon from "@mui/icons-material/NetworkCheck";
 import PeopleIcon from "@mui/icons-material/People";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import ScienceIcon from "@mui/icons-material/Science";
-import Snackbar from "@mui/material/Snackbar";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -41,6 +40,7 @@ import { Pager } from "./_reusableComponents/pager";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { SearchFilter } from "./_search/searchFilter";
+import { Snackbar } from "./_reusableComponents/snackbar";
 import {
   CollectionsPaginatedData,
   SearchAppProps,
@@ -1077,8 +1077,6 @@ export class App extends Component<SearchAppProps, SearchAppState> {
             </Box>
           </Box>
           <Snackbar
-            action={this.action()}
-            autoHideDuration={6000}
             message={this.state.snackbarMessage}
             onClose={() =>
               this.setState({ snackbarIsOpen: false, snackbarMessage: "" })

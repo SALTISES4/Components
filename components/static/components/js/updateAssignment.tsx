@@ -12,12 +12,12 @@ import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
-import Snackbar from "@mui/material/Snackbar";
 import Typography from "@mui/material/Typography";
 
 //components
 import { GeneralDescription } from "./_assignments/generalDescription";
 import { Question } from "./_localComponents/question";
+import { Snackbar } from "./_reusableComponents/snackbar";
 import { StudentGroupAssignment } from "./_localComponents/group";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { Group as GroupSkeleton } from "./_skeletons/group";
@@ -434,9 +434,8 @@ export class App extends Component<
               </Stack>
             </Container>
           </Box>
+
           <Snackbar
-            action={this.action()}
-            autoHideDuration={6000}
             message={this.state.snackbarMessage}
             onClose={() =>
               this.setState({ snackbarIsOpen: false, snackbarMessage: "" })

@@ -9,6 +9,7 @@ import {
   QuestionType,
   UserType,
 } from "./_localComponents/types";
+import { SnackbarType } from "./_reusableComponents/types";
 
 import { AssignmentMetaFieldsForm } from "./_assignments/types";
 
@@ -66,7 +67,7 @@ export type DashboardAppProps = {
   user: UserType;
 };
 
-export type DashboardAppState = {
+interface DashboardAppState extends SnackbarType {
   studentgroupassignmentsLoading: boolean;
   studentgroupsassignments: StudentGroupsAssignmentType[];
   collections: CollectionType[];
@@ -74,7 +75,7 @@ export type DashboardAppState = {
   questions: QuestionType[];
   questionsLoading: boolean;
   teacher: TeacherType | undefined;
-};
+}
 
 interface PaginatedData {
   count: number;
@@ -125,7 +126,7 @@ export type SearchAppProps = {
   user: { username: string };
 };
 
-export type SearchAppState = {
+interface SearchAppState extends SnackbarType {
   assignmentHitCount: number;
   assignments: AssignmentType[];
   assignmentsLoaded: boolean;
@@ -157,12 +158,9 @@ export type SearchAppState = {
   selectedImpact: string[];
   selectedTypes: string[];
 
-  snackbarIsOpen: boolean;
-  snackbarMessage: string;
-
   teacher: TeacherType | undefined;
   timeoutID: number;
-};
+}
 
 export type LibraryAppProps = {
   gettext: (a: string) => string;
@@ -285,7 +283,7 @@ export type UpdateAssignmentAppProps = {
   };
 };
 
-export type UpdateAssignmentAppState = {
+interface UpdateAssignmentAppState extends SnackbarType {
   assignment: AssignmentType;
   distributeErrors: string[];
   distributeWaiting: boolean;
@@ -293,9 +291,7 @@ export type UpdateAssignmentAppState = {
   form: AssignmentMetaFieldsForm;
   questions: QuestionType[];
   questionsLoading: boolean;
-  snackbarIsOpen: boolean;
-  snackbarMessage: string;
   studentgroupassignments: StudentGroupAssignmentType[];
   studentgroupassignmentsLoading: boolean;
   teacher: TeacherType | undefined;
-};
+}

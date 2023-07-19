@@ -5,9 +5,9 @@ import {
   QuestionPeerImpact,
 } from "../_localComponents/types";
 
-interface Snackbar {
+interface SnackbarType {
+  snackbarIsOpen: boolean;
   snackbarMessage: string;
-  snackbarOpen: boolean;
 }
 
 interface SnackbarProps {
@@ -31,7 +31,7 @@ export type AddToAssignmentModalProps = {
   };
 };
 
-interface AddToAssignmentModalState extends Snackbar {
+interface AddToAssignmentModalState extends SnackbarType {
   assignment: string;
   assignments: { pk: string; title: string }[];
   loading: boolean;

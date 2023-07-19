@@ -37,8 +37,9 @@ const modules = [
   // "dashboard",
   // "search",
   // "createAssignment",
-  "library",
-  "search",
+  // "updateAssignment",
+  // "library",
+  // "search",
   "dashboard",
 ];
 

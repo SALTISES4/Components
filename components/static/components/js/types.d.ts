@@ -278,6 +278,7 @@ export type UpdateAssignmentAppProps = {
   urls: {
     assignment: string;
     distribute: string;
+    remove_question?: string;
     studentgroupassignments: string;
     teacher: string;
   };

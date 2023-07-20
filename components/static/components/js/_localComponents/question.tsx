@@ -17,6 +17,7 @@ import Checkbox from "@mui/material/Checkbox";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import IconButton from "@mui/material/IconButton";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+import PlaylistRemoveIcon from "@mui/icons-material/PlaylistRemove";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -236,6 +237,25 @@ export function Question({
     }
   };
 
+  const removeFromAssignmentIcon = () => {
+    if (showDetails && typeof handleAddToAssignment == undefined) {
+      return (
+        <Box>
+          <IconButton
+            color="primary"
+            onClick={(evt: MouseEvent) => {
+              evt.stopPropagation();
+            }}
+            title={gettext("Remove from assignment")}
+            sx={{ marginLeft: "0px!important" }}
+          >
+            <PlaylistRemoveIcon fontSize="medium" />
+          </IconButton>
+        </Box>
+      );
+    }
+  };
+
   const bookmarkIcon = () => {
     if (bookmarked !== undefined && showDetails && showBookmark) {
       return (
@@ -398,6 +418,7 @@ export function Question({
           >
             {showDetailsIcon()}
             {addToAssignmentIcon()}
+            {removeFromAssignmentIcon()}
             {bookmarkIcon()}
           </Stack>
         </CardActions>

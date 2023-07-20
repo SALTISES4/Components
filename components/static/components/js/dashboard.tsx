@@ -298,7 +298,13 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
                 gettext={this.props.gettext}
                 handleBookmarkClick={async (pk: number) => {
                   await handleCollectionBookmarkClick(
-                    (teacher) => this.setState({ teacher }),
+                    this.props.gettext,
+                    (teacher, message) =>
+                      this.setState({
+                        teacher,
+                        snackbarIsOpen: true,
+                        snackbarMessage: message,
+                      }),
                     pk,
                     this.state.teacher,
                     this.props.urls.teacher,

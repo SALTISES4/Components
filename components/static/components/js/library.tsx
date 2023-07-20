@@ -24,6 +24,7 @@ import { Assignment } from "./_localComponents/assignment";
 import { CollectionBlock } from "./_localComponents/collection";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
+import { Snackbar } from "./_reusableComponents/snackbar";
 import { StudentGroupsAssignment } from "./_localComponents/studentgroupsassignment";
 
 //types
@@ -557,7 +558,13 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                   gettext={this.props.gettext}
                   handleBookmarkClick={(pk: number) => {
                     handleCollectionBookmarkClick(
-                      (teacher) => this.setState({ teacher }),
+                      this.props.gettext,
+                      (teacher, message) =>
+                        this.setState({
+                          teacher,
+                          snackbarIsOpen: true,
+                          snackbarMessage: message,
+                        }),
                       pk,
                       this.state.teacher,
                       this.props.urls.teacher,
@@ -576,6 +583,13 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
               )}
             </Box>
           </Box>
+          <Snackbar
+            message={this.state.snackbarMessage}
+            onClose={() =>
+              this.setState({ snackbarIsOpen: false, snackbarMessage: "" })
+            }
+            open={this.state.snackbarIsOpen}
+          />
         </CacheProvider>
       </ThemeProvider>
     );

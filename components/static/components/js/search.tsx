@@ -487,12 +487,15 @@ export class App extends Component<SearchAppProps, SearchAppState> {
 
   handleAssignmentBookmarkClick = async (pk: string): Promise<void> => {
     if (this.state.teacher?.assignment_pks) {
+      let message = "";
       const index = this.state.teacher.assignment_pks.indexOf(pk);
       const newAssignmentPks = [...this.state.teacher.assignment_pks];
       if (index >= 0) {
         newAssignmentPks.splice(index, 1);
+        message = `${pk} ${this.props.gettext("removed from your library")}`;
       } else {
         newAssignmentPks.unshift(pk);
+        message = `${pk} ${this.props.gettext("added to your library")}`;
       }
       try {
         const teacher = (await submitData(
@@ -504,6 +507,8 @@ export class App extends Component<SearchAppProps, SearchAppState> {
         this.setState(
           {
             teacher,
+            snackbarIsOpen: true,
+            snackbarMessage: message,
           },
           () => console.info(this.state),
         );
@@ -605,7 +610,13 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               gettext={this.props.gettext}
               handleBookmarkClick={async (pk: number) => {
                 await handleCollectionBookmarkClick(
-                  (teacher) => this.setState({ teacher }),
+                  this.props.gettext,
+                  (teacher, message) =>
+                    this.setState({
+                      teacher,
+                      snackbarIsOpen: true,
+                      snackbarMessage: message,
+                    }),
                   pk,
                   this.state.teacher,
                   this.props.urls.teacher,

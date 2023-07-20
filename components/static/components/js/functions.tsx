@@ -37,19 +37,24 @@ export const daysDiff = (dueDate: Date) => {
 };
 
 export const handleCollectionBookmarkClick = async (
-  callback: (teacher: TeacherType) => void,
+  gettext: (a: string) => string,
+  callback: (teacher: TeacherType, message: string) => void,
   pk: number,
   teacher: TeacherType | undefined,
   url: string,
   error: (error: Error) => void = (error) => console.error(error),
 ): Promise<void> => {
   if (teacher) {
+    let message = "";
+    console.info(teacher);
     const index = teacher.bookmarked_collections.indexOf(pk);
     const newBookmarkedCollections = [...teacher.bookmarked_collections];
     if (index >= 0) {
       newBookmarkedCollections.splice(index, 1);
+      message = `Collection ${pk} ${gettext("removed from your library")}`;
     } else {
       newBookmarkedCollections.unshift(pk);
+      message = `Collection ${pk} ${gettext("added to  from your library")}`;
     }
     try {
       const teacher = (await submitData(
@@ -58,7 +63,7 @@ export const handleCollectionBookmarkClick = async (
         "PUT",
       )) as TeacherType;
 
-      callback(teacher);
+      callback(teacher, message);
     } catch (e: any) {
       error(e);
     }

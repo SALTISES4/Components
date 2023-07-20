@@ -33,6 +33,7 @@ import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { Assignment } from "./_localComponents/assignment";
 import { CollectionBlock } from "./_localComponents/collection";
 import { DifficultyCircleIcon } from "./_reusableComponents/difficultyIconQuestion";
+import { Main } from "./_reusableComponents/main";
 import { Pager } from "./_reusableComponents/pager";
 import { PeerImpactIcon } from "./_reusableComponents/peerImpactIcon";
 import { Question } from "./_localComponents/question";
@@ -1091,11 +1092,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 </Box>
               </Box>
             </Box>
-            <Box width={this.pageWidth}>
+            <Main>
               <Container>{this.questionResults()}</Container>
               <Container>{this.assignmentResults()}</Container>
               <Container>{this.collectionResults()}</Container>
-            </Box>
+            </Main>
           </Box>
           <Snackbar
             message={this.state.snackbarMessage}

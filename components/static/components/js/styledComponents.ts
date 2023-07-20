@@ -2,6 +2,7 @@ import saltise from "./theme";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
+
 import Typography from "@mui/material/Typography";
 
 const theme = saltise;

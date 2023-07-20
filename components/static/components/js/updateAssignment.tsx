@@ -8,7 +8,6 @@ import { handleQuestionBookmarkClick } from "./functions";
 //material ui components
 import Box from "@mui/material/Box";
 import CloseIcon from "@mui/icons-material/Close";
-import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
@@ -17,6 +16,7 @@ import Typography from "@mui/material/Typography";
 //components
 import { GeneralDescription } from "./_assignments/generalDescription";
 import { Group as GroupSkeleton } from "./_skeletons/group";
+import { Main } from "./_reusableComponents/main";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { Snackbar } from "./_reusableComponents/snackbar";
@@ -348,7 +348,7 @@ export class App extends Component<
         <CacheProvider value={this.cache}>
           <Box>
             <Paper elevation={0}>
-              <Container sx={{ width: "65%" }}>
+              <Main>
                 <ThemeProvider theme={saltise}>
                   <Toolbar
                     gettext={this.props.gettext}
@@ -384,9 +384,9 @@ export class App extends Component<
                     handleSave={this.handleSave}
                   />
                 </ThemeProvider>
-              </Container>
+              </Main>
             </Paper>
-            <Container sx={{ width: "65%" }}>
+            <Main>
               <Stack spacing={"50px"}>
                 <Box>
                   <GeneralDescription
@@ -432,9 +432,8 @@ export class App extends Component<
                   </ThemeProvider>
                 </Box>
               </Stack>
-            </Container>
+            </Main>
           </Box>
-
           <Snackbar
             message={this.state.snackbarMessage}
             onClose={() =>

@@ -99,6 +99,15 @@ declare module "@mui/material/SvgIcon" {
 }
 
 const paletteAndTypography = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 980, // Custom
+      lg: 1200,
+      xl: 1536,
+    },
+  },
   palette: {
     background: {
       paper: "#fff",

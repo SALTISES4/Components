@@ -22,6 +22,7 @@ import Stack from "@mui/material/Stack";
 import { Assignment as AssignmentSkeleton } from "./_skeletons/assignment";
 import { Assignment } from "./_localComponents/assignment";
 import { CollectionBlock } from "./_localComponents/collection";
+import { Main } from "./_reusableComponents/main";
 import { Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { Snackbar } from "./_reusableComponents/snackbar";
@@ -530,7 +531,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     return (
       <ThemeProvider theme={saltise}>
         <CacheProvider value={this.cache}>
-          <Box margin="0 auto" maxWidth="980px" width="100%">
+          <Main>
             <Stack direction="row" spacing={1} mt={"30px"}>
               <Chip
                 clickable={this.state.type != 1}
@@ -582,7 +583,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                 this.questions()
               )}
             </Box>
-          </Box>
+          </Main>
           <Snackbar
             message={this.state.snackbarMessage}
             onClose={() =>

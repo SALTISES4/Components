@@ -8,18 +8,26 @@ import {
   assignmentTitleValidator,
 } from "./validators";
 
-//components
+//material ui components
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import { Card, CardContent, CardHeader, Divider, Stack } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Collapse from "@mui/material/Collapse";
-import Container from "@mui/material/Container";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 
+//components
+import { CancelButton } from "./styledComponents";
+import { CustomTextField } from "./_reusableComponents/customTextField";
+import { CustomEditorField } from "./_reusableComponents/customEditorField";
+import { Main } from "./_reusableComponents/main";
+
 //types
 import { AssignmentType } from "./_localComponents/types";
+import { CreateAssignmentAppProps, CreateAssignmentAppState } from "./types";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -29,12 +37,6 @@ import { formTheme } from "./theme";
 //cache
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-import { CreateAssignmentAppProps, CreateAssignmentAppState } from "./types";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import { Card, CardContent, CardHeader, Divider, Stack } from "@mui/material";
-import { CustomTextField } from "./_reusableComponents/customTextField";
-import { CustomEditorField } from "./_reusableComponents/customEditorField";
-import { CancelButton } from "./styledComponents";
 
 export class App extends Component<
   CreateAssignmentAppProps,
@@ -102,7 +104,7 @@ export class App extends Component<
     return (
       <ThemeProvider theme={formTheme}>
         <CacheProvider value={this.cache}>
-          <Container sx={{ maxWidth: "780px!important" }}>
+          <Main>
             <Typography variant="h1" align="left">
               {this.props.gettext("Create Assignment")}
             </Typography>
@@ -226,7 +228,7 @@ export class App extends Component<
                 </Typography>
               </Button>
             </Box>
-          </Container>
+          </Main>
         </CacheProvider>
       </ThemeProvider>
     );

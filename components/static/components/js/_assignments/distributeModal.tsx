@@ -167,7 +167,7 @@ export default function DistributeModal({
               }}
               variant="contained"
             >
-              <Typography tag={"span"}>{gettext("Share")}</Typography>
+              <Typography tag={"span"}>{gettext("Distribute")}</Typography>
             </LoadingButton>
           </FormButtonBox>
         </Stack>

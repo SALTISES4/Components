@@ -41,9 +41,11 @@ export function StudentGroupsAssignment({
     }));
   };
 
-  const handlePreview = () => {
-    if (studentgroupsassignment.assignment.urls?.preview) {
-      window.location.assign(studentgroupsassignment.assignment.urls.preview);
+  const handleView = () => {
+    if (studentgroupsassignment.assignment.urls?.update) {
+      window.location.assign(studentgroupsassignment.assignment.urls.update);
+    } else if (studentgroupsassignment.assignment.urls?.view) {
+      window.location.assign(studentgroupsassignment.assignment.urls.view);
     }
   };
 
@@ -85,8 +87,8 @@ export function StudentGroupsAssignment({
       <Card>
         <CardActionArea
           disableRipple={true}
-          onClick={handlePreview}
-          title={gettext("Preview assignment")}
+          onClick={handleView}
+          title={gettext("View assignment")}
         >
           {" "}
           <CardContent sx={{ padding: "10px 20px" }}>
@@ -132,7 +134,7 @@ export function StudentGroupsAssignment({
                 <Box
                   display="flex"
                   justifyContent="end"
-                  sx={{ width: "118px" }}
+                  sx={{ width: "82px" }}
                 >
                   {studentgroupsassignment.distributionState == "Distributed"
                     ? icon()

@@ -124,6 +124,7 @@ export default function DistributeModal({
           </FormControl>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
+              desktopModeMediaQuery="@media (pointer: fine) and (min-height: 750px) and (min-width: 500px)"
               disablePast={true}
               id="due-date-and-time-picker"
               label={`${gettext("Due date and time")}*`}

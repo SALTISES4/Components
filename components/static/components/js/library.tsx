@@ -100,12 +100,6 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     });
   };
 
-  updateLocation = () => {
-    const url = new URL(window.location.href);
-    url.searchParams.set("view", `${this.state.type}`);
-    window.history.pushState({}, "", url);
-  };
-
   getAssignments = async (): Promise<void> => {
     try {
       this.setState({ assignmentsLoading: true });
@@ -244,6 +238,54 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
     }
   };
 
+  updateAssignment = async (pk: string): Promise<void> => {
+    try {
+      const url = new URL(
+        this.props.urls.assignments,
+        window.location.protocol + window.location.host,
+      );
+      url.pathname = `${url.pathname + pk}/`;
+
+      const assignment = (await get(
+        url.toString(),
+      )) as unknown as AssignmentType;
+
+      const _assignments = [...this.state.assignments];
+      const index = _assignments.map((a) => a.pk).indexOf(assignment.pk);
+      _assignments.splice(index, 1, assignment);
+
+      this.setState({ assignments: _assignments }, () =>
+        console.info(this.state),
+      );
+    } catch (error: any) {
+      this.error(error);
+    }
+  };
+
+  updateCollections = (pk: number): void => {
+    let _collections = [...this.state.collections];
+
+    if (
+      _collections.filter((c) => c.pk == pk)[0].user.username !=
+      this.props.user.username
+    ) {
+      _collections = _collections.filter((c) => c.pk != pk);
+    }
+
+    this.setState(
+      {
+        collections: _collections,
+      },
+      () => console.info(this.state),
+    );
+  };
+
+  updateLocation = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("view", `${this.state.type}`);
+    window.history.pushState({}, "", url);
+  };
+
   sync = async (): Promise<void> => {
     // Load teacher info
     try {
@@ -350,24 +392,6 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
       {
         questions: _questions,
         teacher,
-      },
-      () => console.info(this.state),
-    );
-  };
-
-  collectionUpdate = (pk: number): void => {
-    let _collections = [...this.state.collections];
-
-    if (
-      _collections.filter((c) => c.pk == pk)[0].user.username !=
-      this.props.user.username
-    ) {
-      _collections = _collections.filter((c) => c.pk != pk);
-    }
-
-    this.setState(
-      {
-        collections: _collections,
       },
       () => console.info(this.state),
     );
@@ -484,6 +508,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                       question.pk,
                       this.props.urls.add_to_assignment,
                     );
+                    this.updateAssignment(assignment);
                   }}
                   question={question}
                   showBookmark={
@@ -571,7 +596,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
                       this.props.urls.teacher,
                       this.error,
                     );
-                    this.collectionUpdate(pk);
+                    this.updateCollections(pk);
                   }}
                   loading={this.state.collectionsLoading}
                   logo={this.props.logo}

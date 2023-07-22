@@ -104,7 +104,10 @@ export function Assignment({
               >
                 <FormatListBulletedIcon fontSize="small" />
                 <Typography>
-                  {assignment.question_count} {gettext("questions")}
+                  {assignment.question_count}{" "}
+                  {assignment.question_count == 1
+                    ? gettext("question")
+                    : gettext("questions")}
                 </Typography>
               </Tag>
               <Tag
@@ -118,7 +121,10 @@ export function Assignment({
               >
                 <QuestionAnswerIcon fontSize="small" />
                 <Typography>
-                  {assignment.answer_count} {gettext("answers")}
+                  {assignment.answer_count}{" "}
+                  {assignment.answer_count == 1
+                    ? gettext("answer")
+                    : gettext("answers")}
                 </Typography>
               </Tag>
               {bookmarkIcon()}

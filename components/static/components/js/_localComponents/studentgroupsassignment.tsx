@@ -117,7 +117,9 @@ export function StudentGroupsAssignment({
                   <FormatListBulletedIcon fontSize="small" />
                   <Typography>
                     {studentgroupsassignment.questionCount}{" "}
-                    {gettext("questions")}
+                    {studentgroupsassignment.questionCount == 1
+                      ? gettext("question")
+                      : gettext("questions")}
                   </Typography>
                 </Tag>
                 <Box

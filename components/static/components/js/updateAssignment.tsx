@@ -3,7 +3,10 @@ export { h, render };
 
 //functions
 import { get, submitData } from "./ajax";
-import { handleQuestionBookmarkClick } from "./functions";
+import {
+  handleAddToAssignment,
+  handleQuestionBookmarkClick,
+} from "./functions";
 
 //material ui components
 import Box from "@mui/material/Box";
@@ -282,6 +285,13 @@ export class App extends Component<
                     )}
                     expanded={true}
                     gettext={this.props.gettext}
+                    handleAddToAssignment={async (assignment: string) => {
+                      await handleAddToAssignment(
+                        assignment,
+                        question.pk,
+                        this.props.urls.add_to_assignment,
+                      );
+                    }}
                     question={question}
                     showBookmark={
                       question.is_owner !== undefined

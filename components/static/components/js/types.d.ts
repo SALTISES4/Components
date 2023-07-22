@@ -276,6 +276,7 @@ export type UpdateAssignmentAppProps = {
   metaEditableByUser?: boolean;
   questionsEditableByUser?: boolean;
   urls: {
+    add_to_assignment: string;
     assignment: string;
     distribute: string;
     studentgroupassignments: string;

@@ -181,10 +181,11 @@ export class App extends Component<
       callback();
     } catch (error: any) {
       if (typeof error === "object") {
-        const e = Object.values(error) as string[];
-        this.setState({ distributeErrors: e }, () =>
-          console.info(this.state, error),
-        );
+        const e = Object.values(error) as string[][];
+        this.setState({ distributeErrors: e });
+      }
+      if (error instanceof TypeError) {
+        this.setState({ distributeErrors: Array([error.message]) });
       }
     } finally {
       this.setState({ distributeWaiting: false });

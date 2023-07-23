@@ -1,3 +1,8 @@
+//material ui component types
+import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { SvgIconTypeMap } from "@mui/material";
+
+//types
 import { EditorIconsType } from "../types";
 import {
   QuestionType,
@@ -34,6 +39,7 @@ export type AddToAssignmentModalProps = {
 interface AddToAssignmentModalState extends SnackbarType {
   assignment: string;
   assignments: { pk: string; title: string }[];
+  errors: string[][];
   loading: boolean;
   waiting: boolean;
 }
@@ -63,6 +69,10 @@ export type DifficultyCircleIconProps = {
 export type DueInTagProps = {
   dueDate: Date;
   gettext: (a: string) => string;
+};
+
+export type ErrorsProps = {
+  errors: string[][];
 };
 
 export type PeerImpactIconProps = {

@@ -136,19 +136,12 @@ export const handleAddToAssignment = async (
   question_pk: number,
   addToAssignmentURL: string,
 ): Promise<void> => {
-  const form = Object.assign(
-    {},
+  await submitData(
+    addToAssignmentURL,
     {
       assignment,
       question_pk,
     },
+    "POST",
   );
-  try {
-    await submitData(addToAssignmentURL, form, "POST");
-  } catch (error: any) {
-    if (typeof error === "object") {
-      const e = Object.values(error) as string[];
-      console.info(e);
-    }
-  }
 };

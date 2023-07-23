@@ -286,7 +286,7 @@ export type UpdateAssignmentAppProps = {
 
 interface UpdateAssignmentAppState extends SnackbarType {
   assignment: AssignmentType;
-  distributeErrors: string[];
+  distributeErrors: string[][];
   distributeWaiting: boolean;
   editing: boolean;
   form: AssignmentMetaFieldsForm;

@@ -1,5 +1,6 @@
 import { Component, h } from "preact";
 
+//functions
 import { get } from "../ajax";
 
 //styles
@@ -7,7 +8,9 @@ import { modal as style } from "../_assignments/styles";
 
 //material ui components
 import AddIcon from "@mui/icons-material/Add";
+
 import Box from "@mui/material/Box";
+
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
@@ -20,6 +23,7 @@ import Stack from "@mui/material/Stack";
 
 //components
 import { CancelButton, FormButtonBox } from "../styledComponents";
+import Errors from "./errors";
 import { Snackbar } from "./snackbar";
 
 //types
@@ -34,6 +38,7 @@ export class AddToAssignmentModal extends Component<
     this.state = {
       assignment: "",
       assignments: [],
+      errors: [],
       loading: true,
       snackbarIsOpen: false,
       snackbarMessage: "",
@@ -88,6 +93,7 @@ export class AddToAssignmentModal extends Component<
             </Typography>
 
             <Stack spacing={3}>
+              <Errors errors={this.state.errors} />
               <FormControl required>
                 <InputLabel id="assignment-select">
                   {this.props.gettext("Assignment")}
@@ -125,18 +131,28 @@ export class AddToAssignmentModal extends Component<
                   loading={this.state.waiting}
                   onClick={async () => {
                     this.setState({ waiting: true });
-                    // Do something with errors?
-                    await this.props.handleSubmit(this.state.assignment);
-                    this.sync();
-                    this.setState({
-                      waiting: false,
-                      snackbarMessage: `Q${
-                        this.props.question.pk
-                      } ${this.props.gettext("added to")} ${
-                        this.state.assignment
-                      }`,
-                      snackbarIsOpen: true,
-                    });
+                    try {
+                      await this.props.handleSubmit(this.state.assignment);
+                      this.sync();
+                      this.setState({
+                        snackbarMessage: `Q${
+                          this.props.question.pk
+                        } ${this.props.gettext("added to")} ${
+                          this.state.assignment
+                        }`,
+                        snackbarIsOpen: true,
+                      });
+                    } catch (error: any) {
+                      if (typeof error === "object") {
+                        const e = Object.values(error) as string[][];
+                        this.setState({ errors: e });
+                      }
+                      if (error instanceof TypeError) {
+                        this.setState({ errors: Array([error.message]) });
+                      }
+                    } finally {
+                      this.setState({ waiting: false });
+                    }
                   }}
                   sx={{
                     " .MuiLoadingButton-loadingIndicatorEnd": {

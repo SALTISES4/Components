@@ -1,20 +1,22 @@
 import { Fragment, h } from "preact";
-
 import { useState } from "preact/hooks";
 
+//material ui components
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Box from "@mui/system/Box";
+import EditIcon from "@mui/icons-material/Edit";
+import IconButton from "@mui/material/IconButton";
+import SaveIcon from "@mui/icons-material/Save";
 import SendIcon from "@mui/icons-material/Send";
 import ShareIcon from "@mui/icons-material/Share";
-import EditIcon from "@mui/icons-material/Edit";
-import SaveIcon from "@mui/icons-material/Save";
 
-import Box from "@mui/system/Box";
-import IconButton from "@mui/material/IconButton";
-
-import { ToolbarProps } from "./types";
-
+//components
+import { CustomMenu } from "../_navigation/menu";
 import DistributeModal from "./distributeModal";
 import ShareModal from "./shareModal";
+
+//types
+import { ToolbarProps } from "./types";
 
 export function Toolbar({
   gettext,
@@ -29,13 +31,17 @@ export function Toolbar({
   handleEdit,
   handleSave,
 }: ToolbarProps): JSX.Element {
+  const [distributeMenuAnchorElement, setDistributeMenuAnchorElement] =
+    useState<null | HTMLElement>(null);
   const [openShareModal, setOpenShareModal] = useState(false);
-  const handleOpenShareModal = () => setOpenShareModal(true);
-  const handleCloseShareModal = () => setOpenShareModal(false);
+  const [distributeMode, setDistributeMode] = useState<
+    "myDalite" | "LMS" | undefined
+  >();
 
-  const [openDistributeModal, setOpenDistributeModal] = useState(false);
-  const handleOpenDistributeModal = () => setOpenDistributeModal(true);
-  const handleCloseDistributeModal = () => setOpenDistributeModal(false);
+  const handleClick = (distributeMode: "myDalite" | "LMS") => {
+    setDistributeMode(distributeMode);
+    setDistributeMenuAnchorElement(null);
+  };
 
   return (
     <Box
@@ -53,15 +59,46 @@ export function Toolbar({
             disabled={
               groups === undefined || groups.length == 0 || !enableDistribute
             }
-            onClick={handleOpenDistributeModal}
+            onClick={(event: MouseEvent | TouchEvent) =>
+              setDistributeMenuAnchorElement(event.target as HTMLElement)
+            }
             title={gettext("Distribute")}
           >
             <ShareIcon />
           </IconButton>
+
+          <CustomMenu
+            anchorEl={distributeMenuAnchorElement}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            menuItems={[
+              [
+                {
+                  handleClick: () => handleClick("myDalite"),
+                  icon: "email",
+                  title: gettext("Distribute via myDalite"),
+                },
+                {
+                  handleClick: () => handleClick("LMS"),
+                  icon: "web",
+                  title: gettext("Distribute via LMS"),
+                },
+              ],
+            ]}
+            onClose={() => setDistributeMenuAnchorElement(null)}
+            open={Boolean(distributeMenuAnchorElement)}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          />
+
           <IconButton
             color="primary"
             disabled={editing}
-            onClick={handleOpenShareModal}
+            onClick={() => setOpenShareModal(true)}
             title={gettext("Share with a colleague")}
           >
             <SendIcon />
@@ -99,7 +136,7 @@ export function Toolbar({
       ) : null}
       <ShareModal
         open={openShareModal}
-        onClose={handleCloseShareModal}
+        onClose={() => setOpenShareModal(false)}
         aria-labelledby="share"
         aria-describedby="share with colleagues"
         gettext={gettext}
@@ -110,8 +147,8 @@ export function Toolbar({
           errors={distributeErrors}
           groups={groups}
           handleSubmit={handleDistribute}
-          open={openDistributeModal}
-          onClose={handleCloseDistributeModal}
+          method={distributeMode}
+          onClose={() => setDistributeMode(undefined)}
           waiting={distributeWaiting}
           aria-labelledby="distribute"
           aria-describedby="distribute to students"

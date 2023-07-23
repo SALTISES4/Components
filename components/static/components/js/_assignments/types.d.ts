@@ -71,7 +71,7 @@ export type DistributeModalProps = {
     form: StudentGroupAssignmentCreateForm,
     callback: () => void,
   ) => void;
-  open: any;
+  method: "myDalite" | "LMS" | undefined;
   onClose: any;
   waiting: boolean;
 };

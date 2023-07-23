@@ -443,6 +443,20 @@ const saltise = createTheme(paletteAndTypography, {
         },
       },
     },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            backgroundColor: paletteAndTypography.palette.primary1.main,
+          },
+          "& .MuiListItemText-root": {
+            fontSize: "0.9rem",
+            lineHeight: "1.2rem",
+            color: paletteAndTypography.palette.secondary4.main,
+          },
+        },
+      },
+    },
     MuiSnackbar: {
       styleOverrides: {
         root: {

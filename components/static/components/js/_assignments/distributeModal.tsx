@@ -1,4 +1,4 @@
-import { h } from "preact";
+import { Fragment, h } from "preact";
 import { useState } from "preact/hooks";
 
 //functions
@@ -39,7 +39,7 @@ export default function DistributeModal({
   errors,
   groups,
   handleSubmit,
-  open,
+  method,
   onClose,
   waiting,
 }: DistributeModalProps): JSX.Element {
@@ -50,96 +50,108 @@ export default function DistributeModal({
   dayjs.extend(utc);
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={method == "myDalite" || method == "LMS"} onClose={onClose}>
       <Box sx={style}>
-        <Typography variant="h1" sx={{ margin: "0px" }}>
-          {gettext("Distribute to group")}
-        </Typography>
-        <Typography
-          fontSize={"16"}
-          sx={{ padding: "20px 0px", textAlign: "justify" }}
-        >
-          {gettext(
-            "Select one of your current groups and specify a due date (the due date can be changed later). Upon clicking submit, your students will receive an e-mail with a link to the assignment.",
-          )}
-        </Typography>
-
-        <Stack spacing={3}>
-          <Errors errors={errors} />
-          <FormControl required>
-            <InputLabel id="group-select">{gettext("Group")}</InputLabel>
-            <Select
-              labelId="group-select"
-              value={group}
-              label={`${gettext("Group")}*`}
-              onChange={(event: SelectChangeEvent) => {
-                if (event.target) {
-                  setGroup((event.target as HTMLInputElement).value);
-                }
-              }}
+        {method == "myDalite" ? (
+          <Fragment>
+            <Typography variant="h1" sx={{ margin: "0px" }}>
+              {gettext("Distribute via myDalite")}
+            </Typography>
+            <Typography
+              fontSize={"16"}
+              sx={{ padding: "20px 0px", textAlign: "justify" }}
             >
-              {groups.map((g, i) => (
-                <MenuItem key={i} value={g.pk}>
-                  {g.title}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>
               {gettext(
-                "You can only distribute assignments to groups created from within myDALITE, or using the LTI-Standalone launch URL in your LMS. To distribute one question at a time to your students via an LMS (like Moodle), use the “Distribute via LMS” option.",
+                "Select one of your current groups and specify a due date (the due date can be changed later). Upon clicking submit, your students will receive an e-mail with a link to the assignment.",
               )}
-            </FormHelperText>
-          </FormControl>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
-              desktopModeMediaQuery="@media (pointer: fine) and (min-height: 750px) and (min-width: 500px)"
-              disablePast={true}
-              id="due-date-and-time-picker"
-              label={`${gettext("Due date and time")}*`}
-              onChange={(newDateTime: Dayjs) => setDueDate(newDateTime)}
-              required={true}
-              timeSteps={{ hours: 1, minutes: 15 }}
-              sx={{ width: "100%" }}
-              value={dueDate}
-            />
-          </LocalizationProvider>
+            </Typography>
 
-          <FormGroup>
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label={gettext("Show correct answers")}
-              onChange={() => setShowCorrectAnswers(!showCorrectAnswers)}
-            />
-          </FormGroup>
+            <Stack spacing={3}>
+              <Errors errors={errors} />
+              <FormControl required>
+                <InputLabel id="group-select">{gettext("Group")}</InputLabel>
+                <Select
+                  labelId="group-select"
+                  value={group}
+                  label={`${gettext("Group")}*`}
+                  onChange={(event: SelectChangeEvent) => {
+                    if (event.target) {
+                      setGroup((event.target as HTMLInputElement).value);
+                    }
+                  }}
+                >
+                  {groups.map((g, i) => (
+                    <MenuItem key={i} value={g.pk}>
+                      {g.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>
+                  {gettext(
+                    "You can only distribute assignments to groups created from within myDALITE, or using the LTI-Standalone launch URL in your LMS. To distribute one question at a time to your students via an LMS (like Moodle), use the “Distribute via LMS” option.",
+                  )}
+                </FormHelperText>
+              </FormControl>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker
+                  desktopModeMediaQuery="@media (pointer: fine) and (min-height: 750px) and (min-width: 500px)"
+                  disablePast={true}
+                  id="due-date-and-time-picker"
+                  label={`${gettext("Due date and time")}*`}
+                  onChange={(newDateTime: Dayjs) => setDueDate(newDateTime)}
+                  required={true}
+                  timeSteps={{ hours: 1, minutes: 15 }}
+                  sx={{ width: "100%" }}
+                  value={dueDate}
+                />
+              </LocalizationProvider>
 
-          <FormButtonBox sx={{ margin: "0px" }}>
-            <CancelButton onClick={onClose}>
-              <Typography>{gettext("Cancel")}</Typography>
-            </CancelButton>
-            <LoadingButton
-              disabled={group == "" || dueDate < dayjs()}
-              loadingPosition="end"
-              onClick={() =>
-                handleSubmit(
-                  {
-                    due_date: dueDate.utc().format(), // Convert to UTC!
-                    group_pk: parseInt(group),
-                    show_correct_answers: showCorrectAnswers,
-                  },
-                  onClose,
-                )
-              }
-              loading={waiting}
-              endIcon={<ShareIcon />}
-              sx={{
-                " .MuiLoadingButton-loadingIndicatorEnd": { right: "28px" }, // Layout fix
-              }}
-              variant="contained"
-            >
-              <Typography tag={"span"}>{gettext("Distribute")}</Typography>
-            </LoadingButton>
-          </FormButtonBox>
-        </Stack>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox defaultChecked />}
+                  label={gettext("Show correct answers")}
+                  onChange={() => setShowCorrectAnswers(!showCorrectAnswers)}
+                />
+              </FormGroup>
+
+              <FormButtonBox sx={{ margin: "0px" }}>
+                <CancelButton onClick={onClose}>
+                  <Typography>{gettext("Cancel")}</Typography>
+                </CancelButton>
+                <LoadingButton
+                  disabled={group == "" || dueDate < dayjs()}
+                  loadingPosition="end"
+                  onClick={() =>
+                    handleSubmit(
+                      {
+                        due_date: dueDate.utc().format(), // Convert to UTC!
+                        group_pk: parseInt(group),
+                        show_correct_answers: showCorrectAnswers,
+                      },
+                      onClose,
+                    )
+                  }
+                  loading={waiting}
+                  endIcon={<ShareIcon />}
+                  sx={{
+                    " .MuiLoadingButton-loadingIndicatorEnd": {
+                      right: "28px",
+                    }, // Layout fix
+                  }}
+                  variant="contained"
+                >
+                  <Typography tag={"span"}>{gettext("Distribute")}</Typography>
+                </LoadingButton>
+              </FormButtonBox>
+            </Stack>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Typography variant="h1" sx={{ margin: "0px" }}>
+              {gettext("Distribute via LMS")}
+            </Typography>
+          </Fragment>
+        )}
       </Box>
     </Modal>
   );

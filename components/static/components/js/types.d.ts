@@ -42,11 +42,12 @@ type TeacherType = {
 export type LinkType = {
   aside?: boolean;
   disabled?: boolean;
+  handleClick?: () => void;
   icon: string;
   selected?: boolean;
   target?: string;
   title: string;
-  url: string;
+  url?: string;
 };
 
 export type DashboardAppProps = {

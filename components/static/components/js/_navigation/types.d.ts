@@ -1,3 +1,4 @@
+import { MenuProps } from "@mui/material/Menu";
 import { LinkType, UserType } from "../types";
 
 export type headerProps = {
@@ -6,12 +7,9 @@ export type headerProps = {
   user: UserType;
 };
 
-export type CustomMenuProps = {
-  anchorEl: null | HTMLElement;
+export interface CustomMenuProps extends MenuProps {
   menuItems: LinkType[][];
-  onClose: (a: MouseEvent | TouchEvent) => void;
-  open: boolean;
-};
+}
 
 export type DrawerProps = {
   logo: string;

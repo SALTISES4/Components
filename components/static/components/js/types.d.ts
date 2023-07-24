@@ -13,6 +13,13 @@ import { SnackbarType } from "./_reusableComponents/types";
 
 import { AssignmentMetaFieldsForm } from "./_assignments/types";
 
+type LTIType = {
+  launchURL: string;
+  consumerKey: string;
+  sharedSecret: string;
+  teacherHash: string;
+};
+
 type TeacherType = {
   activeAssignmentCount: number;
   activeGroupCount: number;
@@ -274,6 +281,7 @@ export type UpdateAssignmentAppProps = {
   nonce: string;
   assignment: AssignmentDatabaseFields;
   EditorIcons: EditorIconsType;
+  lti: LTIType;
   metaEditableByUser?: boolean;
   questionsEditableByUser?: boolean;
   urls: {

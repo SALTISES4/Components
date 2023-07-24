@@ -1,6 +1,6 @@
 import { ComponentChildren } from "preact";
-import { UserType } from "../_localComponents";
-import { EditorIconsType } from "../types";
+import { AssignmentType, UserType } from "../_localComponents";
+import { EditorIconsType, LTIType } from "../types";
 
 export type AssignmentMetaFieldsForm = {
   description: string | undefined;
@@ -42,6 +42,7 @@ export type GeneralProps = {
 
 export type ToolbarProps = {
   gettext: (a: string) => string;
+  assignment: AssignmentType;
   distributeErrors: string[][];
   distributeWaiting: boolean;
   editing: boolean;
@@ -55,6 +56,7 @@ export type ToolbarProps = {
   ) => void;
   handleEdit: (a: boolean) => void;
   handleSave: () => void;
+  lti: LTIType;
 };
 
 export type ShareModalProps = {
@@ -65,12 +67,14 @@ export type ShareModalProps = {
 
 export type DistributeModalProps = {
   gettext: (a: string) => string;
+  assignment: AssignmentType;
   errors: string[][];
   groups: { title: string; pk: number }[];
   handleSubmit: (
     form: StudentGroupAssignmentCreateForm,
     callback: () => void,
   ) => void;
+  lti: LTIType;
   method: "myDalite" | "LMS" | undefined;
   onClose: any;
   waiting: boolean;

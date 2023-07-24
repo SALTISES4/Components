@@ -469,7 +469,7 @@ const saltise = createTheme(paletteAndTypography, {
     MuiSvgIcon: {
       styleOverrides: {
         fontSizeSmall: {
-          fontSize: "14px",
+          fontSize: "16px",
         },
         fontSizeMedium: {
           fontSize: "20px",

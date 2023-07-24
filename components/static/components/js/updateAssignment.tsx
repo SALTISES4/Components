@@ -363,6 +363,7 @@ export class App extends Component<
                 <ThemeProvider theme={saltise}>
                   <Toolbar
                     gettext={this.props.gettext}
+                    assignment={this.state.assignment}
                     distributeErrors={this.state.distributeErrors}
                     distributeWaiting={this.state.distributeWaiting}
                     editing={this.state.editing}
@@ -393,6 +394,7 @@ export class App extends Component<
                     handleDistribute={this.handleDistribute}
                     handleEdit={this.handleEdit}
                     handleSave={this.handleSave}
+                    lti={this.props.lti}
                   />
                 </ThemeProvider>
               </Main>

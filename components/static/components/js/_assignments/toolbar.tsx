@@ -20,6 +20,7 @@ import { ToolbarProps } from "./types";
 
 export function Toolbar({
   gettext,
+  assignment,
   distributeErrors,
   distributeWaiting,
   editing = false,
@@ -30,6 +31,7 @@ export function Toolbar({
   handleDistribute,
   handleEdit,
   handleSave,
+  lti,
 }: ToolbarProps): JSX.Element {
   const [distributeMenuAnchorElement, setDistributeMenuAnchorElement] =
     useState<null | HTMLElement>(null);
@@ -144,9 +146,11 @@ export function Toolbar({
       {groups ? (
         <DistributeModal
           gettext={gettext}
+          assignment={assignment}
           errors={distributeErrors}
           groups={groups}
           handleSubmit={handleDistribute}
+          lti={lti}
           method={distributeMode}
           onClose={() => setDistributeMode(undefined)}
           waiting={distributeWaiting}

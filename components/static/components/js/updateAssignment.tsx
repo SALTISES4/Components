@@ -9,6 +9,7 @@ import {
 } from "./functions";
 
 //material ui components
+import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
@@ -400,32 +401,36 @@ export class App extends Component<
               </Main>
             </Paper>
             <Main>
+              {!this.state.assignment.is_valid ? (
+                <Alert severity="error" sx={{ marginTop: "30px" }}>
+                  {this.props.gettext(
+                    "There is a problem with this assignment and it cannot be distributed until fixed.",
+                  )}
+                </Alert>
+              ) : null}
               <Stack spacing={"50px"}>
-                <Box>
-                  <GeneralDescription
-                    gettext={this.props.gettext}
-                    editing={this.state.editing}
-                    EditorIcons={this.props.EditorIcons}
-                    identifier={this.props.assignment.pk}
-                    owner={this.props.assignment.owner || [""]}
-                    description={this.state.assignment.description || "N/A"}
-                    intro_page={this.state.assignment.intro_page || ""}
-                    conclusion_page={
-                      this.state.assignment.conclusion_page || ""
-                    }
-                    title={this.state.assignment.title}
-                    form={this.state.form}
-                    setters={{
-                      description: (value) =>
-                        this.updateForm("description", value),
-                      intro_page: (value) =>
-                        this.updateForm("intro_page", value),
-                      conclusion_page: (value) =>
-                        this.updateForm("conclusion_page", value),
-                      title: (value) => this.updateForm("title", value),
-                    }}
-                  />
-                </Box>
+                <GeneralDescription
+                  gettext={this.props.gettext}
+                  editing={this.state.editing}
+                  EditorIcons={this.props.EditorIcons}
+                  identifier={this.props.assignment.pk}
+                  owner={this.props.assignment.owner || [""]}
+                  description={this.state.assignment.description || "N/A"}
+                  intro_page={this.state.assignment.intro_page || ""}
+                  conclusion_page={this.state.assignment.conclusion_page || ""}
+                  title={this.state.assignment.title}
+                  form={this.state.form}
+                  setters={{
+                    description: (value) =>
+                      this.updateForm("description", value),
+                    intro_page: (value) =>
+                      this.updateForm("intro_page", value),
+                    conclusion_page: (value) =>
+                      this.updateForm("conclusion_page", value),
+                    title: (value) => this.updateForm("title", value),
+                  }}
+                />
+
                 <Box>
                   <Box>
                     <Typography variant="h2" sx={{ mt: "0px", mb: "30px" }}>

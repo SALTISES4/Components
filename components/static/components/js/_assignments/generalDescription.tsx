@@ -183,7 +183,7 @@ export function GeneralDescription({
   };
 
   return (
-    <Fragment>
+    <Box>
       {titleSection()}
       <Typography variant="h2" sx={{ marginTop: "0px" }}>
         {gettext("General")}
@@ -217,6 +217,6 @@ export function GeneralDescription({
           ) : null}
         </Box>
       </Box>
-    </Fragment>
+    </Box>
   );
 }

@@ -83,10 +83,7 @@ export class AddToAssignmentModal extends Component<
             <Typography variant="h1" sx={{ margin: "0px" }}>
               {this.props.gettext("Add to assignment")}
             </Typography>
-            <Typography
-              fontSize={"16"}
-              sx={{ padding: "20px 0px", textAlign: "justify" }}
-            >
+            <Typography sx={{ padding: "20px 0px", textAlign: "justify" }}>
               {this.props.gettext(
                 "Select the assignment to which you would like to add this question.",
               )}

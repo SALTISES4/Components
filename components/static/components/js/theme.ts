@@ -196,41 +196,51 @@ const paletteAndTypography = createTheme({
   },
   typography: {
     fontFamily: ["Open Sans", "sans-serif"].join(","),
-    fontSize: 12,
     allVariants: {
       color: "#515159",
       fontWeight: 400,
     },
     h1: {
-      fontSize: "36px",
+      fontSize: "2.25rem", // 36/16
       lineHeight: "49px",
       marginTop: "30px",
       marginBottom: "30px",
     },
     h2: {
-      fontSize: "20px",
-      fontWeight: 500,
+      fontSize: "1.25rem", // 20/16
+      fontWeight: 400,
       lineHeight: "28px",
       marginTop: "50px",
     },
     h3: {
-      fontSize: "16px",
-      fontWeight: 500,
+      fontSize: "1.125rem", // 18/16
+      fontWeight: 400,
       lineHeight: "28px",
     },
+    h6: {
+      fontSize: "0.625rem", // 10/16
+      fontWeight: 600,
+      textTransform: "uppercase",
+    },
+    // h4 is used where?
     h4: {
       fontSize: "14px",
       lineHeight: "20px",
     },
     h5: {
-      fontSize: "14px",
-      fontWeight: 500,
-      lineHeight: "19px",
+      fontSize: "0.875rem", // 14/16
+      fontWeight: 600,
+      lineHeight: "1.357", // 19/14
     },
     caption: {
-      fontSize: "10px",
-      lineHeight: "22px",
-      color: "#90929B",
+      fontSize: "0.5rem",
+      color: "#414141",
+    },
+    body1: {
+      fontSize: "1rem", // 16/16
+    },
+    body2: {
+      fontSize: "0.875rem", // 14/16
     },
   },
 });
@@ -432,14 +442,6 @@ const saltise = createTheme(paletteAndTypography, {
             color: paletteAndTypography.palette.background.paper,
             fontSize: "0.9rem",
           },
-        },
-      },
-    },
-    MuiFormHelperText: {
-      styleOverrides: {
-        root: {
-          color: "#515159",
-          lineHeight: "1rem",
         },
       },
     },

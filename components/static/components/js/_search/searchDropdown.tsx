@@ -82,10 +82,9 @@ export const SearchDropdown = ({
       <Box alignItems="baseline" display="flex" sx={{ gridGap: "10px" }}>
         <Typography
           flexGrow={1}
-          fontSize="12px"
-          fontWeight={600}
           textTransform="uppercase"
           margin="5px 0px"
+          variant={"h6"}
         >
           {subtitle}
         </Typography>
@@ -126,7 +125,7 @@ export const SearchDropdown = ({
                 false
               }
               label={
-                <Typography>
+                <Typography variant={"body2"}>
                   {labels ? labels[choice] : choice}
                   {icon}
                 </Typography>
@@ -135,10 +134,6 @@ export const SearchDropdown = ({
               sx={{
                 flexBasis: "100%",
                 margin: "5px 0px",
-                "& .MuiTypography-root": {
-                  fontSize: "14px",
-                  color: "secondary4.main",
-                },
               }}
             />
           ))}

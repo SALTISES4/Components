@@ -54,9 +54,9 @@ export class CustomEditor extends Component<
     };
     const editorStyle = {
       padding: "15px",
-      fontFamily: "Open Sans, sans-serif",
-      fontSize: "14px",
-      color: "#515159",
+      fontFamily: formTheme.typography.body2.fontFamily,
+      fontSize: formTheme.typography.body2.fontSize,
+      color: formTheme.typography.body2.color,
       position: "inherit",
       minHeight: "90px", //wrapper width - toolbar width
       boxSizing: "border-box",

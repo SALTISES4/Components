@@ -61,10 +61,6 @@ export class CopyBox extends Component<CopyBoxProps, CopyBoxState> {
             "&:hover": {
               backgroundColor: "primary1",
             },
-            "& .MuiTypography-root": {
-              fontSize: "0.857143rem!important",
-              lineHeight: "1.5!important",
-            },
           }}
           title={this.props.gettext("Copy to clipboard.")}
         >

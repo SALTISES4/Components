@@ -33,10 +33,7 @@ export default function ShareModal({
         <Typography variant="h1" sx={{ margin: "0px" }}>
           {gettext("Share with a colleague")}
         </Typography>
-        <Typography
-          fontSize={"16"}
-          sx={{ padding: "20px 0px", textAlign: "justify" }}
-        >
+        <Typography sx={{ padding: "20px 0px", textAlign: "justify" }}>
           {gettext(
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
           )}

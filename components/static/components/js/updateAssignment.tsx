@@ -417,7 +417,10 @@ export class App extends Component<
               </Main>
             </Paper>
             <Main>
-              {!this.state.assignment.is_valid ? (
+              {Object.prototype.hasOwnProperty.call(
+                this.state.assignment,
+                "is_valid",
+              ) && !this.state.assignment.is_valid ? (
                 <Alert severity="error" sx={{ marginTop: "30px" }}>
                   {this.props.gettext(
                     "There is a problem with this assignment and it cannot be distributed until fixed.",

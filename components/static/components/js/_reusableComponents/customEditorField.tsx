@@ -39,7 +39,7 @@ export const CustomEditorField = ({
               sx={{
                 position: "relative",
                 color: formTheme.palette.primary.main,
-                fontSize: "14px",
+                fontSize: formTheme.typography.h5.fontSize,
               }}
               component={icon}
             />

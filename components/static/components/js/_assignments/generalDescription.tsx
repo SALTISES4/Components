@@ -77,7 +77,9 @@ export function GeneralDescription({
             mt: "27px",
             ml: "-14px",
             width: "calc(100% + 14px)",
-            " .MuiInputBase-root": { fontSize: "36px" }, // Why TS error?,
+            " .MuiInputBase-root": {
+              fontSize: "h1.fontSize",
+            }, // Why TS error?,
             " .MuiInputBase-input": { padding: "2px 14px" }, // Why TS error?
           }}
         />

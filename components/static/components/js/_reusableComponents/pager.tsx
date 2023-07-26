@@ -41,7 +41,7 @@ const NumberButton = ({
         },
       }}
     >
-      <Box sx={{ fontSize: "16px", width: "20px", height: "20px" }}>
+      <Box sx={{ width: "20px", height: "20px" }}>
         <Typography
           tag={"p"}
           color={"inherit"}

@@ -69,19 +69,25 @@ export default function DistributeModal({
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <Typography tag="div">{gettext("LTI launch URL")}</Typography>
+              <Typography tag="div" variant={"body2"}>
+                {gettext("LTI launch URL")}
+              </Typography>
               <CopyBox gettext={gettext}>
                 <Typography color="primary">{lti.launchURL}</Typography>
               </CopyBox>
             </Grid>
             <Grid item xs={6}>
-              <Typography tag="div">{gettext("LTI consumer key")}</Typography>
+              <Typography tag="div" variant={"body2"}>
+                {gettext("LTI consumer key")}
+              </Typography>
               <CopyBox gettext={gettext}>
                 <Typography color="primary">{lti.consumerKey}</Typography>
               </CopyBox>
             </Grid>
             <Grid item xs={6}>
-              <Typography tag="div">{gettext("LTI shared secret")}</Typography>
+              <Typography tag="div" variant={"body2"}>
+                {gettext("LTI shared secret")}
+              </Typography>
               <CopyBox gettext={gettext}>
                 <Typography color="primary">{lti.sharedSecret}</Typography>
               </CopyBox>
@@ -122,10 +128,7 @@ export default function DistributeModal({
         <Typography variant="h1" sx={{ margin: "0px" }}>
           {gettext("Distribute via myDalite")}
         </Typography>
-        <Typography
-          fontSize={"16"}
-          sx={{ padding: "20px 0px", textAlign: "justify" }}
-        >
+        <Typography sx={{ padding: "20px 0px", textAlign: "justify" }}>
           {gettext(
             "Select one of your current groups and specify a due date (the due date can be changed later). Upon clicking submit, your students will receive an e-mail with a link to the assignment.",
           )}

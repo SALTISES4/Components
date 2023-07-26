@@ -212,6 +212,7 @@ export type QuestionProps = {
   handleAddToAssignment?: (a: string) => void;
   handleRemove: () => void;
   question: QuestionType;
+  questionsEditableByUser?: boolean;
   showBookmark: boolean;
   toggleBookmarked: () => void;
 };

@@ -45,6 +45,7 @@ export function Question({
   handleAddToAssignment,
   handleRemove,
   question,
+  questionsEditableByUser,
   showBookmark,
   toggleBookmarked,
 }: QuestionProps): JSX.Element {
@@ -238,21 +239,23 @@ export function Question({
   };
 
   const removeFromAssignmentIcon = () => {
-    return (
-      <Box>
-        <IconButton
-          color="primary"
-          onClick={(evt: MouseEvent) => {
-            evt.stopPropagation();
-            handleRemove();
-          }}
-          title={gettext("Remove from this assignment")}
-          sx={{ marginLeft: "0px!important" }}
-        >
-          <PlaylistRemoveIcon fontSize="medium" />
-        </IconButton>
-      </Box>
-    );
+    if (questionsEditableByUser) {
+      return (
+        <Box>
+          <IconButton
+            color="primary"
+            onClick={(evt: MouseEvent) => {
+              evt.stopPropagation();
+              handleRemove();
+            }}
+            title={gettext("Remove from this assignment")}
+            sx={{ marginLeft: "0px!important" }}
+          >
+            <PlaylistRemoveIcon fontSize="medium" />
+          </IconButton>
+        </Box>
+      );
+    }
   };
 
   const bookmarkIcon = () => {

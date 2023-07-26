@@ -277,7 +277,7 @@ export class App extends Component<
     );
   };
 
-  questions = () => {
+  questions = (questionsEditableByUser?: boolean) => {
     return (
       <Box sx={{ marginTop: "30px" }}>
         {!this.state.questionsLoading ? (
@@ -311,6 +311,7 @@ export class App extends Component<
                       );
                     }}
                     question={question}
+                    questionsEditableByUser={questionsEditableByUser}
                     showBookmark={
                       question.is_owner !== undefined
                         ? !question.is_owner
@@ -465,7 +466,7 @@ export class App extends Component<
                     {this.props.gettext("Questions")}
                   </Typography>
                   <ThemeProvider theme={saltise}>
-                    {this.questions()}
+                    {this.questions(this.props.questionsEditableByUser)}
                   </ThemeProvider>
                 </Box>
               </Stack>

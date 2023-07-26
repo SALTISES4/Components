@@ -17,6 +17,7 @@ import Checkbox from "@mui/material/Checkbox";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import IconButton from "@mui/material/IconButton";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+import PlaylistRemoveIcon from "@mui/icons-material/PlaylistRemove";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -42,6 +43,7 @@ export function Question({
   expanded,
   gettext,
   handleAddToAssignment,
+  handleRemove,
   question,
   showBookmark,
   toggleBookmarked,
@@ -60,7 +62,6 @@ export function Question({
     useState(false);
   const handleOpenAddToAssignmentModal = () => {
     setOpenAddToAssignmentModal(true);
-    console.info("click");
   };
   const handleCloseAddToAssignmentModal = () =>
     setOpenAddToAssignmentModal(false);
@@ -236,6 +237,24 @@ export function Question({
     }
   };
 
+  const removeFromAssignmentIcon = () => {
+    return (
+      <Box>
+        <IconButton
+          color="primary"
+          onClick={(evt: MouseEvent) => {
+            evt.stopPropagation();
+            handleRemove();
+          }}
+          title={gettext("Remove from this assignment")}
+          sx={{ marginLeft: "0px!important" }}
+        >
+          <PlaylistRemoveIcon fontSize="medium" />
+        </IconButton>
+      </Box>
+    );
+  };
+
   const bookmarkIcon = () => {
     if (bookmarked !== undefined && showDetails && showBookmark) {
       return (
@@ -398,6 +417,7 @@ export function Question({
           >
             {showDetailsIcon()}
             {addToAssignmentIcon()}
+            {removeFromAssignmentIcon()}
             {bookmarkIcon()}
           </Stack>
         </CardActions>

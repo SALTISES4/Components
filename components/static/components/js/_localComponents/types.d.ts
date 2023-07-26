@@ -210,6 +210,7 @@ export type QuestionProps = {
   expanded?: boolean;
   gettext: (a: string) => string;
   handleAddToAssignment?: (a: string) => void;
+  handleRemove: () => void;
   question: QuestionType;
   showBookmark: boolean;
   toggleBookmarked: () => void;

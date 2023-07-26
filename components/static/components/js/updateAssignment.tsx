@@ -6,6 +6,7 @@ import { get, submitData } from "./ajax";
 import {
   handleAddToAssignment,
   handleQuestionBookmarkClick,
+  handleRemoveQuestionFromAssignment,
 } from "./functions";
 
 //material ui components
@@ -197,6 +198,10 @@ export class App extends Component<
     this.setState({ editing: mode });
   };
 
+  handleRemoveFromAssignmentCallback = () => {
+    this.loadQuestions();
+  };
+
   handleSave = async () => {
     console.info(this.state.form);
     try {
@@ -282,6 +287,17 @@ export class App extends Component<
                 (question: QuestionType, i: number) => (
                   <Question
                     key={i}
+                    handleRemove={async () => {
+                      await handleRemoveQuestionFromAssignment(
+                        () => {
+                          this.handleRemoveFromAssignmentCallback();
+                        },
+                        this.props.urls.add_to_assignment,
+                        this.state.assignment.questions
+                          ?.filter((qr) => qr.question.pk === question.pk)
+                          .map((qr) => qr.pk)[0],
+                      );
+                    }}
                     bookmarked={this.state.teacher?.favourite_questions?.includes(
                       question.pk,
                     )}

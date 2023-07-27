@@ -296,6 +296,7 @@ export class App extends Component<
                         this.state.assignment.questions
                           ?.filter((qr) => qr.question.pk === question.pk)
                           .map((qr) => qr.pk)[0],
+                        this.error,
                       );
                     }}
                     bookmarked={this.state.teacher?.favourite_questions?.includes(

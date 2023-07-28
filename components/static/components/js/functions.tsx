@@ -145,3 +145,17 @@ export const handleAddToAssignment = async (
     "POST",
   );
 };
+
+export const handleRemoveQuestionFromAssignment = async (
+  callback: () => void,
+  assignmentQuestionURL: string,
+  aqpk?: number,
+  error: (error: Error) => void = (error) => console.error(error),
+): Promise<void> => {
+  try {
+    await submitData(assignmentQuestionURL + aqpk, {}, "DELETE");
+    callback();
+  } catch (e: any) {
+    error(e);
+  }
+};

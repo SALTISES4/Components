@@ -6,6 +6,7 @@ import { get, submitData } from "./ajax";
 import {
   handleAddToAssignment,
   handleQuestionBookmarkClick,
+  handleRemoveQuestionFromAssignment,
 } from "./functions";
 
 //material ui components
@@ -197,6 +198,10 @@ export class App extends Component<
     this.setState({ editing: mode });
   };
 
+  handleRemoveFromAssignmentCallback = () => {
+    this.loadQuestions();
+  };
+
   handleSave = async () => {
     console.info(this.state.form);
     try {
@@ -272,7 +277,7 @@ export class App extends Component<
     );
   };
 
-  questions = () => {
+  questions = (questionsEditableByUser?: boolean) => {
     return (
       <Box sx={{ marginTop: "30px" }}>
         {!this.state.questionsLoading ? (
@@ -282,6 +287,18 @@ export class App extends Component<
                 (question: QuestionType, i: number) => (
                   <Question
                     key={i}
+                    handleRemove={async () => {
+                      await handleRemoveQuestionFromAssignment(
+                        () => {
+                          this.handleRemoveFromAssignmentCallback();
+                        },
+                        this.props.urls.add_to_assignment,
+                        this.state.assignment.questions
+                          ?.filter((qr) => qr.question.pk === question.pk)
+                          .map((qr) => qr.pk)[0],
+                        this.error,
+                      );
+                    }}
                     bookmarked={this.state.teacher?.favourite_questions?.includes(
                       question.pk,
                     )}
@@ -295,6 +312,7 @@ export class App extends Component<
                       );
                     }}
                     question={question}
+                    questionsEditableByUser={questionsEditableByUser}
                     showBookmark={
                       question.is_owner !== undefined
                         ? !question.is_owner
@@ -449,7 +467,7 @@ export class App extends Component<
                     {this.props.gettext("Questions")}
                   </Typography>
                   <ThemeProvider theme={saltise}>
-                    {this.questions()}
+                    {this.questions(this.props.questionsEditableByUser)}
                   </ThemeProvider>
                 </Box>
               </Stack>

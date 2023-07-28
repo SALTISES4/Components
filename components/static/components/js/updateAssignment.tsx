@@ -198,8 +198,19 @@ export class App extends Component<
     this.setState({ editing: mode });
   };
 
-  handleRemoveFromAssignmentCallback = () => {
-    this.loadQuestions();
+  handleRemoveQuestionFromAssignmentCallback = (pk: number) => {
+    const _questions = [...this.state.questions];
+    const index = _questions.map((q) => q.pk).indexOf(pk);
+    if (index >= 0) {
+      _questions.splice(index, 1);
+      this.setState({
+        questions: _questions,
+        snackbarIsOpen: true,
+        snackbarMessage: `Q${pk} ${this.props.gettext(
+          "removed from assignment",
+        )}`,
+      });
+    }
   };
 
   handleSave = async () => {
@@ -277,7 +288,7 @@ export class App extends Component<
     );
   };
 
-  questions = (questionsEditableByUser?: boolean) => {
+  questions = () => {
     return (
       <Box sx={{ marginTop: "30px" }}>
         {!this.state.questionsLoading ? (
@@ -289,9 +300,10 @@ export class App extends Component<
                     key={i}
                     handleRemove={async () => {
                       await handleRemoveQuestionFromAssignment(
-                        () => {
-                          this.handleRemoveFromAssignmentCallback();
-                        },
+                        () =>
+                          this.handleRemoveQuestionFromAssignmentCallback(
+                            question.pk,
+                          ),
                         this.props.urls.add_to_assignment,
                         this.state.assignment.questions
                           ?.filter((qr) => qr.question.pk === question.pk)
@@ -312,7 +324,9 @@ export class App extends Component<
                       );
                     }}
                     question={question}
-                    questionsEditableByUser={questionsEditableByUser}
+                    questionsEditableByUser={
+                      this.props.questionsEditableByUser
+                    }
                     showBookmark={
                       question.is_owner !== undefined
                         ? !question.is_owner
@@ -467,7 +481,7 @@ export class App extends Component<
                     {this.props.gettext("Questions")}
                   </Typography>
                   <ThemeProvider theme={saltise}>
-                    {this.questions(this.props.questionsEditableByUser)}
+                    {this.questions()}
                   </ThemeProvider>
                 </Box>
               </Stack>

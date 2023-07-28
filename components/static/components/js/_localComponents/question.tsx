@@ -244,7 +244,7 @@ export function Question({
   };
 
   const removeFromAssignmentIcon = () => {
-    if (questionsEditableByUser) {
+    if (questionsEditableByUser === true && handleRemove) {
       return (
         <Box>
           <IconButton
@@ -253,7 +253,7 @@ export function Question({
               evt.stopPropagation();
               handleRemove();
             }}
-            title={gettext("Remove from this assignment")}
+            title={gettext("Remove from assignment")}
             sx={{ marginLeft: "0px!important" }}
           >
             <PlaylistRemoveIcon fontSize="medium" />

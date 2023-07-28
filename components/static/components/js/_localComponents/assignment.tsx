@@ -72,13 +72,13 @@ export function Assignment({
           <Box display="flex" justifyContent="space-between">
             <Box>
               <Typography
-                variant="h3"
+                variant="h5"
                 dangerouslySetInnerHTML={{
                   __html: purifyText(assignment.title),
                 }}
               />
               <Typography
-                variant="caption"
+                variant="subtitle1"
                 sx={{
                   display:
                     assignment.owner && assignment.owner.length > 0

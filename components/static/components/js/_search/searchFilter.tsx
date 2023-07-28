@@ -46,7 +46,7 @@ export const SearchFilter = ({
             />
           )}
           <SvgIcon
-            sx={{ position: "absolute", fontSize: "14px" }}
+            sx={{ position: "absolute", fontSize: "12px" }}
             component={filter.icon}
           />
           <Typography color="inherit" sx={{ pl: "6px" }}>

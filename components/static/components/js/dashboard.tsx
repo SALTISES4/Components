@@ -243,13 +243,13 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
     if (this.state.collections?.every((collection) => collection.featured)) {
       return (
         <Typography variant="h2">
-          {this.props.gettext("Featured Collections")}
+          {this.props.gettext("Featured collections")}
         </Typography>
       );
     }
     return (
       <Typography variant="h2">
-        {this.props.gettext("Recommended Collections")}
+        {this.props.gettext("Recommended collections")}
       </Typography>
     );
   };
@@ -259,131 +259,138 @@ export class App extends Component<DashboardAppProps, DashboardAppState> {
       <ThemeProvider theme={saltise}>
         <CacheProvider value={this.cache}>
           <Main>
-            <Typography variant="h1" align="center">
-              {this.props.gettext("Good Morning,")} {this.props.user.username}
-            </Typography>
-            <Container align="center">
-              <SuperUserBar
-                activeAssignmentCount={
-                  this.state.teacher?.activeAssignmentCount
-                }
-                activeGroupCount={this.state.teacher?.activeGroupCount}
-                createdQuestionCount={this.state.teacher?.createdQuestionCount}
-                gettext={this.props.gettext}
-              />
-            </Container>
-            <Container>
-              <Subtitle>
-                <Typography variant="h2">
-                  {this.props.gettext("Recent Assignments")}
+            <Stack spacing={"50px"}>
+              <Container align="center">
+                <Typography variant="h1">
+                  {this.props.gettext("Good morning,")}{" "}
+                  {this.props.user.username}
                 </Typography>
-                <Link
-                  variant="h4"
-                  href={this.props.urls.studentgroupassignmentsLink}
-                >
-                  {this.props.gettext("See my assignments")}
-                </Link>
-              </Subtitle>
-              {this.assignments()}
-            </Container>
-            <Container>
-              <Subtitle>
-                {this.collectionsTitle()}
-                <Link variant="h4" href={this.props.urls.collectionsLink}>
-                  {this.props.gettext("Explore collections")}
-                </Link>
-              </Subtitle>
-              <CollectionBlock
-                collections={this.state.collections}
-                gettext={this.props.gettext}
-                handleBookmarkClick={async (pk: number) => {
-                  await handleCollectionBookmarkClick(
-                    this.props.gettext,
-                    (teacher, message) =>
-                      this.setState({
-                        teacher,
-                        snackbarIsOpen: true,
-                        snackbarMessage: message,
-                      }),
-                    pk,
-                    this.state.teacher,
-                    this.props.urls.teacher,
-                    this.error,
-                  );
-                  updateCollections(
-                    pk,
-                    (collections) => this.setState({ collections }),
-                    this.props.urls.collection,
-                    this.state.collections,
-                    this.error,
-                  );
-                }}
-                loading={this.state.collectionsLoading}
-                logo={this.props.logo}
-                teacher={this.state.teacher}
-              />
-            </Container>
-            <Container>
-              <Subtitle>
-                <Typography variant="h2">
-                  {this.props.gettext("Newly Added Questions")}
-                </Typography>
-                <Link variant="h4" href={this.props.urls.questionsLink}>
-                  {this.props.gettext("Explore questions")}
-                </Link>
-              </Subtitle>
-              <Stack spacing="10px">
-                {!this.state.questionsLoading ? (
-                  this.state.questions.map(
-                    (question: QuestionType, i: number) => (
-                      <Question
-                        key={i}
-                        bookmarked={this.state.teacher?.favourite_questions?.includes(
-                          question.pk,
-                        )}
-                        expanded={true}
-                        gettext={this.props.gettext}
-                        handleAddToAssignment={async (assignment: string) => {
-                          await handleAddToAssignment(
-                            assignment,
+                <SuperUserBar
+                  activeAssignmentCount={
+                    this.state.teacher?.activeAssignmentCount
+                  }
+                  activeGroupCount={this.state.teacher?.activeGroupCount}
+                  createdQuestionCount={
+                    this.state.teacher?.createdQuestionCount
+                  }
+                  gettext={this.props.gettext}
+                />
+              </Container>
+              <Container>
+                <Subtitle>
+                  <Typography variant="h2">
+                    {this.props.gettext("Recent assignments")}
+                  </Typography>
+                  <Link
+                    variant="body2"
+                    href={this.props.urls.studentgroupassignmentsLink}
+                  >
+                    {this.props.gettext("See my assignments")}
+                  </Link>
+                </Subtitle>
+                {this.assignments()}
+              </Container>
+              <Container>
+                <Subtitle>
+                  {this.collectionsTitle()}
+                  <Link variant="body2" href={this.props.urls.collectionsLink}>
+                    {this.props.gettext("Explore collections")}
+                  </Link>
+                </Subtitle>
+                <CollectionBlock
+                  collections={this.state.collections}
+                  gettext={this.props.gettext}
+                  handleBookmarkClick={async (pk: number) => {
+                    await handleCollectionBookmarkClick(
+                      this.props.gettext,
+                      (teacher, message) =>
+                        this.setState({
+                          teacher,
+                          snackbarIsOpen: true,
+                          snackbarMessage: message,
+                        }),
+                      pk,
+                      this.state.teacher,
+                      this.props.urls.teacher,
+                      this.error,
+                    );
+                    updateCollections(
+                      pk,
+                      (collections) => this.setState({ collections }),
+                      this.props.urls.collection,
+                      this.state.collections,
+                      this.error,
+                    );
+                  }}
+                  loading={this.state.collectionsLoading}
+                  logo={this.props.logo}
+                  teacher={this.state.teacher}
+                />
+              </Container>
+              <Container>
+                <Subtitle>
+                  <Typography variant="h2">
+                    {this.props.gettext("Newly added questions")}
+                  </Typography>
+                  <Link variant="body2" href={this.props.urls.questionsLink}>
+                    {this.props.gettext("Explore questions")}
+                  </Link>
+                </Subtitle>
+                <Stack spacing="10px">
+                  {!this.state.questionsLoading ? (
+                    this.state.questions.map(
+                      (question: QuestionType, i: number) => (
+                        <Question
+                          key={i}
+                          bookmarked={this.state.teacher?.favourite_questions?.includes(
                             question.pk,
-                            this.props.urls.add_to_assignment,
-                          );
-                        }}
-                        question={question}
-                        showBookmark={
-                          question.is_owner !== undefined
-                            ? !question.is_owner
-                            : false
-                        }
-                        toggleBookmarked={async () =>
-                          await handleQuestionBookmarkClick(
-                            this.props.gettext,
-                            (teacher, message) =>
-                              this.setState({
-                                teacher,
-                                snackbarIsOpen: true,
-                                snackbarMessage: message,
-                              }),
-                            question.pk,
-                            this.state.teacher,
-                            this.props.urls.teacher,
-                            this.error,
-                          )
-                        }
-                      />
-                    ),
-                  )
-                ) : (
-                  <Fragment>
-                    <QuestionSkeleton />
-                    <QuestionSkeleton />
-                    <QuestionSkeleton />
-                    <QuestionSkeleton />
-                  </Fragment>
-                )}
-              </Stack>
-            </Container>
+                          )}
+                          expanded={true}
+                          gettext={this.props.gettext}
+                          handleAddToAssignment={async (
+                            assignment: string,
+                          ) => {
+                            await handleAddToAssignment(
+                              assignment,
+                              question.pk,
+                              this.props.urls.add_to_assignment,
+                            );
+                          }}
+                          question={question}
+                          showBookmark={
+                            question.is_owner !== undefined
+                              ? !question.is_owner
+                              : false
+                          }
+                          toggleBookmarked={async () =>
+                            await handleQuestionBookmarkClick(
+                              this.props.gettext,
+                              (teacher, message) =>
+                                this.setState({
+                                  teacher,
+                                  snackbarIsOpen: true,
+                                  snackbarMessage: message,
+                                }),
+                              question.pk,
+                              this.state.teacher,
+                              this.props.urls.teacher,
+                              this.error,
+                            )
+                          }
+                        />
+                      ),
+                    )
+                  ) : (
+                    <Fragment>
+                      <QuestionSkeleton />
+                      <QuestionSkeleton />
+                      <QuestionSkeleton />
+                      <QuestionSkeleton />
+                    </Fragment>
+                  )}
+                </Stack>
+              </Container>
+            </Stack>
           </Main>
           <Snackbar
             message={this.state.snackbarMessage}

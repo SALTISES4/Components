@@ -95,12 +95,12 @@ export function StudentGroupsAssignment({
             <Box display="flex" justifyContent="space-between">
               <Box>
                 <Typography
-                  variant="h3"
+                  variant="h5"
                   dangerouslySetInnerHTML={{
                     __html: purifyText(studentgroupsassignment.title),
                   }}
                 />
-                <Typography variant="caption">
+                <Typography variant="subtitle1">
                   {gettext("By")} {studentgroupsassignment.author}
                 </Typography>
               </Box>
@@ -129,7 +129,7 @@ export function StudentGroupsAssignment({
                   <AssignmentStateIcon
                     state={studentgroupsassignment.distributionState}
                   />
-                  <Typography variant="h4">
+                  <Typography variant="body2">
                     {studentgroupsassignment.distributionState}
                   </Typography>
                 </Box>

@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable indent */
 import { h } from "preact";
-
 import { useEffect, useState } from "preact/hooks";
+
+//functions
+import { purifyHTML } from "../functions";
 
 //material ui components
 import BarChartIcon from "@mui/icons-material/BarChart";
@@ -90,7 +92,8 @@ export function Question({
       return (
         <Typography
           sx={{ cursor: "text", mb: "10px", mt: "20px" }}
-          dangerouslySetInnerHTML={{ __html: question.text }} // Bleached in serializer and elastic doc
+          dangerouslySetInnerHTML={{ __html: purifyHTML(question.text) }} // Bleached in serializer and elastic doc and purified here
+          variant={"body2"}
         />
       );
     }
@@ -121,7 +124,9 @@ export function Question({
                   ) : null}
                 </Box>
                 <Box sx={{ marginRight: "4px" }}>
-                  <Typography>{answerchoice.label}.</Typography>
+                  <Typography variant={"body2"}>
+                    {answerchoice.label}.
+                  </Typography>
                 </Box>
                 <Box>
                   <Typography
@@ -133,7 +138,7 @@ export function Question({
                       cursor: "text",
                       "> p": { mt: 0, mb: "4px" },
                     }}
-                    variant={"body1"}
+                    variant={"body2"}
                   />
                 </Box>
               </Box>
@@ -336,7 +341,7 @@ export function Question({
       return (
         <Box display="flex">
           <DifficultyCircleIcon difficulty={question.difficulty} />
-          <Typography variant="h4" sx={{ width: "64px" }}>
+          <Typography variant="body2" sx={{ width: "64px" }}>
             {question.difficulty.value
               ? question.difficulty.value
               : difficultyLabels
@@ -353,7 +358,7 @@ export function Question({
       return (
         <Box display="flex">
           <PeerImpactIcon peerImpact={question.peer_impact} />
-          <Typography variant="h4" sx={{ width: "80px" }}>
+          <Typography variant="body2" sx={{ width: "80px" }}>
             {gettext("Peer Impact")}
           </Typography>
         </Box>
@@ -369,17 +374,19 @@ export function Question({
         sx={{ userSelect: "text" }}
       >
         <CardContent sx={{ pt: "20px" }}>
-          <Box display="flex" justifyContent="space-between">
-            <Typography variant="h3" sx={{ m: "0px" }}>
-              {question.title}
-            </Typography>
-            <Box display="flex" sx={{ mt: "5px" }}>
+          <Box
+            alignItems="center"
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Typography variant="h4">{question.title}</Typography>
+            <Box display="flex">
               {difficulty()}
               {peerImpact()}
             </Box>
           </Box>
-          <Typography variant="caption">
-            {question.user?.username ? gettext("From") : ""}{" "}
+          <Typography variant="subtitle2">
+            {question.user?.username ? gettext("By") : ""}{" "}
             {question.user?.username}
           </Typography>
           {text()}

@@ -22,7 +22,7 @@ export function StudentGroupAssignment({
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" alignItems="center">
           <Typography
-            variant="h3"
+            variant="h5"
             onClick={() => (window.location.href = studentgroupassignment.url)}
             sx={{ cursor: "pointer" }}
           >
@@ -38,7 +38,7 @@ export function StudentGroupAssignment({
           />
           <Box display="flex" alignItems="center">
             <CircleProgressIcon progress={studentgroupassignment.progress} />
-            <Typography>
+            <Typography variant={"body2"}>
               {studentgroupassignment.progress}% {gettext("completed")}
             </Typography>
           </Box>

@@ -47,7 +47,13 @@ export const SideBar = ({ groups, logo }: DrawerProps) => {
         </Box>
       </Box>
 
-      <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+        }}
+      >
         {groups.map((group, i) => (
           <Fragment key={i}>
             <List sx={{ flexGrow: i == groups.length - 2 ? 2 : 0 }}>
@@ -56,7 +62,7 @@ export const SideBar = ({ groups, logo }: DrawerProps) => {
                   key={entry.title}
                   disablePadding
                   onClick={() =>
-                    !entry.selected
+                    !entry.selected && entry.url
                       ? handleClick(entry.url, entry.target)
                       : null
                   }
@@ -77,6 +83,7 @@ export const SideBar = ({ groups, logo }: DrawerProps) => {
                     <ListItemButton
                       disabled={entry.disabled}
                       selected={entry.selected}
+                      sx={{ alignItems: "flex-end" }}
                     >
                       <ListItemIcon
                         sx={{
@@ -84,9 +91,12 @@ export const SideBar = ({ groups, logo }: DrawerProps) => {
                           minWidth: 36,
                         }}
                       >
-                        <Icon>{entry.icon}</Icon>
+                        <Icon fontSize="medium">{entry.icon}</Icon>
                       </ListItemIcon>
-                      <ListItemText primary={entry.title} />
+                      <ListItemText
+                        primary={entry.title}
+                        primaryTypographyProps={{ variant: "body2" }}
+                      />
                     </ListItemButton>
                   )}
                 </ListItem>

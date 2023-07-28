@@ -8,7 +8,6 @@ import Typography from "@mui/material/Typography";
 import { SuperUserBarProps } from "./types";
 
 const style = {
-  color: "neutral.main",
   backgroundColor: "#fff",
   borderRadius: "20px",
   width: "68%px",
@@ -30,7 +29,12 @@ export const SuperUserBar = ({
 }: SuperUserBarProps) => {
   return (
     <Box sx={style}>
-      <Typography variant="h4" width="100%" align="center">
+      <Typography
+        color="secondary2.main"
+        variant="body2"
+        width="100%"
+        align="center"
+      >
         {activeAssignmentCount !== undefined ? (
           `${activeAssignmentCount} ${
             activeAssignmentCount != 1
@@ -42,7 +46,12 @@ export const SuperUserBar = ({
         )}
       </Typography>
       <Divider orientation="vertical" flexItem />
-      <Typography variant="h4" width="100%" align="center">
+      <Typography
+        color="secondary2.main"
+        variant="body2"
+        width="100%"
+        align="center"
+      >
         {activeGroupCount !== undefined ? (
           `${activeGroupCount} ${
             activeGroupCount != 1 ? gettext("groups") : gettext("groups")
@@ -52,7 +61,12 @@ export const SuperUserBar = ({
         )}
       </Typography>
       <Divider orientation="vertical" flexItem />
-      <Typography variant="h4" width="100%" align="center">
+      <Typography
+        color="secondary2.main"
+        variant="body2"
+        width="100%"
+        align="center"
+      >
         {createdQuestionCount !== undefined ? (
           `${createdQuestionCount} ${
             createdQuestionCount != 1

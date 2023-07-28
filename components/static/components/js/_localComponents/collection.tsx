@@ -220,18 +220,33 @@ export class Collection extends Component<CollectionProps> {
                 ""
               )
             }
-            subheader={this.props.gettext(
-              "From ".concat(this.props.collection.user.username),
-            )}
-            sx={{ cursor: "pointer", padding: "20px" }}
+            disableTypography={false}
+            subheader={this.props
+              .gettext("By ")
+              .concat(this.props.collection.user.username)}
+            subheaderTypographyProps={{
+              color: "secondary2.main",
+              variant: "subtitle2",
+            }}
+            sx={{
+              alignItems: "start",
+              cursor: "pointer",
+              padding: "20px 20px 16px 20px",
+            }}
             title={this.props.collection.title}
+            titleTypographyProps={{ variant: "h4" }}
           />
           <CardContent ref={this.ref} sx={{ minHeight: this.props.minHeight }}>
-            <Typography tag="p">
+            <Typography tag="p" variant="body2">
               {this.props.collection.description}
             </Typography>
           </CardContent>
-          <CardActions sx={{ justifyContent: "space-between" }}>
+          <CardActions
+            sx={{
+              justifyContent: "space-between",
+              padding: "16px 20px 20px 20px",
+            }}
+          >
             <Stack direction="row" spacing="5px">
               {this.discipline()}
               <Tag

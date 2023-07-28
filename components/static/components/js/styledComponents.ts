@@ -30,8 +30,7 @@ export const CircularBox = styled(Box)({
 export const Subtitle = styled(Box)({
   display: "flex",
   justifyContent: "space-between",
-  alignItems: "flex-end",
-  marginBottom: "20px",
+  alignItems: "baseline",
 });
 
 export const Tag = styled(Box)({
@@ -41,13 +40,14 @@ export const Tag = styled(Box)({
   borderRadius: "5px",
   borderWidth: "1px",
   display: "flex",
-  padding: "5px",
+  padding: "7px",
   alignItems: "center",
   " .MuiTypography-root": {
-    fontSize: "12px",
-    lineHeight: "16px",
+    fontSize: theme.typography.label.fontSize,
+    lineHeight: "1",
   },
   " .MuiSvgIcon-root": {
+    fontSize: theme.typography.label.fontSize,
     paddingRight: "6px",
   },
   contained: {
@@ -66,18 +66,20 @@ export const Filter = styled(Button)({
   borderStyle: "solid",
   borderWidth: "1px",
   backgroundColor: "inherit",
-  " .MuiTypography-root": {
-    fontSize: "12px",
+  ".MuiTypography-root": {
+    fontSize: theme.typography.label.fontSize,
+    lineHeight: "1rem",
+    padding: "1px",
   },
   "&:active": {
     boxShadow: "none",
     backgroundColor: theme.palette.secondary4.main,
-    color: "#fff",
+    color: theme.palette.background.paper,
   },
   "&:hover": {
     boxShadow: "none",
     backgroundColor: theme.palette.secondary4.main,
-    color: "#fff",
+    color: theme.palette.background.paper,
   },
 });
 
@@ -132,7 +134,7 @@ export const StepBar = styled(Box)({
 export const Action = styled(Typography)({
   color: theme.palette.primary.main,
   cursor: "pointer",
-  fontSize: "0.9rem",
+  fontSize: theme.typography.body2.fontSize,
   textDecoration: "underline",
 });
 

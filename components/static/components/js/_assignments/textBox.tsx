@@ -9,7 +9,7 @@ import { TextBoxProps } from "./types";
 export const TextBox = ({ title, children }: TextBoxProps) => {
   return (
     <Box display="flex" flexDirection={"column"} sx={{ gap: "5px" }}>
-      <Divider sx={{ mt: "30px" }} />
+      <Divider />
       {title ? <Typography variant="h5">{title}</Typography> : null}
       {children}
     </Box>

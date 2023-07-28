@@ -405,13 +405,13 @@ export class App extends Component<
                 this.state.assignment,
                 "is_valid",
               ) && !this.state.assignment.is_valid ? (
-                <Alert severity="error" sx={{ marginTop: "30px" }}>
+                <Alert severity="error" sx={{ marginTop: "32px" }}>
                   {this.props.gettext(
                     "There is a problem with this assignment and it cannot be distributed until fixed.",
                   )}
                 </Alert>
               ) : null}
-              <Stack spacing={"50px"}>
+              <Stack spacing={"30px"}>
                 <GeneralDescription
                   gettext={this.props.gettext}
                   editing={this.state.editing}
@@ -436,8 +436,8 @@ export class App extends Component<
 
                 <Box>
                   <Box>
-                    <Typography variant="h2" sx={{ mt: "0px", mb: "30px" }}>
-                      {this.props.gettext("Groups")}
+                    <Typography variant="h2">
+                      {this.props.gettext("Distributed to")}
                     </Typography>
                     <ThemeProvider theme={saltise}>
                       {this.groups()}
@@ -445,7 +445,7 @@ export class App extends Component<
                   </Box>
                 </Box>
                 <Box>
-                  <Typography variant="h2" sx={{ mt: "0px", mb: "30px" }}>
+                  <Typography variant="h2">
                     {this.props.gettext("Questions")}
                   </Typography>
                   <ThemeProvider theme={saltise}>

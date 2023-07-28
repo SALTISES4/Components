@@ -48,6 +48,7 @@ const NumberButton = ({
           sx={{
             position: "absolute",
             left: "50%",
+            lineHeight: "normal",
             transform: "translateX(-50%)",
           }}
         >

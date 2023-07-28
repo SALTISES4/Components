@@ -44,16 +44,11 @@ export function GeneralDescription({
   };
 
   const show = () => {
-    if (showMore) {
-      return (
-        <Link onClick={handleClick} sx={{ cursor: "pointer", mt: "12px" }}>
-          <Typography color="primary">{gettext("Show less")}</Typography>
-        </Link>
-      );
-    }
     return (
-      <Link onClick={handleClick} sx={{ cursor: "pointer", mt: "12px" }}>
-        <Typography color="primary">{gettext("Show more")}</Typography>
+      <Link onClick={handleClick} sx={{ cursor: "pointer" }}>
+        <Typography color="primary" variant="body2">
+          {showMore ? gettext("Show less") : gettext("Show more")}
+        </Typography>
       </Link>
     );
   };
@@ -119,6 +114,7 @@ export function GeneralDescription({
             "p:first-of-type": { marginTop: "0px" },
             "p:last-of-type": { marginBottom: "0px" },
           }}
+          variant={"body2"}
         />
       </TextBox>
     );
@@ -149,6 +145,7 @@ export function GeneralDescription({
             "p:first-of-type": { marginTop: "0px" },
             "p:last-of-type": { marginBottom: "0px" },
           }}
+          variant={"body2"}
         />
       </TextBox>
     );
@@ -179,6 +176,7 @@ export function GeneralDescription({
             "p:first-of-type": { marginTop: "0px" },
             "p:last-of-type": { marginBottom: "0px" },
           }}
+          variant={"body2"}
         />
       </TextBox>
     );
@@ -187,21 +185,29 @@ export function GeneralDescription({
   return (
     <Box>
       {titleSection()}
-      <Typography variant="h2" sx={{ marginTop: "0px" }}>
-        {gettext("General")}
-      </Typography>
+      <Typography variant="h2">{gettext("General")}</Typography>
       <Box display="flex" sx={{ gap: "20px" }}>
-        <Box display="flex" flexDirection={"column"} flex={2}>
+        <Box
+          display="flex"
+          flexDirection={"column"}
+          flex={2}
+          sx={{ gap: "24px" }}
+        >
           <TextBox title={gettext("Identifier")}>
-            <Typography>{identifier}</Typography>
+            <Typography variant={"body2"}>{identifier}</Typography>
           </TextBox>
           <TextBox
-            title={owner.length < 2 ? gettext("Author") : gettext("Authors")}
+            title={owner.length == 1 ? gettext("Author") : gettext("Authors")}
           >
-            <Typography>{owner.join(", ")}</Typography>
+            <Typography variant={"body2"}>{owner.join(", ")}</Typography>
           </TextBox>
         </Box>
-        <Box display="flex" flexDirection={"column"} flex={5}>
+        <Box
+          display="flex"
+          flexDirection={"column"}
+          flex={5}
+          sx={{ gap: "24px" }}
+        >
           {descriptionSection()}
           {editing ? (
             <Fragment>
@@ -211,8 +217,14 @@ export function GeneralDescription({
           ) : intro_page || conclusion_page ? (
             <Fragment>
               <Collapse in={showMore} timeout={500} unmountOnExit>
-                {instructionsSection()}
-                {notesSection()}
+                <Box
+                  display="flex"
+                  flexDirection={"column"}
+                  sx={{ gap: "24px" }}
+                >
+                  {instructionsSection()}
+                  {notesSection()}
+                </Box>
               </Collapse>
               {show()}
             </Fragment>

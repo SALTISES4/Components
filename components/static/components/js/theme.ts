@@ -1,7 +1,7 @@
 // https://mui.com/material-ui/about-the-lab/#typescript
 import type {} from "@mui/lab/themeAugmentation";
 
-//import { CSSProperties } from "preact/compat";
+import { CSSProperties } from "preact/compat";
 import { createTheme } from "@mui/material/styles";
 
 // https://mui.com/material-ui/customization/typography/#variants
@@ -95,6 +95,27 @@ declare module "@mui/material/IconButton" {
 declare module "@mui/material/SvgIcon" {
   interface SvgIconPropsColorOverrides {
     secondary4: true;
+  }
+}
+
+declare module "@mui/material/styles" {
+  interface TypographyVariants {
+    label: CSSProperties;
+    subtitle2: CSSProperties;
+  }
+
+  // allow configuration using `createTheme`
+  interface TypographyVariantsOptions {
+    label?: CSSProperties;
+    subtitle2?: CSSProperties;
+  }
+}
+
+// Update the Typography's variant prop options
+declare module "@mui/material/Typography" {
+  interface TypographyPropsVariantOverrides {
+    label: true;
+    subtitle2: true;
   }
 }
 
@@ -202,38 +223,32 @@ const paletteAndTypography = createTheme({
     },
     h1: {
       fontSize: "2.25rem", // 36/16
-      lineHeight: "49px",
-      marginTop: "30px",
-      marginBottom: "30px",
+      margin: "2rem 0rem",
     },
     h2: {
       fontSize: "1.25rem", // 20/16
-      fontWeight: 400,
-      lineHeight: "28px",
-      marginTop: "50px",
+      fontWeight: 500,
+      margin: "1rem 0rem",
     },
     h3: {
       fontSize: "1.125rem", // 18/16
-      fontWeight: 400,
-      lineHeight: "28px",
     },
-    h6: {
-      fontSize: "0.625rem", // 10/16
-      fontWeight: 600,
-      textTransform: "uppercase",
-    },
-    // h4 is used where?
     h4: {
-      fontSize: "14px",
-      lineHeight: "20px",
+      fontSize: "1rem", //16/16
+      fontWeight: 500,
     },
     h5: {
       fontSize: "0.875rem", // 14/16
-      fontWeight: 600,
+      fontWeight: 500,
       lineHeight: "1.357", // 19/14
     },
+    h6: {
+      fontSize: "0.625rem", // 10/16
+      fontWeight: 500,
+      textTransform: "uppercase",
+    },
     caption: {
-      fontSize: "0.5rem",
+      fontSize: "0.5rem", // 8/16
       color: "#414141",
     },
     body1: {
@@ -241,6 +256,21 @@ const paletteAndTypography = createTheme({
     },
     body2: {
       fontSize: "0.875rem", // 14/16
+    },
+    subtitle1: {
+      color: "#AEAEBF",
+      fontSize: "0.625rem", // 10/16,
+      lineHeight: 2,
+    },
+    subtitle2: {
+      color: "#AEAEBF",
+      fontSize: "0.75rem", // 12/16,
+      lineHeight: 2,
+    },
+    label: {
+      fontFamily: ["Open Sans", "sans-serif"].join(","), // Bug
+      fontSize: "0.75rem", // 12/16
+      lineHeight: 2,
     },
   },
 });
@@ -363,17 +393,6 @@ const saltise = createTheme(paletteAndTypography, {
         root: {
           padding: "0px",
         },
-        title: {
-          fontSize: "16px",
-          fontWeight: 500,
-          lineHeight: "28px",
-          color: "#515159",
-        },
-        subheader: {
-          fontSize: "10px",
-          lineHeight: "20px",
-          color: "#90929B",
-        },
       },
     },
     MuiChip: {
@@ -440,8 +459,20 @@ const saltise = createTheme(paletteAndTypography, {
           },
           " .MuiTypography-root": {
             color: paletteAndTypography.palette.background.paper,
-            fontSize: "0.9rem",
           },
+        },
+      },
+    },
+    MuiIcon: {
+      styleOverrides: {
+        fontSizeSmall: {
+          fontSize: "16px",
+        },
+        fontSizeMedium: {
+          fontSize: "20px!important",
+        },
+        fontSizeLarge: {
+          fontSize: "24px",
         },
       },
     },
@@ -452,9 +483,9 @@ const saltise = createTheme(paletteAndTypography, {
             backgroundColor: paletteAndTypography.palette.primary1.main,
           },
           "& .MuiListItemText-root": {
-            fontSize: "0.9rem",
             lineHeight: "1.2rem",
             color: paletteAndTypography.palette.secondary4.main,
+            fontSize: paletteAndTypography.typography.body2.fontSize,
           },
         },
       },

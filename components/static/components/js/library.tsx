@@ -471,7 +471,7 @@ export class App extends Component<LibraryAppProps, LibraryAppState> {
               })
             }
             sx={{ cursor: "pointer" }}
-            variant="h4"
+            variant="body2"
           >
             {this.state.questionsExpanded
               ? this.props.gettext("Collapse all questions")

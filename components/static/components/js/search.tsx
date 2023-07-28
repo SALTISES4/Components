@@ -525,13 +525,13 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       this.state.selectedTypes.length == 0
     ) {
       return (
-        <Fragment>
+        <Container>
           <Subtitle>
             <Typography variant="h2">
               {this.state.assignmentsLoaded
                 ? `${this.state.assignmentHitCount} ${
                     this.state.searchTerm.length == 0
-                      ? this.props.gettext("recommended Assignments")
+                      ? this.props.gettext("recommended assignments")
                       : this.state.assignmentHitCount != 1
                       ? this.props.gettext("results in Assignments")
                       : this.props.gettext("result in Assignments")
@@ -579,7 +579,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               </Fragment>
             )}
           </Stack>
-        </Fragment>
+        </Container>
       );
     }
   };
@@ -590,14 +590,14 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       this.state.selectedTypes.length == 0
     ) {
       return (
-        <Fragment>
+        <Container>
           <Subtitle>
             <Typography variant="h2">
               {this.state.collectionsLoaded
                 ? `${this.state.collectionHitCount}
               ${
                 this.state.searchTerm.length == 0
-                  ? this.props.gettext("recommended Collections")
+                  ? this.props.gettext("recommended collections")
                   : this.state.collectionHitCount != 1
                   ? this.props.gettext("results in Collections")
                   : this.props.gettext("result in Collections")
@@ -640,7 +640,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               {this.props.gettext("Your search returned no results.")}
             </Typography>
           )}
-        </Fragment>
+        </Container>
       );
     }
   };
@@ -651,7 +651,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
       this.state.selectedTypes.length == 0
     ) {
       return (
-        <Fragment>
+        <Container>
           <Subtitle>
             <Typography variant="h2">
               {this.state.questionsLoaded
@@ -659,7 +659,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                     this.state.questionHitCount || this.state.questions.length
                   } ${
                     this.state.searchTerm.length == 0
-                      ? this.props.gettext("recommended Questions")
+                      ? this.props.gettext("recommended questions")
                       : this.state.questionHitCount != 1
                       ? this.props.gettext("results in Questions")
                       : this.props.gettext("result in Questions")
@@ -667,7 +667,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 : this.props.gettext("Loading questions...")}
             </Typography>
             <Link
-              variant="h4"
+              variant="body2"
               onClick={() => {
                 this.setState({
                   selectedTypes: ["Question"],
@@ -776,7 +776,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               pageSize={this.state.questionPageSize}
             />
           ) : null}
-        </Fragment>
+        </Container>
       );
     }
   };
@@ -848,18 +848,18 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 backgroundSize: "cover",
               }}
             >
-              <Box
-                width={this.pageWidth}
-                sx={{
-                  " .MuiTypography-body1": {
-                    ml: "15px",
-                    color: "#fff",
-                  },
-                }}
-              >
-                <Typography>{this.props.gettext("Search")}</Typography>
+              <Box width={this.pageWidth}>
+                <Typography color="background.paper" variant="label" ml="14px">
+                  {this.props.gettext("Search")}
+                </Typography>
                 <TextField
                   fullWidth
+                  inputProps={{
+                    style: {
+                      color: saltise.palette.secondary4.main,
+                      fontSize: saltise.typography.body2.fontSize,
+                    },
+                  }}
                   onInput={(evt: InputEvent) => {
                     this.setState(
                       {
@@ -878,14 +878,17 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                   type="search"
                   variant="outlined"
                 />
-                <Typography sx={{ mt: "5px" }}>{this.results()}</Typography>
+                <Typography color="background.paper" variant="label" ml="14px">
+                  {this.results()}
+                </Typography>
               </Box>
             </Box>
             <Box
               width="100%"
               display="flex"
               justifyContent="center"
-              sx={{ backgroundColor: "#fff", padding: "15px" }}
+              mb={"50px"}
+              sx={{ backgroundColor: "background.paper", padding: "15px" }}
             >
               <Box
                 width={this.pageWidth}
@@ -893,7 +896,7 @@ export class App extends Component<SearchAppProps, SearchAppState> {
                 alignItems={"center"}
                 flexWrap={"wrap"}
               >
-                <Typography variant="h4" sx={{ margin: "5px 10px" }}>
+                <Typography variant="body2" sx={{ margin: "5px 10px" }}>
                   {this.props.gettext("Filter by")}
                 </Typography>
                 <SearchFilter
@@ -1093,9 +1096,11 @@ export class App extends Component<SearchAppProps, SearchAppState> {
               </Box>
             </Box>
             <Main>
-              <Container>{this.questionResults()}</Container>
-              <Container>{this.assignmentResults()}</Container>
-              <Container>{this.collectionResults()}</Container>
+              <Stack spacing={"50px"}>
+                {this.questionResults()}
+                {this.assignmentResults()}
+                {this.collectionResults()}
+              </Stack>
             </Main>
           </Box>
           <Snackbar

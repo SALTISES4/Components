@@ -31,7 +31,9 @@
     "@types/dompurify": "^3.0.2",
     "@types/draft-js": "^0.11.10",
     "@types/draftjs-to-html": "^0.8.1",
+    "@types/he": "^1.2.0",
     "@types/html-to-draftjs": "^1.4.0",
+    "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-draft-wysiwyg": "^1.13.4",
     "@types/stylis": "^4.0.2",
     "@typescript-eslint/eslint-plugin": "^4.28.3",
@@ -66,9 +68,11 @@
     "dompurify": "^3.0.3",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
+    "he": "^1.2.0",
     "html-to-draftjs": "^1.5.0",
     "immutable": "^4.3.0",
     "preact": "^10.5.13",
+    "react-beautiful-dnd": "^13.1.1",
     "react-draft-wysiwyg": "^1.15.0"
   },
   "optionalDependencies": {
@@ -101,7 +105,7 @@
     ],
     "rules": {
       "strict": 0,
-      "camelcase": "warn",
+      "camelcase": "off",
       "no-invalid-this": "off",
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [

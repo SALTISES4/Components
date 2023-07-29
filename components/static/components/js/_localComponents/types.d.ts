@@ -43,12 +43,7 @@ export interface AssignmentType extends AssignmentDatabaseFields {
   is_owner?: boolean;
   is_valid?: boolean;
   question_count?: number;
-  questions?: {
-    assignment: string;
-    pk: number;
-    question: QuestionType;
-    rank: number;
-  }[];
+  questions?: QuestionRankType[];
   urls?: {
     copy?: string;
     distribute?: string;
@@ -151,6 +146,14 @@ export type QuestionType = {
   };
   user: UserType;
   video_url: string;
+};
+
+export type QuestionRankType = {
+  assignment: string;
+  pk: number;
+  question: QuestionType;
+  question_pk: number;
+  rank: number;
 };
 
 /* Props and state type declarations */

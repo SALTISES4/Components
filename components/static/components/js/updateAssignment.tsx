@@ -1,6 +1,15 @@
 import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DraggingStyle,
+  DropResult,
+  NotDraggingStyle,
+} from "react-beautiful-dnd";
+
 //functions
 import { get, submitData } from "./ajax";
 import {
@@ -22,7 +31,7 @@ import Typography from "@mui/material/Typography";
 import { GeneralDescription } from "./_assignments/generalDescription";
 import { Group as GroupSkeleton } from "./_skeletons/group";
 import { Main } from "./_reusableComponents/main";
-import { Question } from "./_localComponents/question";
+import { DraggableQuestion, Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { Snackbar } from "./_reusableComponents/snackbar";
 import { StudentGroupAssignment } from "./_localComponents/group";
@@ -36,7 +45,7 @@ import {
 } from "./types";
 import {
   AssignmentType,
-  QuestionType,
+  QuestionRankType,
   StudentGroupAssignmentType,
 } from "./_localComponents/types";
 import {
@@ -53,6 +62,19 @@ import saltise, { formTheme } from "./theme";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { assignmentTitleValidator } from "./validators";
+
+const getItemStyle = (
+  isDragging: boolean,
+  draggableStyle?: DraggingStyle | NotDraggingStyle,
+) => ({
+  userSelect: "none",
+  ...draggableStyle,
+});
+
+const getListStyle = (isDraggingOver: boolean) => ({
+  background: isDraggingOver ? "blue" : "lightgrey",
+  padding: "10px",
+});
 
 export class App extends Component<
   UpdateAssignmentAppProps,
@@ -77,8 +99,9 @@ export class App extends Component<
         conclusion_page: this.props.assignment.conclusion_page,
         title: this.props.assignment.title,
       },
-      questions: [],
-      questionsLoading: false,
+      questionRanks: [],
+      questionRanksPreSave: [],
+      questionRanksLoading: false,
       studentgroupassignments: [],
       studentgroupassignmentsLoading: false,
       snackbarIsOpen: false,
@@ -107,19 +130,23 @@ export class App extends Component<
 
   loadQuestions = async (): Promise<void> => {
     try {
-      this.setState({ questionsLoading: true });
+      this.setState({ questionRanksLoading: true });
 
       const assignment = (await get(
         this.props.urls.assignment,
       )) as unknown as AssignmentType;
 
-      const questions = assignment.questions?.map((qr) => qr.question);
+      // Sort question list by rank
+      const questionRanks = assignment.questions?.sort(
+        (a, b) => a.rank - b.rank,
+      );
 
       this.setState(
         {
           assignment,
-          questions,
-          questionsLoading: false,
+          questionRanks,
+          questionRanksPreSave: questionRanks,
+          questionRanksLoading: false,
         },
         () => console.info(this.state),
       );
@@ -199,14 +226,15 @@ export class App extends Component<
   };
 
   handleRemoveQuestionFromAssignmentCallback = (pk: number) => {
-    const _questions = [...this.state.questions];
-    const index = _questions.map((q) => q.pk).indexOf(pk);
+    const questionRanks = [...this.state.questionRanks];
+    const index = questionRanks.map((qr) => qr.pk).indexOf(pk);
+    const removedQuestion = questionRanks[index].question;
     if (index >= 0) {
-      _questions.splice(index, 1);
+      questionRanks.splice(index, 1);
       this.setState({
-        questions: _questions,
+        questionRanks,
         snackbarIsOpen: true,
-        snackbarMessage: `Q${pk} ${this.props.gettext(
+        snackbarMessage: `Q${removedQuestion.pk} ${this.props.gettext(
           "removed from assignment",
         )}`,
       });
@@ -245,6 +273,46 @@ export class App extends Component<
         snackbarIsOpen: true,
         snackbarMessage: this.props.gettext("An error occurred"),
       });
+    }
+  };
+
+  handleQuestionReorder = async () => {
+    try {
+      await submitData(
+        this.props.urls.assignment,
+        {
+          questions: this.state.questionRanks.map((qr) => ({
+            assignment: qr.assignment,
+            pk: qr.pk,
+            question_pk: qr.question_pk,
+            rank: qr.rank,
+          })),
+        },
+        "PATCH",
+      );
+      this.setState({
+        questionRanksPreSave: this.state.questionRanks,
+        snackbarIsOpen: true,
+        snackbarMessage: this.props.gettext("Changes saved."),
+      });
+    } catch (error: any) {
+      this.error(error);
+      this.setState({
+        questionRanks: this.state.questionRanksPreSave,
+      });
+    }
+  };
+
+  onDragEnd = (result: DropResult) => {
+    const questionRanks = Array.from(this.state.questionRanks);
+    const [dragged] = questionRanks.splice(result.source.index, 1);
+    if (result.destination?.index) {
+      questionRanks.splice(result.destination.index, 0, dragged);
+      questionRanks.forEach((qr, i) => {
+        qr.rank = i;
+      });
+      this.setState({ questionRanks });
+      this.handleQuestionReorder();
     }
   };
 
@@ -291,66 +359,116 @@ export class App extends Component<
   questions = () => {
     return (
       <Box sx={{ marginTop: "30px" }}>
-        {!this.state.questionsLoading ? (
-          this.state.questions?.length > 0 ? (
-            <Stack spacing={"10px"}>
-              {this.state.questions.map(
-                (question: QuestionType, i: number) => (
-                  <Question
-                    key={i}
-                    handleRemove={async () => {
-                      await handleRemoveQuestionFromAssignment(
-                        () =>
-                          this.handleRemoveQuestionFromAssignmentCallback(
-                            question.pk,
+        {!this.state.questionRanksLoading ? (
+          this.state.questionRanks?.length > 0 ? (
+            this.props.questionsEditableByUser && this.state.editing ? (
+              <DragDropContext
+                nonce={this.props.nonce}
+                onDragEnd={this.onDragEnd}
+              >
+                <Droppable droppableId="questions">
+                  {(provided, snapshot) => (
+                    <div
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      style={getListStyle(snapshot.isDraggingOver)}
+                    >
+                      <Stack spacing={"10px"}>
+                        {this.state.questionRanks.map(
+                          (qr: QuestionRankType, i: number) => (
+                            <Draggable
+                              key={`key-${qr.question.pk}`}
+                              draggableId={`id-${qr.question.pk}`}
+                              index={i}
+                              isDragDisabled={
+                                !this.props.questionsEditableByUser
+                              }
+                            >
+                              {(provided, snapshot) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  style={getItemStyle(
+                                    snapshot.isDragging,
+                                    provided.draggableProps.style,
+                                  )}
+                                >
+                                  <DraggableQuestion
+                                    key={i}
+                                    question={qr.question}
+                                  />
+                                </div>
+                              )}
+                            </Draggable>
                           ),
-                        this.props.urls.add_to_assignment,
-                        this.state.assignment.questions
-                          ?.filter((qr) => qr.question.pk === question.pk)
-                          .map((qr) => qr.pk)[0],
-                        this.error,
-                      );
-                    }}
-                    bookmarked={this.state.teacher?.favourite_questions?.includes(
-                      question.pk,
-                    )}
-                    expanded={true}
-                    gettext={this.props.gettext}
-                    handleAddToAssignment={async (assignment: string) => {
-                      await handleAddToAssignment(
-                        assignment,
-                        question.pk,
-                        this.props.urls.add_to_assignment,
-                      );
-                    }}
-                    question={question}
-                    questionsEditableByUser={
-                      this.props.questionsEditableByUser
-                    }
-                    showBookmark={
-                      question.is_owner !== undefined
-                        ? !question.is_owner
-                        : false
-                    }
-                    toggleBookmarked={async () =>
-                      await handleQuestionBookmarkClick(
-                        this.props.gettext,
-                        (teacher, message) =>
-                          this.setState({
-                            teacher,
-                            snackbarIsOpen: true,
-                            snackbarMessage: message,
-                          }),
-                        question.pk,
-                        this.state.teacher,
-                        this.props.urls.teacher,
-                        this.error,
-                      )
-                    }
-                  />
-                ),
-              )}
-            </Stack>
+                        )}
+                        {provided.placeholder}
+                      </Stack>
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
+            ) : (
+              <Stack spacing={"10px"}>
+                {this.state.questionRanks.map(
+                  (qr: QuestionRankType, i: number) => (
+                    <Question
+                      key={i}
+                      handleRemove={async () => {
+                        await handleRemoveQuestionFromAssignment(
+                          () =>
+                            this.handleRemoveQuestionFromAssignmentCallback(
+                              qr.pk,
+                            ),
+                          this.props.urls.add_to_assignment,
+                          this.state.assignment.questions
+                            ?.filter((_qr) => _qr.pk === qr.pk)
+                            .map((qr) => qr.question.pk)[0],
+                          this.error,
+                        );
+                      }}
+                      bookmarked={this.state.teacher?.favourite_questions?.includes(
+                        qr.question.pk,
+                      )}
+                      expanded={!this.state.editing}
+                      gettext={this.props.gettext}
+                      handleAddToAssignment={async (assignment: string) => {
+                        await handleAddToAssignment(
+                          assignment,
+                          qr.question.pk,
+                          this.props.urls.add_to_assignment,
+                        );
+                      }}
+                      question={qr.question}
+                      questionsEditableByUser={
+                        this.props.questionsEditableByUser
+                      }
+                      showBookmark={
+                        qr.question.is_owner !== undefined
+                          ? !qr.question.is_owner
+                          : false
+                      }
+                      toggleBookmarked={async () =>
+                        await handleQuestionBookmarkClick(
+                          this.props.gettext,
+                          (teacher, message) =>
+                            this.setState({
+                              teacher,
+                              snackbarIsOpen: true,
+                              snackbarMessage: message,
+                            }),
+                          qr.question.pk,
+                          this.state.teacher,
+                          this.props.urls.teacher,
+                          this.error,
+                        )
+                      }
+                    />
+                  ),
+                )}
+              </Stack>
+            )
           ) : (
             <Typography>
               {this.props.gettext(

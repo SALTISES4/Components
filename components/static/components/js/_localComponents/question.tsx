@@ -17,6 +17,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Checkbox from "@mui/material/Checkbox";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DragIndicatorRoundedIcon from "@mui/icons-material/DragIndicatorRounded";
 import IconButton from "@mui/material/IconButton";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import PlaylistRemoveIcon from "@mui/icons-material/PlaylistRemove";
@@ -35,9 +36,26 @@ import { Tag } from "../styledComponents";
 import saltise from "../theme";
 
 // types
-import { QuestionProps } from "./types";
+import { QuestionProps, QuestionType } from "./types";
 
 const theme = saltise;
+
+export function DraggableQuestion({
+  question,
+}: {
+  question: QuestionType;
+}): JSX.Element {
+  return (
+    <Card raised={true}>
+      <CardContent sx={{ p: "10px" }}>
+        <Stack alignItems={"center"} columnGap={"20px"} direction={"row"}>
+          <DragIndicatorRoundedIcon color="primary" />
+          <Typography variant="body1">{question.title}</Typography>
+        </Stack>
+      </CardContent>
+    </Card>
+  );
+}
 
 export function Question({
   bookmarked,
@@ -244,7 +262,7 @@ export function Question({
   };
 
   const removeFromAssignmentIcon = () => {
-    if (questionsEditableByUser === true && handleRemove) {
+    if (questionsEditableByUser === true && handleRemove && showDetails) {
       return (
         <Box>
           <IconButton

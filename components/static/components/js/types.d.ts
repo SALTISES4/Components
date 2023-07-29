@@ -7,6 +7,7 @@ import {
   StudentGroupAssignmentType,
   StudentGroupsAssignmentType,
   QuestionType,
+  QuestionRankType,
   UserType,
 } from "./_localComponents/types";
 import { SnackbarType } from "./_reusableComponents/types";
@@ -299,8 +300,9 @@ interface UpdateAssignmentAppState extends SnackbarType {
   distributeWaiting: boolean;
   editing: boolean;
   form: AssignmentMetaFieldsForm;
-  questions: QuestionType[];
-  questionsLoading: boolean;
+  questionRanksPreSave: QuestionRankType[];
+  questionRanks: QuestionRankType[];
+  questionRanksLoading: boolean;
   studentgroupassignments: StudentGroupAssignmentType[];
   studentgroupassignmentsLoading: boolean;
   teacher: TeacherType | undefined;

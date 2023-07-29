@@ -42,15 +42,19 @@ const theme = saltise;
 
 export function DraggableQuestion({
   question,
+  rank,
 }: {
   question: QuestionType;
+  rank: number;
 }): JSX.Element {
   return (
     <Card raised={true}>
       <CardContent sx={{ p: "10px" }}>
         <Stack alignItems={"center"} columnGap={"20px"} direction={"row"}>
           <DragIndicatorRoundedIcon color="primary" />
-          <Typography variant="body1">{question.title}</Typography>
+          <Typography variant="body1">
+            {rank + 1}. {question.title}
+          </Typography>
         </Stack>
       </CardContent>
     </Card>

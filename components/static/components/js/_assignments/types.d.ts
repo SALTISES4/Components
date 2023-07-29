@@ -1,13 +1,22 @@
 import { ComponentChildren } from "preact";
-import { AssignmentType, UserType } from "../_localComponents";
+import {
+  AssignmentType,
+  QuestionRankType,
+  UserType,
+} from "../_localComponents";
 import { EditorIconsType, LTIType } from "../types";
 
-export type AssignmentMetaFieldsForm = {
+export interface AssignmentMetaFieldsForm {
+  conclusion_page: string | undefined;
   description: string | undefined;
   intro_page: string | undefined;
-  conclusion_page: string | undefined;
   title: string | undefined;
-};
+}
+
+export interface AssignmentForm extends AssignmentMetaFieldsForm {
+  questions?: Omit<QuestionRankType, "question_pk">[];
+}
+
 export type StudentGroupAssignmentCreateForm = {
   due_date: string;
   group_pk: number;

@@ -12,7 +12,7 @@ import {
 } from "./_localComponents/types";
 import { SnackbarType } from "./_reusableComponents/types";
 
-import { AssignmentMetaFieldsForm } from "./_assignments/types";
+import { AssignmentForm } from "./_assignments/types";
 
 type LTIType = {
   launchURL: string;
@@ -299,8 +299,7 @@ interface UpdateAssignmentAppState extends SnackbarType {
   distributeErrors: string[][];
   distributeWaiting: boolean;
   editing: boolean;
-  form: AssignmentMetaFieldsForm;
-  questionRanksPreSave: QuestionRankType[];
+  form: AssignmentForm;
   questionRanks: QuestionRankType[];
   questionRanksLoading: boolean;
   studentgroupassignments: StudentGroupAssignmentType[];

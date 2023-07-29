@@ -63,19 +63,6 @@ import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { assignmentTitleValidator } from "./validators";
 
-const getItemStyle = (
-  isDragging: boolean,
-  draggableStyle?: DraggingStyle | NotDraggingStyle,
-) => ({
-  userSelect: "none",
-  ...draggableStyle,
-});
-
-const getListStyle = (isDraggingOver: boolean) => ({
-  background: isDraggingOver ? "blue" : "lightgrey",
-  padding: "10px",
-});
-
 export class App extends Component<
   UpdateAssignmentAppProps,
   UpdateAssignmentAppState
@@ -84,9 +71,9 @@ export class App extends Component<
     super(props);
     this.state = {
       assignment: {
+        conclusion_page: this.props.assignment.conclusion_page,
         description: this.props.assignment.description,
         intro_page: this.props.assignment.intro_page,
-        conclusion_page: this.props.assignment.conclusion_page,
         pk: this.props.assignment.pk,
         title: this.props.assignment.title,
       },
@@ -94,13 +81,12 @@ export class App extends Component<
       distributeWaiting: false,
       editing: false,
       form: {
+        conclusion_page: this.props.assignment.conclusion_page,
         description: this.props.assignment.description,
         intro_page: this.props.assignment.intro_page,
-        conclusion_page: this.props.assignment.conclusion_page,
         title: this.props.assignment.title,
       },
       questionRanks: [],
-      questionRanksPreSave: [],
       questionRanksLoading: false,
       studentgroupassignments: [],
       studentgroupassignmentsLoading: false,
@@ -115,6 +101,19 @@ export class App extends Component<
     nonce: this.props.nonce,
     prepend: true,
     stylisPlugins: [prefixer],
+  });
+
+  getItemStyle = (
+    isDragging: boolean,
+    draggableStyle?: DraggingStyle | NotDraggingStyle,
+  ) => ({
+    userSelect: "none",
+    ...draggableStyle,
+  });
+
+  getListStyle = (isDraggingOver: boolean) => ({
+    background: isDraggingOver ? saltise.palette.primary.main : "unset",
+    padding: "10px",
   });
 
   error = (e: any, message?: string): void => {
@@ -144,8 +143,8 @@ export class App extends Component<
       this.setState(
         {
           assignment,
+          form: { ...this.state.form, questions: questionRanks },
           questionRanks,
-          questionRanksPreSave: questionRanks,
           questionRanksLoading: false,
         },
         () => console.info(this.state),
@@ -241,78 +240,81 @@ export class App extends Component<
     }
   };
 
-  handleSave = async () => {
-    console.info(this.state.form);
-    try {
-      const assignment = (await submitData(
-        this.props.urls.assignment,
-        this.state.form,
-        "PATCH",
-      )) as unknown as AssignmentType;
-      // Update form
-      const form = {
-        description: assignment.description,
-        intro_page: assignment.intro_page,
-        conclusion_page: assignment.conclusion_page,
-        title: assignment.title,
-      };
-      // deepcode ignore ReactNextState: gettext is a constant
-      this.setState(
-        {
-          assignment,
-          editing: false,
-          form,
-          snackbarIsOpen: true,
-          snackbarMessage: this.props.gettext("Assignment updated"),
-        },
-        () => console.info(console.info(this.state.assignment)),
-      );
-    } catch (error: any) {
-      // deepcode ignore ReactNextState: gettext is a constant
-      this.setState({
-        snackbarIsOpen: true,
-        snackbarMessage: this.props.gettext("An error occurred"),
-      });
+  questionRankListChanged = (): boolean => {
+    if (this.state.form.questions === undefined) {
+      return false;
     }
+    const qrPreSave = [...this.state.form.questions].sort(
+      (a, b) => a.rank - b.rank,
+    );
+    return [...this.state.questionRanks]
+      .sort((a, b) => a.rank - b.rank)
+      .every((qr, i) => qr.pk === qrPreSave[i].pk);
   };
 
-  handleQuestionReorder = async () => {
-    try {
-      await submitData(
-        this.props.urls.assignment,
-        {
+  handleSave = async () => {
+    console.info(this.state.form);
+
+    if (this.props.metaEditableByUser === true) {
+      const form = { ...this.state.form };
+      if (
+        this.props.questionsEditableByUser === true &&
+        this.questionRankListChanged()
+      ) {
+        Object.assign(form, {
           questions: this.state.questionRanks.map((qr) => ({
             assignment: qr.assignment,
             pk: qr.pk,
             question_pk: qr.question_pk,
             rank: qr.rank,
           })),
-        },
-        "PATCH",
-      );
-      this.setState({
-        questionRanksPreSave: this.state.questionRanks,
-        snackbarIsOpen: true,
-        snackbarMessage: this.props.gettext("Changes saved."),
-      });
-    } catch (error: any) {
-      this.error(error);
-      this.setState({
-        questionRanks: this.state.questionRanksPreSave,
-      });
+        });
+      }
+      try {
+        const assignment = (await submitData(
+          this.props.urls.assignment,
+          form,
+          "PATCH",
+        )) as unknown as AssignmentType;
+        // deepcode ignore ReactNextState: gettext is a constant
+        this.setState(
+          {
+            assignment,
+            editing: false,
+            form: {
+              conclusion_page: assignment.conclusion_page,
+              description: assignment.description,
+              intro_page: assignment.intro_page,
+              questions: assignment.questions,
+              title: assignment.title,
+            },
+            questionRanks: assignment.questions,
+            snackbarIsOpen: true,
+            snackbarMessage: this.props.gettext("Assignment updated"),
+          },
+          () => console.info(console.info(this.state.assignment)),
+        );
+      } catch (error: any) {
+        // deepcode ignore ReactNextState: gettext is a constant
+        this.setState({
+          snackbarIsOpen: true,
+          snackbarMessage: this.props.gettext("An error occurred"),
+        });
+      }
     }
   };
 
   onDragEnd = (result: DropResult) => {
-    const questionRanks = Array.from(this.state.questionRanks);
+    const questionRanks = Array.from(this.state.form.questions || []);
     const [dragged] = questionRanks.splice(result.source.index, 1);
     if (result.destination?.index) {
       questionRanks.splice(result.destination.index, 0, dragged);
       questionRanks.forEach((qr, i) => {
         qr.rank = i;
       });
-      this.setState({ questionRanks });
-      this.handleQuestionReorder();
+      this.setState({
+        form: { ...this.state.form, questions: questionRanks },
+      });
     }
   };
 
@@ -371,11 +373,14 @@ export class App extends Component<
                     <div
                       {...provided.droppableProps}
                       ref={provided.innerRef}
-                      style={getListStyle(snapshot.isDraggingOver)}
+                      style={this.getListStyle(snapshot.isDraggingOver)}
                     >
                       <Stack spacing={"10px"}>
-                        {this.state.questionRanks.map(
-                          (qr: QuestionRankType, i: number) => (
+                        {this.state.form.questions?.map(
+                          (
+                            qr: Omit<QuestionRankType, "question_pk">,
+                            i: number,
+                          ) => (
                             <Draggable
                               key={`key-${qr.question.pk}`}
                               draggableId={`id-${qr.question.pk}`}
@@ -389,7 +394,7 @@ export class App extends Component<
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
-                                  style={getItemStyle(
+                                  style={this.getItemStyle(
                                     snapshot.isDragging,
                                     provided.draggableProps.style,
                                   )}
@@ -397,6 +402,7 @@ export class App extends Component<
                                   <DraggableQuestion
                                     key={i}
                                     question={qr.question}
+                                    rank={i}
                                   />
                                 </div>
                               )}
@@ -532,7 +538,8 @@ export class App extends Component<
                         this.state.assignment.conclusion_page !=
                           this.state.form.conclusion_page?.trimEnd() ||
                         this.state.assignment.title !=
-                          this.state.form.title?.trimEnd()) &&
+                          this.state.form.title?.trimEnd() ||
+                        this.questionRankListChanged()) &&
                       assignmentTitleValidator(this.state.form.title)
                     }
                     groups={this.state.teacher?.assignable_groups?.filter(
@@ -619,5 +626,6 @@ export class App extends Component<
 }
 
 App.defaultProps = {
-  editableByUser: false,
+  metaEditableByUser: false,
+  questionsEditableByUser: false,
 };

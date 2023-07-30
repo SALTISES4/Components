@@ -7,7 +7,7 @@ import Box from "@mui/system/Box";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import SaveIcon from "@mui/icons-material/Save";
-import SendRoundedIcon from "@mui/icons-material/SendRounded";
+// import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import ShareIcon from "@mui/icons-material/Share";
 
 //components
@@ -97,14 +97,14 @@ export function Toolbar({
             }}
           />
 
-          <IconButton
+          {/* <IconButton
             color="primary"
             disabled={editing}
             onClick={() => setOpenShareModal(true)}
             title={gettext("Share with a colleague")}
           >
             <SendRoundedIcon />
-          </IconButton>
+          </IconButton> */}
         </Fragment>
       ) : null}
       {enableEdit ? (

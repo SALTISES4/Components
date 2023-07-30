@@ -7,6 +7,7 @@ import utc from "dayjs/plugin/utc";
 
 //styles
 import { modal as style } from "./styles";
+import { useTheme } from "@mui/material/styles";
 
 //material ui components
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -48,6 +49,8 @@ export default function DistributeModal({
   onClose,
   waiting,
 }: DistributeModalProps): JSX.Element {
+  const theme = useTheme();
+
   const [dueDate, setDueDate] = useState(dayjs().add(7, "day"));
   const [group, setGroup] = useState("");
   const [showCorrectAnswers, setShowCorrectAnswers] = useState(true);
@@ -124,95 +127,119 @@ export default function DistributeModal({
 
   const myDaliteDialog = (): JSX.Element | undefined => {
     return (
-      <Fragment>
-        <Typography variant="h1" sx={{ margin: "0px" }}>
-          {gettext("Distribute via myDalite")}
-        </Typography>
-        <Typography sx={{ padding: "20px 0px", textAlign: "justify" }}>
-          {gettext(
-            "Select one of your current groups and specify a due date (the due date can be changed later). Upon clicking submit, your students will receive an e-mail with a link to the assignment.",
-          )}
-        </Typography>
+      <Stack spacing={"30px"}>
+        <Box>
+          <Typography variant="h1" mt={0}>
+            {gettext("Distribute via myDalite")}
+          </Typography>
+          <Typography>
+            {gettext(
+              "Select one of your current groups and specify a due date (the due date can be changed later). Upon clicking submit, your students will receive an e-mail with a link to the assignment.",
+            )}
+          </Typography>
+        </Box>
 
-        <Stack spacing={3}>
-          <Errors errors={errors} />
-          <FormControl required>
-            <InputLabel id="group-select">{gettext("Group")}</InputLabel>
-            <Select
-              labelId="group-select"
-              value={group}
-              label={`${gettext("Group")}*`}
-              onChange={(event: SelectChangeEvent) => {
-                if (event.target) {
-                  setGroup((event.target as HTMLInputElement).value);
-                }
-              }}
-            >
-              {groups.map((g, i) => (
-                <MenuItem key={i} value={g.pk}>
-                  {g.title}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>
-              {gettext(
-                "You can only distribute assignments to groups created from within myDALITE, or using the LTI-Standalone launch URL in your LMS. To distribute one question at a time to your students via an LMS (like Moodle), use the “Distribute via LMS” option.",
-              )}
-            </FormHelperText>
-          </FormControl>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
-              desktopModeMediaQuery="@media (pointer: fine) and (min-height: 750px) and (min-width: 500px)"
-              disablePast={true}
-              id="due-date-and-time-picker"
-              label={`${gettext("Due date and time")}*`}
-              onChange={(newDateTime: Dayjs) => setDueDate(newDateTime)}
-              required={true}
-              timeSteps={{ hours: 1, minutes: 15 }}
-              sx={{ width: "100%" }}
-              value={dueDate}
-            />
-          </LocalizationProvider>
+        <Errors errors={errors} />
 
-          <FormGroup>
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label={gettext("Show correct answers")}
-              onChange={() => setShowCorrectAnswers(!showCorrectAnswers)}
-            />
-          </FormGroup>
-
-          <FormButtonBox sx={{ margin: "0px" }}>
-            <CancelButton onClick={onClose}>
-              <Typography>{gettext("Cancel")}</Typography>
-            </CancelButton>
-            <LoadingButton
-              disabled={group == "" || dueDate < dayjs()}
-              loadingPosition="end"
-              onClick={() =>
-                handleSubmit(
-                  {
-                    due_date: dueDate.utc().format(), // Convert to UTC!
-                    group_pk: parseInt(group),
-                    show_correct_answers: showCorrectAnswers,
-                  },
-                  onClose,
-                )
+        <FormControl required>
+          <InputLabel
+            id="group-select"
+            sx={{
+              fontSize: theme.typography.body2.fontSize,
+            }}
+          >
+            {gettext("Group")}
+          </InputLabel>
+          <Select
+            labelId="group-select"
+            value={group}
+            label={`${gettext("Group")}*`}
+            onChange={(event: SelectChangeEvent) => {
+              if (event.target) {
+                setGroup((event.target as HTMLInputElement).value);
               }
-              loading={waiting}
-              endIcon={<ShareIcon />}
-              sx={{
-                " .MuiLoadingButton-loadingIndicatorEnd": {
-                  right: "28px",
-                }, // Layout fix
-              }}
-              variant="contained"
-            >
-              <Typography tag={"span"}>{gettext("Distribute")}</Typography>
-            </LoadingButton>
-          </FormButtonBox>
-        </Stack>
-      </Fragment>
+            }}
+          >
+            {groups.map((g, i) => (
+              <MenuItem key={i} value={g.pk}>
+                <Typography variant="body2">{g.title}</Typography>
+              </MenuItem>
+            ))}
+          </Select>
+          <FormHelperText>
+            {gettext(
+              "You can only distribute assignments to groups created from within myDALITE, or using the LTI-Standalone launch URL in your LMS. To distribute one question at a time to your students via an LMS (like Moodle), use the “Distribute via LMS” option.",
+            )}
+          </FormHelperText>
+        </FormControl>
+
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DateTimePicker
+            desktopModeMediaQuery="@media (pointer: fine) and (min-height: 750px) and (min-width: 500px)"
+            disablePast={true}
+            id="due-date-and-time-picker"
+            label={`${gettext("Due date and time")}*`}
+            onChange={(newDateTime: Dayjs) => setDueDate(newDateTime)}
+            required={true}
+            timeSteps={{ hours: 1, minutes: 15 }}
+            sx={{
+              width: "100%",
+              "& .MuiInputBase-root, .MuiInputLabel-root": {
+                color: theme.palette.secondary4.main,
+                fontSize: theme.typography.body2.fontSize,
+              },
+            }}
+            value={dueDate}
+          />
+        </LocalizationProvider>
+
+        <FormGroup>
+          <FormControlLabel
+            componentsProps={{ typography: { variant: "body2" } }}
+            control={
+              <Checkbox
+                defaultChecked
+                sx={{
+                  "& .MuiSvgIcon-root": { fontSize: 24 },
+                }}
+              />
+            }
+            label={gettext("Show correct answers")}
+            onChange={() => setShowCorrectAnswers(!showCorrectAnswers)}
+            sx={{ padding: "0px 9px" }}
+          />
+        </FormGroup>
+
+        <FormButtonBox sx={{ margin: "0px" }}>
+          <CancelButton onClick={onClose}>
+            <Typography>{gettext("Cancel")}</Typography>
+          </CancelButton>
+          <LoadingButton
+            disabled={group == "" || dueDate < dayjs()}
+            loadingPosition="end"
+            onClick={() =>
+              handleSubmit(
+                {
+                  due_date: dueDate.utc().format(), // Convert to UTC!
+                  group_pk: parseInt(group),
+                  show_correct_answers: showCorrectAnswers,
+                },
+                onClose,
+              )
+            }
+            loading={waiting}
+            endIcon={<ShareIcon />}
+            sx={{
+              " .MuiLoadingButton-loadingIndicatorEnd": {
+                right: "28px",
+              }, // Layout fix
+            }}
+            variant="contained"
+          >
+            <Typography tag={"span"}>{gettext("Distribute")}</Typography>
+          </LoadingButton>
+        </FormButtonBox>
+      </Stack>
     );
   };
 

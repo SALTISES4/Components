@@ -21,6 +21,7 @@ import DragIndicatorRoundedIcon from "@mui/icons-material/DragIndicatorRounded";
 import IconButton from "@mui/material/IconButton";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import PlaylistRemoveIcon from "@mui/icons-material/PlaylistRemove";
+import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -36,24 +37,31 @@ import { Tag } from "../styledComponents";
 import saltise from "../theme";
 
 // types
-import { QuestionProps, QuestionType } from "./types";
+import { DraggableQuestionProps, QuestionProps } from "./types";
 
 const theme = saltise;
 
 export function DraggableQuestion({
+  dense,
   question,
   rank,
-}: {
-  question: QuestionType;
-  rank: number;
-}): JSX.Element {
+  ...props
+}: DraggableQuestionProps): JSX.Element {
   return (
-    <Card raised={true}>
+    <Card raised={true} {...props}>
       <CardContent sx={{ p: "10px" }}>
         <Stack alignItems={"center"} columnGap={"20px"} direction={"row"}>
           <DragIndicatorRoundedIcon color="primary" />
-          <Typography variant="body1">
-            {rank + 1}. {question.title}
+          <Typography variant={dense ? "body2" : "body1"}>
+            {question ? (
+              rank !== undefined ? (
+                `${rank + 1}. ${question.title}`
+              ) : (
+                question.title
+              )
+            ) : (
+              <Skeleton width={200} />
+            )}
           </Typography>
         </Stack>
       </CardContent>

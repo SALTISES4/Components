@@ -11,6 +11,8 @@
   title: string;
 };*/
 
+import { CardProps } from "@mui/material/Card";
+
 import {
   DistributionState,
   PeerImpactLabels,
@@ -219,6 +221,12 @@ export type QuestionProps = {
   showBookmark: boolean;
   toggleBookmarked: () => void;
 };
+
+export interface DraggableQuestionProps extends CardProps {
+  dense?: boolean;
+  question?: QuestionType;
+  rank?: number;
+}
 
 export type StudentGroupAssignmentProps = {
   gettext: (a: string) => string;

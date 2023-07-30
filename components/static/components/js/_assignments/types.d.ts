@@ -51,6 +51,7 @@ export type GeneralProps = {
 
 export type ToolbarProps = {
   gettext: (a: string) => string;
+  nonce: string;
   assignment: AssignmentType;
   distributeErrors: string[][];
   distributeWaiting: boolean;
@@ -76,6 +77,7 @@ export type ShareModalProps = {
 
 export type DistributeModalProps = {
   gettext: (a: string) => string;
+  nonce: string;
   assignment: AssignmentType;
   errors: string[][];
   groups: { title: string; pk: number }[];

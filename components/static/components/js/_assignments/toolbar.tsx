@@ -20,6 +20,7 @@ import { ToolbarProps } from "./types";
 
 export function Toolbar({
   gettext,
+  nonce,
   assignment,
   distributeErrors,
   distributeWaiting,
@@ -146,6 +147,7 @@ export function Toolbar({
       {groups ? (
         <DistributeModal
           gettext={gettext}
+          nonce={nonce}
           assignment={assignment}
           errors={distributeErrors}
           groups={groups}

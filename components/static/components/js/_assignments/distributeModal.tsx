@@ -1,5 +1,14 @@
 import { Fragment, h } from "preact";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
+
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DraggingStyle,
+  DropResult,
+  NotDraggingStyle,
+} from "react-beautiful-dnd";
 
 //functions
 import dayjs, { Dayjs } from "dayjs";
@@ -32,6 +41,7 @@ import Typography from "@mui/material/Typography";
 //components
 import { CancelButton, FormButtonBox } from "../styledComponents";
 import { CopyBox } from "../_reusableComponents/clipboard";
+import { DraggableQuestion } from "../_localComponents/question";
 import Errors from "../_reusableComponents/errors";
 
 //types
@@ -40,6 +50,7 @@ import { QuestionType } from "../_localComponents/types";
 
 export default function DistributeModal({
   gettext,
+  nonce,
   assignment,
   errors,
   groups,
@@ -49,13 +60,46 @@ export default function DistributeModal({
   onClose,
   waiting,
 }: DistributeModalProps): JSX.Element {
+  /*
+  NB: https://github.com/atlassian/react-beautiful-dnd/blob/master/docs/guides/reparenting.md
+  */
   const theme = useTheme();
 
   const [dueDate, setDueDate] = useState(dayjs().add(7, "day"));
   const [group, setGroup] = useState("");
   const [showCorrectAnswers, setShowCorrectAnswers] = useState(true);
+  const [order, setOrder] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (assignment.questions !== undefined) {
+      setOrder([...Array(assignment.questions?.length || 0).keys()]);
+    }
+  }, [assignment]);
 
   dayjs.extend(utc);
+
+  const getItemStyle = (
+    isDragging: boolean,
+    draggableStyle?: DraggingStyle | NotDraggingStyle,
+  ) => ({
+    userSelect: "none",
+    ...draggableStyle,
+  });
+
+  const getListStyle = (isDraggingOver: boolean) => ({
+    background: isDraggingOver ? theme.palette.primary.main : "unset",
+    marginLeft: "-10px",
+    padding: "10px",
+  });
+
+  const onDragEnd = (result: DropResult) => {
+    const _order = Array.from(order);
+    const [dragged] = _order.splice(result.source.index, 1);
+    if (result.destination?.index) {
+      _order.splice(result.destination.index, 0, dragged);
+      setOrder(_order);
+    }
+  };
 
   const ltiDialog = (): JSX.Element | undefined => {
     if (assignment?.questions && assignment.questions.length > 0) {
@@ -127,7 +171,7 @@ export default function DistributeModal({
 
   const myDaliteDialog = (): JSX.Element | undefined => {
     return (
-      <Stack spacing={"30px"}>
+      <Stack spacing={"1.5rem"}>
         <Box>
           <Typography variant="h1" mt={0}>
             {gettext("Distribute via myDalite")}
@@ -206,8 +250,79 @@ export default function DistributeModal({
             }
             label={gettext("Show correct answers")}
             onChange={() => setShowCorrectAnswers(!showCorrectAnswers)}
-            sx={{ padding: "0px 9px" }}
+            sx={{ pr: "10px" }}
           />
+        </FormGroup>
+
+        <FormGroup>
+          <Typography variant="body2">{gettext("Question order")}</Typography>
+          <DragDropContext nonce={nonce} onDragEnd={onDragEnd}>
+            <Droppable
+              droppableId="questions"
+              renderClone={(provided, snapshot, rubric) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.draggableProps}
+                  {...provided.dragHandleProps}
+                  style={getItemStyle(
+                    snapshot.isDragging,
+                    provided.draggableProps.style,
+                  )}
+                >
+                  <DraggableQuestion
+                    dense={true}
+                    question={
+                      assignment?.questions[order[rubric.source.index]]
+                    }
+                    sx={{
+                      background: theme.palette.secondary1.main,
+                    }}
+                  />
+                </div>
+              )}
+            >
+              {(provided, snapshot) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  style={getListStyle(snapshot.isDraggingOver)}
+                >
+                  <Stack spacing={"10px"}>
+                    {order.map((index: number, i: number) => (
+                      <Draggable
+                        key={`key-${assignment.questions[index].question.pk}`}
+                        draggableId={`id-${assignment.questions[index].question.pk}`}
+                        index={i}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style,
+                            )}
+                          >
+                            <DraggableQuestion
+                              key={i}
+                              dense={true}
+                              question={assignment.questions[index].question}
+                              rank={i}
+                              sx={{
+                                background: theme.palette.secondary1.main,
+                              }}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </Stack>
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
         </FormGroup>
 
         <FormButtonBox sx={{ margin: "0px" }}>

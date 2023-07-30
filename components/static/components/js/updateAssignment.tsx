@@ -520,6 +520,7 @@ export class App extends Component<
                 <ThemeProvider theme={saltise}>
                   <Toolbar
                     gettext={this.props.gettext}
+                    nonce={this.props.nonce}
                     assignment={this.state.assignment}
                     distributeErrors={this.state.distributeErrors}
                     distributeWaiting={this.state.distributeWaiting}

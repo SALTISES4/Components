@@ -300,6 +300,7 @@ interface UpdateAssignmentAppState extends SnackbarType {
   distributeWaiting: boolean;
   editing: boolean;
   form: AssignmentForm;
+  questionsEditableByUser: boolean;
   questionRanks: QuestionRankType[];
   questionRanksLoading: boolean;
   studentgroupassignments: StudentGroupAssignmentType[];

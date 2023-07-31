@@ -87,6 +87,7 @@ export class App extends Component<
         intro_page: this.props.assignment.intro_page,
         title: this.props.assignment.title,
       },
+      questionsEditableByUser: this.props.questionsEditableByUser || false,
       questionRanks: [],
       questionRanksLoading: false,
       studentgroupassignments: [],
@@ -207,6 +208,7 @@ export class App extends Component<
     try {
       await submitData(this.props.urls.distribute, form, "POST");
       this.loadStudentGroupAssignments();
+      this.setState({ questionsEditableByUser: false });
       callback();
     } catch (error: any) {
       if (typeof error === "object") {
@@ -369,7 +371,7 @@ export class App extends Component<
       <Box sx={{ marginTop: "30px" }}>
         {!this.state.questionRanksLoading ? (
           this.state.questionRanks?.length > 0 ? (
-            this.props.questionsEditableByUser && this.state.editing ? (
+            this.state.questionsEditableByUser && this.state.editing ? (
               <DragDropContext
                 nonce={this.props.nonce}
                 onDragEnd={this.onDragEnd}
@@ -392,7 +394,7 @@ export class App extends Component<
                               draggableId={`id-${qr.question.pk}`}
                               index={i}
                               isDragDisabled={
-                                !this.props.questionsEditableByUser
+                                !this.state.questionsEditableByUser
                               }
                             >
                               {(provided, snapshot) => (
@@ -452,7 +454,7 @@ export class App extends Component<
                       }}
                       question={qr.question}
                       questionsEditableByUser={
-                        this.props.questionsEditableByUser
+                        this.state.questionsEditableByUser
                       }
                       showBookmark={
                         qr.question.is_owner !== undefined
@@ -531,7 +533,7 @@ export class App extends Component<
                     editing={this.state.editing}
                     enableDistribute={this.state.assignment?.is_valid}
                     enableEdit={
-                      this.props.questionsEditableByUser ||
+                      this.state.questionsEditableByUser ||
                       this.props.metaEditableByUser
                     }
                     enableSave={

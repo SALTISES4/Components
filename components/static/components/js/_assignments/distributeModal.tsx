@@ -337,6 +337,7 @@ export default function DistributeModal({
                 {
                   due_date: dueDate.utc().format(), // Convert to UTC!
                   group_pk: parseInt(group),
+                  order: order.join(","),
                   show_correct_answers: showCorrectAnswers,
                 },
                 onClose,

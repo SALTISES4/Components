@@ -20,6 +20,7 @@ export interface AssignmentForm extends AssignmentMetaFieldsForm {
 export type StudentGroupAssignmentCreateForm = {
   due_date: string;
   group_pk: number;
+  order: string;
   show_correct_answers: boolean;
 };
 

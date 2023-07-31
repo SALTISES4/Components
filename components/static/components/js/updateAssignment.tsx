@@ -16,6 +16,7 @@ import {
   handleAddToAssignment,
   handleQuestionBookmarkClick,
   handleRemoveQuestionFromAssignment,
+  setDifference,
 } from "./functions";
 
 //material ui components
@@ -127,7 +128,7 @@ export class App extends Component<
     });
   };
 
-  loadQuestions = async (): Promise<void> => {
+  loadAssignment = async (callback?: () => void): Promise<void> => {
     try {
       this.setState({ questionRanksLoading: true });
 
@@ -147,7 +148,7 @@ export class App extends Component<
           questionRanks,
           questionRanksLoading: false,
         },
-        () => console.info(this.state),
+        callback,
       );
     } catch (error: any) {
       this.error(error);
@@ -183,7 +184,7 @@ export class App extends Component<
       this.error(error);
     }
 
-    this.loadQuestions();
+    this.loadAssignment();
     this.loadStudentGroupAssignments();
   };
 
@@ -224,20 +225,25 @@ export class App extends Component<
     this.setState({ editing: mode });
   };
 
-  handleRemoveQuestionFromAssignmentCallback = (pk: number) => {
-    const questionRanks = [...this.state.questionRanks];
-    const index = questionRanks.map((qr) => qr.pk).indexOf(pk);
-    const removedQuestion = questionRanks[index].question;
-    if (index >= 0) {
-      questionRanks.splice(index, 1);
-      this.setState({
-        questionRanks,
-        snackbarIsOpen: true,
-        snackbarMessage: `Q${removedQuestion.pk} ${this.props.gettext(
-          "removed from assignment",
-        )}`,
-      });
-    }
+  handleRemoveQuestionFromAssignmentCallback = async () => {
+    const questionRanks = new Set(
+      [...this.state.questionRanks].map((qr) => qr.question.pk),
+    );
+    const removedQuestion = () => {
+      const newQuestionRanks = new Set(
+        [...this.state.questionRanks].map((qr) => qr.question.pk),
+      );
+      const pk = setDifference(questionRanks, newQuestionRanks);
+      if (pk) {
+        this.setState({
+          snackbarIsOpen: true,
+          snackbarMessage: `Q${pk} ${this.props.gettext(
+            "removed from assignment",
+          )}`,
+        });
+      }
+    };
+    this.loadAssignment(removedQuestion);
   };
 
   questionRankListChanged = (): boolean => {
@@ -424,13 +430,11 @@ export class App extends Component<
                       handleRemove={async () => {
                         await handleRemoveQuestionFromAssignment(
                           () =>
-                            this.handleRemoveQuestionFromAssignmentCallback(
-                              qr.pk,
-                            ),
+                            this.handleRemoveQuestionFromAssignmentCallback(),
                           this.props.urls.add_to_assignment,
-                          this.state.assignment.questions
-                            ?.filter((_qr) => _qr.pk === qr.pk)
-                            .map((qr) => qr.question.pk)[0],
+                          this.state.assignment.questions?.filter(
+                            (_qr) => _qr.pk === qr.pk,
+                          )[0].pk,
                           this.error,
                         );
                       }}

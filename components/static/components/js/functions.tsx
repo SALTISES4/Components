@@ -21,6 +21,10 @@ export const purifyText = (text: string | undefined): string => {
   return "";
 };
 
+export const setDifference = (set1: Set<number>, set2: Set<number>) => {
+  return [...set1].filter((el) => !set2.has(el));
+};
+
 export function titlecase(title: string) {
   return title.slice(0, 1).toUpperCase() + title.slice(1);
 }

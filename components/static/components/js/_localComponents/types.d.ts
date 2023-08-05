@@ -145,6 +145,7 @@ export type QuestionType = {
   title: string;
   urls?: {
     addable_assignments?: string;
+    rationales?: string;
   };
   user: UserType;
   video_url: string;
@@ -237,4 +238,30 @@ export type StudentGroupAssignmentProps = {
 export type StudentGroupsAssignmentProps = {
   gettext: (a: string) => string;
   studentgroupsassignment: StudentGroupsAssignmentType;
+};
+
+type RationalesType = {
+  id: number;
+  rationale: string;
+  times_chosen: number;
+  times_shown: number;
+};
+
+export type AnswerChoiceWithRationalesType = {
+  correct: boolean;
+  label: string | number;
+  most_convincing: RationalesType[];
+  text: string;
+};
+
+export type RationalesAppProps = {
+  gettext: (a: string) => string;
+  open: boolean;
+  onClose: any;
+  url?: string;
+};
+
+export type RationalesAppState = {
+  answerChoicesWithRationales: AnswerChoiceWithRationalesType[];
+  loaded: boolean;
 };

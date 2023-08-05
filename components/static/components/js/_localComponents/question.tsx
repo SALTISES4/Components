@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable indent */
-import { h } from "preact";
+import { Fragment, h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 
 //functions
@@ -31,6 +31,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { AddToAssignmentModal } from "../_reusableComponents/addToAssignmentModal";
 import { DifficultyCircleIcon } from "../_reusableComponents/difficultyIconQuestion";
 import { PeerImpactIcon } from "../_reusableComponents/peerImpactIcon";
+import { RationalesModal } from "./rationales";
 import { Tag } from "../styledComponents";
 
 //style
@@ -98,6 +99,12 @@ export function Question({
   };
   const handleCloseAddToAssignmentModal = () =>
     setOpenAddToAssignmentModal(false);
+
+  const [openRationalesModal, setOpenRationalesModal] = useState(false);
+  const handleOpenRationalesModal = () => {
+    setOpenRationalesModal(true);
+  };
+  const handleCloseRationalesModal = () => setOpenRationalesModal(false);
 
   useEffect(() => {
     if (expanded !== undefined && showDetails != expanded) {
@@ -318,6 +325,46 @@ export function Question({
     }
   };
 
+  const rationales = () => {
+    const enableDialog =
+      question.urls?.rationales !== undefined && question.answer_count > 0;
+    return (
+      <Fragment>
+        <Tag
+          onClick={(evt: MouseEvent) => {
+            if (enableDialog) {
+              evt.stopPropagation();
+              handleOpenRationalesModal();
+            }
+          }}
+          sx={{
+            bgcolor: "white",
+            borderStyle: "solid",
+            paddingTop: "3px",
+            paddingBottom: "3px",
+            cursor: enableDialog ? "pointer" : "default",
+          }}
+        >
+          <BarChartIcon fontSize="small" />
+          <Typography>
+            {question.answer_count}{" "}
+            {question.answer_count == 1
+              ? gettext("answer")
+              : gettext("answers")}
+          </Typography>
+        </Tag>
+        <RationalesModal
+          gettext={gettext}
+          aria-labelledby="add"
+          aria-describedby="add question to assignment"
+          open={openRationalesModal}
+          onClose={handleCloseRationalesModal}
+          url={question.urls?.rationales}
+        />
+      </Fragment>
+    );
+  };
+
   const discipline = () => {
     if (question?.discipline) {
       return (
@@ -426,22 +473,7 @@ export function Question({
         </CardContent>
         <CardActions>
           <Stack direction="row" spacing="5px">
-            <Tag
-              sx={{
-                bgcolor: "white",
-                borderStyle: "solid",
-                paddingTop: "3px",
-                paddingBottom: "3px",
-              }}
-            >
-              <BarChartIcon fontSize="small" />
-              <Typography>
-                {question.answer_count}{" "}
-                {question.answer_count == 1
-                  ? gettext("answer")
-                  : gettext("answers")}
-              </Typography>
-            </Tag>
+            {rationales()}
             {discipline()}
             {categories()}
             {extraCategories()}

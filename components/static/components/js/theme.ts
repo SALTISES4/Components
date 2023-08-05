@@ -413,6 +413,22 @@ const saltise = createTheme(paletteAndTypography, {
         },
       ],
     },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          maxWidth: "780px",
+        },
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          fontSize: paletteAndTypography.typography.h1.fontSize,
+          fontWeight: paletteAndTypography.typography.h1.fontWeight,
+          textTransform: "unset",
+        },
+      },
+    },
     MuiDivider: {
       styleOverrides: {
         root: {

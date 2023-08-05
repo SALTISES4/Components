@@ -28,6 +28,7 @@ import { SankeyLink, SankeyNode } from "d3-sankey";
 //types
 import {
   AnswerChoiceWithRationalesType,
+  AnswerMatrixType,
   RationalesAppProps,
   RationalesAppState,
   RationalesType,
@@ -40,18 +41,22 @@ export class RationalesModal extends Component<
   constructor(props: RationalesAppProps) {
     super(props);
     this.state = {
-      answerChoicesWithRationales: [],
-      loaded: false,
+      loaded:
+        this.props.matrix !== undefined && this.props.rationales !== undefined,
+      matrix: this.props.matrix,
+      rationales: this.props.rationales,
     };
   }
 
-  sync = async (url: string) => {
+  sync = async (rationalesURL: string, matrixURL: string) => {
     try {
       const rationales = (await get(
-        url,
+        rationalesURL,
       )) as unknown as AnswerChoiceWithRationalesType[];
 
-      this.setState({ answerChoicesWithRationales: rationales, loaded: true });
+      const matrix = (await get(matrixURL)) as unknown as AnswerMatrixType;
+
+      this.setState({ rationales, loaded: true, matrix });
     } catch (error: any) {
       console.error(error);
     }
@@ -62,13 +67,14 @@ export class RationalesModal extends Component<
     nextState: Readonly<RationalesAppState>,
   ): void {
     // Loading on mount will lead to a ton of unnecessary db hits
-    // - Only load if answerChoicesWithRationales is empty and component is open
+    // - Only load if data not passed in props and component is open
     if (
       !nextState.loaded &&
       nextProps.open == true &&
-      nextProps.url !== undefined
+      nextProps.urls?.matrix &&
+      nextProps.urls?.rationales
     ) {
-      this.sync(nextProps.url);
+      this.sync(nextProps.urls.rationales, nextProps.urls.matrix);
     }
   }
 
@@ -78,67 +84,85 @@ export class RationalesModal extends Component<
     const sankeyHeight = 207;
     const sankeyWidth = cardWidth - 2 * sankeyPaddingX;
 
+    const _data = { ...data };
+    let sum = 0;
+    if (this.state.matrix && this.state.loaded) {
+      _data.links[0].value = this.state.matrix.tricky;
+      _data.links[1].value = this.state.matrix.easy;
+      _data.links[2].value = this.state.matrix.peer;
+      _data.links[3].value = this.state.matrix.hard;
+
+      sum = Object.values(this.state.matrix).reduce((acc, curr) => curr + acc);
+    }
+
     return (
       <Dialog open={this.props.open} onClose={this.props.onClose}>
         <DialogTitle>{this.props.gettext("Rationales")}</DialogTitle>
         <DialogContent>
-          <Box display={"flex"} justifyContent="center">
-            <SankeyChart
-              data={data}
-              nodeWidth={60}
-              nodePadding={40}
-              width={sankeyWidth}
-              height={sankeyHeight}
+          {sum ? (
+            <Box
+              display={"flex"}
+              justifyContent="center"
+              sx={{ marginBottom: "35px" }}
             >
-              {({ graph }) => {
-                const textPadding = [44, 54, 10, 10];
-                return (
-                  <g>
-                    {graph &&
-                      graph.links.map(
-                        (
-                          link: SankeyLink<
-                            ExtraNodeProperties,
-                            ExtraLinkProperties
-                          >,
-                          i: number,
-                        ) => (
-                          <g key={`sankey-link-${i}`}>
-                            <Link link={link} graphHeight={sankeyHeight} />
-                            <VerticalBorder
-                              link={link}
+              <SankeyChart
+                data={_data}
+                nodeWidth={60}
+                nodePadding={40}
+                width={sankeyWidth}
+                height={sankeyHeight}
+              >
+                {({ graph }) => {
+                  const textPadding = [44, 54, 10, 10];
+                  return (
+                    <g>
+                      {graph &&
+                        graph.links.map(
+                          (
+                            link: SankeyLink<
+                              ExtraNodeProperties,
+                              ExtraLinkProperties
+                            >,
+                            i: number,
+                          ) => (
+                            <g key={`sankey-link-${i}`}>
+                              <Link link={link} graphHeight={sankeyHeight} />
+                              <VerticalBorder
+                                link={link}
+                                graphHeight={sankeyHeight}
+                              />
+                            </g>
+                          ),
+                        )}
+                      {graph &&
+                        graph.nodes.map(
+                          (
+                            node: SankeyNode<
+                              ExtraNodeProperties,
+                              ExtraLinkProperties
+                            >,
+                            i: number,
+                          ) => (
+                            <Node
+                              key={`sankey-node-${i}`}
+                              node={node}
+                              textPadding={textPadding[i]}
+                              graph={graph}
                               graphHeight={sankeyHeight}
+                              graphWidth={sankeyWidth}
                             />
-                          </g>
-                        ),
-                      )}
-                    {graph &&
-                      graph.nodes.map(
-                        (
-                          node: SankeyNode<
-                            ExtraNodeProperties,
-                            ExtraLinkProperties
-                          >,
-                          i: number,
-                        ) => (
-                          <Node
-                            key={`sankey-node-${i}`}
-                            node={node}
-                            textPadding={textPadding[i]}
-                            graph={graph}
-                            graphHeight={sankeyHeight}
-                            graphWidth={sankeyWidth}
-                          />
-                        ),
-                      )}
-                  </g>
-                );
-              }}
-            </SankeyChart>
-          </Box>
-          <Box sx={{ marginTop: "35px", overflowY: "scroll" }}>
+                          ),
+                        )}
+                    </g>
+                  );
+                }}
+              </SankeyChart>
+            </Box>
+          ) : null}
+
+          <Box sx={{ overflowY: "scroll" }}>
             <Stack spacing={"40px"}>
-              {this.state.answerChoicesWithRationales.map(
+              {this.state.rationales?.map(
                 (answer: AnswerChoiceWithRationalesType, i: number) => (
                   <Box key={i}>
                     <Stack spacing={"20px"}>

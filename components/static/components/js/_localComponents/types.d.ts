@@ -139,12 +139,16 @@ export type QuestionType = {
   image: string;
   image_alt_text: string;
   is_owner?: boolean;
+  matrix?: AnswerMatrixType;
+  most_convincing_rationales?: AnswerChoiceWithRationalesType[];
   peer_impact: QuestionPeerImpact;
   pk: number;
   text: string;
   title: string;
+  type: "PI" | "RO";
   urls?: {
     addable_assignments?: string;
+    matrix?: string;
     rationales?: string;
   };
   user: UserType;
@@ -254,14 +258,27 @@ export type AnswerChoiceWithRationalesType = {
   text: string;
 };
 
+export type AnswerMatrixType = {
+  easy: number;
+  hard: number;
+  tricky: number;
+  peer: number;
+};
+
 export type RationalesAppProps = {
   gettext: (a: string) => string;
   open: boolean;
   onClose: any;
-  url?: string;
+  matrix?: AnswerMatrixType;
+  rationales?: AnswerChoiceWithRationalesType[];
+  urls: {
+    matrix?: string;
+    rationales?: string;
+  };
 };
 
 export type RationalesAppState = {
-  answerChoicesWithRationales: AnswerChoiceWithRationalesType[];
   loaded: boolean;
+  matrix?: AnswerMatrixType;
+  rationales?: AnswerChoiceWithRationalesType[];
 };

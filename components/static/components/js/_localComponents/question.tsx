@@ -327,7 +327,10 @@ export function Question({
 
   const rationales = () => {
     const enableDialog =
-      question.urls?.rationales !== undefined && question.answer_count > 0;
+      ((question.urls?.rationales && question.urls?.matrix) ||
+        (question.most_convincing_rationales && question.matrix)) &&
+      question.answer_count > 0 &&
+      question.type == "PI";
     return (
       <Fragment>
         <Tag
@@ -353,14 +356,21 @@ export function Question({
               : gettext("answers")}
           </Typography>
         </Tag>
-        <RationalesModal
-          gettext={gettext}
-          aria-labelledby="add"
-          aria-describedby="add question to assignment"
-          open={openRationalesModal}
-          onClose={handleCloseRationalesModal}
-          url={question.urls?.rationales}
-        />
+        {enableDialog ? (
+          <RationalesModal
+            gettext={gettext}
+            aria-labelledby="add"
+            aria-describedby="add question to assignment"
+            matrix={question.matrix}
+            open={openRationalesModal}
+            onClose={handleCloseRationalesModal}
+            rationales={question.most_convincing_rationales}
+            urls={{
+              matrix: question.urls?.matrix,
+              rationales: question.urls?.rationales,
+            }}
+          />
+        ) : null}
       </Fragment>
     );
   };

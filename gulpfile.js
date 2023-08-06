@@ -32,13 +32,14 @@ const tsProject = ts.createProject("tsconfig.json");
 // ];
 
 const modules = [
-  "dashboard",
-  "navigation",
-  "createAssignment",
-  "updateAssignment",
-  "library",
-  "search",
-  "styleguide",
+  // "dashboard",
+  // "navigation",
+  // "createAssignment",
+  "createQuestions1",
+  // "updateAssignment",
+  // "library",
+  // "search",
+  // "styleguide",
 ];
 
 function typescript() {

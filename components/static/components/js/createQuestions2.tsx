@@ -15,8 +15,8 @@ import { formTheme } from "./theme";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { StepBar } from "./styledComponents";
-import { Answer } from "../questions/answer";
-import { SaveBar } from "../questions/saveBar";
+import { Answer } from "./_questions/answer";
+import { SaveBar } from "./_questions/saveBar";
 import { CreateQuestions2AppProps, CreateQuestions2AppState } from "./types";
 
 export class App extends Component<

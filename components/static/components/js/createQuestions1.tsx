@@ -1,10 +1,19 @@
 import { Component, h, render } from "preact";
 export { h, render };
 
+//material ui components
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+
+//components
+import { Main } from "./_reusableComponents/main";
+import { StepBar } from "./styledComponents";
+import { Collaborators } from "./_questions/collaborators";
+import { Content } from "./_questions/content";
+import { Indexing } from "./_questions/indexing";
+import { Settings } from "./_questions/settings";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -14,12 +23,8 @@ import { formTheme } from "./theme";
 //cache
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-import { StepBar } from "./styledComponents";
-import { Content } from "../questions/content";
-import { Settings } from "../questions/settings";
-import { Indexing } from "../questions/indexing";
-import { Collaborators } from "../questions/collaborators";
-import { SaveBar } from "../questions/saveBar";
+
+//types
 import { CreateQuestions1AppProps, CreateQuestions1AppState } from "./types";
 
 export class App extends Component<
@@ -29,10 +34,6 @@ export class App extends Component<
   constructor(props: CreateQuestions1AppProps) {
     super(props);
     this.state = {};
-  }
-
-  componentDidMount(): void {
-    // Fetch data from db to overwrite placeholders
   }
 
   cache = createCache({
@@ -46,32 +47,50 @@ export class App extends Component<
     return (
       <ThemeProvider theme={formTheme}>
         <CacheProvider value={this.cache}>
-          <Box width="calc(100% - 200px)" marginLeft="200px">
-            <Container sx={{ width: "80%" }}>
-              <Typography variant="h1" align="left">
-                {this.props.gettext("Create Question")}
-              </Typography>
-              <Typography variant="h2" sx={{ marginTop: "30px" }}>
-                {this.props.gettext("Step 1/2")}
-              </Typography>
-              <Typography fontSize="16px" lineHeight="22px">
-                {this.props.gettext("Question parameters")}
-              </Typography>
-              <StepBar
-                sx={{
-                  background:
-                    "linear-gradient(to right, #1743B3 50%, #AEAEBF 50%)",
-                }}
+          <Main>
+            <Typography variant="h1" align="left">
+              {this.props.gettext("Create question")}
+            </Typography>
+            <Typography variant="h3">
+              {this.props.gettext("Step 1/2")}
+            </Typography>
+            <Typography fontSize="body1">
+              {this.props.gettext("Question parameters")}
+            </Typography>
+            <StepBar
+              sx={{
+                background:
+                  "linear-gradient(to right, #1743B3 50%, #AEAEBF 50%)",
+              }}
+            />
+            <Stack spacing={"30px"}>
+              <Content
+                gettext={this.props.gettext}
+                EditorIcons={this.props.EditorIcons}
               />
-              <Stack spacing={"30px"}>
-                <Content gettext={this.props.gettext} />
-                <Settings gettext={this.props.gettext} />
-                <Indexing gettext={this.props.gettext} />
-                <Collaborators gettext={this.props.gettext} />
-              </Stack>
-            </Container>
-          </Box>
-          <SaveBar gettext={this.props.gettext} />
+              <Settings gettext={this.props.gettext} />
+              <Indexing gettext={this.props.gettext} />
+              <Collaborators gettext={this.props.gettext} />
+            </Stack>
+            <Box sx={{ marginTop: "50px", textAlign: "end" }}>
+              <Button
+                variant="outlined"
+                color="secondary4"
+                sx={{ margin: "15px" }}
+              >
+                <Typography>{this.props.gettext("Cancel")}</Typography>
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ margin: "15px" }}
+              >
+                <Typography>
+                  {this.props.gettext("Save and continue")}
+                </Typography>
+              </Button>
+            </Box>
+          </Main>
         </CacheProvider>
       </ThemeProvider>
     );

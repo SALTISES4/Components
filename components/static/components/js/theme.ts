@@ -234,7 +234,7 @@ const paletteAndTypography = createTheme({
       fontSize: "1.125rem", // 18/16
     },
     h4: {
-      fontSize: "1rem", //16/16
+      fontSize: "1rem", // 16/16
       fontWeight: 500,
     },
     h5: {

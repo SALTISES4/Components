@@ -106,7 +106,7 @@ export class App extends Component<
         <CacheProvider value={this.cache}>
           <Main>
             <Typography variant="h1" align="left">
-              {this.props.gettext("Create Assignment")}
+              {this.props.gettext("Create assignment")}
             </Typography>
             <Card>
               <CardHeader title={"Assignment settings"} />

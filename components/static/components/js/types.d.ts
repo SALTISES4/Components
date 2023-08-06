@@ -214,6 +214,7 @@ export type NavigationAppState = {};
 export type CreateQuestions1AppProps = {
   gettext: (a: string) => string;
   nonce: string;
+  EditorIcons: EditorIconsType;
 };
 
 export type CreateQuestions1AppState = {};

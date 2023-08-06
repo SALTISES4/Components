@@ -1,35 +1,59 @@
 import { h } from "preact";
+import { useState } from "preact/hooks";
 
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormLabel from "@mui/material/FormLabel";
-
+//material ui components
 import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
-import Button from "@mui/material/Button";
-import { TextInputBox } from "../js/_reusableComponents/customTextField";
+//components
+import { CustomTextField } from "../_reusableComponents/customTextField";
+import { CustomEditorField } from "../_reusableComponents/customEditorField";
+
+//types
+import { EditorIconsType } from "../types";
 
 export function Content({
   gettext,
+  EditorIcons,
 }: {
   gettext: (a: string) => string;
+  EditorIcons: EditorIconsType;
 }): JSX.Element {
+  const [text, setText] = useState("");
+  const [title, setTitle] = useState("");
+
   return (
     <Card>
       <CardHeader title={"Content"} />
       <Divider />
       <CardContent>
         <Stack spacing={"20px"}>
-          <TextInputBox id="title" title="Title *" rows={1} defaultValue="" />
-          <TextInputBox id="text" title="Text *" rows={6} defaultValue="" />
+          <CustomTextField
+            gettext={gettext}
+            id="title"
+            title="Title *"
+            defaultValue=""
+            maxLength={100}
+            setValue={setTitle}
+            value={title}
+          />
+          <CustomEditorField
+            title="Text *"
+            defaultValue=""
+            EditorIcons={EditorIcons}
+            setValue={setText}
+            value={text}
+          />
 
           <Box>
             <FormLabel id="type">

@@ -1,5 +1,6 @@
 import { h } from "preact";
-import { useState } from "preact/hooks";
+
+import { questionTextValidator, questionTitleValidator } from "../validators";
 
 //material ui components
 import Box from "@mui/material/Box";
@@ -25,13 +26,18 @@ import { EditorIconsType } from "../types";
 export function Content({
   gettext,
   EditorIcons,
+  text,
+  title,
+  setText,
+  setTitle,
 }: {
   gettext: (a: string) => string;
   EditorIcons: EditorIconsType;
+  text: string;
+  title: string;
+  setText: (a: string) => void;
+  setTitle: (a: string) => void;
 }): JSX.Element {
-  const [text, setText] = useState("");
-  const [title, setTitle] = useState("");
-
   return (
     <Card>
       <CardHeader title={"Content"} />
@@ -40,18 +46,21 @@ export function Content({
         <Stack spacing={"20px"}>
           <CustomTextField
             gettext={gettext}
+            autoFocus={true}
             id="title"
             title="Title *"
             defaultValue=""
+            minLength={1}
             maxLength={100}
             setValue={setTitle}
+            validator={questionTitleValidator}
             value={title}
           />
           <CustomEditorField
             title="Text *"
-            defaultValue=""
             EditorIcons={EditorIcons}
             setValue={setText}
+            validator={questionTextValidator}
             value={text}
           />
 

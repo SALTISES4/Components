@@ -1,6 +1,8 @@
 import { Component, h, render } from "preact";
 export { h, render };
 
+import { questionTextValidator, questionTitleValidator } from "./validators";
+
 //material ui components
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -8,8 +10,8 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 //components
+import { CancelButton, StepBar } from "./styledComponents";
 import { Main } from "./_reusableComponents/main";
-import { StepBar } from "./styledComponents";
 import { Collaborators } from "./_questions/collaborators";
 import { Content } from "./_questions/content";
 import { Indexing } from "./_questions/indexing";
@@ -33,7 +35,12 @@ export class App extends Component<
 > {
   constructor(props: CreateQuestions1AppProps) {
     super(props);
-    this.state = {};
+    this.state = {
+      form: {
+        text: "",
+        title: "",
+      },
+    };
   }
 
   cache = createCache({
@@ -42,6 +49,12 @@ export class App extends Component<
     prepend: true,
     stylisPlugins: [prefixer],
   });
+
+  saveAndContinue = () => {};
+
+  validateForm = () =>
+    questionTitleValidator(this.state.form.title) &&
+    questionTextValidator(this.state.form.text);
 
   render() {
     return (
@@ -67,23 +80,34 @@ export class App extends Component<
               <Content
                 gettext={this.props.gettext}
                 EditorIcons={this.props.EditorIcons}
+                text={this.state.form.text}
+                title={this.state.form.title}
+                setText={(text: string) =>
+                  this.setState({ form: { ...this.state.form, text } })
+                }
+                setTitle={(title) =>
+                  this.setState({ form: { ...this.state.form, title } })
+                }
               />
               <Settings gettext={this.props.gettext} />
               <Indexing gettext={this.props.gettext} />
               <Collaborators gettext={this.props.gettext} />
             </Stack>
-            <Box sx={{ marginTop: "50px", textAlign: "end" }}>
-              <Button
-                variant="outlined"
-                color="secondary4"
-                sx={{ margin: "15px" }}
-              >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "10px",
+                margin: "50px 0px 0px 0px",
+              }}
+            >
+              <CancelButton onClick={() => history.back()}>
                 <Typography>{this.props.gettext("Cancel")}</Typography>
-              </Button>
+              </CancelButton>
               <Button
+                disabled={!this.validateForm()}
+                onClick={this.saveAndContinue()}
                 variant="contained"
-                color="primary"
-                sx={{ margin: "15px" }}
               >
                 <Typography>
                   {this.props.gettext("Save and continue")}

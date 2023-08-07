@@ -217,7 +217,12 @@ export type CreateQuestions1AppProps = {
   EditorIcons: EditorIconsType;
 };
 
-export type CreateQuestions1AppState = {};
+export type CreateQuestions1AppState = {
+  form: {
+    text: string;
+    title: string;
+  };
+};
 
 export type CreateQuestions2AppProps = {
   gettext: (a: string) => string;

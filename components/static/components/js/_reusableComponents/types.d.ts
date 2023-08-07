@@ -51,11 +51,14 @@ export type CircleProgressionIconProps = {
 export type CustomEditorProps = {
   EditorIcons: EditorIconsType;
   setValue: (a: string) => void;
+  validator: (a: string) => boolean;
   value: string;
 };
 
 export type CustomEditorState = {
   editorState: any;
+  error: boolean;
+  hasFocus: boolean;
 };
 
 export type DifficultyCircleAssignmentProps = {
@@ -109,6 +112,7 @@ export type CustomEditorFieldProps = {
   };
   setValue: (a: string) => void;
   tooltip?: string;
+  validator?: (a: string) => boolean;
   value: string;
 };
 

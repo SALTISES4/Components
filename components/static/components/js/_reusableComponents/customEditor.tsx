@@ -27,6 +27,8 @@ export class CustomEditor extends Component<
 
     this.state = {
       editorState,
+      error: false,
+      hasFocus: false,
     };
   }
 
@@ -44,14 +46,15 @@ export class CustomEditor extends Component<
     );
   };
 
+  componentWillUpdate(nextProps: Readonly<CustomEditorProps>): void {
+    if (this.props.value != nextProps.value) {
+      const error = !nextProps.validator(nextProps.value);
+      this.setState({ error });
+    }
+  }
+
   render() {
-    const wrapperStyle = {
-      backgroundColor: "white",
-      minHeight: "130px",
-      border: "solid 1px",
-      borderRadius: "4px",
-      borderColor: formTheme.palette.secondary2.main,
-    };
+    console.info(this.state.error, this.state.hasFocus);
     const editorStyle = {
       padding: "15px",
       fontFamily: formTheme.typography.body2.fontFamily,
@@ -76,9 +79,22 @@ export class CustomEditor extends Component<
       <Editor
         editorState={editorState}
         onEditorStateChange={this.onEditorStateChange}
-        wrapperStyle={wrapperStyle}
+        wrapperStyle={{
+          backgroundColor: "white",
+          minHeight: "130px",
+          borderRadius: "4px",
+          borderColor: this.state.error
+            ? formTheme.palette.error.main
+            : this.state.hasFocus
+            ? formTheme.palette.primary.main
+            : formTheme.palette.secondary2.main,
+          borderStyle: "solid",
+          borderWidth: this.state.hasFocus ? "2px" : "1px",
+        }}
         editorStyle={editorStyle}
         editorClassName="editor"
+        onBlur={() => this.setState({ hasFocus: false })}
+        onFocus={() => this.setState({ hasFocus: true })}
         toolbarStyle={toolbarStyle}
         toolbar={{
           options: ["history", "inline", "link"],

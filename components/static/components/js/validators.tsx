@@ -1,3 +1,5 @@
+import { purifyText } from "./functions";
+
 export function lettersNumbersUnderscoreOnlyValidator(value: string) {
   const re = new RegExp(/\w/g);
   return [...value.matchAll(re)].length == value.length;
@@ -27,5 +29,20 @@ export const assignmentTitleValidator = (title: string | undefined) => {
   if (title === undefined) {
     return false;
   }
-  return lengthValidator(title, 1, 200);
+  return lengthValidator(title.trim(), 1, 200);
+};
+
+export const questionTextValidator = (text: string | undefined) => {
+  // Ensure that text is not "" or whitespace/tags
+  if (text === undefined) {
+    return false;
+  }
+  return lengthValidator(purifyText(text).trim(), 1, 2000);
+};
+
+export const questionTitleValidator = (title: string | undefined) => {
+  if (title === undefined) {
+    return false;
+  }
+  return lengthValidator(title.trim(), 1, 100);
 };

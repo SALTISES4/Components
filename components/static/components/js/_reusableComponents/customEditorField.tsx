@@ -13,6 +13,7 @@ export const CustomEditorField = ({
   icon,
   setValue,
   tooltip = "",
+  validator = () => true,
   value,
 }: CustomEditorFieldProps) => {
   return (
@@ -49,6 +50,7 @@ export const CustomEditorField = ({
       <CustomEditor
         EditorIcons={EditorIcons}
         setValue={setValue}
+        validator={validator}
         value={value}
       />
     </Box>

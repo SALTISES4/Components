@@ -262,6 +262,21 @@ export type CreateAssignmentAppProps = {
   };
 };
 
+export type CreateGroupAppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+  urls: {
+    create: string;
+  };
+};
+
+export type CreateGroupAppState = {
+  name: string;
+  errors: string[];
+  submitting: boolean;
+  title: string;
+};
+
 export type UpdateAssignmentAppProps = {
   gettext: (a: string) => string;
   nonce: string;

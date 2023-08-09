@@ -3,15 +3,11 @@ import { Component, h } from "preact";
 //functions
 import { get } from "../ajax";
 
-//styles
-import { modal as style } from "../_assignments/styles";
-
 //material ui components
 import AddIcon from "@mui/icons-material/Add";
-
 import Box from "@mui/material/Box";
-
-import Modal from "@mui/material/Modal";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -23,6 +19,7 @@ import Stack from "@mui/material/Stack";
 
 //components
 import { CancelButton, FormButtonBox } from "../styledComponents";
+import DialogTitle from "./dialog";
 import Errors from "./errors";
 import { Snackbar } from "./snackbar";
 
@@ -78,18 +75,18 @@ export class AddToAssignmentModal extends Component<
   render() {
     return (
       <Box>
-        <Modal open={this.props.open} onClose={this.props.onClose}>
-          <Box sx={style}>
-            <Typography variant="h1" sx={{ margin: "0px" }}>
-              {this.props.gettext("Add to assignment")}
-            </Typography>
-            <Typography sx={{ padding: "20px 0px", textAlign: "justify" }}>
-              {this.props.gettext(
-                "Select the assignment to which you would like to add this question.",
-              )}
-            </Typography>
-
+        <Dialog open={this.props.open} onClose={this.props.onClose}>
+          <DialogTitle onClose={this.props.onClose}>
+            {this.props.gettext("Add to assignment")}
+          </DialogTitle>
+          <DialogContent>
             <Stack spacing={3}>
+              <Typography>
+                {this.props.gettext(
+                  "Select the assignment to which you would like to add this question.",
+                )}
+              </Typography>
+
               <Errors errors={this.state.errors} />
               <FormControl required>
                 <InputLabel id="assignment-select">
@@ -119,7 +116,7 @@ export class AddToAssignmentModal extends Component<
 
               <FormButtonBox sx={{ margin: "0px" }}>
                 <CancelButton onClick={this.props.onClose}>
-                  <Typography>{this.props.gettext("Cancel")}</Typography>
+                  <Typography>{this.props.gettext("Close")}</Typography>
                 </CancelButton>
                 <LoadingButton
                   disabled={this.state.assignment == ""}
@@ -162,8 +159,8 @@ export class AddToAssignmentModal extends Component<
                 </LoadingButton>
               </FormButtonBox>
             </Stack>
-          </Box>
-        </Modal>
+          </DialogContent>
+        </Dialog>
 
         <Snackbar
           message={this.state.snackbarMessage}

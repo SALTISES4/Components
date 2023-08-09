@@ -9,12 +9,12 @@ import Box from "@mui/material/Box";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 //components
+import DialogTitle from "../_reusableComponents/dialog";
 import { SankeyChart } from "../_sankey/Sankey/Sankey";
 import {
   ExtraLinkProperties,
@@ -97,7 +97,9 @@ export class RationalesModal extends Component<
 
     return (
       <Dialog open={this.props.open} onClose={this.props.onClose}>
-        <DialogTitle>{this.props.gettext("Rationales")}</DialogTitle>
+        <DialogTitle onClose={this.props.onClose}>
+          {this.props.gettext("Rationales")}
+        </DialogTitle>
         <DialogContent>
           {sum ? (
             <Box

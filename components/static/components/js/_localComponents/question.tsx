@@ -341,11 +341,28 @@ export function Question({
             }
           }}
           sx={{
-            bgcolor: "white",
-            borderStyle: "solid",
+            bgcolor: enableDialog ? "white" : theme.palette.inactiveTint.main,
+            borderStyle: enableDialog ? "solid" : "none",
+            color: enableDialog ? "inherit" : theme.palette.inactive.main,
             paddingTop: "3px",
             paddingBottom: "3px",
             cursor: enableDialog ? "pointer" : "default",
+            " .MuiTypography-root": {
+              color: enableDialog ? "inherit" : theme.palette.inactive.main,
+            },
+            "&:hover": {
+              bgcolor: enableDialog
+                ? theme.palette.secondary4.main
+                : theme.palette.inactiveTint.main,
+              color: enableDialog
+                ? theme.palette.background.paper
+                : theme.palette.inactive.main,
+              " .MuiTypography-root": {
+                color: enableDialog
+                  ? theme.palette.background.paper
+                  : theme.palette.inactive.main,
+              },
+            },
           }}
         >
           <BarChartIcon fontSize="small" />

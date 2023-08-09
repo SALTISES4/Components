@@ -23,7 +23,6 @@ import Checkbox from "@mui/material/Checkbox";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
@@ -41,6 +40,7 @@ import Typography from "@mui/material/Typography";
 //components
 import { CancelButton, FormButtonBox } from "../styledComponents";
 import { CopyBox } from "../_reusableComponents/clipboard";
+import DialogTitle from "../_reusableComponents/dialog";
 import { DraggableQuestion } from "../_localComponents/question";
 import Errors from "../_reusableComponents/errors";
 
@@ -105,7 +105,9 @@ export default function DistributeModal({
     if (assignment?.questions && assignment.questions.length > 0) {
       return (
         <Fragment>
-          <DialogTitle>{gettext("Distribute via LMS")}</DialogTitle>
+          <DialogTitle onClose={onClose}>
+            {gettext("Distribute via LMS")}
+          </DialogTitle>
           <DialogContent>
             <Typography sx={{ padding: "20px 0px" }}>
               {gettext(
@@ -172,7 +174,9 @@ export default function DistributeModal({
   const myDaliteDialog = (): JSX.Element | undefined => {
     return (
       <Fragment>
-        <DialogTitle>{gettext("Distribute via myDalite")}</DialogTitle>
+        <DialogTitle onClose={onClose}>
+          {gettext("Distribute via myDalite")}
+        </DialogTitle>
         <DialogContent>
           <Stack spacing={"1.5rem"}>
             <Typography>
@@ -365,7 +369,11 @@ export default function DistributeModal({
 
   return (
     <Dialog open={method == "myDalite" || method == "LMS"} onClose={onClose}>
-      {method == "myDalite" ? myDaliteDialog() : ltiDialog()}
+      {method == "myDalite"
+        ? myDaliteDialog()
+        : method == "LMS"
+        ? ltiDialog()
+        : null}
     </Dialog>
   );
 }

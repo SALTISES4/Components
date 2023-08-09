@@ -341,15 +341,16 @@ export function Question({
             }
           }}
           sx={{
-            bgcolor: "white",
-            borderStyle: "solid",
+            bgcolor: enableDialog ? "white" : theme.palette.inactiveTint.main,
+            borderStyle: enableDialog ? "solid" : "none",
+            color: enableDialog ? "inherit" : theme.palette.inactive.main,
             paddingTop: "3px",
             paddingBottom: "3px",
             cursor: enableDialog ? "pointer" : "default",
           }}
         >
           <BarChartIcon fontSize="small" />
-          <Typography>
+          <Typography sx={{ color: "inherit" }}>
             {question.answer_count}{" "}
             {question.answer_count == 1
               ? gettext("answer")

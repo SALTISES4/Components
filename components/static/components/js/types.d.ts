@@ -273,6 +273,7 @@ export type CreateGroupAppProps = {
 export type CreateGroupAppState = {
   name: string;
   errors: string[];
+  errorsOpen: boolean[];
   submitting: boolean;
   title: string;
 };

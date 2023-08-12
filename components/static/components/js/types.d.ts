@@ -4,6 +4,7 @@ import {
   AssignmentDatabaseFields,
   AssignmentType,
   CollectionType,
+  StudentGroupType,
   StudentGroupAssignmentType,
   StudentGroupsAssignmentType,
   QuestionType,
@@ -307,4 +308,14 @@ interface UpdateAssignmentAppState extends SnackbarType {
   studentgroupassignments: StudentGroupAssignmentType[];
   studentgroupassignmentsLoading: boolean;
   teacher: TeacherType | undefined;
+}
+
+export type UpdateGroupAppProps = {
+  gettext: (a: string) => string;
+  nonce: string;
+  group: StudentGroupType;
+};
+
+interface UpdateGroupAppState extends SnackbarType {
+  editing: boolean;
 }

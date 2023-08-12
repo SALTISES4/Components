@@ -59,15 +59,14 @@ export interface AssignmentType extends AssignmentDatabaseFields {
 export type StudentGroupType = {
   assignmentCount?: number;
   active?: boolean;
-  author?: string;
+  name: string;
   pk?: number;
-  session?: string;
+  semester: string;
   studentCount?: number;
-  subject?: string[];
-  tags?: string[];
-  teacher?: number[];
+  teacher: TeacherType[];
   title: string;
   url: string;
+  year: string;
 };
 
 export type StudentGroupAssignmentType = {

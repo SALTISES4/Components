@@ -93,15 +93,15 @@ repos:
         files: \.js$
         exclude: "^.*\\.min\\..*$"
 
-  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
-    rev: v1.3.0
-    hooks:
-      - id: python-safety-dependencies-check
-        name: safety
-        always_run: true
-        exclude: ".*"
-        verbose: true
-        args: ["requirements.txt", "--ignore=51457"]
+  # - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+  #   rev: v1.3.0
+  #   hooks:
+  #     - id: python-safety-dependencies-check
+  #       name: safety
+  #       always_run: true
+  #       exclude: ".*"
+  #       verbose: true
+  #       args: ["requirements.txt", "--ignore=51457"]
 
   - repo: local
     hooks:

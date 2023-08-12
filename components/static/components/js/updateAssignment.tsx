@@ -334,26 +334,30 @@ export class App extends Component<
 
   groups = () => {
     return (
-      <Box sx={{ mt: "30px" }}>
+      <Box>
         {!this.state.studentgroupassignmentsLoading ? (
           this.state.studentgroupassignments?.length > 0 ? (
-            <Stack spacing={"10px"}>
-              {this.state.studentgroupassignments.map((sga, i: number) => (
-                <StudentGroupAssignment
-                  key={i}
-                  gettext={this.props.gettext}
-                  studentgroupassignment={sga}
-                  showGroup={true}
-                />
-              ))}
-            </Stack>
-          ) : (
-            <Typography>
-              {this.props.gettext("Your assignment is not assigned yet!")}
-            </Typography>
-          )
+            <Fragment>
+              <Typography variant="h2">
+                {this.props.gettext("Distributed to")}
+              </Typography>
+              <Stack spacing={"10px"}>
+                {this.state.studentgroupassignments.map((sga, i: number) => (
+                  <StudentGroupAssignment
+                    key={i}
+                    gettext={this.props.gettext}
+                    studentgroupassignment={sga}
+                    showGroup={true}
+                  />
+                ))}
+              </Stack>
+            </Fragment>
+          ) : null
         ) : (
           <Fragment>
+            <Typography variant="h2">
+              {this.props.gettext("Distributed to")}
+            </Typography>
             <Stack spacing={"10px"}>
               <GroupSkeleton />
               <GroupSkeleton />
@@ -368,7 +372,8 @@ export class App extends Component<
 
   questions = () => {
     return (
-      <Box sx={{ marginTop: "30px" }}>
+      <Box>
+        <Typography variant="h2">{this.props.gettext("Questions")}</Typography>
         {!this.state.questionRanksLoading ? (
           this.state.questionRanks?.length > 0 ? (
             this.state.questionsEditableByUser && this.state.editing ? (
@@ -597,25 +602,10 @@ export class App extends Component<
                     title: (value) => this.updateForm("title", value),
                   }}
                 />
-
-                <Box>
-                  <Box>
-                    <Typography variant="h2">
-                      {this.props.gettext("Distributed to")}
-                    </Typography>
-                    <ThemeProvider theme={saltise}>
-                      {this.groups()}
-                    </ThemeProvider>
-                  </Box>
-                </Box>
-                <Box>
-                  <Typography variant="h2">
-                    {this.props.gettext("Questions")}
-                  </Typography>
-                  <ThemeProvider theme={saltise}>
-                    {this.questions()}
-                  </ThemeProvider>
-                </Box>
+                <ThemeProvider theme={saltise}>
+                  {this.groups()}
+                  {this.questions()}
+                </ThemeProvider>
               </Stack>
             </Main>
           </Box>

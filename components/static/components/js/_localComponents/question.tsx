@@ -18,6 +18,7 @@ import CardContent from "@mui/material/CardContent";
 import Checkbox from "@mui/material/Checkbox";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DragIndicatorRoundedIcon from "@mui/icons-material/DragIndicatorRounded";
+import ErrorIcon from "@mui/icons-material/Error";
 import IconButton from "@mui/material/IconButton";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import PlaylistRemoveIcon from "@mui/icons-material/PlaylistRemove";
@@ -440,6 +441,17 @@ export function Question({
     }
   };
 
+  const errors = () => {
+    if (question.is_valid !== undefined && !question.is_valid) {
+      return (
+        <Tag sx={{ background: theme.palette.errorTint.main }}>
+          <ErrorIcon color={"error"} fontSize="small" />
+          <Typography color={"error"}>{gettext("Invalid")}</Typography>
+        </Tag>
+      );
+    }
+  };
+
   const difficulty = () => {
     if (question.difficulty.label < 4) {
       return (
@@ -504,6 +516,7 @@ export function Question({
             {discipline()}
             {categories()}
             {extraCategories()}
+            {errors()}
           </Stack>
           <Stack
             direction="row"

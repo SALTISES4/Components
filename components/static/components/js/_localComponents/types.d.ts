@@ -139,6 +139,7 @@ export type QuestionType = {
   image: string;
   image_alt_text: string;
   is_owner?: boolean;
+  is_valid?: boolean;
   matrix?: AnswerMatrixType;
   most_convincing_rationales?: AnswerChoiceWithRationalesType[];
   peer_impact: QuestionPeerImpact;

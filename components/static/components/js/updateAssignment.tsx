@@ -584,11 +584,19 @@ export class App extends Component<
                 this.state.assignment,
                 "is_valid",
               ) && !this.state.assignment.is_valid ? (
-                <Alert severity="error" sx={{ marginTop: "32px" }}>
-                  {this.props.gettext(
-                    "There is a problem with this assignment and it cannot be distributed until fixed.",
-                  )}
-                </Alert>
+                this.state.assignment.questions?.length == 0 ? (
+                  <Alert severity="info" sx={{ marginTop: "32px" }}>
+                    {this.props.gettext(
+                      "Add questions to your assignment to be able to distribute it.",
+                    )}
+                  </Alert>
+                ) : (
+                  <Alert severity="error" sx={{ marginTop: "32px" }}>
+                    {this.props.gettext(
+                      "There is a problem with this assignment and it cannot be distributed until fixed.",
+                    )}
+                  </Alert>
+                )
               ) : null}
               <Stack spacing={"30px"}>
                 <GeneralDescription

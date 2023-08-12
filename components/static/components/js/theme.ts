@@ -190,6 +190,9 @@ const paletteAndTypography = createTheme({
     errorTint: {
       main: "#FFEBE6",
     },
+    info: {
+      main: "#515159",
+    },
     new: {
       main: "#872CFF",
     },
@@ -287,6 +290,10 @@ const saltise = createTheme(paletteAndTypography, {
         standardError: {
           backgroundColor: paletteAndTypography.palette.errorTint.main,
           color: paletteAndTypography.palette.error.main,
+        },
+        standardInfo: {
+          backgroundColor: paletteAndTypography.palette.secondary1.main,
+          color: paletteAndTypography.palette.info.main,
         },
       },
     },

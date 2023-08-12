@@ -40,7 +40,7 @@ interface AddToAssignmentModalState extends SnackbarType {
   assignment: string;
   assignments: { pk: string; title: string }[];
   errors: string[][];
-  loading: boolean;
+  loaded: boolean;
   waiting: boolean;
 }
 

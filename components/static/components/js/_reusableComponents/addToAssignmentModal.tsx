@@ -36,12 +36,23 @@ export class AddToAssignmentModal extends Component<
       assignment: "",
       assignments: [],
       errors: [],
-      loading: true,
+      loaded: false,
       snackbarIsOpen: false,
       snackbarMessage: "",
       waiting: false,
     };
   }
+
+  error = (error: any) => {
+    console.error(error);
+    if (typeof error === "object") {
+      const e = Object.values(error) as string[][];
+      this.setState({ errors: e });
+    }
+    if (error instanceof TypeError) {
+      this.setState({ errors: Array([error.message]) });
+    }
+  };
 
   sync = async (): Promise<void> => {
     try {
@@ -53,15 +64,15 @@ export class AddToAssignmentModal extends Component<
       }[];
       this.setState({ assignments }), () => console.info(this.state);
     } catch (error: any) {
-      console.error(error);
-    } finally {
-      this.setState({ loading: false });
+      this.error(error);
+      this.setState({ loaded: false });
     }
   };
 
-  componentDidMount(): void {
-    // Fetch data from db
-    this.sync();
+  componentWillUpdate(nextProps: Readonly<AddToAssignmentModalProps>): void {
+    if (nextProps.open == true && !this.state.loaded) {
+      this.setState({ loaded: true }, this.sync);
+    }
   }
 
   choices = () => {
@@ -137,13 +148,7 @@ export class AddToAssignmentModal extends Component<
                         snackbarIsOpen: true,
                       });
                     } catch (error: any) {
-                      if (typeof error === "object") {
-                        const e = Object.values(error) as string[][];
-                        this.setState({ errors: e });
-                      }
-                      if (error instanceof TypeError) {
-                        this.setState({ errors: Array([error.message]) });
-                      }
+                      this.error(error);
                     } finally {
                       this.setState({ waiting: false });
                     }

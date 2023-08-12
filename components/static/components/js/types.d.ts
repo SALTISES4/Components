@@ -274,6 +274,7 @@ export type UpdateAssignmentAppProps = {
     add_to_assignment: string;
     assignment: string;
     distribute: string;
+    search: string;
     studentgroupassignments: string;
     teacher: string;
   };

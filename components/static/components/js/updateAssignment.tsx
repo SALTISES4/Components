@@ -22,6 +22,7 @@ import {
 //material ui components
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
@@ -487,11 +488,20 @@ export class App extends Component<
               </Stack>
             )
           ) : (
-            <Typography>
-              {this.props.gettext(
-                "You assignment has no questions yet! Search our database to add questions.",
-              )}
-            </Typography>
+            <Fragment>
+              <Typography>
+                {this.props.gettext(
+                  "You assignment has no questions yet! Search our database to add questions.",
+                )}
+              </Typography>
+              <Button
+                variant="contained"
+                onClick={() => window.location.assign(this.props.urls.search)}
+                sx={{ mt: "30px" }}
+              >
+                <Typography>{this.props.gettext("Search")}</Typography>
+              </Button>
+            </Fragment>
           )
         ) : (
           <Fragment>

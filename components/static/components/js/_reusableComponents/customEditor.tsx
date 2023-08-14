@@ -54,7 +54,6 @@ export class CustomEditor extends Component<
   }
 
   render() {
-    console.info(this.state.error, this.state.hasFocus);
     const editorStyle = {
       padding: "15px",
       fontFamily: formTheme.typography.body2.fontFamily,

@@ -1,18 +1,19 @@
 /* eslint-disable camelcase */
 
 import {
+  AnswerStyles,
   AssignmentDatabaseFields,
   AssignmentType,
   CollectionType,
   StudentGroupAssignmentType,
   StudentGroupsAssignmentType,
   QuestionType,
+  QuestionTypes,
   QuestionRankType,
   UserType,
 } from "./_localComponents/types";
-import { SnackbarType } from "./_reusableComponents/types";
-
 import { AssignmentForm } from "./_assignments/types";
+import { SnackbarType } from "./_reusableComponents/types";
 
 type LTIType = {
   launchURL: string;
@@ -219,8 +220,11 @@ export type CreateQuestions1AppProps = {
 
 export type CreateQuestions1AppState = {
   form: {
+    answer_style: AnswerStyles;
+    image: File | undefined;
     text: string;
     title: string;
+    type: QuestionTypes;
   };
 };
 

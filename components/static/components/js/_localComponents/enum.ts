@@ -1,3 +1,27 @@
+export enum AnswerStyles {
+  alphabetic = 0,
+  numeric = 1,
+}
+
+export enum DistributionState {
+  draft = "Draft",
+  distributed = "Distributed",
+}
+
+export enum PeerImpactLabels {
+  low = "Low",
+  med = "Med",
+  high = "High",
+  unknown = "Not enough data",
+}
+
+export enum PeerImpactLevels {
+  un = 1,
+  deux = 2,
+  trois = 3,
+  quatre = 4,
+}
+
 export enum QuestionDifficultyLevels {
   un = 1,
   deux = 2,
@@ -12,21 +36,14 @@ export enum QuestionDifficultyLabels {
   unknown = "Not enough data",
 }
 
-export enum PeerImpactLevels {
-  un = 1,
-  deux = 2,
-  trois = 3,
-  quatre = 4,
+export enum QuestionTypes {
+  PI = "PI",
+  RO = "RO",
 }
 
-export enum PeerImpactLabels {
-  low = "Low",
-  med = "Med",
-  high = "High",
-  unknown = "Not enough data",
-}
-
-export enum DistributionState {
-  draft = "Draft",
-  distributed = "Distributed",
+export enum QuestionImageTypes {
+  PNG = "png",
+  GIF = "gif",
+  JPG = "jpg",
+  JPEG = "jpeg",
 }

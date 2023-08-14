@@ -19,6 +19,7 @@ import {
   PeerImpactLevels,
   QuestionDifficultyLabels,
   QuestionDifficultyLevels,
+  QuestionTypes,
 } from "./enum";
 
 import { TeacherType } from "../types";
@@ -146,7 +147,7 @@ export type QuestionType = {
   pk: number;
   text: string;
   title: string;
-  type: "PI" | "RO";
+  type: QuestionTypes;
   urls?: {
     addable_assignments?: string;
     matrix?: string;

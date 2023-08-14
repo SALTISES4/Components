@@ -364,7 +364,7 @@ const saltise = createTheme(paletteAndTypography, {
           },
         },
         outlined: {
-          border: "solid 2px",
+          border: "solid 1px",
         },
       },
     },
@@ -590,10 +590,6 @@ export const formTheme = createTheme(saltise, {
       styleOverrides: {
         root: {
           padding: "0px",
-          "& .MuiTypography-root": {
-            color: saltise.palette.secondary4.main,
-            fontSize: "14px",
-          },
         },
       },
     },
@@ -658,18 +654,6 @@ export const formTheme = createTheme(saltise, {
         label: {
           fontSize: "14px",
           lineHeight: "19px",
-        },
-      },
-    },
-    MuiFormLabel: {
-      styleOverrides: {
-        root: {
-          "& .MuiTypography-root": {
-            fontSize: "12px",
-            fontWeight: "400",
-            lineHeight: "22px",
-            marginBottom: "12px",
-          },
         },
       },
     },

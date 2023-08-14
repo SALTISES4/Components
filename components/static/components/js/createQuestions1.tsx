@@ -1,7 +1,13 @@
 import { Component, h, render } from "preact";
 export { h, render };
 
-import { questionTextValidator, questionTitleValidator } from "./validators";
+import {
+  questionAnswerStyleValidator,
+  questionImageValidator,
+  questionTextValidator,
+  questionTitleValidator,
+  questionTypeValidator,
+} from "./validators";
 
 //material ui components
 import Box from "@mui/material/Box";
@@ -28,6 +34,7 @@ import { CacheProvider } from "@emotion/react";
 
 //types
 import { CreateQuestions1AppProps, CreateQuestions1AppState } from "./types";
+import { AnswerStyles, QuestionTypes } from "./_localComponents/enum";
 
 export class App extends Component<
   CreateQuestions1AppProps,
@@ -37,8 +44,11 @@ export class App extends Component<
     super(props);
     this.state = {
       form: {
+        answer_style: AnswerStyles.alphabetic,
+        image: undefined,
         text: "",
         title: "",
+        type: QuestionTypes.PI,
       },
     };
   }
@@ -50,11 +60,16 @@ export class App extends Component<
     stylisPlugins: [prefixer],
   });
 
-  saveAndContinue = () => {};
+  saveAndContinue = () => {
+    console.info(this.state);
+  };
 
   validateForm = () =>
+    questionAnswerStyleValidator(this.state.form.answer_style) &&
+    questionImageValidator(this.state.form.image) &&
     questionTitleValidator(this.state.form.title) &&
-    questionTextValidator(this.state.form.text);
+    questionTextValidator(this.state.form.text) &&
+    questionTypeValidator(this.state.form.type);
 
   render() {
     return (
@@ -80,13 +95,22 @@ export class App extends Component<
               <Content
                 gettext={this.props.gettext}
                 EditorIcons={this.props.EditorIcons}
-                text={this.state.form.text}
-                title={this.state.form.title}
-                setText={(text: string) =>
+                form={this.state.form}
+                setAnswerStyle={(answer_style) =>
+                  this.setState({ form: { ...this.state.form, answer_style } })
+                }
+                setImage={(image) => {
+                  console.info(image);
+                  this.setState({ form: { ...this.state.form, image } });
+                }}
+                setText={(text) =>
                   this.setState({ form: { ...this.state.form, text } })
                 }
                 setTitle={(title) =>
                   this.setState({ form: { ...this.state.form, title } })
+                }
+                setType={(type) =>
+                  this.setState({ form: { ...this.state.form, type } })
                 }
               />
               <Settings gettext={this.props.gettext} />
@@ -106,7 +130,7 @@ export class App extends Component<
               </CancelButton>
               <Button
                 disabled={!this.validateForm()}
-                onClick={this.saveAndContinue()}
+                onClick={this.saveAndContinue}
                 variant="contained"
               >
                 <Typography>

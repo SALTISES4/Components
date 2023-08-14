@@ -79,6 +79,7 @@ export function Content({
       reader.readAsDataURL(file);
     }
   };
+
   return (
     <Card>
       <CardHeader title={"Content"} />
@@ -222,7 +223,9 @@ export function Content({
             )}
             <Input
               inputProps={{
-                accept: "image/png, image/jpg, image/gif, image/jpeg",
+                accept: Object.values(QuestionImageTypes)
+                  .map((it) => `image/${it}`)
+                  .join(", "),
                 type: "file",
               }}
               inputRef={imageUpload}

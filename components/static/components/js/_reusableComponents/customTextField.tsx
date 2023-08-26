@@ -49,9 +49,9 @@ export const CustomTextField = ({
         {icon && tooltip.length > 0 ? (
           <Tooltip
             arrow
-            title={tooltip}
             TransitionComponent={Zoom}
             placement="right"
+            title={tooltip}
           >
             <SvgIcon
               sx={{

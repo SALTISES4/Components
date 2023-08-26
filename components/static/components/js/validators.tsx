@@ -1,4 +1,5 @@
 import {
+  AllowedEmbedHosts,
   AnswerStyles,
   QuestionImageTypes,
   QuestionTypes,
@@ -78,4 +79,19 @@ export const questionTypeValidator = (type: string | undefined) => {
     return false;
   }
   return type in QuestionTypes;
+};
+
+export const questionVideoURLValidator = (url: string) => {
+  if (url === "") {
+    return true;
+  }
+  try {
+    const _url = new URL(url);
+    return (
+      (Object.values(AllowedEmbedHosts) as string[]).includes(_url.hostname) &&
+      _url.protocol == "https:"
+    );
+  } catch {
+    return false;
+  }
 };

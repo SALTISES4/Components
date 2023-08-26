@@ -1,7 +1,11 @@
 import { createRef, Fragment, h } from "preact";
 import { useState } from "preact/hooks";
 
-import { questionTextValidator, questionTitleValidator } from "../validators";
+import {
+  questionTextValidator,
+  questionTitleValidator,
+  questionVideoURLValidator,
+} from "../validators";
 
 //material ui components
 import Box from "@mui/material/Box";
@@ -9,11 +13,13 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
+import Container from "@mui/material/Container";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
 import Radio from "@mui/material/Radio";
@@ -31,6 +37,7 @@ import { useTheme } from "@mui/material/styles";
 //types
 import { EditorIconsType } from "../types";
 import {
+  AllowedEmbedHosts,
   AnswerStyles,
   QuestionImageTypes,
   QuestionTypes,
@@ -45,6 +52,7 @@ export function Content({
   setText,
   setTitle,
   setType,
+  setVideo,
 }: {
   gettext: (a: string) => string;
   EditorIcons: EditorIconsType;
@@ -54,12 +62,14 @@ export function Content({
     text: string;
     title: string;
     type: QuestionTypes;
+    video_url: string;
   };
   setAnswerStyle: (a: AnswerStyles) => void;
   setImage: (a: File | undefined) => void;
   setText: (a: string) => void;
   setTitle: (a: string) => void;
   setType: (a: QuestionTypes) => void;
+  setVideo: (a: string) => void;
 }): JSX.Element {
   const theme = useTheme();
   const imageUpload = createRef();
@@ -90,7 +100,7 @@ export function Content({
             gettext={gettext}
             autoFocus={true}
             id="title"
-            title="Title *"
+            title={gettext("Title *")}
             defaultValue=""
             minLength={1}
             maxLength={100}
@@ -99,7 +109,7 @@ export function Content({
             value={form.title}
           />
           <CustomEditorField
-            title="Text *"
+            title={gettext("Text *")}
             EditorIcons={EditorIcons}
             setValue={setText}
             validator={questionTextValidator}
@@ -221,17 +231,47 @@ export function Content({
                 </Typography>
               </Fragment>
             )}
-            <Input
-              inputProps={{
-                accept: Object.values(QuestionImageTypes)
-                  .map((it) => `image/${it}`)
-                  .join(", "),
-                type: "file",
-              }}
-              inputRef={imageUpload}
-              onChange={() => setImageAndPreview(imageUpload.current.files[0])}
-              sx={{ display: "none" }}
+          </Box>
+          <Input
+            inputProps={{
+              accept: Object.values(QuestionImageTypes)
+                .map((it) => `image/${it}`)
+                .join(", "),
+              type: "file",
+            }}
+            inputRef={imageUpload}
+            onChange={() => setImageAndPreview(imageUpload.current.files[0])}
+            sx={{ display: "none" }}
+          />
+          <Box>
+            <CustomTextField
+              gettext={gettext}
+              id="video_url"
+              title={gettext("Video/app embed URL")}
+              defaultValue=""
+              helperText={`${
+                gettext(
+                  "Must start with https://.  Must be from a trusted domain:  ",
+                ) + Object.values(AllowedEmbedHosts).join(", ")
+              }.  `}
+              icon={HelpOutlineIcon}
+              minLength={1}
+              maxLength={200}
+              setValue={setVideo}
+              tooltip={`${gettext(
+                "The appropriate link for each service is usually found under Share > Embed.  Copy the URL in the src attribute of the iframe here, e.g.:",
+              )}\nhttps://phet.colorado.edu/sims/html/my-solar-system/latest/my-solar-system_en.html \
+              \nhttps://player.vimeo.com/video/468345065/ \
+              \nhttps://www.geogebra.org/material/iframe/id/shrqs9nc/ \
+              \nhttps://www.youtube.com/embed/FkKPsLxgpuY/`}
+              validator={questionVideoURLValidator}
+              value={form.video_url}
             />
+            {form.video_url && questionVideoURLValidator(form.video_url) ? (
+              <Container sx={{ mt: "24px", width: "fit-content" }}>
+                <object width="640" height="390" data={form.video_url} />
+              </Container>
+            ) : null}
           </Box>
         </Stack>
       </CardContent>

@@ -7,6 +7,7 @@ import {
   questionTextValidator,
   questionTitleValidator,
   questionTypeValidator,
+  questionVideoURLValidator,
 } from "./validators";
 
 //material ui components
@@ -49,6 +50,7 @@ export class App extends Component<
         text: "",
         title: "",
         type: QuestionTypes.PI,
+        video_url: "",
       },
     };
   }
@@ -64,12 +66,26 @@ export class App extends Component<
     console.info(this.state);
   };
 
+  parseVideo = (url: string) => {
+    // We want to help ensure well-formed URLs.  Convert string to URL and back to string.
+    try {
+      const _url = new URL(url.trim());
+      if (_url.href.endsWith("/") && !url.endsWith("/")) {
+        return _url.href.slice(0, -1);
+      }
+      return _url.href;
+    } catch {
+      return url.trim();
+    }
+  };
+
   validateForm = () =>
     questionAnswerStyleValidator(this.state.form.answer_style) &&
     questionImageValidator(this.state.form.image) &&
     questionTitleValidator(this.state.form.title) &&
     questionTextValidator(this.state.form.text) &&
-    questionTypeValidator(this.state.form.type);
+    questionTypeValidator(this.state.form.type) &&
+    questionVideoURLValidator(this.state.form.video_url);
 
   render() {
     return (
@@ -111,6 +127,14 @@ export class App extends Component<
                 }
                 setType={(type) =>
                   this.setState({ form: { ...this.state.form, type } })
+                }
+                setVideo={(video_url) =>
+                  this.setState({
+                    form: {
+                      ...this.state.form,
+                      video_url: this.parseVideo(video_url),
+                    },
+                  })
                 }
               />
               <Settings gettext={this.props.gettext} />

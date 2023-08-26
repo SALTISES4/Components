@@ -225,6 +225,7 @@ export type CreateQuestions1AppState = {
     text: string;
     title: string;
     type: QuestionTypes;
+    video_url: string;
   };
 };
 

@@ -95,10 +95,10 @@ export type CustomTextFieldProps = {
   minLength?: number;
   maxLength: number;
   required?: boolean;
-  setValue: (a: string) => void;
+  setValue: (a: any) => void;
   sx?: Record<string, string>;
   tooltip?: string;
-  validator?: (a: string) => boolean;
+  validator?: (a: any) => boolean;
   value: string;
 };
 

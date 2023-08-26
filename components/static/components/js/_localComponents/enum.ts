@@ -47,3 +47,13 @@ export enum QuestionImageTypes {
   JPG = "jpg",
   JPEG = "jpeg",
 }
+
+export enum AllowedEmbedHosts {
+  GEOGEBRA = "www.geogebra.org",
+  PHET = "phet.colorado.edu",
+  YOUTUBE1 = "www.youtube.com",
+  YOUTUBE2 = "www.youtube-nocookie.com",
+  YOUTUBE3 = "youtube.com",
+  YOUTUBE4 = "youtu.be",
+  VIMEO = "player.vimeo.com",
+}

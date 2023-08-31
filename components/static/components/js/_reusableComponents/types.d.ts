@@ -102,6 +102,13 @@ export type CustomTextFieldProps = {
   value: string;
 };
 
+export type TooltipProps = {
+  icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
+    muiName: string;
+  };
+  title: string;
+};
+
 export type CustomEditorFieldProps = {
   title: string;
   EditorIcons: EditorIconsType;

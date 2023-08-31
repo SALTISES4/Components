@@ -1,16 +1,14 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
 
+//mui components
+import { Box, TextField, Typography } from "@mui/material";
+
 //components
-import { Box, SvgIcon, TextField, Typography } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
-import Zoom from "@mui/material/Zoom";
+import Tooltip from "./tooltip";
 
 //types
 import { CustomTextFieldProps } from "./types";
-
-//style
-import { formTheme } from "../theme";
 
 export const CustomTextField = ({
   gettext,
@@ -42,26 +40,12 @@ export const CustomTextField = ({
         }}
       >
         {title ? (
-          <Typography variant="h5" sx={{ marginBottom: "2px" }}>
+          <Typography variant="h5" sx={{ mb: "2px" }}>
             {title}
           </Typography>
         ) : null}
         {icon && tooltip.length > 0 ? (
-          <Tooltip
-            arrow
-            TransitionComponent={Zoom}
-            placement="right"
-            title={tooltip}
-          >
-            <SvgIcon
-              sx={{
-                position: "relative",
-                color: formTheme.palette.primary.main,
-                fontSize: formTheme.typography.h5.fontSize,
-              }}
-              component={icon}
-            />
-          </Tooltip>
+          <Tooltip icon={icon} title={tooltip} />
         ) : null}
       </Box>
       <TextField

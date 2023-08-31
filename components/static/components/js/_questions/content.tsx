@@ -13,8 +13,8 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
+import ClearIcon from "@mui/icons-material/Clear";
 import Container from "@mui/material/Container";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -30,9 +30,7 @@ import Typography from "@mui/material/Typography";
 //components
 import { CustomTextField } from "../_reusableComponents/customTextField";
 import { CustomEditorField } from "../_reusableComponents/customEditorField";
-
-//styles
-import { useTheme } from "@mui/material/styles";
+import Tooltip from "../_reusableComponents/tooltip";
 
 //types
 import { EditorIconsType } from "../types";
@@ -71,7 +69,6 @@ export function Content({
   setType: (a: QuestionTypes) => void;
   setVideo: (a: string) => void;
 }): JSX.Element {
-  const theme = useTheme();
   const imageUpload = createRef();
   const reader = new FileReader();
 
@@ -120,7 +117,7 @@ export function Content({
             <FormLabel id="type-radio-group">
               <Typography
                 variant="h5"
-                sx={{ lineHeight: "inherit", mb: "10px" }}
+                sx={{ lineHeight: "inherit", mb: "2px" }}
               >
                 {gettext("Type *")}
               </Typography>
@@ -151,7 +148,7 @@ export function Content({
 
           <Box>
             <FormLabel id="style-radio-group">
-              <Typography variant="h5" sx={{ mb: "8px" }}>
+              <Typography variant="h5" sx={{ mb: "2px" }}>
                 {gettext("Answer style *")}
               </Typography>
             </FormLabel>
@@ -182,54 +179,72 @@ export function Content({
           </Box>
 
           <Box>
-            <Typography variant="h5" sx={{ mb: "8px" }}>
-              {gettext("Image")}
-            </Typography>
+            <Box
+              sx={{
+                alignItems: "center",
+                display: "flex",
+                flexDirection: "row",
+                gap: "5px",
+              }}
+            >
+              <Typography variant="h5" sx={{ mb: "2px" }}>
+                {gettext("Image")}
+              </Typography>
+              <Tooltip
+                icon={HelpOutlineIcon}
+                title={
+                  gettext("Max file size: 1MB.  Accepted file formats: ") +
+                  Object.values(QuestionImageTypes).join(", .")
+                }
+              />
+            </Box>
             {form.image === undefined ? (
               <Fragment>
                 <Button
                   onClick={() => imageUpload.current.click()}
                   variant="outlined"
+                  sx={{ m: 0 }}
                 >
                   <Typography color="primary">
                     {gettext("Choose file")}
                   </Typography>
                 </Button>
-                <Box>
-                  <Typography variant="caption">
-                    {gettext("Accepted formats: ") +
-                      Object.values(QuestionImageTypes).join(", .")}
-                  </Typography>
-                </Box>
               </Fragment>
             ) : (
-              <Fragment>
-                <Stack alignItems={"flex-start"} direction={"row"} ml={"-6px"}>
-                  <IconButton
-                    aria-label="delete"
-                    color="primary"
-                    onClick={() => setImageAndPreview(undefined)}
-                    sx={{ mr: "10px" }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                  {imagePreview ? (
-                    <img
-                      src={imagePreview}
-                      style={{
-                        border: "solid 1px",
-                        borderColor: theme.palette.primary.main,
-                        borderRadius: "6px",
-                        maxWidth: "300px",
-                        maxHeight: "300px",
-                      }}
-                    />
-                  ) : null}
-                </Stack>
-                <Typography variant="caption" sx={{ ml: "42px" }}>
-                  {form.image?.name}
-                </Typography>
-              </Fragment>
+              <Container sx={{ width: "fit-content" }}>
+                {imagePreview ? (
+                  <Stack>
+                    <Box sx={{ position: "relative" }}>
+                      <img
+                        src={imagePreview}
+                        style={{
+                          maxWidth: "640px",
+                        }}
+                      />
+                      <IconButton
+                        aria-label="delete"
+                        color="primary"
+                        onClick={() => {
+                          setImageAndPreview(undefined);
+                          imageUpload.current.value = null;
+                        }}
+                        sx={{
+                          position: "absolute",
+                          top: 0,
+                          right: 0,
+                          m: "10px",
+                        }}
+                      >
+                        <ClearIcon />
+                      </IconButton>
+                    </Box>
+
+                    <Typography variant="caption">
+                      {form.image?.name}
+                    </Typography>
+                  </Stack>
+                ) : null}
+              </Container>
             )}
           </Box>
           <Input

@@ -54,8 +54,13 @@ export const questionImageValidator = (image: File | undefined) => {
   const extension = image.type.toLowerCase().split("/").at(-1);
   return (
     extension &&
-    (Object.values(QuestionImageTypes) as string[]).includes(extension)
+    (Object.values(QuestionImageTypes) as string[]).includes(extension) &&
+    image.size < 1e6
   );
+};
+
+export const questionImageAltTextValidator = (text: string) => {
+  return lengthValidator(text.trim(), 1, 1024);
 };
 
 export const questionTextValidator = (text: string | undefined) => {

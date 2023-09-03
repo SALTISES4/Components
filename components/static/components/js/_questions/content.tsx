@@ -2,12 +2,15 @@ import { createRef, Fragment, h } from "preact";
 import { useState } from "preact/hooks";
 
 import {
+  questionImageValidator,
+  questionImageAltTextValidator,
   questionTextValidator,
   questionTitleValidator,
   questionVideoURLValidator,
 } from "../validators";
 
 //material ui components
+import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -47,6 +50,7 @@ export function Content({
   form,
   setAnswerStyle,
   setImage,
+  setImageAltText,
   setText,
   setTitle,
   setType,
@@ -57,13 +61,15 @@ export function Content({
   form: {
     answer_style: string;
     image: File | undefined;
+    image_alt_text: string;
     text: string;
     title: string;
     type: QuestionTypes;
     video_url: string;
   };
   setAnswerStyle: (a: AnswerStyles) => void;
-  setImage: (a: File | undefined) => void;
+  setImage: (a: File | undefined, cb: () => void) => void;
+  setImageAltText: (a: string) => void;
   setText: (a: string) => void;
   setTitle: (a: string) => void;
   setType: (a: QuestionTypes) => void;
@@ -81,7 +87,7 @@ export function Content({
   const [imagePreview, setImagePreview] = useState("");
 
   const setImageAndPreview = (file: File | undefined) => {
-    setImage(file);
+    setImage(file, () => setImageAltText(""));
     if (file) {
       reader.readAsDataURL(file);
     }
@@ -215,32 +221,52 @@ export function Content({
                 {imagePreview ? (
                   <Stack>
                     <Box sx={{ position: "relative" }}>
-                      <img
-                        src={imagePreview}
-                        style={{
-                          maxWidth: "640px",
-                        }}
-                      />
-                      <IconButton
-                        aria-label="delete"
-                        color="primary"
-                        onClick={() => {
-                          setImageAndPreview(undefined);
-                          imageUpload.current.value = null;
-                        }}
-                        sx={{
-                          position: "absolute",
-                          top: 0,
-                          right: 0,
-                          m: "10px",
-                        }}
-                      >
-                        <ClearIcon />
-                      </IconButton>
+                      <img src={imagePreview} style={{ maxWidth: "640px" }} />
+                      {!questionImageValidator(form.image) ? (
+                        <Alert
+                          severity="error"
+                          action={
+                            <IconButton
+                              aria-label="close"
+                              color="error"
+                              onClick={() => {
+                                setImageAndPreview(undefined);
+                                imageUpload.current.value = null;
+                              }}
+                            >
+                              <ClearIcon />
+                            </IconButton>
+                          }
+                          sx={{
+                            position: "absolute",
+                            top: 0,
+                            right: 0,
+                          }}
+                        >
+                          {gettext("File too large.")}
+                        </Alert>
+                      ) : (
+                        <IconButton
+                          aria-label="delete"
+                          color="primary"
+                          onClick={() => {
+                            setImageAndPreview(undefined);
+                            imageUpload.current.value = null;
+                          }}
+                          sx={{
+                            position: "absolute",
+                            top: 0,
+                            right: 0,
+                            m: "10px",
+                          }}
+                        >
+                          <ClearIcon />
+                        </IconButton>
+                      )}
                     </Box>
-
                     <Typography variant="caption">
-                      {form.image?.name}
+                      {form.image?.name} ({(form.image?.size / 1e6).toFixed(1)}{" "}
+                      MB)
                     </Typography>
                   </Stack>
                 ) : null}
@@ -258,6 +284,21 @@ export function Content({
             onChange={() => setImageAndPreview(imageUpload.current.files[0])}
             sx={{ display: "none" }}
           />
+          {form.image && questionImageValidator(form.image) ? (
+            <Box>
+              <CustomTextField
+                gettext={gettext}
+                id="image_alt_text"
+                title={gettext("Image description for screen readers *")}
+                defaultValue=""
+                minLength={1}
+                maxLength={1024}
+                setValue={setImageAltText}
+                validator={questionImageAltTextValidator}
+                value={form.image_alt_text}
+              />
+            </Box>
+          ) : null}
           <Box>
             <CustomTextField
               gettext={gettext}

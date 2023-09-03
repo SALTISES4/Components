@@ -4,6 +4,7 @@ export { h, render };
 import {
   questionAnswerStyleValidator,
   questionImageValidator,
+  questionImageAltTextValidator,
   questionTextValidator,
   questionTitleValidator,
   questionTypeValidator,
@@ -47,6 +48,7 @@ export class App extends Component<
       form: {
         answer_style: AnswerStyles.alphabetic,
         image: undefined,
+        image_alt_text: "",
         text: "",
         title: "",
         type: QuestionTypes.PI,
@@ -66,22 +68,12 @@ export class App extends Component<
     console.info(this.state);
   };
 
-  parseVideo = (url: string) => {
-    // We want to help ensure well-formed URLs.  Convert string to URL and back to string.
-    try {
-      const _url = new URL(url.trim());
-      if (_url.href.endsWith("/") && !url.endsWith("/")) {
-        return _url.href.slice(0, -1);
-      }
-      return _url.href;
-    } catch {
-      return url.trim();
-    }
-  };
-
   validateForm = () =>
     questionAnswerStyleValidator(this.state.form.answer_style) &&
-    questionImageValidator(this.state.form.image) &&
+    (this.state.form.image
+      ? questionImageValidator(this.state.form.image) &&
+        questionImageAltTextValidator(this.state.form.image_alt_text)
+      : true) &&
     questionTitleValidator(this.state.form.title) &&
     questionTextValidator(this.state.form.text) &&
     questionTypeValidator(this.state.form.type) &&
@@ -115,9 +107,13 @@ export class App extends Component<
                 setAnswerStyle={(answer_style) =>
                   this.setState({ form: { ...this.state.form, answer_style } })
                 }
-                setImage={(image) => {
-                  console.info(image);
-                  this.setState({ form: { ...this.state.form, image } });
+                setImage={(image, cb) => {
+                  this.setState({ form: { ...this.state.form, image } }, cb);
+                }}
+                setImageAltText={(image_alt_text) => {
+                  this.setState({
+                    form: { ...this.state.form, image_alt_text },
+                  });
                 }}
                 setText={(text) =>
                   this.setState({ form: { ...this.state.form, text } })
@@ -132,7 +128,7 @@ export class App extends Component<
                   this.setState({
                     form: {
                       ...this.state.form,
-                      video_url: this.parseVideo(video_url),
+                      video_url,
                     },
                   })
                 }

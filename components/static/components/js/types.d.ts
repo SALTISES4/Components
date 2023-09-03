@@ -222,6 +222,7 @@ export type CreateQuestions1AppState = {
   form: {
     answer_style: AnswerStyles;
     image: File | undefined;
+    image_alt_text: string;
     text: string;
     title: string;
     type: QuestionTypes;

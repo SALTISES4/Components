@@ -15,7 +15,7 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
 
-export function Indexing({
+function Indexing({
   gettext,
 }: {
   gettext: (a: string) => string;
@@ -54,3 +54,5 @@ export function Indexing({
     </Card>
   );
 }
+
+export default Indexing;

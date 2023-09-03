@@ -44,7 +44,7 @@ import {
   QuestionTypes,
 } from "../_localComponents/enum";
 
-export function Content({
+function Content({
   gettext,
   EditorIcons,
   form,
@@ -334,3 +334,5 @@ export function Content({
     </Card>
   );
 }
+
+export default Content;

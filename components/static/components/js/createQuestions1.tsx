@@ -20,10 +20,7 @@ import Typography from "@mui/material/Typography";
 //components
 import { CancelButton, StepBar } from "./styledComponents";
 import { Main } from "./_reusableComponents/main";
-import { Collaborators } from "./_questions/collaborators";
-import { Content } from "./_questions/content";
-import { Indexing } from "./_questions/indexing";
-import { Settings } from "./_questions/settings";
+import { Collaborators, Content, Indexing, Settings } from "./_questions";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";

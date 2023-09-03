@@ -15,7 +15,7 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
 
-export function Collaborators({
+function Collaborators({
   gettext,
 }: {
   gettext: (a: string) => string;
@@ -58,3 +58,5 @@ export function Collaborators({
     </Card>
   );
 }
+
+export default Collaborators;

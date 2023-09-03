@@ -17,7 +17,7 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
 
-export function Settings({
+function Settings({
   gettext,
 }: {
   gettext: (a: string) => string;
@@ -66,3 +66,5 @@ export function Settings({
     </Card>
   );
 }
+
+export default Settings;

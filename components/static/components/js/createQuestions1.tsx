@@ -44,6 +44,7 @@ export class App extends Component<
     this.state = {
       form: {
         answer_style: AnswerStyles.alphabetic,
+        discipline: undefined,
         image: undefined,
         image_alt_text: "",
         text: "",
@@ -130,8 +131,18 @@ export class App extends Component<
                   })
                 }
               />
+
+              <Indexing
+                gettext={this.props.gettext}
+                setValue={(discipline) =>
+                  this.setState({ form: { ...this.state.form, discipline } })
+                }
+                url={this.props.urls.disciplines}
+                value={this.state.form.discipline}
+              />
+
               <Settings gettext={this.props.gettext} />
-              <Indexing gettext={this.props.gettext} />
+
               <Collaborators gettext={this.props.gettext} />
             </Stack>
             <Box

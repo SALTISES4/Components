@@ -99,7 +99,7 @@ export type StudentGroupsAssignmentType = {
   title: string;
 };
 
-type DisciplineType = { pk: number; title: string };
+export type DisciplineType = { pk: number; title: string };
 
 export type CollectionType = {
   description: string;

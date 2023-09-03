@@ -27,17 +27,19 @@ function Collaborators({
   });
 
   const handleChange = (event: SelectChangeEvent) => {
-    setDiscipline(event.target.value as string);
+    if (event.target) {
+      setDiscipline((event.target as HTMLInputElement).value);
+    }
   };
 
   return (
     <Card>
-      <CardHeader title={"Indexing"} />
+      <CardHeader title={gettext("Authors")} />
       <Divider />
       <CardContent>
         <Stack spacing={"20px"}>
           <Box>
-            <Typography>{gettext("Discipline*")}</Typography>
+            <Typography>{gettext("Users")}</Typography>
             <FormControl fullWidth>
               <InputLabel id="discipline-select-input" />
               <Select

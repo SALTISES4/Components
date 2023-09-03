@@ -216,11 +216,16 @@ export type CreateQuestions1AppProps = {
   gettext: (a: string) => string;
   nonce: string;
   EditorIcons: EditorIconsType;
+  urls: {
+    create: string;
+    disciplines: string;
+  };
 };
 
 export type CreateQuestions1AppState = {
   form: {
     answer_style: AnswerStyles;
+    discipline: number | undefined;
     image: File | undefined;
     image_alt_text: string;
     text: string;

@@ -1,4 +1,4 @@
-import { createRef, Fragment, h } from "preact";
+import { createRef, h } from "preact";
 import { useState } from "preact/hooks";
 
 import {
@@ -42,6 +42,7 @@ import {
   AnswerStyles,
   QuestionImageTypes,
   QuestionTypes,
+  RationaleSelectionAlgorithms,
 } from "../_localComponents/enum";
 
 function Content({
@@ -51,6 +52,7 @@ function Content({
   setAnswerStyle,
   setImage,
   setImageAltText,
+  setRationaleSectionAlgorithm,
   setText,
   setTitle,
   setType,
@@ -59,9 +61,10 @@ function Content({
   gettext: (a: string) => string;
   EditorIcons: EditorIconsType;
   form: {
-    answer_style: string;
+    answer_style: AnswerStyles;
     image: File | undefined;
     image_alt_text: string;
+    rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms;
     text: string;
     title: string;
     type: QuestionTypes;
@@ -70,6 +73,9 @@ function Content({
   setAnswerStyle: (a: AnswerStyles) => void;
   setImage: (a: File | undefined, cb: () => void) => void;
   setImageAltText: (a: string) => void;
+  setRationaleSectionAlgorithm: (
+    a: keyof typeof RationaleSelectionAlgorithms,
+  ) => void;
   setText: (a: string) => void;
   setTitle: (a: string) => void;
   setType: (a: QuestionTypes) => void;
@@ -171,16 +177,54 @@ function Content({
               row
               value={form.answer_style}
             >
-              <FormControlLabel
-                value={AnswerStyles.alphabetic}
-                control={<Radio />}
-                label={gettext("Alphabetic")}
-              />
-              <FormControlLabel
-                value={AnswerStyles.numeric}
-                control={<Radio />}
-                label={gettext("Numeric")}
-              />
+              {Object.entries(AnswerStyles)
+                .filter((e) => {
+                  // We want the "0" and "1" to be keys
+                  return !isNaN(parseInt(e[0]));
+                })
+                .map(([value, label], i) => (
+                  <FormControlLabel
+                    key={i}
+                    control={<Radio />}
+                    label={label}
+                    value={value}
+                  />
+                ))}
+            </RadioGroup>
+          </Box>
+
+          <Box>
+            <FormLabel id="algorithm">
+              <Typography variant="h5" sx={{ mb: "2px" }}>
+                {gettext("Rationale section algorithm *")}
+              </Typography>
+            </FormLabel>
+            <RadioGroup
+              row
+              aria-labelledby="algorithm-radio-group"
+              name="rationale_selection_algorithm"
+              onChange={(event: h.JSX.TargetedEvent<HTMLInputElement>) => {
+                const value = (event.target as HTMLInputElement).value;
+                if (
+                  Object.keys(RationaleSelectionAlgorithms).includes(value)
+                ) {
+                  setRationaleSectionAlgorithm(
+                    value as keyof typeof RationaleSelectionAlgorithms,
+                  );
+                }
+              }}
+              value={form.rationale_selection_algorithm}
+            >
+              {Object.entries(RationaleSelectionAlgorithms).map(
+                ([value, label], i) => (
+                  <FormControlLabel
+                    key={i}
+                    control={<Radio />}
+                    label={label}
+                    value={value}
+                  />
+                ),
+              )}
             </RadioGroup>
           </Box>
 
@@ -205,17 +249,15 @@ function Content({
               />
             </Box>
             {form.image === undefined ? (
-              <Fragment>
-                <Button
-                  onClick={() => imageUpload.current.click()}
-                  variant="outlined"
-                  sx={{ m: 0 }}
-                >
-                  <Typography color="primary">
-                    {gettext("Choose file")}
-                  </Typography>
-                </Button>
-              </Fragment>
+              <Button
+                onClick={() => imageUpload.current.click()}
+                variant="outlined"
+                sx={{ m: 0 }}
+              >
+                <Typography color="primary">
+                  {gettext("Choose file")}
+                </Typography>
+              </Button>
             ) : (
               <Container sx={{ width: "fit-content" }}>
                 {imagePreview ? (

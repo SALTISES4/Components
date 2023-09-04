@@ -2,14 +2,17 @@
 
 import {
   AnswerStyles,
+  RationaleSelectionAlgorithms,
+} from "./_localComponents/enum";
+import {
   AssignmentDatabaseFields,
   AssignmentType,
   CollectionType,
-  StudentGroupAssignmentType,
-  StudentGroupsAssignmentType,
   QuestionType,
   QuestionTypes,
   QuestionRankType,
+  StudentGroupAssignmentType,
+  StudentGroupsAssignmentType,
   UserType,
 } from "./_localComponents/types";
 import { AssignmentForm } from "./_assignments/types";
@@ -228,6 +231,7 @@ export type CreateQuestions1AppState = {
     discipline: number | undefined;
     image: File | undefined;
     image_alt_text: string;
+    rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms;
     text: string;
     title: string;
     type: QuestionTypes;

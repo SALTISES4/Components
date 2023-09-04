@@ -29,10 +29,10 @@ function Settings({
       <CardContent>
         <Stack spacing={"20px"}>
           <FormGroup>
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox />}
               label={gettext("Add fake attribution")}
-            />
+            /> */}
             <FormControlLabel
               control={<Checkbox />}
               label={gettext("Sequential rational review")}

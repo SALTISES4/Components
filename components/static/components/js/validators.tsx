@@ -39,7 +39,7 @@ export const assignmentTitleValidator = (title: string | undefined) => {
 };
 
 export const questionAnswerStyleValidator = (
-  answer_style: string | undefined,
+  answer_style: AnswerStyles | string | undefined,
 ) => {
   if (answer_style === undefined) {
     return false;

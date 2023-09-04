@@ -33,7 +33,11 @@ import { CacheProvider } from "@emotion/react";
 
 //types
 import { CreateQuestions1AppProps, CreateQuestions1AppState } from "./types";
-import { AnswerStyles, QuestionTypes } from "./_localComponents/enum";
+import {
+  AnswerStyles,
+  QuestionTypes,
+  RationaleSelectionAlgorithms,
+} from "./_localComponents/enum";
 
 export class App extends Component<
   CreateQuestions1AppProps,
@@ -43,16 +47,19 @@ export class App extends Component<
     super(props);
     this.state = {
       form: {
-        answer_style: AnswerStyles.alphabetic,
+        answer_style: AnswerStyles.Alphabetic,
         discipline: undefined,
         image: undefined,
         image_alt_text: "",
+        rationale_selection_algorithm: "prefer_expert_and_highly_voted",
         text: "",
         title: "",
         type: QuestionTypes.PI,
         video_url: "",
       },
     };
+
+    console.info(this.state);
   }
 
   cache = createCache({
@@ -111,6 +118,16 @@ export class App extends Component<
                 setImageAltText={(image_alt_text) => {
                   this.setState({
                     form: { ...this.state.form, image_alt_text },
+                  });
+                }}
+                setRationaleSectionAlgorithm={(
+                  rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms,
+                ) => {
+                  this.setState({
+                    form: {
+                      ...this.state.form,
+                      rationale_selection_algorithm,
+                    },
                   });
                 }}
                 setText={(text) =>

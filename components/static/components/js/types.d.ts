@@ -232,6 +232,7 @@ export type CreateQuestions1AppState = {
     image: File | undefined;
     image_alt_text: string;
     rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms;
+    sequential_review: boolean;
     text: string;
     title: string;
     type: QuestionTypes;

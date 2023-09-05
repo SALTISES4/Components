@@ -2,9 +2,11 @@ import { Component, h, render } from "preact";
 export { h, render };
 
 import {
+  booleanValidator,
   questionAnswerStyleValidator,
   questionImageValidator,
   questionImageAltTextValidator,
+  questionRationaleSelectionAlgorithmValidator,
   questionTextValidator,
   questionTitleValidator,
   questionTypeValidator,
@@ -20,7 +22,7 @@ import Typography from "@mui/material/Typography";
 //components
 import { CancelButton, StepBar } from "./styledComponents";
 import { Main } from "./_reusableComponents/main";
-import { Collaborators, Content, Indexing, Settings } from "./_questions";
+import { Collaborators, Content, Indexing } from "./_questions";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -35,7 +37,6 @@ import { CacheProvider } from "@emotion/react";
 import { CreateQuestions1AppProps, CreateQuestions1AppState } from "./types";
 import {
   AnswerStyles,
-  QuestionTypes,
   RationaleSelectionAlgorithms,
 } from "./_localComponents/enum";
 
@@ -52,14 +53,13 @@ export class App extends Component<
         image: undefined,
         image_alt_text: "",
         rationale_selection_algorithm: "prefer_expert_and_highly_voted",
+        sequential_review: false,
         text: "",
         title: "",
-        type: QuestionTypes.PI,
+        type: "PI",
         video_url: "",
       },
     };
-
-    console.info(this.state);
   }
 
   cache = createCache({
@@ -79,6 +79,10 @@ export class App extends Component<
       ? questionImageValidator(this.state.form.image) &&
         questionImageAltTextValidator(this.state.form.image_alt_text)
       : true) &&
+    questionRationaleSelectionAlgorithmValidator(
+      this.state.form.rationale_selection_algorithm,
+    ) &&
+    booleanValidator(this.state.form.sequential_review) &&
     questionTitleValidator(this.state.form.title) &&
     questionTextValidator(this.state.form.text) &&
     questionTypeValidator(this.state.form.type) &&
@@ -130,6 +134,11 @@ export class App extends Component<
                     },
                   });
                 }}
+                setSequentialReview={(sequential_review) =>
+                  this.setState({
+                    form: { ...this.state.form, sequential_review },
+                  })
+                }
                 setText={(text) =>
                   this.setState({ form: { ...this.state.form, text } })
                 }
@@ -157,8 +166,6 @@ export class App extends Component<
                 url={this.props.urls.disciplines}
                 value={this.state.form.discipline}
               />
-
-              <Settings gettext={this.props.gettext} />
 
               <Collaborators gettext={this.props.gettext} />
             </Stack>

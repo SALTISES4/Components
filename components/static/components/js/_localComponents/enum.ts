@@ -47,10 +47,11 @@ export enum QuestionDifficultyLevels {
   quatre = 4,
 }
 
-export enum QuestionTypes {
-  PI = "PI",
-  RO = "RO",
-}
+export const QuestionTypes = {
+  // Object as opposed to Enum to support translations
+  PI: gettext("Peer instruction"),
+  RO: gettext("Rationale only"),
+} as const;
 
 export enum QuestionImageTypes {
   PNG = "png",
@@ -60,9 +61,9 @@ export enum QuestionImageTypes {
 }
 
 export const RationaleSelectionAlgorithms = {
-  // Object as opposed to enum to support translations
+  // Object as opposed to Enum to support translations
   simple: gettext("Simple random rationale selection"),
   prefer_expert_and_highly_voted: gettext(
     "Prefer expert and highly voted rationales",
   ),
-};
+} as const;

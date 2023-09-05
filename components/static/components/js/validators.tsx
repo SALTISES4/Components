@@ -3,8 +3,13 @@ import {
   AnswerStyles,
   QuestionImageTypes,
   QuestionTypes,
+  RationaleSelectionAlgorithms,
 } from "./_localComponents/enum";
 import { purifyText } from "./functions";
+
+export function booleanValidator(value: any) {
+  return typeof value == "boolean";
+}
 
 export function lettersNumbersUnderscoreOnlyValidator(value: string) {
   const re = new RegExp(/\w/g);
@@ -61,6 +66,15 @@ export const questionImageValidator = (image: File | undefined) => {
 
 export const questionImageAltTextValidator = (text: string) => {
   return lengthValidator(text.trim(), 1, 1024);
+};
+
+export const questionRationaleSelectionAlgorithmValidator = (
+  alg: string | undefined,
+) => {
+  if (alg === undefined) {
+    return false;
+  }
+  return alg in RationaleSelectionAlgorithms;
 };
 
 export const questionTextValidator = (text: string | undefined) => {

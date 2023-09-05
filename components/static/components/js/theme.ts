@@ -611,10 +611,10 @@ export const formTheme = createTheme(saltise, {
       styleOverrides: {
         root: {
           padding: "0px",
-          marginRight: "6px",
+          marginRight: "10px",
 
           "& .MuiSvgIcon-root": {
-            fontSize: "32px",
+            fontSize: "24px",
           },
         },
       },

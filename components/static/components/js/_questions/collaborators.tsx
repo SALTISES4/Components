@@ -34,7 +34,7 @@ function Collaborators({
 
   return (
     <Card>
-      <CardHeader title={gettext("Authors")} />
+      <CardHeader title={gettext("Collaborators")} />
       <Divider />
       <CardContent>
         <Stack spacing={"20px"}>

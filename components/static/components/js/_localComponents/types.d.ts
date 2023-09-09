@@ -99,6 +99,10 @@ export type StudentGroupsAssignmentType = {
   title: string;
 };
 
+export type CategoryType = {
+  title: string;
+};
+
 export type DisciplineType = { pk: number; title: string };
 
 export type CollectionType = {
@@ -133,7 +137,7 @@ type AnswerChoiceType = {
 export type QuestionType = {
   answer_count: number;
   answerchoice_set: AnswerChoiceType[];
-  category?: { title: string }[];
+  category?: CategoryType[];
   collaborators?: UserType[];
   difficulty: QuestionDifficulty;
   discipline?: DisciplineType;

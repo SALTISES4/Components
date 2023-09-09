@@ -49,6 +49,7 @@ export class App extends Component<
     this.state = {
       form: {
         answer_style: AnswerStyles.Alphabetic,
+        categories: [],
         discipline: null,
         image: undefined,
         image_alt_text: "",
@@ -160,11 +161,18 @@ export class App extends Component<
 
               <Indexing
                 gettext={this.props.gettext}
-                setValue={(discipline) =>
+                categoryValues={this.state.form.categories}
+                disciplineValue={this.state.form.discipline}
+                setCategoryValues={(categories) =>
+                  this.setState({ form: { ...this.state.form, categories } })
+                }
+                setDisciplineValue={(discipline) =>
                   this.setState({ form: { ...this.state.form, discipline } })
                 }
-                url={this.props.urls.disciplines}
-                value={this.state.form.discipline}
+                urls={{
+                  categories: this.props.urls.categories,
+                  disciplines: this.props.urls.disciplines,
+                }}
               />
 
               <Collaborators gettext={this.props.gettext} />

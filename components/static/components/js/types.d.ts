@@ -221,6 +221,7 @@ export type CreateQuestions1AppProps = {
   EditorIcons: EditorIconsType;
   urls: {
     create: string;
+    categories: string;
     disciplines: string;
   };
 };
@@ -228,6 +229,7 @@ export type CreateQuestions1AppProps = {
 export type CreateQuestions1AppState = {
   form: {
     answer_style: AnswerStyles;
+    categories: string[];
     discipline: number | null;
     image: File | undefined;
     image_alt_text: string;

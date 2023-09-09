@@ -49,7 +49,7 @@ export class App extends Component<
     this.state = {
       form: {
         answer_style: AnswerStyles.Alphabetic,
-        discipline: undefined,
+        discipline: null,
         image: undefined,
         image_alt_text: "",
         rationale_selection_algorithm: "prefer_expert_and_highly_voted",

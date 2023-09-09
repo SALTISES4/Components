@@ -228,7 +228,7 @@ export type CreateQuestions1AppProps = {
 export type CreateQuestions1AppState = {
   form: {
     answer_style: AnswerStyles;
-    discipline: number | undefined;
+    discipline: number | null;
     image: File | undefined;
     image_alt_text: string;
     rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms;

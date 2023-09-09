@@ -11,13 +11,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 
 //types
 import { DisciplineType } from "../_localComponents/types";
@@ -28,7 +23,7 @@ function Indexing({
   value,
 }: {
   gettext: (a: string) => string;
-  setValue: (a: number) => void;
+  setValue: (a: number | null) => void;
   url: string;
   value: number | null;
 }): JSX.Element {
@@ -47,13 +42,6 @@ function Indexing({
     }
   }, [url]);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    if (event.target) {
-      console;
-      setValue(parseInt((event.target as HTMLInputElement).value));
-    }
-  };
-
   return (
     <Card>
       <CardHeader title={"Indexing"} />
@@ -61,34 +49,22 @@ function Indexing({
       <CardContent>
         <Stack spacing={"20px"}>
           <Box>
-            <Typography variant="h5" sx={{ mb: "2px" }}>
-              {gettext("Discipline")}
-            </Typography>
-            <FormControl fullWidth>
-              <InputLabel id="discipline-select-input" />
-              <Select
-                labelId="discipline-select-label"
-                id="discipline-select"
-                value={value?.toString()}
-                label=""
-                onChange={handleChange}
-              >
-                {disciplines.map((d) => (
-                  <MenuItem key={d.pk} value={d.pk}>
-                    {d.title}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
             <Autocomplete
               disablePortal
-              options={disciplines.map((d) => ({ label: d.title, id: d.pk }))}
+              getOptionLabel={(pk) =>
+                disciplines.filter((e) => e.pk == pk)[0].title
+              }
+              options={disciplines.map((d) => d.pk)}
               renderInput={(params) => (
-                <TextField {...params} label={gettext("Discipline")} />
+                // @ts-ignore
+                <TextField
+                  {...params}
+                  label={gettext("Discipline")}
+                  variant="outlined"
+                />
               )}
-              onChange={(event: any, newValue: string | null) => {
-                setValue(newValue ? parseInt(newValue) : null);
+              onChange={(event: any, newValue: number | null) => {
+                setValue(newValue);
               }}
               value={value}
               inputValue={inputValue}

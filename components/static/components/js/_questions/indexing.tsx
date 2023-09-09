@@ -5,6 +5,7 @@ import { useEffect, useState } from "preact/hooks";
 import { get } from "../ajax";
 
 //mui components
+import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -15,6 +16,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 //types
@@ -28,9 +30,10 @@ function Indexing({
   gettext: (a: string) => string;
   setValue: (a: number) => void;
   url: string;
-  value: number | undefined;
+  value: number | null;
 }): JSX.Element {
   const [disciplines, setDisciplines] = useState<DisciplineType[]>([]);
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     // Get list of disciplines to display
@@ -46,6 +49,7 @@ function Indexing({
 
   const handleChange = (event: SelectChangeEvent) => {
     if (event.target) {
+      console;
       setValue(parseInt((event.target as HTMLInputElement).value));
     }
   };
@@ -76,6 +80,22 @@ function Indexing({
                 ))}
               </Select>
             </FormControl>
+
+            <Autocomplete
+              disablePortal
+              options={disciplines.map((d) => ({ label: d.title, id: d.pk }))}
+              renderInput={(params) => (
+                <TextField {...params} label={gettext("Discipline")} />
+              )}
+              onChange={(event: any, newValue: string | null) => {
+                setValue(newValue ? parseInt(newValue) : null);
+              }}
+              value={value}
+              inputValue={inputValue}
+              onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue);
+              }}
+            />
           </Box>
         </Stack>
       </CardContent>

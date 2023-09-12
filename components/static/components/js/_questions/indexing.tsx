@@ -57,9 +57,11 @@ function Indexing({
           urls.categories,
           window.location.origin + window.location.pathname,
         );
-        const queryString = new URLSearchParams({
-          title: searchTerm,
-        });
+        const queryString = new URLSearchParams(
+          searchTerm
+            .split(/\s+/)
+            .map((term) => ["title__wildcard", `*${term}*`]),
+        );
         try {
           const categories = await get(`${url}?${queryString.toString()}`);
           setCategoryOptions(categories as CategoryType[]);

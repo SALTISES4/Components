@@ -52,16 +52,18 @@ function Indexing({
     // List of categories is dependent on search term
     if (evt.target) {
       const searchTerm = (evt.target as HTMLInputElement).value;
-      if (searchTerm != "") {
+      if (searchTerm != "" && searchTerm != undefined) {
         const url = new URL(
           urls.categories,
           window.location.origin + window.location.pathname,
         );
+
         const queryString = new URLSearchParams(
           searchTerm
             .split(/\s+/)
             .map((term) => ["title__wildcard", `*${term}*`]),
         );
+
         try {
           const categories = await get(`${url}?${queryString.toString()}`);
           setCategoryOptions(categories as CategoryType[]);
@@ -106,6 +108,7 @@ function Indexing({
           <Autocomplete
             disablePortal
             filterOptions={(x) => x}
+            filterSelectedOptions={true}
             multiple
             onChange={(event: any, newValue: string[]) => {
               setCategoryValues(newValue);

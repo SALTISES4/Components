@@ -26,10 +26,13 @@ import { TeacherType } from "../types";
 
 /* Type declarations */
 
-export type UserType = {
-  avatar?: string;
+export interface UsernameType {
   username: string;
-};
+}
+
+export interface UserType extends UsernameType {
+  avatar?: string;
+}
 
 export interface AssignmentDatabaseFields {
   conclusion_page?: string;

@@ -50,6 +50,7 @@ export class App extends Component<
       form: {
         answer_style: AnswerStyles.Alphabetic,
         categories: [],
+        collaborators: [],
         discipline: null,
         image: undefined,
         image_alt_text: "",
@@ -175,7 +176,16 @@ export class App extends Component<
                 }}
               />
 
-              <Collaborators gettext={this.props.gettext} />
+              <Collaborators
+                gettext={this.props.gettext}
+                setUserValues={(collaborators) =>
+                  this.setState({
+                    form: { ...this.state.form, collaborators },
+                  })
+                }
+                url={this.props.urls.teachers}
+                userValues={this.state.form.collaborators}
+              />
             </Stack>
             <Box
               sx={{

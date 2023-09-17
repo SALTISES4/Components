@@ -15,6 +15,7 @@ import TextField from "@mui/material/TextField";
 
 //types
 import { CategoryType, DisciplineType } from "../_localComponents/types";
+
 function Indexing({
   gettext,
   categoryValues,
@@ -78,7 +79,7 @@ function Indexing({
 
   return (
     <Card>
-      <CardHeader title={"Indexing"} />
+      <CardHeader title={gettext("Indexing")} />
       <Divider />
       <CardContent>
         <Stack spacing={"20px"}>

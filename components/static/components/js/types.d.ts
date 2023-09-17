@@ -223,6 +223,7 @@ export type CreateQuestions1AppProps = {
     create: string;
     categories: string;
     disciplines: string;
+    teachers: string;
   };
 };
 
@@ -230,6 +231,7 @@ export type CreateQuestions1AppState = {
   form: {
     answer_style: AnswerStyles;
     categories: string[];
+    collaborators: string[];
     discipline: number | null;
     image: File | undefined;
     image_alt_text: string;

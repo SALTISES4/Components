@@ -16,7 +16,7 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
-import Checkbox from "@mui/material/Checkbox";
+// import Checkbox from "@mui/material/Checkbox";
 import ClearIcon from "@mui/icons-material/Clear";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
@@ -54,7 +54,7 @@ function Content({
   setImage,
   setImageAltText,
   setRationaleSectionAlgorithm,
-  setSequentialReview,
+  // setSequentialReview,
   setText,
   setTitle,
   setType,
@@ -67,7 +67,7 @@ function Content({
     image: File | undefined;
     image_alt_text: string;
     rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms;
-    sequential_review: boolean;
+    // sequential_review: boolean;
     text: string;
     title: string;
     type: keyof typeof QuestionTypes;
@@ -79,7 +79,7 @@ function Content({
   setRationaleSectionAlgorithm: (
     a: keyof typeof RationaleSelectionAlgorithms,
   ) => void;
-  setSequentialReview: (a: boolean) => void;
+  // setSequentialReview: (a: boolean) => void;
   setText: (a: string) => void;
   setTitle: (a: string) => void;
   setType: (a: keyof typeof QuestionTypes) => void;
@@ -160,14 +160,14 @@ function Content({
               ))}
             </RadioGroup>
 
-            {form.type == "PI" ? (
+            {/* {form.type == "PI" ? (
               <FormControlLabel
                 control={<Checkbox />}
                 label={gettext("Sequential rational review?")}
                 value={form.sequential_review}
                 onChange={() => setSequentialReview(!form.sequential_review)}
               />
-            ) : null}
+            ) : null} */}
           </FormControl>
 
           <Box>

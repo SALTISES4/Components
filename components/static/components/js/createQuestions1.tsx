@@ -136,11 +136,11 @@ export class App extends Component<
                     },
                   });
                 }}
-                setSequentialReview={(sequential_review) =>
-                  this.setState({
-                    form: { ...this.state.form, sequential_review },
-                  })
-                }
+                // setSequentialReview={(sequential_review) =>
+                //   this.setState({
+                //     form: { ...this.state.form, sequential_review },
+                //   })
+                // }
                 setText={(text) =>
                   this.setState({ form: { ...this.state.form, text } })
                 }

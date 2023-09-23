@@ -249,6 +249,7 @@ export type CreateQuestionAppState = {
     video_url: string;
   };
   step: number;
+  waiting: boolean;
 };
 
 export type CreateQuestions2AppProps = {

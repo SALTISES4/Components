@@ -1,6 +1,8 @@
 import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
+import { submitData } from "./ajax";
+
 import {
   booleanValidator,
   questionAnswerStyleValidator,
@@ -16,6 +18,7 @@ import {
 //material ui components
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
@@ -66,6 +69,7 @@ export class App extends Component<
         video_url: "",
       },
       step: 1,
+      waiting: false,
     };
   }
 
@@ -80,8 +84,16 @@ export class App extends Component<
     this.setState({ step: 1 });
   };
 
-  next = () => {
-    this.setState({ step: 2 });
+  next = async () => {
+    this.setState({ waiting: true });
+    try {
+      const url = this.props.urls.create;
+      const question = await submitData(url, this.state.questionForm, "POST");
+      this.setState({ step: 2, waiting: false });
+      console.info(question);
+    } catch {
+      this.setState({ waiting: false });
+    }
   };
 
   save = () => {
@@ -272,15 +284,17 @@ export class App extends Component<
                 <Typography>{this.props.gettext("Cancel")}</Typography>
               </CancelButton>
               {this.state.step == 1 ? (
-                <Button
+                <LoadingButton
                   disabled={!this.validateQuestionForm()}
+                  loadingPosition="end"
                   onClick={this.next}
+                  loading={this.state.waiting}
                   variant="contained"
                 >
-                  <Typography>
+                  <Typography tag={"span"}>
                     {this.props.gettext("Save and continue")}
                   </Typography>
-                </Button>
+                </LoadingButton>
               ) : (
                 <Fragment>
                   <Button onClick={this.back} variant="contained">

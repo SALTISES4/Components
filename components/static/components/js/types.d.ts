@@ -14,6 +14,8 @@ import {
   StudentGroupAssignmentType,
   StudentGroupsAssignmentType,
   UserType,
+  AnswerType,
+  AnswerChoiceType,
 } from "./_localComponents/types";
 import { AssignmentForm } from "./_assignments/types";
 import { SnackbarType } from "./_reusableComponents/types";
@@ -215,7 +217,7 @@ export type NavigationAppProps = {
 
 export type NavigationAppState = {};
 
-export type CreateQuestions1AppProps = {
+export type CreateQuestionAppProps = {
   gettext: (a: string) => string;
   nonce: string;
   EditorIcons: EditorIconsType;
@@ -227,8 +229,12 @@ export type CreateQuestions1AppProps = {
   };
 };
 
-export type CreateQuestions1AppState = {
-  form: {
+export type CreateQuestionAppState = {
+  answerForm: {
+    answer_choice: AnswerChoiceType | null;
+    answer: AnswerChoiceType | null;
+  }[];
+  questionForm: {
     answer_style: AnswerStyles;
     categories: string[];
     collaborators: string[];
@@ -242,6 +248,7 @@ export type CreateQuestions1AppState = {
     type: QuestionTypes;
     video_url: string;
   };
+  step: number;
 };
 
 export type CreateQuestions2AppProps = {

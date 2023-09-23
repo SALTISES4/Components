@@ -131,10 +131,18 @@ type QuestionPeerImpact = {
   value?: PeerImpactLabels;
 };
 
-type AnswerChoiceType = {
+export type AnswerChoiceType = {
   correct: boolean;
   label: string;
+  question: number;
   text: string;
+};
+
+export type AnswerType = {
+  expert: boolean;
+  first_answer_choice: number;
+  question: number;
+  rationale: string;
 };
 
 export type QuestionType = {

@@ -278,7 +278,7 @@ export class App extends Component<
                       "linear-gradient(to right, #1743B3 100%, #AEAEBF 100%)",
                   }}
                 />
-                <Stack spacing={"30px"}>
+                <Stack>
                   <Answer
                     gettext={this.props.gettext}
                     EditorIcons={this.props.EditorIcons}

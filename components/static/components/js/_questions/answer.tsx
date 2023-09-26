@@ -1,5 +1,4 @@
 import { Fragment, h } from "preact";
-import { useState } from "preact/hooks";
 
 //material ui components
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -20,21 +19,22 @@ import { CustomAddBox } from "../styledComponents";
 import { CustomEditorField } from "../_reusableComponents/customEditorField";
 
 //types
-import { EditorIconsType } from "../types";
-import { AnswerChoiceType, AnswerType } from "../_localComponents/types";
-type AnswerChoiceForm = {
-  answer: AnswerType | null;
-  answer_choice: AnswerChoiceType | null;
-};
+import { AnswerChoiceForm, EditorIconsType } from "../types";
 
 function Answer({
   gettext,
   EditorIcons,
   forms,
+  addForm,
+  deleteForm,
+  setForm,
 }: {
   gettext: (a: string) => string;
   EditorIcons: EditorIconsType;
   forms: AnswerChoiceForm[];
+  addForm: (a: number) => void;
+  deleteForm: (a: number) => void;
+  setForm: (a: number, form: AnswerChoiceForm) => void;
 }): JSX.Element {
   return (
     <Fragment>
@@ -55,8 +55,16 @@ function Answer({
               <FormControlLabel
                 control={<Checkbox />}
                 label={gettext("Correct answer?")}
-                onChange={() => {}}
-                value={false}
+                onChange={() =>
+                  setForm(i, {
+                    ...form,
+                    answer_choice: {
+                      ...form.answer_choice,
+                      correct: !form.answer_choice.correct,
+                    },
+                  })
+                }
+                value={form.answer_choice.correct}
               />
             </Stack>
             <Divider />
@@ -65,25 +73,47 @@ function Answer({
                 <CustomEditorField
                   defaultValue=""
                   EditorIcons={EditorIcons}
-                  setValue={() => {}}
-                  title="Text *"
-                  value=""
+                  setValue={(value) =>
+                    setForm(i, {
+                      ...form,
+                      answer_choice: {
+                        ...form.answer_choice,
+                        text: value,
+                      },
+                    })
+                  }
+                  title={gettext("Text *")}
+                  value={form.answer_choice.text}
                 />
+
+                {form.answer_choice.correct ? (
+                  <CustomEditorField
+                    defaultValue=""
+                    EditorIcons={EditorIcons}
+                    setValue={() => {}}
+                    title={gettext("Expert rationale *")}
+                    value={form.expert_rationale?.rationale || ""}
+                  />
+                ) : null}
+
                 <CustomEditorField
                   defaultValue=""
                   EditorIcons={EditorIcons}
                   setValue={() => {}}
-                  title="Rationale *"
-                  value=""
+                  title={gettext("Sample rationale *")}
+                  value={form.sample_answer?.rationale || ""}
                 />
               </Stack>
             </CardContent>
           </Card>
           <CustomAddBox>
-            <IconButton sx={{ mb: "1px" }}>
-              <RemoveCircleIcon fontSize="large" />
-            </IconButton>
-            <IconButton sx={{ mt: "1px" }}>
+            {forms.length > 1 ? (
+              <IconButton sx={{ mb: "1px" }} onClick={() => deleteForm(i)}>
+                <RemoveCircleIcon fontSize="large" />
+              </IconButton>
+            ) : null}
+
+            <IconButton sx={{ mt: "1px" }} onClick={() => addForm(i)}>
               <AddCircleIcon fontSize="large" />
             </IconButton>
           </CustomAddBox>

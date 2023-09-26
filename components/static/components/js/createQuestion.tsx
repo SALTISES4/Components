@@ -1,7 +1,7 @@
 import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
-import { submitData } from "./ajax";
+import { submitFormData } from "./ajax";
 
 import {
   booleanValidator,
@@ -50,9 +50,12 @@ export class App extends Component<
   constructor(props: CreateQuestionAppProps) {
     super(props);
     this.state = {
-      answerForm: [
-        { answer_choice: null, answer: null },
-        { answer_choice: null, answer: null },
+      answerChoiceForm: [
+        {
+          answer_choice: { correct: false, text: "" },
+          sample_answer: { expert: false, rationale: "" },
+          expert_rationale: { expert: true, rationale: "" },
+        },
       ],
       questionForm: {
         answer_style: AnswerStyles.Alphabetic,
@@ -81,23 +84,35 @@ export class App extends Component<
   });
 
   back = () => {
-    this.setState({ step: 1 });
+    this.setState({ step: 1 }, () => window.scrollTo({ top: 0 }));
   };
 
-  next = async () => {
+  next = () => {
+    this.setState({ step: 2 }, () => window.scrollTo({ top: 0 }));
+  };
+
+  save = async () => {
+    console.info(this.state.questionForm);
     this.setState({ waiting: true });
     try {
+      // We may be sending a file along with data so convert JSON to FormData
+      const formdata = new FormData();
+      Object.entries(this.state.questionForm).map((e) => {
+        // Don't send fields that are undefined, null, empty [], etc.
+        if (e[1]) {
+          formdata.append(e[0], e[1]);
+        }
+      });
+      // Object.entries(this.state.answerChoiceForm).map((e) =>
+      //   formdata.append(e),
+      // );
       const url = this.props.urls.create;
-      const question = await submitData(url, this.state.questionForm, "POST");
-      this.setState({ step: 2, waiting: false });
+      const question = await submitFormData(url, formdata, "POST");
+      this.setState({ waiting: false });
       console.info(question);
     } catch {
       this.setState({ waiting: false });
     }
-  };
-
-  save = () => {
-    console.info(this.state.questionForm);
   };
 
   validateAnswerForm = () => false;
@@ -267,7 +282,45 @@ export class App extends Component<
                   <Answer
                     gettext={this.props.gettext}
                     EditorIcons={this.props.EditorIcons}
-                    forms={this.state.answerForm}
+                    forms={this.state.answerChoiceForm}
+                    addForm={(i) => {
+                      console.info("Add answer choice form");
+                      const _answerChoiceForm = [
+                        ...this.state.answerChoiceForm,
+                      ];
+                      _answerChoiceForm.splice(i + 1, 0, {
+                        answer_choice: { correct: false, text: "" },
+                        sample_answer: { expert: false, rationale: "" },
+                        expert_rationale: { expert: true, rationale: "" },
+                      });
+                      this.setState({
+                        answerChoiceForm: [..._answerChoiceForm],
+                      });
+                    }}
+                    deleteForm={(i) => {
+                      const _answerChoiceForm = [
+                        ...this.state.answerChoiceForm,
+                      ];
+                      _answerChoiceForm.splice(i, 1);
+                      this.setState(
+                        {
+                          answerChoiceForm: [..._answerChoiceForm],
+                        },
+                        () => console.info(this.state.answerChoiceForm),
+                      );
+                    }}
+                    setForm={(i, form) => {
+                      const _answerChoiceForm = [
+                        ...this.state.answerChoiceForm,
+                      ];
+                      _answerChoiceForm[i] = form;
+                      this.setState(
+                        {
+                          answerChoiceForm: [..._answerChoiceForm],
+                        },
+                        () => console.info(this.state.answerChoiceForm),
+                      );
+                    }}
                   />
                 </Stack>
               </Fragment>
@@ -284,29 +337,31 @@ export class App extends Component<
                 <Typography>{this.props.gettext("Cancel")}</Typography>
               </CancelButton>
               {this.state.step == 1 ? (
-                <LoadingButton
-                  disabled={!this.validateQuestionForm()}
-                  loadingPosition="end"
-                  onClick={this.next}
-                  loading={this.state.waiting}
-                  variant="contained"
-                >
-                  <Typography tag={"span"}>
-                    {this.props.gettext("Save and continue")}
-                  </Typography>
-                </LoadingButton>
+                <Fragment>
+                  <Button
+                    disabled={!this.validateQuestionForm()}
+                    onClick={this.next}
+                    variant="contained"
+                  >
+                    <Typography>{this.props.gettext("Continue")}</Typography>
+                  </Button>
+                </Fragment>
               ) : (
                 <Fragment>
                   <Button onClick={this.back} variant="contained">
                     <Typography>{this.props.gettext("Back")}</Typography>
                   </Button>
-                  <Button
+                  <LoadingButton
                     disabled={!this.validateAnswerForm()}
+                    loadingPosition="end"
                     onClick={this.save}
+                    loading={this.state.waiting}
                     variant="contained"
                   >
-                    <Typography>{this.props.gettext("Save")}</Typography>
-                  </Button>
+                    <Typography tag={"span"}>
+                      {this.props.gettext("Save")}
+                    </Typography>
+                  </LoadingButton>
                 </Fragment>
               )}
             </Box>

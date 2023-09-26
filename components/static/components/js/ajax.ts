@@ -69,6 +69,27 @@ export async function submitData(
   return await get(url, method);
 }
 
+export async function submitFormData(
+  url: string,
+  formdata: FormData,
+  method: string,
+): Promise<Record<string, unknown> | unknown[] | Error> {
+  // Only attach csrf token to unsafe methods
+  if (["POST", "PATCH", "PUT", "DELETE"].includes(method.toUpperCase())) {
+    const settings = {
+      method,
+      headers: new Headers({
+        "X-CSRFToken": getCsrfToken(),
+      }),
+      body: formdata,
+    };
+    Object.assign(settings, defaultSettings);
+    const response = await fetch(url, settings);
+    return await handleResponse(response);
+  }
+  return await get(url, method);
+}
+
 export async function get(
   url: string,
   method = "GET",

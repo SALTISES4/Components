@@ -6,6 +6,7 @@ import {
   RationaleSelectionAlgorithms,
 } from "./_localComponents/enum";
 import { purifyText } from "./functions";
+import { AnswerChoiceForm } from "./types";
 
 export function booleanValidator(value: any) {
   return typeof value == "boolean";
@@ -65,6 +66,9 @@ export const questionImageValidator = (image: File | undefined) => {
 };
 
 export const questionImageAltTextValidator = (text: string) => {
+  /*
+  - Question model imposes 1024 character limit
+  */
   return lengthValidator(text.trim(), 1, 1024);
 };
 
@@ -78,15 +82,21 @@ export const questionRationaleSelectionAlgorithmValidator = (
 };
 
 export const questionTextValidator = (text: string | undefined) => {
-  // Ensure that text is not "" or whitespace or just tags
+  /*
+  - Question serializer imposes 8000 character limit on text without tags
+  - Ensure that text is not "" or whitespace or just tags
+  */
   if (text === undefined) {
     return false;
   }
-  return lengthValidator(purifyText(text).trim(), 1, 2000);
+  return lengthValidator(purifyText(text).trim(), 1, 8000);
 };
 
 export const questionTitleValidator = (title: string | undefined) => {
-  // Ensure that text is not "" or whitespace
+  /*
+  - Question model imposes 100 character limit
+  - Ensure that text is not "" or whitespace
+  */
   if (title === undefined) {
     return false;
   }
@@ -113,4 +123,27 @@ export const questionVideoURLValidator = (url: string) => {
   } catch {
     return false;
   }
+};
+
+export const answerChoiceValidator = (answerChoice: AnswerChoiceForm) => {
+  /*
+  - AnswerChoice model imposes 500 character limit on text
+  - Answer serializer imposes 4000 character limit on rationale
+  */
+  return (
+    lengthValidator(answerChoice.answer_choice.text.trim(), 1, 500) &&
+    lengthValidator(
+      answerChoice.answer_choice.sample_answer.rationale.trim(),
+      1,
+      4000,
+    ) &&
+    (answerChoice.answer_choice.correct
+      ? answerChoice.answer_choice.expert_answer &&
+        lengthValidator(
+          answerChoice.answer_choice.expert_answer.rationale.trim(),
+          1,
+          4000,
+        )
+      : true)
+  );
 };

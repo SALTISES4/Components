@@ -14,7 +14,6 @@ import {
   StudentGroupAssignmentType,
   StudentGroupsAssignmentType,
   UserType,
-  AnswerChoiceType,
 } from "./_localComponents/types";
 import { AssignmentForm } from "./_assignments/types";
 import { SnackbarType } from "./_reusableComponents/types";
@@ -229,12 +228,17 @@ export type CreateQuestionAppProps = {
 };
 
 export type AnswerChoiceForm = {
-  answer_choice: Omit<AnswerChoiceType, "question", "label"> | null;
-  sample_answer: { rationale: string; expert: false } | null;
-  expert_rationale: { rationale: string; expert: true } | null;
+  id: number;
+  answer_choice: {
+    correct: boolean;
+    text: string;
+    sample_answer: { rationale: string };
+    expert_answer?: { rationale: string };
+  };
 };
 
 export type CreateQuestionAppState = {
+  answerChoiceCounter: number;
   answerChoiceForm: AnswerChoiceForm[];
   questionForm: {
     answer_style: AnswerStyles;

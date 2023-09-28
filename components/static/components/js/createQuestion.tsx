@@ -4,6 +4,7 @@ export { h, render };
 import { submitFormData } from "./ajax";
 
 import {
+  answerChoiceValidator,
   booleanValidator,
   questionAnswerStyleValidator,
   questionImageValidator,
@@ -50,11 +51,23 @@ export class App extends Component<
   constructor(props: CreateQuestionAppProps) {
     super(props);
     this.state = {
+      answerChoiceCounter: 2,
       answerChoiceForm: [
         {
-          answer_choice: { correct: false, text: "" },
-          sample_answer: { expert: false, rationale: "" },
-          expert_rationale: { expert: true, rationale: "" },
+          id: 1,
+          answer_choice: {
+            correct: false,
+            text: "",
+            sample_answer: { rationale: "" },
+          },
+        },
+        {
+          id: 2,
+          answer_choice: {
+            correct: false,
+            text: "",
+            sample_answer: { rationale: "" },
+          },
         },
       ],
       questionForm: {
@@ -93,6 +106,7 @@ export class App extends Component<
 
   save = async () => {
     console.info(this.state.questionForm);
+    console.info(this.state.answerChoiceForm);
     this.setState({ waiting: true });
     try {
       // We may be sending a file along with data so convert JSON to FormData
@@ -103,9 +117,23 @@ export class App extends Component<
           formdata.append(e[0], e[1]);
         }
       });
-      // Object.entries(this.state.answerChoiceForm).map((e) =>
-      //   formdata.append(e),
-      // );
+      this.state.answerChoiceForm.forEach((e, i) => {
+        formdata.append(
+          `answerchoice_set[${i}]correct`,
+          JSON.stringify(e.answer_choice.correct),
+        );
+        formdata.append(`answerchoice_set[${i}]text`, e.answer_choice.text);
+        formdata.append(
+          `answerchoice_set[${i}]sample_answer.rationale`,
+          e.answer_choice.sample_answer.rationale,
+        );
+        if (e.answer_choice.expert_answer) {
+          formdata.append(
+            `answerchoice_set[${i}]expert_answer.rationale`,
+            e.answer_choice.expert_answer.rationale,
+          );
+        }
+      });
       const url = this.props.urls.create;
       const question = await submitFormData(url, formdata, "POST");
       this.setState({ waiting: false });
@@ -115,7 +143,9 @@ export class App extends Component<
     }
   };
 
-  validateAnswerForm = () => false;
+  validateAnswerForm = () =>
+    this.state.answerChoiceForm.map((ac) => answerChoiceValidator(ac)) &&
+    this.state.answerChoiceForm.length >= 2;
 
   validateQuestionForm = () =>
     questionAnswerStyleValidator(this.state.questionForm.answer_style) &&
@@ -278,51 +308,47 @@ export class App extends Component<
                       "linear-gradient(to right, #1743B3 100%, #AEAEBF 100%)",
                   }}
                 />
-                <Stack>
-                  <Answer
-                    gettext={this.props.gettext}
-                    EditorIcons={this.props.EditorIcons}
-                    forms={this.state.answerChoiceForm}
-                    addForm={(i) => {
-                      console.info("Add answer choice form");
-                      const _answerChoiceForm = [
-                        ...this.state.answerChoiceForm,
-                      ];
-                      _answerChoiceForm.splice(i + 1, 0, {
-                        answer_choice: { correct: false, text: "" },
-                        sample_answer: { expert: false, rationale: "" },
-                        expert_rationale: { expert: true, rationale: "" },
-                      });
-                      this.setState({
+                <Answer
+                  gettext={this.props.gettext}
+                  EditorIcons={this.props.EditorIcons}
+                  forms={this.state.answerChoiceForm}
+                  addForm={(i) => {
+                    console.info("Add answer choice form");
+                    const _answerChoiceForm = [...this.state.answerChoiceForm];
+                    _answerChoiceForm.splice(i + 1, 0, {
+                      id: this.state.answerChoiceCounter + 1,
+                      answer_choice: {
+                        correct: false,
+                        text: "",
+                        sample_answer: { rationale: "" },
+                      },
+                    });
+                    this.setState({
+                      answerChoiceCounter: this.state.answerChoiceCounter + 1,
+                      answerChoiceForm: [..._answerChoiceForm],
+                    });
+                  }}
+                  deleteForm={(i) => {
+                    const _answerChoiceForm = [...this.state.answerChoiceForm];
+                    _answerChoiceForm.splice(i, 1);
+                    this.setState(
+                      {
                         answerChoiceForm: [..._answerChoiceForm],
-                      });
-                    }}
-                    deleteForm={(i) => {
-                      const _answerChoiceForm = [
-                        ...this.state.answerChoiceForm,
-                      ];
-                      _answerChoiceForm.splice(i, 1);
-                      this.setState(
-                        {
-                          answerChoiceForm: [..._answerChoiceForm],
-                        },
-                        () => console.info(this.state.answerChoiceForm),
-                      );
-                    }}
-                    setForm={(i, form) => {
-                      const _answerChoiceForm = [
-                        ...this.state.answerChoiceForm,
-                      ];
-                      _answerChoiceForm[i] = form;
-                      this.setState(
-                        {
-                          answerChoiceForm: [..._answerChoiceForm],
-                        },
-                        () => console.info(this.state.answerChoiceForm),
-                      );
-                    }}
-                  />
-                </Stack>
+                      },
+                      () => console.info(this.state.answerChoiceForm),
+                    );
+                  }}
+                  setForm={(i, form) => {
+                    const _answerChoiceForm = [...this.state.answerChoiceForm];
+                    _answerChoiceForm[i] = form;
+                    this.setState(
+                      {
+                        answerChoiceForm: [..._answerChoiceForm],
+                      },
+                      () => console.info(this.state.answerChoiceForm),
+                    );
+                  }}
+                />
               </Fragment>
             )}
             <Box

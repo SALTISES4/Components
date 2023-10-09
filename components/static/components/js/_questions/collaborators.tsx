@@ -46,7 +46,11 @@ function Collaborators({
 
         try {
           const usernames = await get(`${_url}?${queryString.toString()}`);
-          setUserOptions(usernames as UsernameType[]);
+          setUserOptions(
+            (usernames as UsernameType[]).sort((a, b) =>
+              a.username.localeCompare(b.username),
+            ),
+          );
         } catch (error: any) {
           console.info(error);
         }
@@ -66,6 +70,7 @@ function Collaborators({
           filterOptions={(x) => x}
           filterSelectedOptions={true}
           multiple
+          noOptionsText={gettext("Type to search...")}
           onChange={(event: any, newValue: string[]) => {
             setUserValues(newValue);
           }}

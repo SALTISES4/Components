@@ -1,5 +1,7 @@
 import { Fragment, h } from "preact";
 
+import { useTheme } from "@mui/material/styles";
+
 //material ui components
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Avatar from "@mui/material/Avatar";
@@ -36,6 +38,8 @@ function Answer({
   deleteForm: (a: number) => void;
   setForm: (a: number, form: AnswerChoiceForm) => void;
 }): JSX.Element {
+  const theme = useTheme();
+
   return (
     <Stack>
       {forms.map((form, i) => (
@@ -45,7 +49,7 @@ function Answer({
               <CardHeader
                 title={"Answer choice"}
                 avatar={
-                  <Avatar>
+                  <Avatar sx={{ bgcolor: theme.palette.secondary1.main }}>
                     <Typography fontSize="16px" color="secondary4">
                       {i + 1}
                     </Typography>

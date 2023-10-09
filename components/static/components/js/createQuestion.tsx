@@ -177,7 +177,7 @@ export class App extends Component<
                   {this.props.gettext("Step 1/2")}
                 </Typography>
                 <Typography fontSize="body1">
-                  {this.props.gettext("Question parameters")}
+                  {this.props.gettext("Question content and settings")}
                 </Typography>
                 <StepBar
                   sx={{
@@ -301,7 +301,9 @@ export class App extends Component<
                   {this.props.gettext("Step 2/2")}
                 </Typography>
                 <Typography fontSize="body1">
-                  {this.props.gettext("Answer parameters")}
+                  {this.props.gettext(
+                    "Answer choices, sample answers, and expert rationales",
+                  )}
                 </Typography>
                 <StepBar
                   sx={{

@@ -134,7 +134,7 @@ function Answer({
                       },
                     })
                   }
-                  title={gettext("Sample rationale *")}
+                  title={gettext("Sample answer *")}
                   value={form.answer_choice.sample_answer?.rationale || ""}
                 />
               </Stack>

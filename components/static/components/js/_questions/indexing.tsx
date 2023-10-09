@@ -85,9 +85,12 @@ function Indexing({
         <Stack spacing={"20px"}>
           <Autocomplete
             disablePortal
-            getOptionLabel={(pk) =>
-              disciplineOptions.filter((e) => e.pk == pk)[0].title
-            }
+            getOptionLabel={(pk) => {
+              if (disciplineOptions.length > 0) {
+                return disciplineOptions.filter((e) => e.pk == pk)[0].title;
+              }
+              return "";
+            }}
             inputValue={disciplineInputValue}
             onChange={(event: any, newValue: number | null) => {
               setDisciplineValue(newValue);

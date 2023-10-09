@@ -1,5 +1,5 @@
 import { createRef, h } from "preact";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 
 import {
   questionImageValidator,
@@ -97,11 +97,16 @@ function Content({
   const [imagePreview, setImagePreview] = useState("");
 
   const setImageAndPreview = (file: File | undefined) => {
-    setImage(file, () => setImageAltText(""));
+    setImage(file, () => (file === undefined ? setImageAltText("") : null));
     if (file) {
       reader.readAsDataURL(file);
     }
   };
+
+  useEffect(() => {
+    setImageAndPreview(form.image);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.image]);
 
   return (
     <Card>

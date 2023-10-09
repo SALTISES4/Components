@@ -129,9 +129,13 @@ export const answerChoiceValidator = (answerChoice: AnswerChoiceForm) => {
   /*
   - AnswerChoice model imposes 500 character limit on text
   - Answer serializer imposes 4000 character limit on rationale
+  - Check all texts are not "" or whitespace or just tags
   */
   return (
+    purifyText(answerChoice.answer_choice.text.trim()).length > 0 &&
     lengthValidator(answerChoice.answer_choice.text.trim(), 1, 500) &&
+    purifyText(answerChoice.answer_choice.sample_answer.rationale.trim())
+      .length > 0 &&
     lengthValidator(
       answerChoice.answer_choice.sample_answer.rationale.trim(),
       1,
@@ -139,6 +143,8 @@ export const answerChoiceValidator = (answerChoice: AnswerChoiceForm) => {
     ) &&
     (answerChoice.answer_choice.correct
       ? answerChoice.answer_choice.expert_answer &&
+        purifyText(answerChoice.answer_choice.expert_answer.rationale.trim())
+          .length > 0 &&
         lengthValidator(
           answerChoice.answer_choice.expert_answer.rationale.trim(),
           1,

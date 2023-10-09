@@ -144,8 +144,9 @@ export class App extends Component<
   };
 
   validateAnswerForm = () =>
-    this.state.answerChoiceForm.map((ac) => answerChoiceValidator(ac)) &&
-    this.state.answerChoiceForm.length >= 2;
+    this.state.answerChoiceForm.every((ac) => answerChoiceValidator(ac)) && // Every choice is valid
+    this.state.answerChoiceForm.some((ac) => ac.answer_choice.correct) && // At least one choice is correct
+    this.state.answerChoiceForm.length >= 2; // At least two answer choices
 
   validateQuestionForm = () =>
     questionAnswerStyleValidator(this.state.questionForm.answer_style) &&

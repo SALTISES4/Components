@@ -142,12 +142,20 @@ function Answer({
           </Card>
           <CustomAddBox>
             {forms.length > 2 ? (
-              <IconButton sx={{ mb: "1px" }} onClick={() => deleteForm(i)}>
+              <IconButton
+                color={"primary"}
+                sx={{ mb: "1px" }}
+                onClick={() => deleteForm(i)}
+              >
                 <RemoveCircleIcon fontSize="large" />
               </IconButton>
             ) : null}
 
-            <IconButton sx={{ mt: "1px" }} onClick={() => addForm(i)}>
+            <IconButton
+              color={"primary"}
+              sx={{ mt: "1px" }}
+              onClick={() => addForm(i)}
+            >
               <AddCircleIcon fontSize="large" />
             </IconButton>
           </CustomAddBox>

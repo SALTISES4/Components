@@ -47,33 +47,47 @@ function Indexing({
     } catch (error: any) {
       console.info(error);
     }
+
+    // Get default list of categories to display on mount
+    search("");
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urls.disciplines]);
+
+  const search = async (searchTerm: string) => {
+    const url = new URL(
+      urls.categories,
+      window.location.origin + window.location.pathname,
+    );
+
+    let queryString;
+
+    if (searchTerm == "" || searchTerm == undefined) {
+      searchTerm = "a";
+      queryString = new URLSearchParams(
+        searchTerm.split(/\s+/).map((term) => ["title__wildcard", `${term}*`]),
+      );
+    } else {
+      queryString = new URLSearchParams(
+        searchTerm
+          .split(/\s+/)
+          .map((term) => ["title__wildcard", `*${term}*`]),
+      );
+    }
+
+    try {
+      const categories = await get(`${url}?${queryString.toString()}`);
+      setCategoryOptions(categories as CategoryType[]);
+    } catch (error: any) {
+      console.info(error);
+    }
+  };
 
   const handleChange = async (evt: InputEvent) => {
     // List of categories is dependent on search term
     if (evt.target) {
       const searchTerm = (evt.target as HTMLInputElement).value;
-      if (searchTerm != "" && searchTerm != undefined) {
-        const url = new URL(
-          urls.categories,
-          window.location.origin + window.location.pathname,
-        );
-
-        const queryString = new URLSearchParams(
-          searchTerm
-            .split(/\s+/)
-            .map((term) => ["title__wildcard", `*${term}*`]),
-        );
-
-        try {
-          const categories = await get(`${url}?${queryString.toString()}`);
-          setCategoryOptions(categories as CategoryType[]);
-        } catch (error: any) {
-          console.info(error);
-        }
-      } else {
-        setCategoryOptions([]);
-      }
+      search(searchTerm);
     }
   };
 

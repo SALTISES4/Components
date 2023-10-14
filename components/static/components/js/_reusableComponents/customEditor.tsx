@@ -16,21 +16,21 @@ export class CustomEditor extends Component<
   constructor(props: CustomEditorProps) {
     super(props);
 
-    const { contentBlocks, entityMap } = htmlToDraft(
-      purifyHTML(this.props.value),
-    );
-    const contentState = ContentState.createFromBlockArray(
-      contentBlocks,
-      entityMap,
-    );
-    const editorState = EditorState.createWithContent(contentState);
-
     this.state = {
-      editorState,
+      editorState: this.init(this.props.value),
       error: false,
       hasFocus: false,
     };
   }
+
+  init = (value: string) => {
+    const { contentBlocks, entityMap } = htmlToDraft(purifyHTML(value));
+    const contentState = ContentState.createFromBlockArray(
+      contentBlocks,
+      entityMap,
+    );
+    return EditorState.createWithContent(contentState);
+  };
 
   onEditorStateChange = (editorState: any) => {
     this.setState(
@@ -47,6 +47,10 @@ export class CustomEditor extends Component<
   };
 
   componentWillUpdate(nextProps: Readonly<CustomEditorProps>): void {
+    if (!this.props.value && nextProps.value) {
+      // If value is currently empty, initialize with whatever value passed
+      this.setState({ editorState: this.init(nextProps.value) });
+    }
     if (this.props.value != nextProps.value) {
       const error = !nextProps.validator(nextProps.value);
       this.setState({ error });
@@ -73,10 +77,9 @@ export class CustomEditor extends Component<
       alignItems: "center",
     };
 
-    const { editorState } = this.state;
     return (
       <Editor
-        editorState={editorState}
+        editorState={this.state.editorState}
         onEditorStateChange={this.onEditorStateChange}
         wrapperStyle={{
           backgroundColor: "white",

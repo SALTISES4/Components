@@ -14,12 +14,14 @@
 import { CardProps } from "@mui/material/Card";
 
 import {
+  AnswerStyles,
   DistributionState,
   PeerImpactLabels,
   PeerImpactLevels,
   QuestionDifficultyLabels,
   QuestionDifficultyLevels,
   QuestionTypes,
+  RationaleSelectionAlgorithms,
 } from "./enum";
 
 import { TeacherType } from "../types";
@@ -148,6 +150,7 @@ export type AnswerType = {
 export type QuestionType = {
   answer_count: number;
   answerchoice_set: AnswerChoiceType[];
+  answer_style?: AnswerStyles;
   category?: CategoryType[];
   collaborators?: UserType[];
   difficulty: QuestionDifficulty;
@@ -160,6 +163,7 @@ export type QuestionType = {
   most_convincing_rationales?: AnswerChoiceWithRationalesType[];
   peer_impact: QuestionPeerImpact;
   pk: number;
+  rationale_selection_algorithm?: RationaleSelectionAlgorithms;
   text: string;
   title: string;
   type: QuestionTypes;

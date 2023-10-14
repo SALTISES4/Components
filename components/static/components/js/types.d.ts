@@ -219,6 +219,7 @@ export type CreateQuestionAppProps = {
   gettext: (a: string) => string;
   nonce: string;
   EditorIcons: EditorIconsType;
+  pk?: number;
   urls: {
     create: string;
     categories: string;
@@ -257,13 +258,6 @@ export type CreateQuestionAppState = {
   step: number;
   waiting: boolean;
 };
-
-export type CreateQuestions2AppProps = {
-  gettext: (a: string) => string;
-  nonce: string;
-};
-
-export type CreateQuestions2AppState = {};
 
 export type EditorIconsType = {
   boldIcon: string;

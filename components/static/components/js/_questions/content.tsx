@@ -133,7 +133,6 @@ function Content({
             validator={questionTextValidator}
             value={form.text}
           />
-
           <FormControl>
             <FormLabel id="type-radio-group">
               <Typography

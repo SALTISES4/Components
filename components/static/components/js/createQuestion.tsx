@@ -1,7 +1,7 @@
 import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
-import { submitFormData } from "./ajax";
+import { get, submitFormData } from "./ajax";
 
 import {
   answerChoiceValidator,
@@ -43,6 +43,7 @@ import {
   AnswerStyles,
   RationaleSelectionAlgorithms,
 } from "./_localComponents/enum";
+import { QuestionType } from "./_localComponents/types";
 
 export class App extends Component<
   CreateQuestionAppProps,
@@ -109,6 +110,7 @@ export class App extends Component<
     console.info(this.state.answerChoiceForm);
     this.setState({ waiting: true });
     try {
+      // TODO: ONLY SEND IMAGE FILE IF CHANGED!
       // We may be sending a file along with data so convert JSON to FormData
       const formdata = new FormData();
       Object.entries(this.state.questionForm).map((e) => {
@@ -143,6 +145,51 @@ export class App extends Component<
     }
   };
 
+  sync = async (pk: number) => {
+    console.info(`Fetching data for question ${pk}`);
+    try {
+      const question = (await get(
+        `${this.props.urls.create + this.props.pk}/`,
+      )) as QuestionType;
+      // if (question.image) {
+      //   const file = await get(question.image);
+      //   console.info(file);
+      // }
+      console.info("HERE");
+      this.setState(
+        {
+          questionForm: {
+            answer_style: question.answer_style || AnswerStyles.Alphabetic,
+            categories: question.category
+              ? question.category.map((c) => c.title)
+              : [],
+            collaborators: question.collaborators
+              ? question.collaborators.map((c) => c.username)
+              : [],
+            discipline: question.discipline ? question.discipline.pk : null,
+            image: undefined,
+            image_alt_text: question.image_alt_text,
+            rationale_selection_algorithm:
+              question.rationale_selection_algorithm ||
+              "prefer_expert_and_highly_voted",
+            sequential_review: false,
+            text: question.text,
+            title: question.title,
+            type: question.type,
+            video_url: question.video_url,
+          },
+        },
+        () => console.info(this.state),
+      );
+    } catch {}
+  };
+
+  componentDidMount = () => {
+    if (this.props.pk) {
+      this.sync(this.props.pk);
+    }
+  };
+
   validateAnswerForm = () =>
     this.state.answerChoiceForm.every((ac) => answerChoiceValidator(ac)) && // Every choice is valid
     this.state.answerChoiceForm.some((ac) => ac.answer_choice.correct) && // At least one choice is correct
@@ -169,7 +216,9 @@ export class App extends Component<
         <CacheProvider value={this.cache}>
           <Main>
             <Typography variant="h1" align="left">
-              {this.props.gettext("Create question")}
+              {this.props.pk
+                ? this.props.gettext("Update question")
+                : this.props.gettext("Create question")}
             </Typography>
             {this.state.step == 1 ? (
               <Fragment>

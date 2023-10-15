@@ -57,32 +57,35 @@ function Answer({
                 }
               />
               <FormControlLabel
-                control={<Checkbox />}
+                control={
+                  <Checkbox
+                    checked={form.answer_choice.correct}
+                    onChange={() => {
+                      if (form.answer_choice.correct) {
+                        const { expert_answer, ..._answer_choice_form } = {
+                          ...form.answer_choice,
+                        };
+                        setForm(i, {
+                          ...form,
+                          answer_choice: {
+                            ..._answer_choice_form,
+                            correct: false,
+                          },
+                        });
+                        return;
+                      }
+                      setForm(i, {
+                        ...form,
+                        answer_choice: {
+                          ...form.answer_choice,
+                          correct: !form.answer_choice.correct,
+                          expert_answer: { rationale: "" },
+                        },
+                      });
+                    }}
+                  />
+                }
                 label={gettext("Correct answer?")}
-                onChange={() => {
-                  if (form.answer_choice.correct) {
-                    const { expert_answer, ..._answer_choice_form } = {
-                      ...form.answer_choice,
-                    };
-                    setForm(i, {
-                      ...form,
-                      answer_choice: {
-                        ..._answer_choice_form,
-                        correct: false,
-                      },
-                    });
-                    return;
-                  }
-                  setForm(i, {
-                    ...form,
-                    answer_choice: {
-                      ...form.answer_choice,
-                      correct: !form.answer_choice.correct,
-                      expert_answer: { rationale: "" },
-                    },
-                  });
-                }}
-                value={form.answer_choice.correct}
               />
             </Stack>
             <Divider />
@@ -122,21 +125,28 @@ function Answer({
                   />
                 ) : null}
 
-                <CustomEditorField
-                  defaultValue=""
-                  EditorIcons={EditorIcons}
-                  setValue={(value) =>
-                    setForm(i, {
-                      ...form,
-                      answer_choice: {
-                        ...form.answer_choice,
-                        sample_answer: { rationale: value },
-                      },
-                    })
-                  }
-                  title={gettext("Sample answer *")}
-                  value={form.answer_choice.sample_answer?.rationale || ""}
-                />
+                {form.answer_choice.sample_answers.map((s, j) => (
+                  <CustomEditorField
+                    defaultValue=""
+                    key={j}
+                    EditorIcons={EditorIcons}
+                    setValue={(value) => {
+                      const _sample_answers = [
+                        ...form.answer_choice.sample_answers,
+                      ];
+                      _sample_answers[j] = { rationale: value };
+                      setForm(i, {
+                        ...form,
+                        answer_choice: {
+                          ...form.answer_choice,
+                          sample_answers: [..._sample_answers],
+                        },
+                      });
+                    }}
+                    title={gettext("Sample answer *")}
+                    value={s.rationale || ""}
+                  />
+                ))}
               </Stack>
             </CardContent>
           </Card>

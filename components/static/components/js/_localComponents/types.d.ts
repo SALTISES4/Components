@@ -135,8 +135,10 @@ type QuestionPeerImpact = {
 
 export type AnswerChoiceType = {
   correct: boolean;
+  expert_answer: { expert: true; pk: number; rationale: string } | undefined;
   label: string;
   question: number;
+  sample_answers: { expert: false; pk: number; rationale: string }[];
   text: string;
 };
 

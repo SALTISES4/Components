@@ -233,8 +233,8 @@ export type AnswerChoiceForm = {
   answer_choice: {
     correct: boolean;
     text: string;
-    sample_answer: { rationale: string };
-    expert_answer?: { rationale: string };
+    sample_answers: { pk?: number; rationale: string }[];
+    expert_answer?: { pk?: number; rationale: string };
   };
 };
 

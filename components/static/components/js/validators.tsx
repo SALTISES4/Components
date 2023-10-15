@@ -134,12 +134,11 @@ export const answerChoiceValidator = (answerChoice: AnswerChoiceForm) => {
   return (
     purifyText(answerChoice.answer_choice.text.trim()).length > 0 &&
     lengthValidator(answerChoice.answer_choice.text.trim(), 1, 500) &&
-    purifyText(answerChoice.answer_choice.sample_answer.rationale.trim())
-      .length > 0 &&
-    lengthValidator(
-      answerChoice.answer_choice.sample_answer.rationale.trim(),
-      1,
-      4000,
+    answerChoice.answer_choice.sample_answers.every(
+      (ac) => purifyText(ac.rationale.trim()).length > 0,
+    ) &&
+    answerChoice.answer_choice.sample_answers.every((ac) =>
+      lengthValidator(ac.rationale.trim(), 1, 4000),
     ) &&
     (answerChoice.answer_choice.correct
       ? answerChoice.answer_choice.expert_answer &&

@@ -59,7 +59,7 @@ export class App extends Component<
           answer_choice: {
             correct: false,
             text: "",
-            sample_answer: { rationale: "" },
+            sample_answers: [{ rationale: "" }],
           },
         },
         {
@@ -67,7 +67,7 @@ export class App extends Component<
           answer_choice: {
             correct: false,
             text: "",
-            sample_answer: { rationale: "" },
+            sample_answers: [{ rationale: "" }],
           },
         },
       ],
@@ -125,10 +125,12 @@ export class App extends Component<
           JSON.stringify(e.answer_choice.correct),
         );
         formdata.append(`answerchoice_set[${i}]text`, e.answer_choice.text);
-        formdata.append(
-          `answerchoice_set[${i}]sample_answer.rationale`,
-          e.answer_choice.sample_answer.rationale,
-        );
+        e.answer_choice.sample_answers.forEach((s, j) => {
+          formdata.append(
+            `answerchoice_set[${i}]sample_answers[${j}]rationale`,
+            s.rationale,
+          );
+        });
         if (e.answer_choice.expert_answer) {
           formdata.append(
             `answerchoice_set[${i}]expert_answer.rationale`,
@@ -168,6 +170,15 @@ export class App extends Component<
 
       this.setState(
         {
+          answerChoiceCounter: question.answerchoice_set.length,
+          answerChoiceForm: question.answerchoice_set.map(
+            (answer_choice, i) => {
+              return {
+                id: i,
+                answer_choice,
+              };
+            },
+          ),
           questionForm: {
             answer_style: question.answer_style || AnswerStyles.Alphabetic,
             categories: question.category
@@ -382,7 +393,7 @@ export class App extends Component<
                       answer_choice: {
                         correct: false,
                         text: "",
-                        sample_answer: { rationale: "" },
+                        sample_answers: [{ rationale: "" }],
                       },
                     });
                     this.setState({

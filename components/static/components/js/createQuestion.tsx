@@ -148,14 +148,24 @@ export class App extends Component<
   sync = async (pk: number) => {
     console.info(`Fetching data for question ${pk}`);
     try {
+      // Fetch question data
       const question = (await get(
         `${this.props.urls.create + this.props.pk}/`,
       )) as QuestionType;
-      // if (question.image) {
-      //   const file = await get(question.image);
-      //   console.info(file);
-      // }
-      console.info("HERE");
+
+      // Fetch image file, if exists
+      let file;
+      if (question.image) {
+        const blob = (await get(question.image)) as unknown as Blob;
+        const filename = question.image
+          .split("/")
+          .pop()
+          ?.split("_")
+          .slice(1)
+          .join("_");
+        file = new File([blob], filename || "", { type: blob.type });
+      }
+
       this.setState(
         {
           questionForm: {
@@ -167,7 +177,7 @@ export class App extends Component<
               ? question.collaborators.map((c) => c.username)
               : [],
             discipline: question.discipline ? question.discipline.pk : null,
-            image: undefined,
+            image: file,
             image_alt_text: question.image_alt_text,
             rationale_selection_algorithm:
               question.rationale_selection_algorithm ||

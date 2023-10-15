@@ -7,11 +7,19 @@ function getCsrfToken() {
 }
 
 async function handleResponse(response: Response) {
+  // TODO: Add response.ok check?
   if (
     response.status == 200 || // OK
     response.status == 201 // CREATED
   ) {
-    return await response.json();
+    try {
+      // Try to return json data
+      const _response = response.clone();
+      return await _response.json();
+    } catch {
+      // Try to return a file
+      return await response.blob();
+    }
   }
 
   if (response.status == 204) {

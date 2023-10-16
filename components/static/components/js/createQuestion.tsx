@@ -73,9 +73,9 @@ export class App extends Component<
       ],
       questionForm: {
         answer_style: AnswerStyles.Alphabetic,
-        categories: [],
-        collaborators: [],
-        discipline: null,
+        category_pk: [],
+        collaborators_pk: [],
+        discipline_pk: null,
         image: undefined,
         image_alt_text: "",
         rationale_selection_algorithm: "prefer_expert_and_highly_voted",
@@ -116,7 +116,12 @@ export class App extends Component<
       Object.entries(this.state.questionForm).map((e) => {
         // Don't send fields that are undefined, null, empty [], etc.
         if (e[1]) {
-          formdata.append(e[0], e[1]);
+          // Spread arrays
+          if (Array.isArray(e[1])) {
+            e[1].map((v) => formdata.append(e[0], v));
+          } else {
+            formdata.append(e[0], e[1]);
+          }
         }
       });
       this.state.answerChoiceForm.forEach((e, i) => {
@@ -181,13 +186,13 @@ export class App extends Component<
           ),
           questionForm: {
             answer_style: question.answer_style || AnswerStyles.Alphabetic,
-            categories: question.category
+            category_pk: question.category
               ? question.category.map((c) => c.title)
               : [],
-            collaborators: question.collaborators
+            collaborators_pk: question.collaborators
               ? question.collaborators.map((c) => c.username)
               : [],
-            discipline: question.discipline ? question.discipline.pk : null,
+            discipline_pk: question.discipline ? question.discipline.pk : null,
             image: file,
             image_alt_text: question.image_alt_text,
             rationale_selection_algorithm:
@@ -326,21 +331,21 @@ export class App extends Component<
 
                   <Indexing
                     gettext={this.props.gettext}
-                    categoryValues={this.state.questionForm.categories}
-                    disciplineValue={this.state.questionForm.discipline}
-                    setCategoryValues={(categories) =>
+                    categoryValues={this.state.questionForm.category_pk}
+                    disciplineValue={this.state.questionForm.discipline_pk}
+                    setCategoryValues={(category_pk) =>
                       this.setState({
                         questionForm: {
                           ...this.state.questionForm,
-                          categories,
+                          category_pk,
                         },
                       })
                     }
-                    setDisciplineValue={(discipline) =>
+                    setDisciplineValue={(discipline_pk) =>
                       this.setState({
                         questionForm: {
                           ...this.state.questionForm,
-                          discipline,
+                          discipline_pk,
                         },
                       })
                     }
@@ -352,16 +357,16 @@ export class App extends Component<
 
                   <Collaborators
                     gettext={this.props.gettext}
-                    setUserValues={(collaborators) =>
+                    setUserValues={(collaborators_pk) =>
                       this.setState({
                         questionForm: {
                           ...this.state.questionForm,
-                          collaborators,
+                          collaborators_pk,
                         },
                       })
                     }
                     url={this.props.urls.teachers}
-                    userValues={this.state.questionForm.collaborators}
+                    userValues={this.state.questionForm.collaborators_pk}
                   />
                 </Stack>
               </Fragment>

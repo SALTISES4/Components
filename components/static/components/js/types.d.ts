@@ -243,9 +243,9 @@ export type CreateQuestionAppState = {
   answerChoiceForm: AnswerChoiceForm[];
   questionForm: {
     answer_style: AnswerStyles;
-    categories: string[];
-    collaborators: string[];
-    discipline: number | null;
+    category_pk: string[];
+    collaborators_pk: string[];
+    discipline_pk: number | null;
     image: File | undefined;
     image_alt_text: string;
     rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms;

@@ -131,12 +131,12 @@ export class App extends Component<
             s.rationale,
           );
         });
-        if (e.answer_choice.expert_answer) {
+        e.answer_choice.expert_answers?.map((ex, j) => {
           formdata.append(
-            `answerchoice_set[${i}]expert_answer.rationale`,
-            e.answer_choice.expert_answer.rationale,
+            `answerchoice_set[${i}]expert_answers[${j}]rationale`,
+            ex.rationale,
           );
-        }
+        });
       });
       const url = this.props.urls.create;
       const question = await submitFormData(url, formdata, "POST");

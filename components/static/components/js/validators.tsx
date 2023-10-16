@@ -141,13 +141,12 @@ export const answerChoiceValidator = (answerChoice: AnswerChoiceForm) => {
       lengthValidator(ac.rationale.trim(), 1, 4000),
     ) &&
     (answerChoice.answer_choice.correct
-      ? answerChoice.answer_choice.expert_answer &&
-        purifyText(answerChoice.answer_choice.expert_answer.rationale.trim())
-          .length > 0 &&
-        lengthValidator(
-          answerChoice.answer_choice.expert_answer.rationale.trim(),
-          1,
-          4000,
+      ? answerChoice.answer_choice.expert_answers &&
+        answerChoice.answer_choice.expert_answers.every(
+          (ac) => purifyText(ac.rationale.trim()).length > 0,
+        ) &&
+        answerChoice.answer_choice.expert_answers.every((ac) =>
+          lengthValidator(ac.rationale.trim(), 1, 4000),
         )
       : true)
   );

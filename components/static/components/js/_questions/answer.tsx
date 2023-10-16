@@ -62,7 +62,8 @@ function Answer({
                     checked={form.answer_choice.correct}
                     onChange={() => {
                       if (form.answer_choice.correct) {
-                        const { expert_answer, ..._answer_choice_form } = {
+                        /* eslint-disable @typescript-eslint/no-unused-vars */
+                        const { expert_answers, ..._answer_choice_form } = {
                           ...form.answer_choice,
                         };
                         setForm(i, {
@@ -79,7 +80,7 @@ function Answer({
                         answer_choice: {
                           ...form.answer_choice,
                           correct: !form.answer_choice.correct,
-                          expert_answer: { rationale: "" },
+                          expert_answers: [{ rationale: "" }],
                         },
                       });
                     }}
@@ -107,23 +108,30 @@ function Answer({
                   value={form.answer_choice.text}
                 />
 
-                {form.answer_choice.correct ? (
-                  <CustomEditorField
-                    defaultValue=""
-                    EditorIcons={EditorIcons}
-                    setValue={(value) =>
-                      setForm(i, {
-                        ...form,
-                        answer_choice: {
-                          ...form.answer_choice,
-                          expert_answer: { rationale: value },
-                        },
-                      })
-                    }
-                    title={gettext("Expert rationale *")}
-                    value={form.answer_choice.expert_answer?.rationale || ""}
-                  />
-                ) : null}
+                {form.answer_choice.correct
+                  ? form.answer_choice.expert_answers?.map((e, j) => (
+                      <CustomEditorField
+                        defaultValue=""
+                        key={j}
+                        EditorIcons={EditorIcons}
+                        setValue={(value) => {
+                          const _expert_answers = [
+                            ...(form.answer_choice.expert_answers || []),
+                          ];
+                          _expert_answers[j] = { rationale: value };
+                          setForm(i, {
+                            ...form,
+                            answer_choice: {
+                              ...form.answer_choice,
+                              expert_answers: [..._expert_answers],
+                            },
+                          });
+                        }}
+                        title={gettext("Expert rationale *")}
+                        value={e.rationale || ""}
+                      />
+                    ))
+                  : null}
 
                 {form.answer_choice.sample_answers.map((s, j) => (
                   <CustomEditorField

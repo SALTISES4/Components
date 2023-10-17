@@ -173,6 +173,7 @@ export type QuestionType = {
     addable_assignments?: string;
     matrix?: string;
     rationales?: string;
+    update: string;
   };
   user: UserType;
   video_url: string;

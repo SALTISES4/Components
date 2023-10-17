@@ -113,15 +113,18 @@ export class App extends Component<
       // TODO: ONLY SEND IMAGE FILE IF CHANGED!
       // We may be sending a file along with data so convert JSON to FormData
       const formdata = new FormData();
-      Object.entries(this.state.questionForm).map((e) => {
-        // Don't send fields that are undefined, null, empty [], etc.
-        if (e[1]) {
-          // Spread arrays
-          if (Array.isArray(e[1])) {
-            e[1].map((v) => formdata.append(e[0], v));
+      Object.entries(this.state.questionForm).forEach((e) => {
+        // Spread arrays
+        if (Array.isArray(e[1])) {
+          if (e[1].length == 0) {
+            // FormData doesn't support idea of an empty array
+            // "[]" signifies "None" on the backend
+            formdata.append(e[0], JSON.stringify([]));
           } else {
-            formdata.append(e[0], e[1]);
+            e[1].forEach((v) => formdata.append(e[0], v));
           }
+        } else {
+          formdata.append(e[0], e[1]);
         }
       });
       this.state.answerChoiceForm.forEach((e, i) => {
@@ -136,17 +139,41 @@ export class App extends Component<
             s.rationale,
           );
         });
-        e.answer_choice.expert_answers?.map((ex, j) => {
+        e.answer_choice.expert_answers?.forEach((ex, j) => {
           formdata.append(
             `answerchoice_set[${i}]expert_answers[${j}]rationale`,
             ex.rationale,
           );
         });
       });
-      const url = this.props.urls.create;
-      const question = await submitFormData(url, formdata, "POST");
-      this.setState({ waiting: false });
-      console.info(question);
+
+      if (this.props.pk) {
+        // Update question
+        const url = `${this.props.urls.create}${this.props.pk}/`;
+        const question = (await submitFormData(
+          url,
+          formdata,
+          "PATCH",
+        )) as QuestionType;
+
+        this.updateForms(question);
+        this.setState({ waiting: false });
+      } else {
+        // Create question
+        const url = this.props.urls.create;
+        const question = (await submitFormData(
+          url,
+          formdata,
+          "POST",
+        )) as QuestionType;
+
+        if (question.urls?.update) {
+          const url = new URL(question.urls.update);
+          if (url.origin == window.origin) {
+            window.location.assign(question.urls.update);
+          }
+        }
+      }
     } catch {
       this.setState({ waiting: false });
     }
@@ -160,54 +187,56 @@ export class App extends Component<
         `${this.props.urls.create + this.props.pk}/`,
       )) as QuestionType;
 
-      // Fetch image file, if exists
-      let file;
-      if (question.image) {
-        const blob = (await get(question.image)) as unknown as Blob;
-        const filename = question.image
-          .split("/")
-          .pop()
-          ?.split("_")
-          .slice(1)
-          .join("_");
-        file = new File([blob], filename || "", { type: blob.type });
-      }
-
-      this.setState(
-        {
-          answerChoiceCounter: question.answerchoice_set.length,
-          answerChoiceForm: question.answerchoice_set.map(
-            (answer_choice, i) => {
-              return {
-                id: i,
-                answer_choice,
-              };
-            },
-          ),
-          questionForm: {
-            answer_style: question.answer_style || AnswerStyles.Alphabetic,
-            category_pk: question.category
-              ? question.category.map((c) => c.title)
-              : [],
-            collaborators_pk: question.collaborators
-              ? question.collaborators.map((c) => c.username)
-              : [],
-            discipline_pk: question.discipline ? question.discipline.pk : null,
-            image: file,
-            image_alt_text: question.image_alt_text,
-            rationale_selection_algorithm:
-              question.rationale_selection_algorithm ||
-              "prefer_expert_and_highly_voted",
-            sequential_review: false,
-            text: question.text,
-            title: question.title,
-            type: question.type,
-            video_url: question.video_url,
-          },
-        },
-        () => console.info(this.state),
-      );
+      this.updateForms(question);
     } catch {}
+  };
+
+  updateForms = async (question: QuestionType) => {
+    // Fetch image file, if exists
+    let file;
+    if (question.image) {
+      const blob = (await get(question.image)) as unknown as Blob;
+      const filename = question.image
+        .split("/")
+        .pop()
+        ?.split("_")
+        .slice(1)
+        .join("_");
+      file = new File([blob], filename || "", { type: blob.type });
+    }
+
+    this.setState(
+      {
+        answerChoiceCounter: question.answerchoice_set.length,
+        answerChoiceForm: question.answerchoice_set.map((answer_choice, i) => {
+          return {
+            id: i,
+            answer_choice,
+          };
+        }),
+        questionForm: {
+          answer_style: question.answer_style || AnswerStyles.Alphabetic,
+          category_pk: question.category
+            ? question.category.map((c) => c.title)
+            : [],
+          collaborators_pk: question.collaborators
+            ? question.collaborators.map((c) => c.username)
+            : [],
+          discipline_pk: question.discipline ? question.discipline.pk : null,
+          image: file,
+          image_alt_text: question.image_alt_text,
+          rationale_selection_algorithm:
+            question.rationale_selection_algorithm ||
+            "prefer_expert_and_highly_voted",
+          sequential_review: false,
+          text: question.text,
+          title: question.title,
+          type: question.type,
+          video_url: question.video_url,
+        },
+      },
+      () => console.info(this.state),
+    );
   };
 
   componentDidMount = () => {
@@ -243,7 +272,7 @@ export class App extends Component<
           <Main>
             <Typography variant="h1" align="left">
               {this.props.pk
-                ? this.props.gettext("Update question")
+                ? `${this.props.gettext("Update question")} ${this.props.pk}`
                 : this.props.gettext("Create question")}
             </Typography>
             {this.state.step == 1 ? (

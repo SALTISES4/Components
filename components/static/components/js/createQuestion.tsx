@@ -117,8 +117,8 @@ export class App extends Component<
         // Spread arrays
         if (Array.isArray(e[1])) {
           if (e[1].length == 0) {
-            // FormData doesn't support idea of an empty array
-            // "[]" signifies "None" on the backend
+            // FormData doesn't support idea of an empty array, but PATCH needs it
+            // Workaround is to have "[]" signify "None" on the backend
             formdata.append(e[0], JSON.stringify([]));
           } else {
             e[1].forEach((v) => formdata.append(e[0], v));
@@ -133,17 +133,35 @@ export class App extends Component<
           JSON.stringify(e.answer_choice.correct),
         );
         formdata.append(`answerchoice_set[${i}]text`, e.answer_choice.text);
+        if (e.answer_choice.pk) {
+          formdata.append(
+            `answerchoice_set[${i}]pk`,
+            JSON.stringify(e.answer_choice.pk),
+          );
+        }
         e.answer_choice.sample_answers.forEach((s, j) => {
           formdata.append(
             `answerchoice_set[${i}]sample_answers[${j}]rationale`,
             s.rationale,
           );
+          if (s.pk) {
+            formdata.append(
+              `answerchoice_set[${i}]sample_answers[${j}]pk`,
+              JSON.stringify(s.pk),
+            );
+          }
         });
         e.answer_choice.expert_answers?.forEach((ex, j) => {
           formdata.append(
             `answerchoice_set[${i}]expert_answers[${j}]rationale`,
             ex.rationale,
           );
+          if (ex.pk) {
+            formdata.append(
+              `answerchoice_set[${i}]expert_answers[${j}]pk`,
+              JSON.stringify(ex.pk),
+            );
+          }
         });
       });
 

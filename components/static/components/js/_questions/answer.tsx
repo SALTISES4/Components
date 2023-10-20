@@ -118,7 +118,7 @@ function Answer({
                           const _expert_answers = [
                             ...(form.answer_choice.expert_answers || []),
                           ];
-                          _expert_answers[j] = { rationale: value };
+                          _expert_answers[j].rationale = value;
                           setForm(i, {
                             ...form,
                             answer_choice: {
@@ -127,34 +127,77 @@ function Answer({
                             },
                           });
                         }}
-                        title={gettext("Expert rationale *")}
+                        title={
+                          gettext("Expert rationale") + (j == 0 ? " *" : "")
+                        }
                         value={e.rationale || ""}
                       />
                     ))
                   : null}
 
                 {form.answer_choice.sample_answers.map((s, j) => (
-                  <CustomEditorField
-                    defaultValue=""
-                    key={j}
-                    EditorIcons={EditorIcons}
-                    setValue={(value) => {
-                      const _sample_answers = [
-                        ...form.answer_choice.sample_answers,
-                      ];
-                      _sample_answers[j] = { rationale: value };
-                      setForm(i, {
-                        ...form,
-                        answer_choice: {
-                          ...form.answer_choice,
-                          sample_answers: [..._sample_answers],
-                        },
-                      });
-                    }}
-                    title={gettext("Sample answer *")}
-                    value={s.rationale || ""}
-                  />
+                  <Fragment key={j}>
+                    <CustomEditorField
+                      defaultValue=""
+                      EditorIcons={EditorIcons}
+                      setValue={(value) => {
+                        const _sample_answers = [
+                          ...form.answer_choice.sample_answers,
+                        ];
+                        _sample_answers[j].rationale = value;
+                        setForm(i, {
+                          ...form,
+                          answer_choice: {
+                            ...form.answer_choice,
+                            sample_answers: [..._sample_answers],
+                          },
+                        });
+                      }}
+                      title={gettext("Sample answer") + (j == 0 ? " *" : "")}
+                      value={s.rationale || ""}
+                    />
+                    {form.answer_choice.sample_answers.length > 1 ? (
+                      <IconButton
+                        color={"primary"}
+                        sx={{ mb: "1px" }}
+                        onClick={() => {
+                          const _sample_answers = [
+                            ...form.answer_choice.sample_answers,
+                          ];
+                          _sample_answers.splice(j, 1);
+                          setForm(i, {
+                            ...form,
+                            answer_choice: {
+                              ...form.answer_choice,
+                              sample_answers: [..._sample_answers],
+                            },
+                          });
+                        }}
+                      >
+                        <RemoveCircleIcon fontSize="large" />
+                      </IconButton>
+                    ) : null}
+                  </Fragment>
                 ))}
+                <IconButton
+                  color={"primary"}
+                  sx={{ mb: "1px" }}
+                  onClick={() => {
+                    const _sample_answers = [
+                      ...form.answer_choice.sample_answers,
+                    ];
+                    _sample_answers.push({ rationale: "" });
+                    setForm(i, {
+                      ...form,
+                      answer_choice: {
+                        ...form.answer_choice,
+                        sample_answers: [..._sample_answers],
+                      },
+                    });
+                  }}
+                >
+                  <AddCircleIcon fontSize="large" />
+                </IconButton>
               </Stack>
             </CardContent>
           </Card>

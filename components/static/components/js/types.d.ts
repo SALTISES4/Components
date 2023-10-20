@@ -232,6 +232,7 @@ export type AnswerChoiceForm = {
   id: number;
   answer_choice: {
     correct: boolean;
+    pk?: number;
     text: string;
     sample_answers: { pk?: number; rationale: string }[];
     expert_answers?: { pk?: number; rationale: string }[];

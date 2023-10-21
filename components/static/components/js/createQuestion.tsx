@@ -227,6 +227,17 @@ export class App extends Component<
       {
         answerChoiceCounter: question.answerchoice_set.length,
         answerChoiceForm: question.answerchoice_set.map((answer_choice, i) => {
+          // Invalid questions may be missing sample or expert answers
+          // TODO: Fix typescript errors
+          if (answer_choice["sample_answers"].length == 0) {
+            answer_choice["sample_answers"].push({ rationale: "" });
+          }
+          if (
+            answer_choice["correct"] &&
+            answer_choice["expert_answers"].length == 0
+          ) {
+            answer_choice["expert_answers"].push({ rationale: "" });
+          }
           return {
             id: i,
             answer_choice,

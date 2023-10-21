@@ -201,25 +201,27 @@ function Answer({
               </Stack>
             </CardContent>
           </Card>
-          <CustomAddBox>
-            {forms.length > 2 ? (
+          {i == forms.length - 1 ? (
+            <CustomAddBox>
+              {forms.length > 2 ? (
+                <IconButton
+                  color={"primary"}
+                  sx={{ mb: "1px" }}
+                  onClick={() => deleteForm(i)}
+                >
+                  <RemoveCircleIcon fontSize="large" />
+                </IconButton>
+              ) : null}
+
               <IconButton
                 color={"primary"}
-                sx={{ mb: "1px" }}
-                onClick={() => deleteForm(i)}
+                sx={{ mt: "1px" }}
+                onClick={() => addForm(i)}
               >
-                <RemoveCircleIcon fontSize="large" />
+                <AddCircleIcon fontSize="large" />
               </IconButton>
-            ) : null}
-
-            <IconButton
-              color={"primary"}
-              sx={{ mt: "1px" }}
-              onClick={() => addForm(i)}
-            >
-              <AddCircleIcon fontSize="large" />
-            </IconButton>
-          </CustomAddBox>
+            </CustomAddBox>
+          ) : null}
         </Fragment>
       ))}
     </Stack>

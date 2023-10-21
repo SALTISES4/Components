@@ -134,6 +134,8 @@ export const answerChoiceValidator = (answerChoice: AnswerChoiceForm) => {
   return (
     purifyText(answerChoice.answer_choice.text.trim()).length > 0 &&
     lengthValidator(answerChoice.answer_choice.text.trim(), 1, 500) &&
+    answerChoice.answer_choice.sample_answers !== undefined &&
+    answerChoice.answer_choice.sample_answers.length > 0 &&
     answerChoice.answer_choice.sample_answers.every(
       (ac) => purifyText(ac.rationale.trim()).length > 0,
     ) &&
@@ -141,7 +143,8 @@ export const answerChoiceValidator = (answerChoice: AnswerChoiceForm) => {
       lengthValidator(ac.rationale.trim(), 1, 4000),
     ) &&
     (answerChoice.answer_choice.correct
-      ? answerChoice.answer_choice.expert_answers &&
+      ? answerChoice.answer_choice.expert_answers !== undefined &&
+        answerChoice.answer_choice.expert_answers.length > 0 &&
         answerChoice.answer_choice.expert_answers.every(
           (ac) => purifyText(ac.rationale.trim()).length > 0,
         ) &&

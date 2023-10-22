@@ -139,6 +139,7 @@ function Answer({
                   <Fragment key={j}>
                     <CustomEditorField
                       defaultValue=""
+                      key={`${form.answer_choice.pk}-${s.formId}`}
                       EditorIcons={EditorIcons}
                       setValue={(value) => {
                         const _sample_answers = [

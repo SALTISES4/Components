@@ -137,6 +137,7 @@ export type AnswerChoiceType = {
   correct: boolean;
   expert_answers?: { expert: true; pk: number; rationale: string }[];
   label: string;
+  pk: number;
   question: number;
   sample_answers: { expert: false; pk: number; rationale: string }[];
   text: string;

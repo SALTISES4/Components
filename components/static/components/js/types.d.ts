@@ -232,10 +232,10 @@ export type AnswerChoiceForm = {
   id: number;
   answer_choice: {
     correct: boolean;
+    expert_answers?: { formId: number; pk?: number; rationale: string }[];
     pk?: number;
+    sample_answers: { formId: number; pk?: number; rationale: string }[];
     text: string;
-    sample_answers: { pk?: number; rationale: string }[];
-    expert_answers?: { pk?: number; rationale: string }[];
   };
 };
 

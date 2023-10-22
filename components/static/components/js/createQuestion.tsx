@@ -38,7 +38,11 @@ import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
 //types
-import { CreateQuestionAppProps, CreateQuestionAppState } from "./types";
+import {
+  AnswerChoiceForm,
+  CreateQuestionAppProps,
+  CreateQuestionAppState,
+} from "./types";
 import {
   AnswerStyles,
   RationaleSelectionAlgorithms,
@@ -59,7 +63,7 @@ export class App extends Component<
           answer_choice: {
             correct: false,
             text: "",
-            sample_answers: [{ rationale: "" }],
+            sample_answers: [{ formId: 1, rationale: "" }],
           },
         },
         {
@@ -67,7 +71,7 @@ export class App extends Component<
           answer_choice: {
             correct: false,
             text: "",
-            sample_answers: [{ rationale: "" }],
+            sample_answers: [{ formId: 1, rationale: "" }],
           },
         },
       ],
@@ -230,13 +234,13 @@ export class App extends Component<
           // Invalid questions may be missing sample or expert answers
           // TODO: Fix typescript errors
           if (answer_choice["sample_answers"].length == 0) {
-            answer_choice["sample_answers"].push({ rationale: "" });
+            answer_choice["sample_answers"].push({ formId: 1, rationale: "" });
           }
           if (
             answer_choice["correct"] &&
-            answer_choice["expert_answers"].length == 0
+            answer_choice["expert_answers"]?.length == 0
           ) {
-            answer_choice["expert_answers"].push({ rationale: "" });
+            answer_choice["expert_answers"].push({ formId: 1, rationale: "" });
           }
           return {
             id: i,
@@ -456,7 +460,7 @@ export class App extends Component<
                       answer_choice: {
                         correct: false,
                         text: "",
-                        sample_answers: [{ rationale: "" }],
+                        sample_answers: [{ formId: 1, rationale: "" }],
                       },
                     });
                     this.setState({

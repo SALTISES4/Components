@@ -244,7 +244,7 @@ export type CreateQuestionAppState = {
     category_pk: string[];
     collaborators_pk: string[];
     discipline_pk: number | null;
-    image: File | undefined;
+    image: File;
     image_alt_text: string;
     pk?: number;
     rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms;

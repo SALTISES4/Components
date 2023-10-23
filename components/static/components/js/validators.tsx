@@ -53,8 +53,8 @@ export const questionAnswerStyleValidator = (
   return answer_style in AnswerStyles;
 };
 
-export const questionImageValidator = (image: File | undefined) => {
-  if (image === undefined) {
+export const questionImageValidator = (image: File) => {
+  if (image.size == 0) {
     return true;
   }
   const extension = image.type.toLowerCase().split("/").at(-1);

@@ -78,7 +78,7 @@ export class App extends Component<
         collaborators_pk: [],
         discipline_pk: null,
         pk: undefined,
-        image: undefined,
+        image: new File([], ""),
         image_alt_text: "",
         rationale_selection_algorithm: "prefer_expert_and_highly_voted",
         sequential_review: false,
@@ -112,7 +112,6 @@ export class App extends Component<
     console.info(this.state.answerChoiceForm);
     this.setState({ waiting: true });
     try {
-      // TODO: ONLY SEND IMAGE FILE IF CHANGED!
       // We may be sending a file along with data so convert JSON to FormData
       const formdata = new FormData();
       Object.entries(this.state.questionForm).forEach((e) => {
@@ -220,9 +219,9 @@ export class App extends Component<
         .slice(1)
         .join("_");
       file = new File([blob], filename || "", { type: blob.type });
+    } else {
+      file = new File([], "");
     }
-
-    console.info(question.answerchoice_set);
 
     this.setState(
       {
@@ -299,7 +298,7 @@ export class App extends Component<
 
   validateQuestionForm = () =>
     questionAnswerStyleValidator(this.state.questionForm.answer_style) &&
-    (this.state.questionForm.image
+    (this.state.questionForm.image.size > 0
       ? questionImageValidator(this.state.questionForm.image) &&
         questionImageAltTextValidator(this.state.questionForm.image_alt_text)
       : true) &&

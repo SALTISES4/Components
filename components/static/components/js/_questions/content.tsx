@@ -64,7 +64,7 @@ function Content({
   EditorIcons: EditorIconsType;
   form: {
     answer_style: AnswerStyles;
-    image: File | undefined;
+    image: File;
     image_alt_text: string;
     pk?: number;
     rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms;
@@ -75,7 +75,7 @@ function Content({
     video_url: string;
   };
   setAnswerStyle: (a: AnswerStyles) => void;
-  setImage: (a: File | undefined, cb: () => void) => void;
+  setImage: (a: File, cb: () => void) => void;
   setImageAltText: (a: string) => void;
   setRationaleSectionAlgorithm: (
     a: keyof typeof RationaleSelectionAlgorithms,
@@ -97,9 +97,9 @@ function Content({
 
   const [imagePreview, setImagePreview] = useState("");
 
-  const setImageAndPreview = (file: File | undefined) => {
-    setImage(file, () => (file === undefined ? setImageAltText("") : null));
-    if (file) {
+  const setImageAndPreview = (file: File) => {
+    setImage(file, () => (file.size == 0 ? setImageAltText("") : null));
+    if (file.size > 0) {
       reader.readAsDataURL(file);
     }
   };
@@ -266,7 +266,7 @@ function Content({
                 }
               />
             </Box>
-            {form.image === undefined ? (
+            {form.image.size == 0 ? (
               <Button
                 onClick={() => imageUpload.current.click()}
                 variant="outlined"
@@ -290,7 +290,7 @@ function Content({
                               aria-label="close"
                               color="error"
                               onClick={() => {
-                                setImageAndPreview(undefined);
+                                setImageAndPreview(new File([], ""));
                                 imageUpload.current.value = null;
                               }}
                             >
@@ -310,7 +310,7 @@ function Content({
                           aria-label="delete"
                           color="primary"
                           onClick={() => {
-                            setImageAndPreview(undefined);
+                            setImageAndPreview(new File([], ""));
                             imageUpload.current.value = null;
                           }}
                           sx={{
@@ -344,7 +344,7 @@ function Content({
             onChange={() => setImageAndPreview(imageUpload.current.files[0])}
             sx={{ display: "none" }}
           />
-          {form.image && questionImageValidator(form.image) ? (
+          {form.image.size > 0 && questionImageValidator(form.image) ? (
             <Box>
               <CustomTextField
                 gettext={gettext}

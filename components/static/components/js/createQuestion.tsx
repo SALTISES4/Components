@@ -1,6 +1,8 @@
 import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
+import { v1 as uuid } from "uuid";
+
 import { get, submitFormData } from "./ajax";
 
 import {
@@ -56,23 +58,18 @@ export class App extends Component<
   constructor(props: CreateQuestionAppProps) {
     super(props);
     this.state = {
-      answerChoiceCounter: 2,
       answerChoiceForm: [
         {
-          id: 1,
-          answer_choice: {
-            correct: false,
-            text: "",
-            sample_answers: [{ formId: 1, rationale: "" }],
-          },
+          correct: false,
+          formId: uuid(),
+          text: "",
+          sample_answers: [{ formId: uuid(), rationale: "" }],
         },
         {
-          id: 2,
-          answer_choice: {
-            correct: false,
-            text: "",
-            sample_answers: [{ formId: 1, rationale: "" }],
-          },
+          correct: false,
+          formId: uuid(),
+          text: "",
+          sample_answers: [{ formId: uuid(), rationale: "" }],
         },
       ],
       questionForm: {
@@ -122,7 +119,7 @@ export class App extends Component<
         if (Array.isArray(e[1])) {
           if (e[1].length == 0) {
             // FormData doesn't support idea of an empty array, but PATCH needs it
-            // Workaround is to have "[]" signify "None" on the backend
+            // Workaround is to have "[]" and "null" signify "None" on the backend
             formdata.append(e[0], JSON.stringify([]));
           } else {
             e[1].forEach((v) => formdata.append(e[0], v));
@@ -134,16 +131,13 @@ export class App extends Component<
       this.state.answerChoiceForm.forEach((e, i) => {
         formdata.append(
           `answerchoice_set[${i}]correct`,
-          JSON.stringify(e.answer_choice.correct),
+          JSON.stringify(e.correct),
         );
-        formdata.append(`answerchoice_set[${i}]text`, e.answer_choice.text);
-        if (e.answer_choice.pk) {
-          formdata.append(
-            `answerchoice_set[${i}]pk`,
-            JSON.stringify(e.answer_choice.pk),
-          );
+        formdata.append(`answerchoice_set[${i}]text`, e.text);
+        if (e.pk) {
+          formdata.append(`answerchoice_set[${i}]pk`, JSON.stringify(e.pk));
         }
-        e.answer_choice.sample_answers.forEach((s, j) => {
+        e.sample_answers.forEach((s, j) => {
           formdata.append(
             `answerchoice_set[${i}]sample_answers[${j}]rationale`,
             s.rationale,
@@ -155,7 +149,7 @@ export class App extends Component<
             );
           }
         });
-        e.answer_choice.expert_answers?.forEach((ex, j) => {
+        e.expert_answers?.forEach((ex, j) => {
           formdata.append(
             `answerchoice_set[${i}]expert_answers[${j}]rationale`,
             ex.rationale,
@@ -227,25 +221,43 @@ export class App extends Component<
       file = new File([blob], filename || "", { type: blob.type });
     }
 
+    console.info(question.answerchoice_set);
+
     this.setState(
       {
-        answerChoiceCounter: question.answerchoice_set.length,
-        answerChoiceForm: question.answerchoice_set.map((answer_choice, i) => {
+        answerChoiceForm: question.answerchoice_set.map((answer_choice) => {
           // Invalid questions may be missing sample or expert answers
-          // TODO: Fix typescript errors
-          if (answer_choice["sample_answers"].length == 0) {
-            answer_choice["sample_answers"].push({ formId: 1, rationale: "" });
+          const _answer_choice: AnswerChoiceForm = {
+            correct: answer_choice.correct,
+            expert_answers:
+              answer_choice.expert_answers?.map((e) => ({
+                formId: uuid(),
+                ...e,
+              })) || [],
+            formId: uuid(),
+            pk: answer_choice.pk,
+            sample_answers: answer_choice.sample_answers.map((s) => ({
+              formId: uuid(),
+              ...s,
+            })),
+            text: answer_choice.text,
+          };
+          if (_answer_choice["sample_answers"].length == 0) {
+            _answer_choice["sample_answers"].push({
+              formId: uuid(),
+              rationale: "",
+            });
           }
           if (
-            answer_choice["correct"] &&
-            answer_choice["expert_answers"]?.length == 0
+            _answer_choice["correct"] &&
+            _answer_choice["expert_answers"]?.length == 0
           ) {
-            answer_choice["expert_answers"].push({ formId: 1, rationale: "" });
+            _answer_choice["expert_answers"].push({
+              formId: uuid(),
+              rationale: "",
+            });
           }
-          return {
-            id: i,
-            answer_choice,
-          };
+          return _answer_choice;
         }),
         questionForm: {
           answer_style: question.answer_style || AnswerStyles.Alphabetic,
@@ -280,7 +292,7 @@ export class App extends Component<
 
   validateAnswerForm = () =>
     this.state.answerChoiceForm.every((ac) => answerChoiceValidator(ac)) && // Every choice is valid
-    this.state.answerChoiceForm.some((ac) => ac.answer_choice.correct) && // At least one choice is correct
+    this.state.answerChoiceForm.some((ac) => ac.correct) && // At least one choice is correct
     this.state.answerChoiceForm.length >= 2; // At least two answer choices
 
   validateQuestionForm = () =>
@@ -456,15 +468,12 @@ export class App extends Component<
                     console.info("Add answer choice form");
                     const _answerChoiceForm = [...this.state.answerChoiceForm];
                     _answerChoiceForm.splice(i + 1, 0, {
-                      id: this.state.answerChoiceCounter + 1,
-                      answer_choice: {
-                        correct: false,
-                        text: "",
-                        sample_answers: [{ formId: 1, rationale: "" }],
-                      },
+                      correct: false,
+                      formId: uuid(),
+                      text: "",
+                      sample_answers: [{ formId: uuid(), rationale: "" }],
                     });
                     this.setState({
-                      answerChoiceCounter: this.state.answerChoiceCounter + 1,
                       answerChoiceForm: [..._answerChoiceForm],
                     });
                   }}

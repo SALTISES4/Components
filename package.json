@@ -36,6 +36,7 @@
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-draft-wysiwyg": "^1.13.4",
     "@types/stylis": "^4.0.2",
+    "@types/uuid": "^9.0.6",
     "@typescript-eslint/eslint-plugin": "^4.28.3",
     "@typescript-eslint/parser": "^4.28.3",
     "eslint": "^7.24.0",
@@ -73,7 +74,8 @@
     "immutable": "^4.3.0",
     "preact": "^10.5.13",
     "react-beautiful-dnd": "^13.1.1",
-    "react-draft-wysiwyg": "^1.15.0"
+    "react-draft-wysiwyg": "^1.15.0",
+    "uuid": "^9.0.1"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"

@@ -1,5 +1,7 @@
 import { Fragment, h } from "preact";
 
+import { v1 as uuid } from "uuid";
+
 import { useTheme } from "@mui/material/styles";
 
 //material ui components
@@ -43,11 +45,11 @@ function Answer({
   return (
     <Stack>
       {forms.map((form, i) => (
-        <Fragment key={form.id}>
+        <Fragment key={form.formId}>
           <Card>
             <Stack direction={"row"} justifyContent={"space-between"}>
               <CardHeader
-                title={"Answer choice"}
+                title={gettext("Answer choice")}
                 avatar={
                   <Avatar sx={{ bgcolor: theme.palette.secondary1.main }}>
                     <Typography fontSize="16px" color="secondary4">
@@ -59,29 +61,23 @@ function Answer({
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={form.answer_choice.correct}
+                    checked={form.correct}
                     onChange={() => {
-                      if (form.answer_choice.correct) {
+                      if (form.correct) {
                         /* eslint-disable @typescript-eslint/no-unused-vars */
                         const { expert_answers, ..._answer_choice_form } = {
-                          ...form.answer_choice,
+                          ...form,
                         };
                         setForm(i, {
-                          ...form,
-                          answer_choice: {
-                            ..._answer_choice_form,
-                            correct: false,
-                          },
+                          ..._answer_choice_form,
+                          correct: false,
                         });
                         return;
                       }
                       setForm(i, {
                         ...form,
-                        answer_choice: {
-                          ...form.answer_choice,
-                          correct: !form.answer_choice.correct,
-                          expert_answers: [{ rationale: "" }],
-                        },
+                        correct: !form.correct,
+                        expert_answers: [{ formId: uuid(), rationale: "" }],
                       });
                     }}
                   />
@@ -98,80 +94,83 @@ function Answer({
                   setValue={(value) =>
                     setForm(i, {
                       ...form,
-                      answer_choice: {
-                        ...form.answer_choice,
-                        text: value,
-                      },
+                      text: value,
                     })
                   }
                   title={gettext("Text *")}
-                  value={form.answer_choice.text}
+                  value={form.text}
                 />
 
-                {form.answer_choice.correct
-                  ? form.answer_choice.expert_answers?.map((e, j) => (
-                      <CustomEditorField
-                        defaultValue=""
-                        key={j}
-                        EditorIcons={EditorIcons}
-                        setValue={(value) => {
-                          const _expert_answers = [
-                            ...(form.answer_choice.expert_answers || []),
-                          ];
-                          _expert_answers[j].rationale = value;
-                          setForm(i, {
-                            ...form,
-                            answer_choice: {
-                              ...form.answer_choice,
+                {form.correct
+                  ? form.expert_answers?.map((e, j) => (
+                      <Fragment key={e.formId}>
+                        <CustomEditorField
+                          defaultValue=""
+                          EditorIcons={EditorIcons}
+                          setValue={(value) => {
+                            const _expert_answers = [
+                              ...(form.expert_answers || []),
+                            ];
+                            _expert_answers[j].rationale = value;
+                            setForm(i, {
+                              ...form,
                               expert_answers: [..._expert_answers],
-                            },
-                          });
-                        }}
-                        title={
-                          gettext("Expert rationale") + (j == 0 ? " *" : "")
-                        }
-                        value={e.rationale || ""}
-                      />
+                            });
+                          }}
+                          title={
+                            gettext("Expert rationale") + (j == 0 ? " *" : "")
+                          }
+                          value={e.rationale || ""}
+                        />
+                        {form.expert_answers &&
+                        form.expert_answers.length > 1 ? (
+                          <IconButton
+                            color={"primary"}
+                            sx={{ mb: "1px" }}
+                            onClick={() => {
+                              const _expert_answers = [
+                                ...(form.expert_answers || []),
+                              ];
+                              _expert_answers.splice(j, 1);
+                              setForm(i, {
+                                ...form,
+                                expert_answers: [..._expert_answers],
+                              });
+                            }}
+                          >
+                            <RemoveCircleIcon fontSize="large" />
+                          </IconButton>
+                        ) : null}
+                      </Fragment>
                     ))
                   : null}
 
-                {form.answer_choice.sample_answers.map((s, j) => (
-                  <Fragment key={j}>
+                {form.sample_answers.map((s, j) => (
+                  <Fragment key={s.formId}>
                     <CustomEditorField
                       defaultValue=""
-                      key={`${form.answer_choice.pk}-${s.formId}`}
                       EditorIcons={EditorIcons}
                       setValue={(value) => {
-                        const _sample_answers = [
-                          ...form.answer_choice.sample_answers,
-                        ];
+                        const _sample_answers = [...form.sample_answers];
                         _sample_answers[j].rationale = value;
                         setForm(i, {
                           ...form,
-                          answer_choice: {
-                            ...form.answer_choice,
-                            sample_answers: [..._sample_answers],
-                          },
+                          sample_answers: [..._sample_answers],
                         });
                       }}
                       title={gettext("Sample answer") + (j == 0 ? " *" : "")}
                       value={s.rationale || ""}
                     />
-                    {form.answer_choice.sample_answers.length > 1 ? (
+                    {form.sample_answers.length > 1 ? (
                       <IconButton
                         color={"primary"}
                         sx={{ mb: "1px" }}
                         onClick={() => {
-                          const _sample_answers = [
-                            ...form.answer_choice.sample_answers,
-                          ];
+                          const _sample_answers = [...form.sample_answers];
                           _sample_answers.splice(j, 1);
                           setForm(i, {
                             ...form,
-                            answer_choice: {
-                              ...form.answer_choice,
-                              sample_answers: [..._sample_answers],
-                            },
+                            sample_answers: [..._sample_answers],
                           });
                         }}
                       >
@@ -184,16 +183,11 @@ function Answer({
                   color={"primary"}
                   sx={{ mb: "1px" }}
                   onClick={() => {
-                    const _sample_answers = [
-                      ...form.answer_choice.sample_answers,
-                    ];
-                    _sample_answers.push({ rationale: "" });
+                    const _sample_answers = [...form.sample_answers];
+                    _sample_answers.push({ formId: uuid(), rationale: "" });
                     setForm(i, {
                       ...form,
-                      answer_choice: {
-                        ...form.answer_choice,
-                        sample_answers: [..._sample_answers],
-                      },
+                      sample_answers: [..._sample_answers],
                     });
                   }}
                 >

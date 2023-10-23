@@ -79,7 +79,8 @@ export class CustomEditor extends Component<
 
     return (
       <Editor
-        editorState={this.state.editorState}
+        // https://github.com/jpuri/react-draft-wysiwyg/issues/652#issuecomment-412786718
+        defaultEditorState={this.state.editorState}
         onEditorStateChange={this.onEditorStateChange}
         wrapperStyle={{
           backgroundColor: "white",

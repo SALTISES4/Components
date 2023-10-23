@@ -132,23 +132,23 @@ export const answerChoiceValidator = (answerChoice: AnswerChoiceForm) => {
   - Check all texts are not "" or whitespace or just tags
   */
   return (
-    purifyText(answerChoice.answer_choice.text.trim()).length > 0 &&
-    lengthValidator(answerChoice.answer_choice.text.trim(), 1, 500) &&
-    answerChoice.answer_choice.sample_answers !== undefined &&
-    answerChoice.answer_choice.sample_answers.length > 0 &&
-    answerChoice.answer_choice.sample_answers.every(
+    purifyText(answerChoice.text.trim()).length > 0 &&
+    lengthValidator(answerChoice.text.trim(), 1, 500) &&
+    answerChoice.sample_answers !== undefined &&
+    answerChoice.sample_answers.length > 0 &&
+    answerChoice.sample_answers.every(
       (ac) => purifyText(ac.rationale.trim()).length > 0,
     ) &&
-    answerChoice.answer_choice.sample_answers.every((ac) =>
+    answerChoice.sample_answers.every((ac) =>
       lengthValidator(ac.rationale.trim(), 1, 4000),
     ) &&
-    (answerChoice.answer_choice.correct
-      ? answerChoice.answer_choice.expert_answers !== undefined &&
-        answerChoice.answer_choice.expert_answers.length > 0 &&
-        answerChoice.answer_choice.expert_answers.every(
+    (answerChoice.correct
+      ? answerChoice.expert_answers !== undefined &&
+        answerChoice.expert_answers.length > 0 &&
+        answerChoice.expert_answers.every(
           (ac) => purifyText(ac.rationale.trim()).length > 0,
         ) &&
-        answerChoice.answer_choice.expert_answers.every((ac) =>
+        answerChoice.expert_answers.every((ac) =>
           lengthValidator(ac.rationale.trim(), 1, 4000),
         )
       : true)

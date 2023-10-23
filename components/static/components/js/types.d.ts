@@ -229,18 +229,15 @@ export type CreateQuestionAppProps = {
 };
 
 export type AnswerChoiceForm = {
-  id: number;
-  answer_choice: {
-    correct: boolean;
-    expert_answers?: { formId: number; pk?: number; rationale: string }[];
-    pk?: number;
-    sample_answers: { formId: number; pk?: number; rationale: string }[];
-    text: string;
-  };
+  correct: boolean;
+  expert_answers?: { formId: string; pk?: number; rationale: string }[];
+  formId: string;
+  pk?: number;
+  sample_answers: { formId: string; pk?: number; rationale: string }[];
+  text: string;
 };
 
 export type CreateQuestionAppState = {
-  answerChoiceCounter: number;
   answerChoiceForm: AnswerChoiceForm[];
   questionForm: {
     answer_style: AnswerStyles;

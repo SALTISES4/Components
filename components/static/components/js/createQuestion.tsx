@@ -77,6 +77,7 @@ export class App extends Component<
         category_pk: [],
         collaborators_pk: [],
         discipline_pk: null,
+        pk: undefined,
         image: undefined,
         image_alt_text: "",
         rationale_selection_algorithm: "prefer_expert_and_highly_voted",
@@ -270,6 +271,7 @@ export class App extends Component<
           discipline_pk: question.discipline ? question.discipline.pk : null,
           image: file,
           image_alt_text: question.image_alt_text,
+          pk: question.pk,
           rationale_selection_algorithm:
             question.rationale_selection_algorithm ||
             "prefer_expert_and_highly_voted",

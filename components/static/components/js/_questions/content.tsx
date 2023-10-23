@@ -66,6 +66,7 @@ function Content({
     answer_style: AnswerStyles;
     image: File | undefined;
     image_alt_text: string;
+    pk?: number;
     rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms;
     // sequential_review: boolean;
     text: string;
@@ -130,6 +131,7 @@ function Content({
             title={gettext("Text *")}
             EditorIcons={EditorIcons}
             setValue={setText}
+            id={form.pk}
             validator={questionTextValidator}
             value={form.text}
           />

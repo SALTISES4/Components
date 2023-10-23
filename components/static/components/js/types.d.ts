@@ -246,6 +246,7 @@ export type CreateQuestionAppState = {
     discipline_pk: number | null;
     image: File | undefined;
     image_alt_text: string;
+    pk?: number;
     rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms;
     sequential_review: boolean;
     text: string;

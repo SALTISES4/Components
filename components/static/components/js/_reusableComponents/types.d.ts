@@ -50,6 +50,7 @@ export type CircleProgressionIconProps = {
 
 export type CustomEditorProps = {
   EditorIcons: EditorIconsType;
+  id?: string | number;
   setValue: (a: string) => void;
   validator: (a: string) => boolean;
   value: string;
@@ -117,6 +118,7 @@ export type CustomEditorFieldProps = {
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
     muiName: string;
   };
+  id?: string | number;
   setValue: (a: string) => void;
   tooltip?: string;
   validator?: (a: string) => boolean;

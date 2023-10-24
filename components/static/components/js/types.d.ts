@@ -224,6 +224,7 @@ export type CreateQuestionAppProps = {
     create: string;
     categories: string;
     disciplines: string;
+    library: string;
     teachers: string;
   };
 };
@@ -239,6 +240,7 @@ export type AnswerChoiceForm = {
 
 export type CreateQuestionAppState = {
   answerChoiceForm: AnswerChoiceForm[];
+  dialogOpen: boolean;
   questionForm: {
     answer_style: AnswerStyles;
     category_pk: string[];

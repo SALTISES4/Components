@@ -150,6 +150,16 @@ export const CancelButton = styled(Button)({
   },
 });
 
+export const DeleteButton = styled(Button)({
+  backgroundColor: theme.palette.error.main,
+  " .MuiTypography-root": {
+    color: theme.palette.background.paper,
+  },
+  "&:hover": {
+    backgroundColor: theme.palette.error.dark,
+  },
+});
+
 export const FormButtonBox = styled(Box)({
   display: "flex",
   justifyContent: "flex-end",

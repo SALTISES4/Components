@@ -21,12 +21,17 @@ import {
 //material ui components
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 //components
-import { CancelButton, StepBar } from "./styledComponents";
+import { CancelButton, DeleteButton, StepBar } from "./styledComponents";
+import DialogTitle from "./_reusableComponents/dialog";
 import { Main } from "./_reusableComponents/main";
 import { Answer, Collaborators, Content, Indexing } from "./_questions";
 
@@ -72,6 +77,7 @@ export class App extends Component<
           sample_answers: [{ formId: uuid(), rationale: "" }],
         },
       ],
+      dialogOpen: false,
       questionForm: {
         answer_style: AnswerStyles.Alphabetic,
         category_pk: [],
@@ -105,6 +111,20 @@ export class App extends Component<
 
   next = () => {
     this.setState({ step: 2 }, () => window.scrollTo({ top: 0 }));
+  };
+
+  delete = async () => {
+    // Try to delete question
+    // May return error if question is no longer editable
+    if (this.props.pk) {
+      const url = `${this.props.urls.create}${this.props.pk}/`;
+      try {
+        await submitFormData(url, new FormData(), "DELETE");
+        window.location.assign(this.props.urls.library);
+      } catch (e) {
+        console.info(e);
+      }
+    }
   };
 
   save = async () => {
@@ -183,8 +203,11 @@ export class App extends Component<
           "POST",
         )) as QuestionType;
 
+        console.info(question);
+
         if (question.urls?.update) {
           const url = new URL(question.urls.update);
+          console.info(url.origin, window.origin);
           if (url.origin == window.origin) {
             window.location.assign(question.urls.update);
           }
@@ -223,8 +246,9 @@ export class App extends Component<
       file = new File([], "");
     }
 
-    this.setState(
-      {
+    if (question.answerchoice_set.length > 0) {
+      // Only overwrite default answerChoiceForm if there are existing
+      this.setState({
         answerChoiceForm: question.answerchoice_set.map((answer_choice) => {
           // Invalid questions may be missing sample or expert answers
           const _answer_choice: AnswerChoiceForm = {
@@ -259,6 +283,11 @@ export class App extends Component<
           }
           return _answer_choice;
         }),
+      });
+    }
+
+    this.setState(
+      {
         questionForm: {
           answer_style: question.answer_style || AnswerStyles.Alphabetic,
           category_pk: question.category
@@ -289,6 +318,10 @@ export class App extends Component<
     if (this.props.pk) {
       this.sync(this.props.pk);
     }
+  };
+
+  onClose = () => {
+    this.setState({ dialogOpen: false });
   };
 
   validateAnswerForm = () =>
@@ -512,6 +545,13 @@ export class App extends Component<
               <CancelButton onClick={() => history.back()}>
                 <Typography>{this.props.gettext("Cancel")}</Typography>
               </CancelButton>
+              {this.props.pk ? (
+                <CancelButton
+                  onClick={() => this.setState({ dialogOpen: true })}
+                >
+                  <Typography>{this.props.gettext("Delete")}</Typography>
+                </CancelButton>
+              ) : null}
               {this.state.step == 1 ? (
                 <Fragment>
                   <Button
@@ -541,6 +581,28 @@ export class App extends Component<
                 </Fragment>
               )}
             </Box>
+            <Dialog open={this.state.dialogOpen} onClose={this.onClose}>
+              <DialogTitle onClose={this.onClose}>
+                {this.props.gettext("Confirm delete")}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  {this.props.gettext(
+                    "Are you sure you'd like to delete this question? This action cannot be undone.",
+                  )}
+                </DialogContentText>
+                <DialogActions sx={{ padding: "24px 0px 0px" }}>
+                  <CancelButton onClick={this.onClose}>
+                    <Typography>{this.props.gettext("Cancel")}</Typography>
+                  </CancelButton>
+                  <DeleteButton onClick={this.delete}>
+                    <Typography>
+                      {this.props.gettext("Yes, I'm sure")}
+                    </Typography>
+                  </DeleteButton>
+                </DialogActions>
+              </DialogContent>
+            </Dialog>
           </Main>
         </CacheProvider>
       </ThemeProvider>

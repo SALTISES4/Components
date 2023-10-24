@@ -24,7 +24,7 @@ async function handleResponse(response: Response) {
 
   if (response.status == 204) {
     // DELETED
-    return;
+    return Promise.resolve();
   }
 
   if (response.status == 403) {

@@ -241,6 +241,9 @@ export type AnswerChoiceForm = {
 export type CreateQuestionAppState = {
   answerChoiceForm: AnswerChoiceForm[];
   dialogOpen: boolean;
+  errors: {
+    delete: string[][];
+  };
   questionForm: {
     answer_style: AnswerStyles;
     category_pk: string[];

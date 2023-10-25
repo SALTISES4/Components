@@ -30,10 +30,11 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 //components
+import { Answer, Collaborators, Content, Indexing } from "./_questions";
 import { CancelButton, DeleteButton, StepBar } from "./styledComponents";
 import DialogTitle from "./_reusableComponents/dialog";
+import Errors from "./_reusableComponents/errors";
 import { Main } from "./_reusableComponents/main";
-import { Answer, Collaborators, Content, Indexing } from "./_questions";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -78,6 +79,9 @@ export class App extends Component<
         },
       ],
       dialogOpen: false,
+      errors: {
+        delete: [],
+      },
       questionForm: {
         answer_style: AnswerStyles.Alphabetic,
         category_pk: [],
@@ -115,19 +119,32 @@ export class App extends Component<
 
   delete = async () => {
     // Try to delete question
-    // May return error if question is no longer editable
+    // May return error if question is no longer editable or network error
     if (this.props.pk) {
       const url = `${this.props.urls.create}${this.props.pk}/`;
       try {
         await submitFormData(url, new FormData(), "DELETE");
         window.location.assign(this.props.urls.library);
-      } catch (e) {
-        console.info(e);
+      } catch (error: any) {
+        const errors = { ...this.state.errors };
+        if (error instanceof TypeError) {
+          errors["delete"] = Array([error.message]);
+          this.setState({ errors });
+        } else {
+          // Override returned error message
+          errors["delete"] = [
+            [this.props.gettext("This question could not be deleted.")],
+          ];
+          this.setState({ errors });
+        }
       }
     }
   };
 
   save = async () => {
+    // Try to save question
+    // May return error if question is no longer editable or network error
+    // TODO: Handle errors
     console.info(this.state.questionForm);
     console.info(this.state.answerChoiceForm);
     this.setState({ waiting: true });
@@ -321,7 +338,10 @@ export class App extends Component<
   };
 
   onClose = () => {
-    this.setState({ dialogOpen: false });
+    // Clear delete errors and close
+    const errors = { ...this.state.errors };
+    errors["delete"] = [];
+    this.setState({ dialogOpen: false, errors });
   };
 
   validateAnswerForm = () =>
@@ -585,12 +605,18 @@ export class App extends Component<
               <DialogTitle onClose={this.onClose}>
                 {this.props.gettext("Confirm delete")}
               </DialogTitle>
+
               <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  {this.props.gettext(
-                    "Are you sure you'd like to delete this question? This action cannot be undone.",
-                  )}
-                </DialogContentText>
+                <Stack spacing={1}>
+                  {this.state.errors.delete ? (
+                    <Errors errors={this.state.errors.delete} />
+                  ) : null}
+                  <DialogContentText id="alert-dialog-description">
+                    {this.props.gettext(
+                      "Are you sure you'd like to delete this question? This action cannot be undone.",
+                    )}
+                  </DialogContentText>
+                </Stack>
                 <DialogActions sx={{ padding: "24px 0px 0px" }}>
                   <CancelButton onClick={this.onClose}>
                     <Typography>{this.props.gettext("Cancel")}</Typography>

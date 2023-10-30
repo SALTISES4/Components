@@ -513,15 +513,6 @@ const saltise = createTheme(paletteAndTypography, {
         },
       },
     },
-    MuiSnackbar: {
-      styleOverrides: {
-        root: {
-          " .MuiPaper-root": {
-            backgroundColor: paletteAndTypography.palette.primary5.main,
-          },
-        },
-      },
-    },
     MuiSvgIcon: {
       styleOverrides: {
         fontSizeSmall: {

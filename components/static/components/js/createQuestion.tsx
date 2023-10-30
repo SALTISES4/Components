@@ -35,6 +35,7 @@ import { CancelButton, DeleteButton, StepBar } from "./styledComponents";
 import DialogTitle from "./_reusableComponents/dialog";
 import Errors from "./_reusableComponents/errors";
 import { Main } from "./_reusableComponents/main";
+import { Snackbar } from "./_reusableComponents/snackbar";
 
 //style
 import { ThemeProvider } from "@mui/material/styles";
@@ -97,6 +98,9 @@ export class App extends Component<
         type: "PI",
         video_url: "",
       },
+      snackbarIsOpen: false,
+      snackbarMessage: "",
+      snackbarSeverity: undefined,
       step: 1,
       waiting: false,
     };
@@ -144,62 +148,62 @@ export class App extends Component<
   save = async () => {
     // Try to save question
     // May return error if question is no longer editable or network error
-    // TODO: Handle errors
     console.info(this.state.questionForm);
     console.info(this.state.answerChoiceForm);
-    this.setState({ waiting: true });
-    try {
-      // We may be sending a file along with data so convert JSON to FormData
-      const formdata = new FormData();
-      Object.entries(this.state.questionForm).forEach((e) => {
-        // Spread arrays
-        if (Array.isArray(e[1])) {
-          if (e[1].length == 0) {
-            // FormData doesn't support idea of an empty array, but PATCH needs it
-            // Workaround is to have "[]" and "null" signify "None" on the backend
-            formdata.append(e[0], JSON.stringify([]));
-          } else {
-            e[1].forEach((v) => formdata.append(e[0], v));
-          }
-        } else {
-          formdata.append(e[0], e[1]);
-        }
-      });
-      this.state.answerChoiceForm.forEach((e, i) => {
-        formdata.append(
-          `answerchoice_set[${i}]correct`,
-          JSON.stringify(e.correct),
-        );
-        formdata.append(`answerchoice_set[${i}]text`, e.text);
-        if (e.pk) {
-          formdata.append(`answerchoice_set[${i}]pk`, JSON.stringify(e.pk));
-        }
-        e.sample_answers.forEach((s, j) => {
-          formdata.append(
-            `answerchoice_set[${i}]sample_answers[${j}]rationale`,
-            s.rationale,
-          );
-          if (s.pk) {
-            formdata.append(
-              `answerchoice_set[${i}]sample_answers[${j}]pk`,
-              JSON.stringify(s.pk),
-            );
-          }
-        });
-        e.expert_answers?.forEach((ex, j) => {
-          formdata.append(
-            `answerchoice_set[${i}]expert_answers[${j}]rationale`,
-            ex.rationale,
-          );
-          if (ex.pk) {
-            formdata.append(
-              `answerchoice_set[${i}]expert_answers[${j}]pk`,
-              JSON.stringify(ex.pk),
-            );
-          }
-        });
-      });
 
+    this.setState({ waiting: true });
+    // We may be sending a file along with data so convert JSON to FormData
+    const formdata = new FormData();
+    Object.entries(this.state.questionForm).forEach((e) => {
+      // Spread arrays
+      if (Array.isArray(e[1])) {
+        if (e[1].length == 0) {
+          // FormData doesn't support idea of an empty array, but PATCH needs it
+          // Workaround is to have "[]" and "null" signify "None" on the backend
+          formdata.append(e[0], JSON.stringify([]));
+        } else {
+          e[1].forEach((v) => formdata.append(e[0], v));
+        }
+      } else {
+        formdata.append(e[0], e[1]);
+      }
+    });
+    this.state.answerChoiceForm.forEach((e, i) => {
+      formdata.append(
+        `answerchoice_set[${i}]correct`,
+        JSON.stringify(e.correct),
+      );
+      formdata.append(`answerchoice_set[${i}]text`, e.text);
+      if (e.pk) {
+        formdata.append(`answerchoice_set[${i}]pk`, JSON.stringify(e.pk));
+      }
+      e.sample_answers.forEach((s, j) => {
+        formdata.append(
+          `answerchoice_set[${i}]sample_answers[${j}]rationale`,
+          s.rationale,
+        );
+        if (s.pk) {
+          formdata.append(
+            `answerchoice_set[${i}]sample_answers[${j}]pk`,
+            JSON.stringify(s.pk),
+          );
+        }
+      });
+      e.expert_answers?.forEach((ex, j) => {
+        formdata.append(
+          `answerchoice_set[${i}]expert_answers[${j}]rationale`,
+          ex.rationale,
+        );
+        if (ex.pk) {
+          formdata.append(
+            `answerchoice_set[${i}]expert_answers[${j}]pk`,
+            JSON.stringify(ex.pk),
+          );
+        }
+      });
+    });
+
+    try {
       if (this.props.pk) {
         // Update question
         const url = `${this.props.urls.create}${this.props.pk}/`;
@@ -210,7 +214,12 @@ export class App extends Component<
         )) as QuestionType;
 
         this.updateForms(question);
-        this.setState({ waiting: false });
+        this.setState({
+          snackbarSeverity: undefined,
+          snackbarIsOpen: true,
+          snackbarMessage: this.props.gettext("Save successful!"),
+          waiting: false,
+        });
       } else {
         // Create question
         const url = this.props.urls.create;
@@ -230,7 +239,34 @@ export class App extends Component<
           }
         }
       }
-    } catch {
+    } catch (error: any) {
+      if (error instanceof TypeError) {
+        this.setState({
+          snackbarSeverity: "error",
+          snackbarIsOpen: true,
+          snackbarMessage:
+            error.message.at(0)?.toLocaleUpperCase() + error.message.slice(1),
+        });
+      } else if (typeof error === "object") {
+        // Field and non-field errors
+        const e = Object.values(error) as string[][];
+        this.setState({
+          snackbarSeverity: "error",
+          snackbarIsOpen: true,
+          snackbarMessage:
+            e[0][0].at(0)?.toLocaleUpperCase() + e[0][0].slice(1),
+        });
+      } else {
+        // Provide default error message
+        this.setState({
+          snackbarSeverity: "error",
+          snackbarIsOpen: true,
+          snackbarMessage: this.props.gettext(
+            "This question could not be created/updated.",
+          ),
+        });
+      }
+    } finally {
       this.setState({ waiting: false });
     }
   };
@@ -601,6 +637,7 @@ export class App extends Component<
                 </Fragment>
               )}
             </Box>
+
             <Dialog open={this.state.dialogOpen} onClose={this.onClose}>
               <DialogTitle onClose={this.onClose}>
                 {this.props.gettext("Confirm delete")}
@@ -629,6 +666,18 @@ export class App extends Component<
                 </DialogActions>
               </DialogContent>
             </Dialog>
+
+            <Snackbar
+              message={this.state.snackbarMessage}
+              onClose={() =>
+                this.setState({
+                  snackbarIsOpen: false,
+                  snackbarMessage: "",
+                })
+              }
+              open={this.state.snackbarIsOpen}
+              severity={this.state.snackbarSeverity}
+            />
           </Main>
         </CacheProvider>
       </ThemeProvider>

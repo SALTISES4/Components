@@ -68,7 +68,12 @@ export const Header = ({ menuAddItems, menuProfile, user }: headerProps) => {
         />
 
         <IconButton onClick={handleClickAvatar}>
-          <Avatar alt={user.username} src={user.avatar} fontSize="large" />
+          <Avatar
+            alt={user.username}
+            src={user.avatar}
+            fontSize="large"
+            sx={{ color: "#fff" }}
+          />
         </IconButton>
 
         <CustomMenu

@@ -3,6 +3,7 @@ export { h, render };
 
 //material ui components
 import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 
 //components
@@ -38,6 +39,7 @@ export class App extends Component<NavigationAppProps, NavigationAppState> {
     return (
       <ThemeProvider theme={saltise}>
         <CacheProvider value={this.cache}>
+          <CssBaseline />
           <Box sx={{ display: "flex" }}>
             <Header
               menuAddItems={this.props.menuAddItems}

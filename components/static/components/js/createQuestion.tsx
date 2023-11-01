@@ -143,8 +143,8 @@ export class App extends Component<
 
   save = async () => {
     // Try to save question
-    // May return error if question is no longer editable or network error
-    // TODO: Handle errors
+    // May return error if question is no longer editable, or field error, or network error
+    // TODO: Handle errors (especially on create if title not unique)
     console.info(this.state.questionForm);
     console.info(this.state.answerChoiceForm);
     this.setState({ waiting: true });

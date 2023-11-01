@@ -131,6 +131,7 @@ const paletteAndTypography = createTheme({
   },
   palette: {
     background: {
+      default: "#E9F5FF",
       paper: "#fff",
     },
     //primaryBlue
@@ -419,6 +420,32 @@ const saltise = createTheme(paletteAndTypography, {
           },
         },
       ],
+    },
+    MuiCssBaseline: {
+      // Use CssBaseline to inject global overrides of non-mui elements
+      styleOverrides: (t: any) => {
+        return {
+          h1: {
+            ...t.typography.h1,
+          },
+          h2: {
+            ...t.typography.h2,
+          },
+          h3: {
+            ...t.typography.h3,
+          },
+          p: {
+            ...t.typography.body1,
+          },
+          ".mui-container": {
+            marginLeft: "auto",
+            marginRight: "auto",
+            maxWidth: t.breakpoints.values.md,
+            padding: "0px 24px",
+            width: "100%",
+          },
+        };
+      },
     },
     MuiDialog: {
       styleOverrides: {

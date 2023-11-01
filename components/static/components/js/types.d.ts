@@ -259,6 +259,9 @@ export type CreateQuestionAppState = {
     type: QuestionTypes;
     video_url: string;
   };
+  snackbarIsOpen: boolean;
+  snackbarMessage: string;
+  snackbarSeverity?: "error" | "warning" | "info" | "success";
   step: number;
   waiting: boolean;
 };

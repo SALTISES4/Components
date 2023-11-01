@@ -19,6 +19,7 @@ interface SnackbarProps {
   message: string;
   onClose: () => void;
   open: boolean;
+  severity?: "error" | "warning" | "info" | "success";
 }
 
 export type AssignmentStateIconProps = {

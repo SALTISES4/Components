@@ -18,6 +18,7 @@ import CardContent from "@mui/material/CardContent";
 import Checkbox from "@mui/material/Checkbox";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DragIndicatorRoundedIcon from "@mui/icons-material/DragIndicatorRounded";
+import EditIcon from "@mui/icons-material/Edit";
 import ErrorIcon from "@mui/icons-material/Error";
 import IconButton from "@mui/material/IconButton";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
@@ -220,6 +221,25 @@ export function Question({
           }}
           width={640}
         />
+      );
+    }
+  };
+
+  const editIcon = () => {
+    if (showDetails && question.is_editable) {
+      return (
+        <IconButton
+          color="primary"
+          onClick={(evt: MouseEvent) => {
+            evt.stopPropagation();
+            if (question.urls?.update) {
+              window.location.assign(question.urls.update);
+            }
+          }}
+          title={gettext("Update question")}
+        >
+          <EditIcon fontSize="medium" />
+        </IconButton>
       );
     }
   };
@@ -527,6 +547,7 @@ export function Question({
               },
             }}
           >
+            {editIcon()}
             {showDetailsIcon()}
             {addToAssignmentIcon()}
             {removeFromAssignmentIcon()}

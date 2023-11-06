@@ -33,11 +33,11 @@ const tsProject = ts.createProject("tsconfig.json");
 
 const modules = [
   // "dashboard",
-  "navigation",
+  // "navigation",
   // "createAssignment",
   // "createQuestion",
   // "updateAssignment",
-  // "library",
+  "library",
   // "search",
   // "styleguide",
 ];

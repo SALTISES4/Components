@@ -160,6 +160,7 @@ export type QuestionType = {
   discipline?: DisciplineType;
   image: string;
   image_alt_text: string;
+  is_editable?: boolean;
   is_owner?: boolean;
   is_valid?: boolean;
   matrix?: AnswerMatrixType;

@@ -175,6 +175,7 @@ export type QuestionType = {
     addable_assignments?: string;
     matrix?: string;
     rationales?: string;
+    test: string;
     update: string;
   };
   user: UserType;

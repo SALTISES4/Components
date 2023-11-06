@@ -58,7 +58,7 @@ export const handleCollectionBookmarkClick = async (
       message = `Collection ${pk} ${gettext("removed from your library")}`;
     } else {
       newBookmarkedCollections.unshift(pk);
-      message = `Collection ${pk} ${gettext("added to  from your library")}`;
+      message = `Collection ${pk} ${gettext("added to your library")}`;
     }
     try {
       const teacher = (await submitData(

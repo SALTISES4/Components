@@ -27,7 +27,6 @@ import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 //components
 import { AddToAssignmentModal } from "../_reusableComponents/addToAssignmentModal";
@@ -244,23 +243,21 @@ export function Question({
     }
   };
 
-  const showDetailsIcon = () => {
+  const previewIcon = () => {
     if (showDetails) {
       return (
-        <Checkbox
-          checked={false}
-          inputProps={{ "aria-label": gettext("Show/hide details") }}
-          icon={<VisibilityIcon fontSize="medium" />}
-          checkedIcon={<VisibilityOffIcon fontSize="medium" />}
-          onClick={(evt: MouseEvent) => evt.stopPropagation()}
-          sx={{
-            color: "primary.main",
-            "&.Mui-checked": {
-              color: "primary.main",
-            },
+        <IconButton
+          color="primary"
+          onClick={(evt: MouseEvent) => {
+            evt.stopPropagation();
+            if (question.urls?.test) {
+              window.location.assign(question.urls.test);
+            }
           }}
-          title={showDetails ? gettext("Hide data") : gettext("Show data")}
-        />
+          title={gettext("Preview question")}
+        >
+          <VisibilityIcon fontSize="medium" />
+        </IconButton>
       );
     }
   };
@@ -548,7 +545,7 @@ export function Question({
             }}
           >
             {editIcon()}
-            {showDetailsIcon()}
+            {previewIcon()}
             {addToAssignmentIcon()}
             {removeFromAssignmentIcon()}
             {bookmarkIcon()}

@@ -61,6 +61,7 @@ export type ToolbarProps = {
   enableEdit?: boolean;
   enableSave: boolean;
   groups?: { title: string; pk: number }[];
+  handleCopy: () => void;
   handleDistribute: (
     form: StudentGroupAssignmentCreateForm,
     callback: () => void,

@@ -47,7 +47,6 @@ export const Tag = styled(Box)({
     lineHeight: "1",
   },
   " .MuiSvgIcon-root": {
-    fontSize: theme.typography.label.fontSize,
     paddingRight: "6px",
   },
   contained: {

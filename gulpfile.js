@@ -36,7 +36,7 @@ const modules = [
   "navigation",
   // "createAssignment",
   // "createQuestion",
-  // "updateAssignment",
+  "updateAssignment",
   // "library",
   // "search",
   // "styleguide",

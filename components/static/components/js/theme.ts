@@ -425,6 +425,9 @@ const saltise = createTheme(paletteAndTypography, {
       // Use CssBaseline to inject global overrides of non-mui elements
       styleOverrides: (t: any) => {
         return {
+          body: {
+            margin: "0px 0px 50px 0px",
+          },
           h1: {
             ...t.typography.h1,
           },

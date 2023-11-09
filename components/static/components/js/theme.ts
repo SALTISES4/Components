@@ -382,7 +382,7 @@ const saltise = createTheme(paletteAndTypography, {
         root: {
           height: "26px",
           justifyContent: "space-between",
-          padding: "20px",
+          padding: "30px 20px",
         },
       },
     },

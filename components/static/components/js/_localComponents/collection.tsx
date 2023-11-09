@@ -244,7 +244,6 @@ export class Collection extends Component<CollectionProps> {
           <CardActions
             sx={{
               justifyContent: "space-between",
-              padding: "16px 20px 20px 20px",
             }}
           >
             <Stack direction="row" spacing="5px">

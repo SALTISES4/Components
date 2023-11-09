@@ -195,6 +195,10 @@ export class App extends Component<
     this.sync();
   }
 
+  handleCopy = () => {
+    console.info("Copy");
+  };
+
   handleDistribute = async (
     partialForm: StudentGroupAssignmentCreateForm,
     callback: () => void,
@@ -571,6 +575,7 @@ export class App extends Component<
                           .map((sga) => sga.group.pk)
                           .includes(group.pk),
                     )}
+                    handleCopy={this.handleCopy}
                     handleDistribute={this.handleDistribute}
                     handleEdit={this.handleEdit}
                     handleSave={this.handleSave}

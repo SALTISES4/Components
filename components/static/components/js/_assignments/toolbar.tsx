@@ -4,6 +4,7 @@ import { useState } from "preact/hooks";
 //material ui components
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/system/Box";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import SaveIcon from "@mui/icons-material/Save";
@@ -29,6 +30,7 @@ export function Toolbar({
   enableEdit = false,
   enableSave,
   groups,
+  handleCopy,
   handleDistribute,
   handleEdit,
   handleSave,
@@ -97,6 +99,14 @@ export function Toolbar({
               horizontal: "left",
             }}
           />
+
+          <IconButton
+            color="primary"
+            onClick={handleCopy}
+            title={gettext("Create a copy of this assignment")}
+          >
+            <ContentCopyIcon />
+          </IconButton>
 
           {/* <IconButton
             color="primary"

@@ -440,6 +440,9 @@ const saltise = createTheme(paletteAndTypography, {
           p: {
             ...t.typography.body1,
           },
+          ".mui-typography-body2": {
+            ...t.typography.body2,
+          },
           ".mui-container": {
             marginLeft: "auto",
             marginRight: "auto",

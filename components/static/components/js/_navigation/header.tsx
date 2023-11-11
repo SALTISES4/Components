@@ -1,5 +1,5 @@
 /* file deepcode ignore ReactIdentifierTypo: Preact accepts class */
-import { h } from "preact";
+import { Fragment, h } from "preact";
 
 import { useState } from "preact/hooks";
 
@@ -56,32 +56,40 @@ export const Header = ({ menuAddItems, menuProfile, user }: headerProps) => {
       <Toolbar variant="dense">
         <Box sx={{ flexGrow: 1 }} />
 
-        <IconButton onClick={handleClickMore}>
-          <AddCircleIcon fontSize="large" />
-        </IconButton>
+        {menuAddItems.length > 0 ? (
+          <Fragment>
+            <IconButton onClick={handleClickMore}>
+              <AddCircleIcon fontSize="large" />
+            </IconButton>
 
-        <CustomMenu
-          anchorEl={anchorElMore}
-          menuItems={menuAddItems}
-          onClose={handleClickMore}
-          open={Boolean(openMore)}
-        />
+            <CustomMenu
+              anchorEl={anchorElMore}
+              menuItems={menuAddItems}
+              onClose={handleClickMore}
+              open={Boolean(openMore)}
+            />
+          </Fragment>
+        ) : null}
 
-        <IconButton onClick={handleClickAvatar}>
-          <Avatar
-            alt={user.username}
-            src={user.avatar}
-            fontSize="large"
-            sx={{ color: "#fff" }}
-          />
-        </IconButton>
+        {menuProfile.length > 0 ? (
+          <Fragment>
+            <IconButton onClick={handleClickAvatar}>
+              <Avatar
+                alt={user.username}
+                src={user.avatar}
+                fontSize="large"
+                sx={{ color: "#fff" }}
+              />
+            </IconButton>
 
-        <CustomMenu
-          anchorEl={anchorElAvatar}
-          menuItems={menuProfile}
-          onClose={handleClickAvatar}
-          open={Boolean(openAvatar)}
-        />
+            <CustomMenu
+              anchorEl={anchorElAvatar}
+              menuItems={menuProfile}
+              onClose={handleClickAvatar}
+              open={Boolean(openAvatar)}
+            />
+          </Fragment>
+        ) : null}
       </Toolbar>
     </AppBar>
   );

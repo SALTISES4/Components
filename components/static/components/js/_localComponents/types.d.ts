@@ -53,11 +53,11 @@ export interface AssignmentType extends AssignmentDatabaseFields {
   question_count?: number;
   questions?: QuestionRankType[];
   urls?: {
-    copy?: string;
-    distribute?: string;
-    fix?: string;
-    preview?: string;
-    update?: string;
+    copy: string;
+    distribute: string;
+    fix: string;
+    preview: string;
+    update: string;
     view?: string;
   };
 }

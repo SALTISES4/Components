@@ -41,7 +41,7 @@ export const CustomTextField = ({
       >
         {title ? (
           <Typography variant="h5" sx={{ mb: "2px" }}>
-            {title}
+            {title} {required ? "*" : null}
           </Typography>
         ) : null}
         {icon && tooltip.length > 0 ? (
@@ -60,10 +60,11 @@ export const CustomTextField = ({
         helperText={`${helperText || ""}  ${
           value.length
         }/${maxLength} ${gettext("characters")}`}
-        onChange={(evt: Event) => {
+        onChange={async (evt: Event) => {
           if (evt.target && evt.target instanceof HTMLInputElement) {
             setValue(evt.target.value);
-            setError(!validator(evt.target.value));
+            const valid = await validator(evt.target.value);
+            setError(!valid);
           }
         }}
         sx={sx}

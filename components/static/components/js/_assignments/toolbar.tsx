@@ -13,6 +13,7 @@ import ShareIcon from "@mui/icons-material/Share";
 
 //components
 import { CustomMenu } from "../_navigation/menu";
+import CopyModal from "./copyModal";
 import DistributeModal from "./distributeModal";
 import ShareModal from "./shareModal";
 
@@ -35,9 +36,11 @@ export function Toolbar({
   handleEdit,
   handleSave,
   lti,
+  validateIdUrl,
 }: ToolbarProps): JSX.Element {
   const [distributeMenuAnchorElement, setDistributeMenuAnchorElement] =
     useState<null | HTMLElement>(null);
+  const [openCopyModal, setOpenCopyModal] = useState(false);
   const [openShareModal, setOpenShareModal] = useState(false);
   const [distributeMode, setDistributeMode] = useState<
     "myDalite" | "LMS" | undefined
@@ -102,7 +105,7 @@ export function Toolbar({
 
           <IconButton
             color="primary"
-            onClick={handleCopy}
+            onClick={() => setOpenCopyModal(true)}
             title={gettext("Create a copy of this assignment")}
           >
             <ContentCopyIcon />
@@ -147,12 +150,21 @@ export function Toolbar({
           </IconButton>
         )
       ) : null}
+      <CopyModal
+        gettext={gettext}
+        handleSubmit={handleCopy}
+        open={openCopyModal}
+        onClose={() => setOpenCopyModal(false)}
+        url={validateIdUrl}
+        aria-labelledby="copy"
+        aria-describedby="copy this assignment"
+      />
       <ShareModal
+        gettext={gettext}
         open={openShareModal}
         onClose={() => setOpenShareModal(false)}
         aria-labelledby="share"
         aria-describedby="share with colleagues"
-        gettext={gettext}
       />
       {groups ? (
         <DistributeModal

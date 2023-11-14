@@ -137,7 +137,7 @@ export class App extends Component<
                     gettext={this.props.gettext}
                     autoFocus={true}
                     id="identifier"
-                    title="Identifier *"
+                    title="Identifier"
                     defaultValue=""
                     icon={HelpOutlineIcon}
                     helperText={this.props.gettext(
@@ -145,6 +145,7 @@ export class App extends Component<
                     )}
                     minLength={2}
                     maxLength={100}
+                    required={true}
                     setValue={(identifier) => this.setState({ identifier })}
                     validator={assignmentIdentifierValidator}
                     value={this.state.identifier}
@@ -152,11 +153,12 @@ export class App extends Component<
                   <CustomTextField
                     gettext={this.props.gettext}
                     id="title"
-                    title="Title *"
+                    title="Title"
                     defaultValue=""
                     icon={HelpOutlineIcon}
                     minLength={1}
                     maxLength={200}
+                    required={true}
                     setValue={(title) => this.setState({ title })}
                     validator={assignmentTitleValidator}
                     value={this.state.title}

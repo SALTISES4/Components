@@ -195,7 +195,7 @@ export class App extends Component<
     this.sync();
   }
 
-  handleCopy = () => {
+  handleCopy = (id: string) => {
     console.info("Copy");
   };
 
@@ -547,6 +547,7 @@ export class App extends Component<
                     gettext={this.props.gettext}
                     nonce={this.props.nonce}
                     assignment={this.state.assignment}
+                    validateIdUrl={this.props.urls.check_id}
                     distributeErrors={this.state.distributeErrors}
                     distributeWaiting={this.state.distributeWaiting}
                     editing={this.state.editing}

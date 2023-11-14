@@ -61,7 +61,7 @@ export type ToolbarProps = {
   enableEdit?: boolean;
   enableSave: boolean;
   groups?: { title: string; pk: number }[];
-  handleCopy: () => void;
+  handleCopy: (a: string) => void;
   handleDistribute: (
     form: StudentGroupAssignmentCreateForm,
     callback: () => void,
@@ -69,12 +69,21 @@ export type ToolbarProps = {
   handleEdit: (a: boolean) => void;
   handleSave: () => void;
   lti: LTIType;
+  validateIdUrl: string;
 };
 
 export type ShareModalProps = {
   gettext: (a: string) => string;
   open: any;
   onClose: any;
+};
+
+export type CopyModalProps = {
+  gettext: (a: string) => string;
+  handleSubmit: (a: string) => void;
+  open: boolean;
+  onClose: () => void;
+  url: string;
 };
 
 export type DistributeModalProps = {

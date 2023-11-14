@@ -119,10 +119,11 @@ function Content({
             gettext={gettext}
             autoFocus={true}
             id="title"
-            title={gettext("Title *")}
+            title={gettext("Title")}
             defaultValue=""
             minLength={1}
             maxLength={100}
+            required={true}
             setValue={setTitle}
             validator={questionTitleValidator}
             value={form.title}

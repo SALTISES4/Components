@@ -308,6 +308,7 @@ export type UpdateAssignmentAppProps = {
   urls: {
     add_to_assignment: string;
     assignment: string;
+    check_id: string;
     distribute: string;
     search: string;
     studentgroupassignments: string;

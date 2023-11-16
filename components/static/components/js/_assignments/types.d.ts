@@ -61,7 +61,7 @@ export type ToolbarProps = {
   enableEdit?: boolean;
   enableSave: boolean;
   groups?: { title: string; pk: number }[];
-  handleCopy: (a: string) => void;
+  handleCopy: (a: string, cb: (a: any) => void) => void;
   handleDistribute: (
     form: StudentGroupAssignmentCreateForm,
     callback: () => void,
@@ -80,7 +80,7 @@ export type ShareModalProps = {
 
 export type CopyModalProps = {
   gettext: (a: string) => string;
-  handleSubmit: (a: string) => void;
+  handleSubmit: (a: string, cb: (a: any) => void) => void;
   open: boolean;
   onClose: () => void;
   url: string;

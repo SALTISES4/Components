@@ -1,9 +1,10 @@
-import { Fragment, h } from "preact";
+import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 
 import { titlecase } from "../functions";
 
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
 import CloseIcon from "@mui/icons-material/Close";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -26,7 +27,7 @@ export default function Errors({ errors }: ErrorsProps): JSX.Element {
   console.info(errors);
 
   return (
-    <Fragment>
+    <Box>
       {errors.map((e, i) => (
         <Collapse key={i} in={errorsOpen[i]}>
           <Alert
@@ -40,11 +41,12 @@ export default function Errors({ errors }: ErrorsProps): JSX.Element {
                 <CloseIcon />
               </IconButton>
             }
+            sx={{ mb: "2px" }}
           >
             {titlecase(e[0])}
           </Alert>
         </Collapse>
       ))}
-    </Fragment>
+    </Box>
   );
 }

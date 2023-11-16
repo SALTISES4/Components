@@ -31,6 +31,13 @@ export default function DistributeModal({
   const [assignmentIdentifier, setAssignmentIdentifier] = useState("");
   const [errors, setErrors] = useState<string[][]>([]);
 
+  const callback = (errors: Record<string, string[]>) => {
+    // Errors should return as json with field names as keys and values as error message lists
+    if (errors) {
+      setErrors(Object.entries(errors).map((e) => [`${e[0]}: ${e[1]}`]));
+    }
+  };
+
   const _assignmentIdentifierValidator = async (value: string) => {
     // Validate by regex then check server for uniqueness
     if (assignmentIdentifierValidator(value)) {
@@ -57,12 +64,7 @@ export default function DistributeModal({
   };
 
   return (
-    <Dialog
-      fullWidth={true}
-      open={open}
-      onClose={onClose}
-      onClick={handleSubmit}
-    >
+    <Dialog fullWidth={true} open={open} onClose={onClose}>
       <DialogTitle onClose={onClose}>
         {gettext("Copy this assignment")}
       </DialogTitle>
@@ -87,7 +89,7 @@ export default function DistributeModal({
             </CancelButton>
             <Button
               disabled={errors.length != 0 || assignmentIdentifier.length == 0}
-              onClick={() => handleSubmit(assignmentIdentifier)}
+              onClick={() => handleSubmit(assignmentIdentifier, callback)}
               variant="contained"
             >
               <Typography>{gettext("Submit")}</Typography>

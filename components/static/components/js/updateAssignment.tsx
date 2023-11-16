@@ -195,14 +195,32 @@ export class App extends Component<
     this.sync();
   }
 
-  handleCopy = (id: string) => {
-    console.info("Copy");
+  handleCopy = async (
+    identifier: string,
+    callback: (response: any) => void,
+  ) => {
+    console.info("handleCopy called");
+    try {
+      if (this.state.assignment.urls) {
+        const assignment = (await submitData(
+          this.state.assignment.urls.copy,
+          { identifier },
+          "POST",
+        )) as unknown as AssignmentType;
+        if (assignment.urls) {
+          window.location.assign(assignment.urls?.update);
+        }
+      }
+    } catch (error: any) {
+      callback(error);
+    }
   };
 
   handleDistribute = async (
     partialForm: StudentGroupAssignmentCreateForm,
     callback: () => void,
   ) => {
+    console.info("handleDistribute called");
     // Append assignment pk to form
     const form = Object.assign(partialForm, {
       assignment_pk: this.props.assignment.pk,
@@ -229,10 +247,12 @@ export class App extends Component<
   };
 
   handleEdit = (mode: boolean) => {
+    console.info("handleEdit called");
     this.setState({ editing: mode });
   };
 
   handleRemoveQuestionFromAssignmentCallback = async () => {
+    console.info("handleRemoveQuestionFromAssignmentCallback called");
     const questionRanks = new Set(
       [...this.state.questionRanks].map((qr) => qr.question.pk),
     );
@@ -266,6 +286,7 @@ export class App extends Component<
   };
 
   handleSave = async () => {
+    console.info("handleSave called");
     console.info(this.state.form);
 
     if (this.props.metaEditableByUser === true) {
@@ -305,7 +326,7 @@ export class App extends Component<
             snackbarIsOpen: true,
             snackbarMessage: this.props.gettext("Assignment updated"),
           },
-          () => console.info(console.info(this.state.assignment)),
+          () => console.info(this.state.assignment),
         );
       } catch (error: any) {
         // deepcode ignore ReactNextState: gettext is a constant

@@ -100,7 +100,7 @@ export type CustomTextFieldProps = {
   setValue: (a: any) => void;
   sx?: Record<string, string>;
   tooltip?: string;
-  validator?: (a: any) => Promise<boolean>;
+  validator?: (a: any) => Promise<boolean> | boolean;
   value: string;
 };
 

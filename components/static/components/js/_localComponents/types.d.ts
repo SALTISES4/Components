@@ -47,7 +47,7 @@ export interface AssignmentDatabaseFields {
 
 export interface AssignmentType extends AssignmentDatabaseFields {
   answer_count?: number;
-  editable?: boolean;
+  is_editable?: boolean;
   is_owner?: boolean;
   is_valid?: boolean;
   question_count?: number;

@@ -18,35 +18,30 @@ import {
   questionVideoURLValidator,
 } from "./validators";
 
-//material ui components
+// MUI components
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-//components
+// Local components
 import { Answer, Collaborators, Content, Indexing } from "./_questions";
-import { CancelButton, DeleteButton, StepBar } from "./styledComponents";
-import DialogTitle from "./_reusableComponents/dialog";
-import Errors from "./_reusableComponents/errors";
+import { CancelButton, StepBar } from "./styledComponents";
+import DeleteDialog from "./_reusableComponents/deleteDialog";
 import { Main } from "./_reusableComponents/main";
 import { Snackbar } from "./_reusableComponents/snackbar";
 
-//style
+// Style
 import { ThemeProvider } from "@mui/material/styles";
 import { prefixer } from "stylis";
 import { formTheme } from "./theme";
 
-//cache
+// Cache
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 
-//types
+// Types
 import {
   AnswerChoiceForm,
   CreateQuestionAppProps,
@@ -136,9 +131,7 @@ export class App extends Component<
           this.setState({ errors });
         } else {
           // Override returned error message
-          errors["delete"] = [
-            [this.props.gettext("This question could not be deleted.")],
-          ];
+          errors["delete"] = [error];
           this.setState({ errors });
         }
       }
@@ -639,34 +632,16 @@ export class App extends Component<
               )}
             </Box>
 
-            <Dialog open={this.state.dialogOpen} onClose={this.onClose}>
-              <DialogTitle onClose={this.onClose}>
-                {this.props.gettext("Confirm delete")}
-              </DialogTitle>
-
-              <DialogContent>
-                <Stack spacing={1}>
-                  {this.state.errors.delete ? (
-                    <Errors errors={this.state.errors.delete} />
-                  ) : null}
-                  <DialogContentText id="alert-dialog-description">
-                    {this.props.gettext(
-                      "Are you sure you'd like to delete this question? This action cannot be undone.",
-                    )}
-                  </DialogContentText>
-                </Stack>
-                <DialogActions sx={{ padding: "24px 0px 0px" }}>
-                  <CancelButton onClick={this.onClose}>
-                    <Typography>{this.props.gettext("Cancel")}</Typography>
-                  </CancelButton>
-                  <DeleteButton onClick={this.delete}>
-                    <Typography>
-                      {this.props.gettext("Yes, I'm sure")}
-                    </Typography>
-                  </DeleteButton>
-                </DialogActions>
-              </DialogContent>
-            </Dialog>
+            <DeleteDialog
+              errors={this.state.errors.delete}
+              gettext={this.props.gettext}
+              handleDelete={this.delete}
+              message={this.props.gettext(
+                "Are you sure you'd like to delete this question? This action cannot be undone.",
+              )}
+              onClose={this.onClose}
+              open={this.state.dialogOpen}
+            />
 
             <Snackbar
               message={this.state.snackbarMessage}

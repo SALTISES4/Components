@@ -57,11 +57,13 @@ export type ToolbarProps = {
   distributeErrors: string[][];
   distributeWaiting: boolean;
   editing: boolean;
+  enableDelete?: boolean;
   enableDistribute?: boolean;
   enableEdit?: boolean;
   enableSave: boolean;
   groups?: { title: string; pk: number }[];
   handleCopy: (a: string, cb: (a: any) => void) => void;
+  handleDelete: () => void;
   handleDistribute: (
     form: StudentGroupAssignmentCreateForm,
     callback: () => void,

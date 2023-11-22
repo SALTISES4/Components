@@ -350,10 +350,11 @@ function Content({
               <CustomTextField
                 gettext={gettext}
                 id="image_alt_text"
-                title={gettext("Image description for screen readers *")}
+                title={gettext("Image description for screen readers")}
                 defaultValue=""
                 minLength={1}
                 maxLength={1024}
+                required={true}
                 setValue={setImageAltText}
                 validator={questionImageAltTextValidator}
                 value={form.image_alt_text}
@@ -374,6 +375,7 @@ function Content({
               icon={HelpOutlineIcon}
               minLength={1}
               maxLength={200}
+              required={false}
               setValue={setVideo}
               tooltip={`${gettext(
                 "The appropriate link for each service is usually found under Share > Embed.  Copy the URL in the src attribute of the iframe here, e.g.:",

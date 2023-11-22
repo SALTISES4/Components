@@ -1,9 +1,9 @@
 function getCsrfToken() {
-  return (
-    document.querySelectorAll(
-      "input[name=csrfmiddlewaretoken]",
-    )[0] as HTMLInputElement
-  ).value;
+  const token = document.querySelector("input[name=csrfmiddlewaretoken]");
+  if (token) {
+    return (token as HTMLInputElement).value;
+  }
+  throw new Error("CSRF token missing");
 }
 
 async function handleResponse(response: Response) {

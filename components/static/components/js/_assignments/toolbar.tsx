@@ -5,6 +5,7 @@ import { useState } from "preact/hooks";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/system/Box";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import SaveIcon from "@mui/icons-material/Save";
@@ -27,11 +28,13 @@ export function Toolbar({
   distributeErrors,
   distributeWaiting,
   editing = false,
+  enableDelete = false,
   enableDistribute = false,
   enableEdit = false,
   enableSave,
   groups,
   handleCopy,
+  handleDelete,
   handleDistribute,
   handleEdit,
   handleSave,
@@ -110,6 +113,16 @@ export function Toolbar({
           >
             <ContentCopyIcon />
           </IconButton>
+
+          {enableDelete ? (
+            <IconButton
+              color="primary"
+              onClick={handleDelete}
+              title={gettext("Delete this assignment")}
+            >
+              <DeleteIcon />
+            </IconButton>
+          ) : null}
 
           {/* <IconButton
             color="primary"

@@ -63,6 +63,15 @@ export type CustomEditorState = {
   hasFocus: boolean;
 };
 
+export type DeleteDialogProps = {
+  errors: string[][];
+  gettext: (a: string) => string;
+  handleDelete: () => void;
+  message: string;
+  onClose: () => void;
+  open: boolean;
+};
+
 export type DifficultyCircleAssignmentProps = {
   difficulty: string;
 };

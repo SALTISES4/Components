@@ -1,17 +1,8 @@
 import { Component, Fragment, h, render } from "preact";
 export { h, render };
 
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DraggingStyle,
-  DropResult,
-  NotDraggingStyle,
-} from "react-beautiful-dnd";
-
-//functions
-import { get, submitData } from "./ajax";
+// Functions
+import { get, submitData, submitFormData } from "./ajax";
 import {
   handleAddToAssignment,
   handleQuestionBookmarkClick,
@@ -19,7 +10,7 @@ import {
   setDifference,
 } from "./functions";
 
-//material ui components
+// MUI components
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -29,17 +20,28 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-//components
+// React DND
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DraggingStyle,
+  DropResult,
+  NotDraggingStyle,
+} from "react-beautiful-dnd";
+
+// Local components
+import DeleteDialog from "./_reusableComponents/deleteDialog";
+import { DraggableQuestion, Question } from "./_localComponents/question";
 import { GeneralDescription } from "./_assignments/generalDescription";
 import { Group as GroupSkeleton } from "./_skeletons/group";
 import { Main } from "./_reusableComponents/main";
-import { DraggableQuestion, Question } from "./_localComponents/question";
 import { Question as QuestionSkeleton } from "./_skeletons/question";
 import { Snackbar } from "./_reusableComponents/snackbar";
 import { StudentGroupAssignment } from "./_localComponents/group";
 import { Toolbar } from "./_assignments/toolbar";
 
-//types
+// Types
 import {
   TeacherType,
   UpdateAssignmentAppProps,
@@ -79,9 +81,13 @@ export class App extends Component<
         pk: this.props.assignment.pk,
         title: this.props.assignment.title,
       },
+      dialogOpen: false,
       distributeErrors: [],
       distributeWaiting: false,
       editing: false,
+      errors: {
+        delete: [],
+      },
       form: {
         conclusion_page: this.props.assignment.conclusion_page,
         description: this.props.assignment.description,
@@ -195,6 +201,13 @@ export class App extends Component<
     this.sync();
   }
 
+  onClose = () => {
+    // Clear delete errors and close
+    const errors = { ...this.state.errors };
+    errors["delete"] = [];
+    this.setState({ dialogOpen: false, errors });
+  };
+
   handleCopy = async (
     identifier: string,
     callback: (response: any) => void,
@@ -243,6 +256,26 @@ export class App extends Component<
       }
     } finally {
       this.setState({ distributeWaiting: false });
+    }
+  };
+
+  handleDelete = async () => {
+    // Try to delete assignment
+    // May return error if assignment is no longer editable or network error
+    const url = `${this.props.urls.assignment}/`;
+    try {
+      await submitFormData(url, new FormData(), "DELETE");
+      window.location.assign(this.props.urls.library);
+    } catch (error: any) {
+      const errors = { ...this.state.errors };
+      if (error instanceof TypeError) {
+        errors["delete"] = Array([error.message]);
+        this.setState({ errors });
+      } else {
+        // Override returned error message
+        errors["delete"] = [error];
+        this.setState({ errors });
+      }
     }
   };
 
@@ -572,6 +605,7 @@ export class App extends Component<
                     distributeErrors={this.state.distributeErrors}
                     distributeWaiting={this.state.distributeWaiting}
                     editing={this.state.editing}
+                    enableDelete={this.state.questionsEditableByUser}
                     enableDistribute={this.state.assignment?.is_valid}
                     enableEdit={
                       this.state.questionsEditableByUser ||
@@ -598,6 +632,7 @@ export class App extends Component<
                           .includes(group.pk),
                     )}
                     handleCopy={this.handleCopy}
+                    handleDelete={() => this.setState({ dialogOpen: true })}
                     handleDistribute={this.handleDistribute}
                     handleEdit={this.handleEdit}
                     handleSave={this.handleSave}
@@ -654,6 +689,18 @@ export class App extends Component<
               </Stack>
             </Main>
           </Box>
+
+          <DeleteDialog
+            errors={this.state.errors.delete}
+            gettext={this.props.gettext}
+            handleDelete={this.handleDelete}
+            message={this.props.gettext(
+              "Are you sure you'd like to delete this assignment? This action cannot be undone.",
+            )}
+            onClose={this.onClose}
+            open={this.state.dialogOpen}
+          />
+
           <Snackbar
             message={this.state.snackbarMessage}
             onClose={() =>

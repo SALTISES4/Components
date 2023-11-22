@@ -310,6 +310,7 @@ export type UpdateAssignmentAppProps = {
     assignment: string;
     check_id: string;
     distribute: string;
+    library: string;
     search: string;
     studentgroupassignments: string;
     teacher: string;
@@ -318,9 +319,13 @@ export type UpdateAssignmentAppProps = {
 
 interface UpdateAssignmentAppState extends SnackbarType {
   assignment: AssignmentType;
+  dialogOpen: boolean;
   distributeErrors: string[][];
   distributeWaiting: boolean;
   editing: boolean;
+  errors: {
+    delete: string[][];
+  };
   form: AssignmentForm;
   questionsEditableByUser: boolean;
   questionRanks: QuestionRankType[];

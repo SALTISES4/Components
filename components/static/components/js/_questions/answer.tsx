@@ -4,7 +4,7 @@ import { v1 as uuid } from "uuid";
 
 import { useTheme } from "@mui/material/styles";
 
-//material ui components
+// MUI components
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
@@ -18,17 +18,19 @@ import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-//components
+// Local components
 import { CustomAddBox } from "../styledComponents";
 import { CustomEditorField } from "../_reusableComponents/customEditorField";
+import Errors from "../_reusableComponents/errors";
 
-//types
+// Types
 import { AnswerChoiceForm, EditorIconsType } from "../types";
 
 function Answer({
   gettext,
   EditorIcons,
   forms,
+  formErrors,
   addForm,
   deleteForm,
   setForm,
@@ -36,9 +38,23 @@ function Answer({
   gettext: (a: string) => string;
   EditorIcons: EditorIconsType;
   forms: AnswerChoiceForm[];
+  formErrors: {
+    nonFieldErrors: [];
+    fieldErrors: {
+      expert_answers?: { rationale: string[] }[];
+      sample_answers?: { rationale: string[] }[];
+    }[];
+  };
   addForm: (a: number) => void;
   deleteForm: (a: number) => void;
-  setForm: (a: number, form: AnswerChoiceForm) => void;
+  setForm: (
+    a: number,
+    form: AnswerChoiceForm,
+    fieldErrors?: {
+      expert_answers?: { rationale: string[] }[];
+      sample_answers?: { rationale: string[] }[];
+    },
+  ) => void;
 }): JSX.Element {
   const theme = useTheme();
 
@@ -68,10 +84,18 @@ function Answer({
                         const { expert_answers, ..._answer_choice_form } = {
                           ...form,
                         };
-                        setForm(i, {
-                          ..._answer_choice_form,
-                          correct: false,
-                        });
+                        const _fieldErrors = {
+                          ...formErrors.fieldErrors[i],
+                        };
+                        _fieldErrors.expert_answers = [];
+                        setForm(
+                          i,
+                          {
+                            ..._answer_choice_form,
+                            correct: false,
+                          },
+                          _fieldErrors,
+                        );
                         return;
                       }
                       setForm(i, {
@@ -104,6 +128,15 @@ function Answer({
                 {form.correct
                   ? form.expert_answers?.map((e, j) => (
                       <Fragment key={e.formId}>
+                        <Errors
+                          errors={[
+                            formErrors.fieldErrors[i]?.expert_answers !==
+                            undefined
+                              ? formErrors.fieldErrors[i].expert_answers[j]
+                                  ?.rationale
+                              : [],
+                          ]}
+                        />
                         <CustomEditorField
                           defaultValue=""
                           EditorIcons={EditorIcons}
@@ -147,6 +180,14 @@ function Answer({
 
                 {form.sample_answers.map((s, j) => (
                   <Fragment key={s.formId}>
+                    <Errors
+                      errors={[
+                        formErrors.fieldErrors[i]?.sample_answers !== undefined
+                          ? formErrors.fieldErrors[i].sample_answers[j]
+                              ?.rationale
+                          : [],
+                      ]}
+                    />
                     <CustomEditorField
                       defaultValue=""
                       EditorIcons={EditorIcons}
@@ -168,10 +209,18 @@ function Answer({
                         onClick={() => {
                           const _sample_answers = [...form.sample_answers];
                           _sample_answers.splice(j, 1);
-                          setForm(i, {
-                            ...form,
-                            sample_answers: [..._sample_answers],
-                          });
+                          const _fieldErrors = {
+                            ...formErrors.fieldErrors[i],
+                          };
+                          _fieldErrors.sample_answers?.splice(j, 1);
+                          setForm(
+                            i,
+                            {
+                              ...form,
+                              sample_answers: [..._sample_answers],
+                            },
+                            _fieldErrors,
+                          );
                         }}
                       >
                         <RemoveCircleIcon fontSize="large" />

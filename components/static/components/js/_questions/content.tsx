@@ -9,14 +9,13 @@ import {
   questionVideoURLValidator,
 } from "../validators";
 
-//material ui components
+// MUI components
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
-// import Checkbox from "@mui/material/Checkbox";
 import ClearIcon from "@mui/icons-material/Clear";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
@@ -31,12 +30,13 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-//components
+// Local components
 import { CustomTextField } from "../_reusableComponents/customTextField";
 import { CustomEditorField } from "../_reusableComponents/customEditorField";
+import Errors from "../_reusableComponents/errors";
 import Tooltip from "../_reusableComponents/tooltip";
 
-//types
+// Types
 import { EditorIconsType } from "../types";
 import {
   AllowedEmbedHosts,
@@ -50,11 +50,11 @@ function Content({
   gettext,
   EditorIcons,
   form,
+  formErrors,
   setAnswerStyle,
   setImage,
   setImageAltText,
   setRationaleSectionAlgorithm,
-  // setSequentialReview,
   setText,
   setTitle,
   setType,
@@ -68,11 +68,16 @@ function Content({
     image_alt_text: string;
     pk?: number;
     rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms;
-    // sequential_review: boolean;
     text: string;
     title: string;
     type: keyof typeof QuestionTypes;
     video_url: string;
+  };
+  formErrors: {
+    nonFieldErrors: string[];
+    fieldErrors: {
+      title: string[];
+    };
   };
   setAnswerStyle: (a: AnswerStyles) => void;
   setImage: (a: File, cb: () => void) => void;
@@ -115,6 +120,7 @@ function Content({
       <Divider />
       <CardContent>
         <Stack spacing={"25px"}>
+          <Errors errors={[formErrors.fieldErrors.title]} />
           <CustomTextField
             gettext={gettext}
             autoFocus={true}
@@ -166,15 +172,6 @@ function Content({
                 />
               ))}
             </RadioGroup>
-
-            {/* {form.type == "PI" ? (
-              <FormControlLabel
-                control={<Checkbox />}
-                label={gettext("Sequential rational review?")}
-                value={form.sequential_review}
-                onChange={() => setSequentialReview(!form.sequential_review)}
-              />
-            ) : null} */}
           </FormControl>
 
           <Box>

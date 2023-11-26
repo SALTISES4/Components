@@ -240,6 +240,13 @@ export type AnswerChoiceForm = {
 
 export type CreateQuestionAppState = {
   answerChoiceForm: AnswerChoiceForm[];
+  answerChoiceFormErrors: {
+    nonFieldErrors: [];
+    fieldErrors: {
+      expert_answers?: { rationale: string[] }[];
+      sample_answers?: { rationale: string[] }[];
+    }[];
+  };
   dialogOpen: boolean;
   errors: {
     delete: string[][];
@@ -258,6 +265,12 @@ export type CreateQuestionAppState = {
     title: string;
     type: QuestionTypes;
     video_url: string;
+  };
+  questionFormErrors: {
+    nonFieldErrors: string[];
+    fieldErrors: {
+      title: string[];
+    };
   };
   snackbarIsOpen: boolean;
   snackbarMessage: string;

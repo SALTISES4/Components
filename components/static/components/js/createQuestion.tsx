@@ -74,6 +74,10 @@ export class App extends Component<
           sample_answers: [{ formId: uuid(), rationale: "" }],
         },
       ],
+      answerChoiceFormErrors: {
+        nonFieldErrors: [],
+        fieldErrors: [],
+      },
       dialogOpen: false,
       errors: {
         delete: [],
@@ -92,6 +96,12 @@ export class App extends Component<
         title: "",
         type: "PI",
         video_url: "",
+      },
+      questionFormErrors: {
+        nonFieldErrors: [], // TODO: Use nonfielderror field from API
+        fieldErrors: {
+          title: [],
+        },
       },
       snackbarIsOpen: false,
       snackbarMessage: "",
@@ -140,13 +150,32 @@ export class App extends Component<
 
   save = async () => {
     // Try to save question
-    // May return error if question is no longer editable, or field error, or network error
-    // TODO: Handle errors (especially on create if title not unique)
+    console.info("Submitting save request...");
     console.info(this.state.questionForm);
     console.info(this.state.answerChoiceForm);
 
+    // May return errors if:
+    // - The question is no longer editable or object-level validation fails (i.e. non-field errors) --> Snackbar
+    // - Field-level validation fails (i.e. field errors) --> <Error /> above field
+    // - Network fails (i.e. non-REST errors) --> Snackbar
+
+    // Clear any existing form errors
+    this.setState({
+      answerChoiceFormErrors: {
+        nonFieldErrors: [],
+        fieldErrors: [],
+      },
+      questionFormErrors: {
+        nonFieldErrors: [],
+        fieldErrors: {
+          title: [],
+        },
+      },
+    });
+
+    // Build form
+    // - We may be sending a file along with data so convert JSON to FormData
     this.setState({ waiting: true });
-    // We may be sending a file along with data so convert JSON to FormData
     const formdata = new FormData();
     Object.entries(this.state.questionForm).forEach((e) => {
       // Spread arrays
@@ -197,6 +226,7 @@ export class App extends Component<
       });
     });
 
+    // Submit form
     try {
       if (this.props.pk) {
         // Update question
@@ -235,6 +265,7 @@ export class App extends Component<
       }
     } catch (error: any) {
       if (error instanceof TypeError) {
+        // Network error
         this.setState({
           snackbarSeverity: "error",
           snackbarIsOpen: true,
@@ -243,13 +274,39 @@ export class App extends Component<
         });
       } else if (typeof error === "object") {
         // Field and non-field errors
-        const e = Object.values(error) as string[][];
-        this.setState({
-          snackbarSeverity: "error",
-          snackbarIsOpen: true,
-          snackbarMessage:
-            e[0][0].at(0)?.toLocaleUpperCase() + e[0][0].slice(1),
-        });
+        console.info(error);
+        const _answerChoiceFormErrors = {
+          ...this.state.answerChoiceFormErrors,
+        };
+        const _questionFormErrors = { ...this.state.questionFormErrors };
+        if (Object.hasOwn(error, "title")) {
+          _questionFormErrors.fieldErrors.title = error.title;
+        }
+        if (Object.hasOwn(error, "answerchoice_set")) {
+          error.answerchoice_set.forEach(
+            (
+              e: {
+                expert_answers?: [];
+                sample_answers?: [];
+              },
+              i: number,
+            ) => {
+              _answerChoiceFormErrors.fieldErrors[i] = e;
+            },
+          );
+        }
+        this.setState(
+          {
+            answerChoiceFormErrors: _answerChoiceFormErrors,
+            questionFormErrors: _questionFormErrors,
+            snackbarSeverity: "error",
+            snackbarIsOpen: true,
+            snackbarMessage: this.props.gettext(
+              "Please review the form for errors",
+            ),
+          },
+          () => console.info("Form errors updated", this.state),
+        );
       } else {
         // Provide default error message
         this.setState({
@@ -294,7 +351,7 @@ export class App extends Component<
     }
 
     if (question.answerchoice_set.length > 0) {
-      // Only overwrite default answerChoiceForm if there are existing
+      // Only overwrite default answerChoiceForm if there are existing answer choices
       this.setState({
         answerChoiceForm: question.answerchoice_set.map((answer_choice) => {
           // Invalid questions may be missing sample or expert answers
@@ -423,6 +480,7 @@ export class App extends Component<
                     gettext={this.props.gettext}
                     EditorIcons={this.props.EditorIcons}
                     form={this.state.questionForm}
+                    formErrors={this.state.questionFormErrors}
                     setAnswerStyle={(answer_style) =>
                       this.setState({
                         questionForm: {
@@ -457,11 +515,6 @@ export class App extends Component<
                         },
                       });
                     }}
-                    // setSequentialReview={(sequential_review) =>
-                    //   this.setState({
-                    //     questionForm: { ...this.state.questionForm, sequential_review },
-                    //   })
-                    // }
                     setText={(text) =>
                       this.setState({
                         questionForm: { ...this.state.questionForm, text },
@@ -548,6 +601,7 @@ export class App extends Component<
                   gettext={this.props.gettext}
                   EditorIcons={this.props.EditorIcons}
                   forms={this.state.answerChoiceForm}
+                  formErrors={this.state.answerChoiceFormErrors}
                   addForm={(i) => {
                     console.info("Add answer choice form");
                     const _answerChoiceForm = [...this.state.answerChoiceForm];
@@ -563,22 +617,42 @@ export class App extends Component<
                   }}
                   deleteForm={(i) => {
                     const _answerChoiceForm = [...this.state.answerChoiceForm];
+                    const _answerChoiceFormErrors = {
+                      ...this.state.answerChoiceFormErrors,
+                    };
                     _answerChoiceForm.splice(i, 1);
+                    _answerChoiceFormErrors.fieldErrors.splice(i, 1);
                     this.setState(
                       {
                         answerChoiceForm: [..._answerChoiceForm],
+                        answerChoiceFormErrors: { ..._answerChoiceFormErrors },
                       },
-                      () => console.info(this.state.answerChoiceForm),
+                      () =>
+                        console.info(
+                          this.state.answerChoiceForm,
+                          this.state.answerChoiceFormErrors,
+                        ),
                     );
                   }}
-                  setForm={(i, form) => {
+                  setForm={(i, form, fieldErrors = undefined) => {
                     const _answerChoiceForm = [...this.state.answerChoiceForm];
+                    const _answerChoiceFormErrors = {
+                      ...this.state.answerChoiceFormErrors,
+                    };
                     _answerChoiceForm[i] = form;
+                    if (fieldErrors) {
+                      _answerChoiceFormErrors.fieldErrors[i] = fieldErrors;
+                    }
                     this.setState(
                       {
                         answerChoiceForm: [..._answerChoiceForm],
+                        answerChoiceFormErrors: { ..._answerChoiceFormErrors },
                       },
-                      () => console.info(this.state.answerChoiceForm),
+                      () =>
+                        console.info(
+                          this.state.answerChoiceForm,
+                          this.state.answerChoiceFormErrors,
+                        ),
                     );
                   }}
                 />

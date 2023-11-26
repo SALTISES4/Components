@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 
 import { ErrorsProps } from "./types";
 
-export default function Errors({ errors }: ErrorsProps): JSX.Element {
+export default function Errors({ errors }: ErrorsProps): JSX.Element | null {
   const [errorsOpen, setErrorsOpen] = useState<boolean[]>([]);
 
   useEffect(() => {
@@ -26,27 +26,30 @@ export default function Errors({ errors }: ErrorsProps): JSX.Element {
 
   console.info(errors);
 
-  return (
-    <Box>
-      {errors.map((e, i) => (
-        <Collapse key={i} in={errorsOpen[i]}>
-          <Alert
-            severity="error"
-            action={
-              <IconButton
-                aria-label="close"
-                color="error"
-                onClick={() => closeError(i)}
-              >
-                <CloseIcon />
-              </IconButton>
-            }
-            sx={{ mb: "2px" }}
-          >
-            {titlecase(e[0])}
-          </Alert>
-        </Collapse>
-      ))}
-    </Box>
-  );
+  if (errors.some((el) => el && el.length > 0)) {
+    return (
+      <Box>
+        {errors.map((e, i) => (
+          <Collapse key={i} in={errorsOpen[i]}>
+            <Alert
+              severity="error"
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="error"
+                  onClick={() => closeError(i)}
+                >
+                  <CloseIcon />
+                </IconButton>
+              }
+              sx={{ mb: "2px" }}
+            >
+              {titlecase(e[0])}
+            </Alert>
+          </Collapse>
+        ))}
+      </Box>
+    );
+  }
+  return null;
 }

@@ -241,16 +241,14 @@ export type AnswerChoiceForm = {
 export type CreateQuestionAppState = {
   answerChoiceForm: AnswerChoiceForm[];
   answerChoiceFormErrors: {
-    nonFieldErrors: [];
-    fieldErrors: {
-      expert_answers?: { rationale: string[] }[];
-      sample_answers?: { rationale: string[] }[];
-    }[];
-  };
+    expert_answers?: { rationale: string[] }[];
+    sample_answers?: { rationale: string[] }[];
+  }[];
   dialogOpen: boolean;
   errors: {
     delete: string[][];
   };
+  nonFieldErrors: string[];
   questionForm: {
     answer_style: AnswerStyles;
     category_pk: string[];
@@ -267,10 +265,7 @@ export type CreateQuestionAppState = {
     video_url: string;
   };
   questionFormErrors: {
-    nonFieldErrors: string[];
-    fieldErrors: {
-      title: string[];
-    };
+    title: string[];
   };
   snackbarIsOpen: boolean;
   snackbarMessage: string;

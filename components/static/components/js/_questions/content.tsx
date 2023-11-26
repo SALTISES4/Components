@@ -73,12 +73,7 @@ function Content({
     type: keyof typeof QuestionTypes;
     video_url: string;
   };
-  formErrors: {
-    nonFieldErrors: string[];
-    fieldErrors: {
-      title: string[];
-    };
-  };
+  formErrors: { title: string[] };
   setAnswerStyle: (a: AnswerStyles) => void;
   setImage: (a: File, cb: () => void) => void;
   setImageAltText: (a: string) => void;
@@ -120,7 +115,7 @@ function Content({
       <Divider />
       <CardContent>
         <Stack spacing={"25px"}>
-          <Errors errors={[formErrors.fieldErrors.title]} />
+          <Errors errors={[formErrors.title]} />
           <CustomTextField
             gettext={gettext}
             autoFocus={true}

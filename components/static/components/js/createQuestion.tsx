@@ -3,8 +3,8 @@ export { h, render };
 
 import { v1 as uuid } from "uuid";
 
+// Functions
 import { get, submitFormData } from "./ajax";
-
 import {
   answerChoiceValidator,
   booleanValidator,
@@ -29,6 +29,7 @@ import Typography from "@mui/material/Typography";
 import { Answer, Collaborators, Content, Indexing } from "./_questions";
 import { CancelButton, StepBar } from "./styledComponents";
 import DeleteDialog from "./_reusableComponents/deleteDialog";
+import Errors from "./_reusableComponents/errors";
 import { Main } from "./_reusableComponents/main";
 import { Snackbar } from "./_reusableComponents/snackbar";
 
@@ -74,14 +75,12 @@ export class App extends Component<
           sample_answers: [{ formId: uuid(), rationale: "" }],
         },
       ],
-      answerChoiceFormErrors: {
-        nonFieldErrors: [],
-        fieldErrors: [],
-      },
+      answerChoiceFormErrors: [],
       dialogOpen: false,
       errors: {
         delete: [],
       },
+      nonFieldErrors: [],
       questionForm: {
         answer_style: AnswerStyles.Alphabetic,
         category_pk: [],
@@ -97,12 +96,7 @@ export class App extends Component<
         type: "PI",
         video_url: "",
       },
-      questionFormErrors: {
-        nonFieldErrors: [], // TODO: Use nonfielderror field from API
-        fieldErrors: {
-          title: [],
-        },
-      },
+      questionFormErrors: { title: [] },
       snackbarIsOpen: false,
       snackbarMessage: "",
       snackbarSeverity: undefined,
@@ -161,16 +155,9 @@ export class App extends Component<
 
     // Clear any existing form errors
     this.setState({
-      answerChoiceFormErrors: {
-        nonFieldErrors: [],
-        fieldErrors: [],
-      },
-      questionFormErrors: {
-        nonFieldErrors: [],
-        fieldErrors: {
-          title: [],
-        },
-      },
+      answerChoiceFormErrors: [],
+      nonFieldErrors: [],
+      questionFormErrors: { title: [] },
     });
 
     // Build form
@@ -275,12 +262,14 @@ export class App extends Component<
       } else if (typeof error === "object") {
         // Field and non-field errors
         console.info(error);
-        const _answerChoiceFormErrors = {
-          ...this.state.answerChoiceFormErrors,
-        };
+        const _answerChoiceFormErrors = [...this.state.answerChoiceFormErrors];
+        let _nonFieldErrors = [...this.state.nonFieldErrors];
         const _questionFormErrors = { ...this.state.questionFormErrors };
+        if (Object.hasOwn(error, "non_field_errors")) {
+          _nonFieldErrors = error["non_field_errors"];
+        }
         if (Object.hasOwn(error, "title")) {
-          _questionFormErrors.fieldErrors.title = error.title;
+          _questionFormErrors.title = error.title;
         }
         if (Object.hasOwn(error, "answerchoice_set")) {
           error.answerchoice_set.forEach(
@@ -291,13 +280,14 @@ export class App extends Component<
               },
               i: number,
             ) => {
-              _answerChoiceFormErrors.fieldErrors[i] = e;
+              _answerChoiceFormErrors[i] = e;
             },
           );
         }
         this.setState(
           {
             answerChoiceFormErrors: _answerChoiceFormErrors,
+            nonFieldErrors: _nonFieldErrors,
             questionFormErrors: _questionFormErrors,
             snackbarSeverity: "error",
             snackbarIsOpen: true,
@@ -476,6 +466,7 @@ export class App extends Component<
                   }}
                 />
                 <Stack spacing={"30px"}>
+                  <Errors errors={[this.state.nonFieldErrors]} />
                   <Content
                     gettext={this.props.gettext}
                     EditorIcons={this.props.EditorIcons}
@@ -597,6 +588,7 @@ export class App extends Component<
                       "linear-gradient(to right, #1743B3 100%, #AEAEBF 100%)",
                   }}
                 />
+                <Errors errors={[this.state.nonFieldErrors]} />
                 <Answer
                   gettext={this.props.gettext}
                   EditorIcons={this.props.EditorIcons}
@@ -621,7 +613,7 @@ export class App extends Component<
                       ...this.state.answerChoiceFormErrors,
                     };
                     _answerChoiceForm.splice(i, 1);
-                    _answerChoiceFormErrors.fieldErrors.splice(i, 1);
+                    _answerChoiceFormErrors.splice(i, 1);
                     this.setState(
                       {
                         answerChoiceForm: [..._answerChoiceForm],
@@ -641,7 +633,7 @@ export class App extends Component<
                     };
                     _answerChoiceForm[i] = form;
                     if (fieldErrors) {
-                      _answerChoiceFormErrors.fieldErrors[i] = fieldErrors;
+                      _answerChoiceFormErrors[i] = fieldErrors;
                     }
                     this.setState(
                       {

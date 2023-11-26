@@ -39,12 +39,9 @@ function Answer({
   EditorIcons: EditorIconsType;
   forms: AnswerChoiceForm[];
   formErrors: {
-    nonFieldErrors: [];
-    fieldErrors: {
-      expert_answers?: { rationale: string[] }[];
-      sample_answers?: { rationale: string[] }[];
-    }[];
-  };
+    expert_answers?: { rationale: string[] }[];
+    sample_answers?: { rationale: string[] }[];
+  }[];
   addForm: (a: number) => void;
   deleteForm: (a: number) => void;
   setForm: (
@@ -85,7 +82,7 @@ function Answer({
                           ...form,
                         };
                         const _fieldErrors = {
-                          ...formErrors.fieldErrors[i],
+                          ...formErrors[i],
                         };
                         _fieldErrors.expert_answers = [];
                         setForm(
@@ -130,10 +127,8 @@ function Answer({
                       <Fragment key={e.formId}>
                         <Errors
                           errors={[
-                            formErrors.fieldErrors[i]?.expert_answers !==
-                            undefined
-                              ? formErrors.fieldErrors[i].expert_answers[j]
-                                  ?.rationale
+                            formErrors[i]?.expert_answers !== undefined
+                              ? formErrors[i].expert_answers[j]?.rationale
                               : [],
                           ]}
                         />
@@ -182,9 +177,8 @@ function Answer({
                   <Fragment key={s.formId}>
                     <Errors
                       errors={[
-                        formErrors.fieldErrors[i]?.sample_answers !== undefined
-                          ? formErrors.fieldErrors[i].sample_answers[j]
-                              ?.rationale
+                        formErrors[i]?.sample_answers !== undefined
+                          ? formErrors[i].sample_answers[j]?.rationale
                           : [],
                       ]}
                     />
@@ -210,7 +204,7 @@ function Answer({
                           const _sample_answers = [...form.sample_answers];
                           _sample_answers.splice(j, 1);
                           const _fieldErrors = {
-                            ...formErrors.fieldErrors[i],
+                            ...formErrors[i],
                           };
                           _fieldErrors.sample_answers?.splice(j, 1);
                           setForm(

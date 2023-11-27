@@ -1,4 +1,4 @@
-import { createRef, h } from "preact";
+import { createRef, Fragment, h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 
 import {
@@ -169,75 +169,79 @@ function Content({
             </RadioGroup>
           </FormControl>
 
-          <Box>
-            <FormLabel id="style-radio-group">
-              <Typography variant="h5" sx={{ mb: "2px" }}>
-                {gettext("Answer style *")}
-              </Typography>
-            </FormLabel>
-            <RadioGroup
-              aria-labelledby="style-radio-group"
-              name="answer_style"
-              onChange={(event: h.JSX.TargetedEvent<HTMLInputElement>) => {
-                setAnswerStyle(
-                  parseInt(
-                    (event.target as HTMLInputElement).value,
-                  ) as AnswerStyles,
-                );
-              }}
-              row
-              value={form.answer_style}
-            >
-              {Object.entries(AnswerStyles)
-                .filter((e) => {
-                  // We want the "0" and "1" to be keys
-                  return !isNaN(parseInt(e[0]));
-                })
-                .map(([value, label], i) => (
-                  <FormControlLabel
-                    key={i}
-                    control={<Radio />}
-                    label={label}
-                    value={value}
-                  />
-                ))}
-            </RadioGroup>
-          </Box>
+          {form.type == Object.keys(QuestionTypes)[0] ? (
+            <Fragment>
+              <Box>
+                <FormLabel id="style-radio-group">
+                  <Typography variant="h5" sx={{ mb: "2px" }}>
+                    {gettext("Answer style *")}
+                  </Typography>
+                </FormLabel>
+                <RadioGroup
+                  aria-labelledby="style-radio-group"
+                  name="answer_style"
+                  onChange={(event: h.JSX.TargetedEvent<HTMLInputElement>) => {
+                    setAnswerStyle(
+                      parseInt(
+                        (event.target as HTMLInputElement).value,
+                      ) as AnswerStyles,
+                    );
+                  }}
+                  row
+                  value={form.answer_style}
+                >
+                  {Object.entries(AnswerStyles)
+                    .filter((e) => {
+                      // We want the "0" and "1" to be keys
+                      return !isNaN(parseInt(e[0]));
+                    })
+                    .map(([value, label], i) => (
+                      <FormControlLabel
+                        key={i}
+                        control={<Radio />}
+                        label={label}
+                        value={value}
+                      />
+                    ))}
+                </RadioGroup>
+              </Box>
 
-          <Box>
-            <FormLabel id="algorithm">
-              <Typography variant="h5" sx={{ mb: "2px" }}>
-                {gettext("Rationale section algorithm *")}
-              </Typography>
-            </FormLabel>
-            <RadioGroup
-              row
-              aria-labelledby="algorithm-radio-group"
-              name="rationale_selection_algorithm"
-              onChange={(event: h.JSX.TargetedEvent<HTMLInputElement>) => {
-                const value = (event.target as HTMLInputElement).value;
-                if (
-                  Object.keys(RationaleSelectionAlgorithms).includes(value)
-                ) {
-                  setRationaleSectionAlgorithm(
-                    value as keyof typeof RationaleSelectionAlgorithms,
-                  );
-                }
-              }}
-              value={form.rationale_selection_algorithm}
-            >
-              {Object.entries(RationaleSelectionAlgorithms).map(
-                ([value, label], i) => (
-                  <FormControlLabel
-                    key={i}
-                    control={<Radio />}
-                    label={label}
-                    value={value}
-                  />
-                ),
-              )}
-            </RadioGroup>
-          </Box>
+              <Box>
+                <FormLabel id="algorithm">
+                  <Typography variant="h5" sx={{ mb: "2px" }}>
+                    {gettext("Rationale section algorithm *")}
+                  </Typography>
+                </FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="algorithm-radio-group"
+                  name="rationale_selection_algorithm"
+                  onChange={(event: h.JSX.TargetedEvent<HTMLInputElement>) => {
+                    const value = (event.target as HTMLInputElement).value;
+                    if (
+                      Object.keys(RationaleSelectionAlgorithms).includes(value)
+                    ) {
+                      setRationaleSectionAlgorithm(
+                        value as keyof typeof RationaleSelectionAlgorithms,
+                      );
+                    }
+                  }}
+                  value={form.rationale_selection_algorithm}
+                >
+                  {Object.entries(RationaleSelectionAlgorithms).map(
+                    ([value, label], i) => (
+                      <FormControlLabel
+                        key={i}
+                        control={<Radio />}
+                        label={label}
+                        value={value}
+                      />
+                    ),
+                  )}
+                </RadioGroup>
+              </Box>
+            </Fragment>
+          ) : null}
 
           <Box>
             <Box

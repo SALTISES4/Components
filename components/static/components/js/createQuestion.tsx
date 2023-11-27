@@ -178,40 +178,42 @@ export class App extends Component<
         formdata.append(e[0], e[1]);
       }
     });
-    this.state.answerChoiceForm.forEach((e, i) => {
-      formdata.append(
-        `answerchoice_set[${i}]correct`,
-        JSON.stringify(e.correct),
-      );
-      formdata.append(`answerchoice_set[${i}]text`, e.text);
-      if (e.pk) {
-        formdata.append(`answerchoice_set[${i}]pk`, JSON.stringify(e.pk));
-      }
-      e.sample_answers.forEach((s, j) => {
+    if (this.state.questionForm.type == "PI") {
+      this.state.answerChoiceForm.forEach((e, i) => {
         formdata.append(
-          `answerchoice_set[${i}]sample_answers[${j}]rationale`,
-          s.rationale,
+          `answerchoice_set[${i}]correct`,
+          JSON.stringify(e.correct),
         );
-        if (s.pk) {
-          formdata.append(
-            `answerchoice_set[${i}]sample_answers[${j}]pk`,
-            JSON.stringify(s.pk),
-          );
+        formdata.append(`answerchoice_set[${i}]text`, e.text);
+        if (e.pk) {
+          formdata.append(`answerchoice_set[${i}]pk`, JSON.stringify(e.pk));
         }
-      });
-      e.expert_answers?.forEach((ex, j) => {
-        formdata.append(
-          `answerchoice_set[${i}]expert_answers[${j}]rationale`,
-          ex.rationale,
-        );
-        if (ex.pk) {
+        e.sample_answers.forEach((s, j) => {
           formdata.append(
-            `answerchoice_set[${i}]expert_answers[${j}]pk`,
-            JSON.stringify(ex.pk),
+            `answerchoice_set[${i}]sample_answers[${j}]rationale`,
+            s.rationale,
           );
-        }
+          if (s.pk) {
+            formdata.append(
+              `answerchoice_set[${i}]sample_answers[${j}]pk`,
+              JSON.stringify(s.pk),
+            );
+          }
+        });
+        e.expert_answers?.forEach((ex, j) => {
+          formdata.append(
+            `answerchoice_set[${i}]expert_answers[${j}]rationale`,
+            ex.rationale,
+          );
+          if (ex.pk) {
+            formdata.append(
+              `answerchoice_set[${i}]expert_answers[${j}]pk`,
+              JSON.stringify(ex.pk),
+            );
+          }
+        });
       });
-    });
+    }
 
     // Submit form
     try {
@@ -243,8 +245,7 @@ export class App extends Component<
         console.info(question);
 
         if (question.urls?.update) {
-          const url = new URL(question.urls.update);
-          console.info(url.origin, window.origin);
+          const url = new URL(question.urls.update, window.origin);
           if (url.origin == window.origin) {
             window.location.assign(question.urls.update);
           }
@@ -669,15 +670,29 @@ export class App extends Component<
                 </CancelButton>
               ) : null}
               {this.state.step == 1 ? (
-                <Fragment>
-                  <Button
+                this.state.questionForm.type == "PI" ? (
+                  <Fragment>
+                    <Button
+                      disabled={!this.validateQuestionForm()}
+                      onClick={this.next}
+                      variant="contained"
+                    >
+                      <Typography>{this.props.gettext("Continue")}</Typography>
+                    </Button>
+                  </Fragment>
+                ) : (
+                  <LoadingButton
                     disabled={!this.validateQuestionForm()}
-                    onClick={this.next}
+                    loadingPosition="end"
+                    onClick={this.save}
+                    loading={this.state.waiting}
                     variant="contained"
                   >
-                    <Typography>{this.props.gettext("Continue")}</Typography>
-                  </Button>
-                </Fragment>
+                    <Typography tag={"span"}>
+                      {this.props.gettext("Save")}
+                    </Typography>
+                  </LoadingButton>
+                )
               ) : (
                 <Fragment>
                   <Button onClick={this.back} variant="contained">

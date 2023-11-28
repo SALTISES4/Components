@@ -455,7 +455,9 @@ export class App extends Component<
             {this.state.step == 1 ? (
               <Fragment>
                 <Typography variant="h3">
-                  {this.props.gettext("Step 1/2")}
+                  {this.state.questionForm.type == "PI"
+                    ? this.props.gettext("Step 1/2")
+                    : this.props.gettext("Step 1/1")}
                 </Typography>
                 <Typography fontSize="body1">
                   {this.props.gettext("Question content and settings")}

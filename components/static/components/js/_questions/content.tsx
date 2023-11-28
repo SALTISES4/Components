@@ -86,7 +86,7 @@ function Content({
   setType: (a: keyof typeof QuestionTypes) => void;
   setVideo: (a: string) => void;
 }): JSX.Element {
-  const imageUpload = createRef();
+  const inputFileRef = createRef();
   const reader = new FileReader();
 
   reader.addEventListener("load", () =>
@@ -265,7 +265,7 @@ function Content({
             </Box>
             {form.image.size == 0 ? (
               <Button
-                onClick={() => imageUpload.current.click()}
+                onClick={() => inputFileRef.current.click()}
                 variant="outlined"
                 sx={{ m: 0 }}
               >
@@ -288,7 +288,7 @@ function Content({
                               color="error"
                               onClick={() => {
                                 setImageAndPreview(new File([], ""));
-                                imageUpload.current.value = null;
+                                inputFileRef.current.value = null;
                               }}
                             >
                               <ClearIcon />
@@ -308,7 +308,7 @@ function Content({
                           color="primary"
                           onClick={() => {
                             setImageAndPreview(new File([], ""));
-                            imageUpload.current.value = null;
+                            inputFileRef.current.value = null;
                           }}
                           sx={{
                             position: "absolute",
@@ -337,8 +337,8 @@ function Content({
                 .join(", "),
               type: "file",
             }}
-            inputRef={imageUpload}
-            onChange={() => setImageAndPreview(imageUpload.current.files[0])}
+            inputRef={inputFileRef}
+            onChange={() => setImageAndPreview(inputFileRef.current.files[0])}
             sx={{ display: "none" }}
           />
           {form.image.size > 0 && questionImageValidator(form.image) ? (

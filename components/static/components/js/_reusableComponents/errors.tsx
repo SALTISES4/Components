@@ -24,8 +24,6 @@ export default function Errors({ errors }: ErrorsProps): JSX.Element | null {
     setErrorsOpen(_errorsOpen);
   };
 
-  console.info(errors);
-
   if (errors.some((el) => el && el.length > 0)) {
     return (
       <Box>

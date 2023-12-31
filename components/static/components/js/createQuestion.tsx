@@ -86,6 +86,7 @@ export class App extends Component<
         category_pk: [],
         collaborators_pk: [],
         discipline_pk: null,
+        parent: undefined,
         pk: undefined,
         image: new File([], ""),
         image_alt_text: "",
@@ -217,7 +218,7 @@ export class App extends Component<
 
     // Submit form
     try {
-      if (this.props.pk) {
+      if (this.props.pk && !this.props.copy) {
         // Update question
         const url = `${this.props.urls.create}${this.props.pk}/`;
         const question = (await submitFormData(
@@ -316,12 +317,12 @@ export class App extends Component<
   sync = async (pk: number) => {
     console.info(`Fetching data for question ${pk}`);
     try {
-      // Fetch question data
-      const question = (await get(
-        `${this.props.urls.create + this.props.pk}/`,
-      )) as QuestionType;
+      // Fetch question data (passing only needed fields is quick, but text field does not update)
+      const url = `${this.props.urls.questions}?q=${this.props.pk}`; //&field=title&field=text&field=answerchoice_set&field=answer_style&field=category&field=collaborators&field=discipline&field=image&field=image_alt_text&field=rationale_selection_algorithm&field=type&field=video_url`;
 
-      this.updateForms(question);
+      const questions = (await get(url)) as QuestionType[];
+
+      this.updateForms(questions[0]);
     } catch {}
   };
 
@@ -361,6 +362,17 @@ export class App extends Component<
             })),
             text: answer_choice.text,
           };
+          // NB: Don't include any pks when copying questions; new instances needed
+          // (Backend should handle this anyway)
+          if (this.props.copy) {
+            _answer_choice["pk"] = undefined;
+            _answer_choice["expert_answers"]?.forEach(
+              (e) => (e.pk = undefined),
+            );
+            _answer_choice["sample_answers"].forEach(
+              (s) => (s.pk = undefined),
+            );
+          }
           if (_answer_choice["sample_answers"].length == 0) {
             _answer_choice["sample_answers"].push({
               formId: uuid(),
@@ -394,6 +406,7 @@ export class App extends Component<
           discipline_pk: question.discipline ? question.discipline.pk : null,
           image: file,
           image_alt_text: question.image_alt_text,
+          parent: this.props.copy ? this.props.pk : undefined,
           pk: question.pk,
           rationale_selection_algorithm:
             question.rationale_selection_algorithm ||
@@ -449,7 +462,9 @@ export class App extends Component<
           <Main>
             <Typography variant="h1" align="left">
               {this.props.pk
-                ? `${this.props.gettext("Update question")} ${this.props.pk}`
+                ? this.props.copy
+                  ? `${this.props.gettext("Copy question")} ${this.props.pk}`
+                  : `${this.props.gettext("Update question")} ${this.props.pk}`
                 : this.props.gettext("Create question")}
             </Typography>
             {this.state.step == 1 ? (

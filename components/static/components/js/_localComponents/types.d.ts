@@ -165,6 +165,7 @@ export type QuestionType = {
   is_valid?: boolean;
   matrix?: AnswerMatrixType;
   most_convincing_rationales?: AnswerChoiceWithRationalesType[];
+  parent?: number;
   peer_impact: QuestionPeerImpact;
   pk: number;
   rationale_selection_algorithm?: RationaleSelectionAlgorithms;
@@ -173,6 +174,7 @@ export type QuestionType = {
   type: QuestionTypes;
   urls?: {
     addable_assignments?: string;
+    copy: string;
     matrix?: string;
     rationales?: string;
     test: string;

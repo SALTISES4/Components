@@ -47,11 +47,19 @@ export class CustomEditor extends Component<
   };
 
   componentWillUpdate(nextProps: Readonly<CustomEditorProps>): void {
-    if (!this.props.value && nextProps.value) {
+    console.info(this.props.value);
+    console.info(nextProps.value);
+    console.info(this.state.editorState.getCurrentContent().hasText());
+    if (
+      !this.state.editorState.getCurrentContent().hasText() &&
+      nextProps.value
+    ) {
+      console.info("Initializing editor state");
       // If value is currently empty, initialize with whatever value passed
       this.setState({ editorState: this.init(nextProps.value) });
     }
     if (this.props.value != nextProps.value) {
+      console.info("Validating next value");
       const error = !nextProps.validator(nextProps.value);
       this.setState({ error });
     }

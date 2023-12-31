@@ -17,6 +17,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Checkbox from "@mui/material/Checkbox";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DragIndicatorRoundedIcon from "@mui/icons-material/DragIndicatorRounded";
 import EditIcon from "@mui/icons-material/Edit";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -225,19 +226,35 @@ export function Question({
   };
 
   const editIcon = () => {
-    if (showDetails && question.is_editable) {
+    if (showDetails) {
+      if (question.is_editable) {
+        return (
+          <IconButton
+            color="primary"
+            onClick={(evt: MouseEvent) => {
+              evt.stopPropagation();
+              if (question.urls?.update) {
+                window.location.assign(question.urls.update);
+              }
+            }}
+            title={gettext("Update question")}
+          >
+            <EditIcon fontSize="medium" />
+          </IconButton>
+        );
+      }
       return (
         <IconButton
           color="primary"
           onClick={(evt: MouseEvent) => {
             evt.stopPropagation();
-            if (question.urls?.update) {
-              window.location.assign(question.urls.update);
+            if (question.urls?.copy) {
+              window.location.assign(question.urls.copy);
             }
           }}
-          title={gettext("Update question")}
+          title={gettext("Copy question")}
         >
-          <EditIcon fontSize="medium" />
+          <ContentCopyIcon fontSize="medium" />
         </IconButton>
       );
     }

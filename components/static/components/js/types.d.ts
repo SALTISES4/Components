@@ -218,6 +218,7 @@ export type NavigationAppState = {};
 export type CreateQuestionAppProps = {
   gettext: (a: string) => string;
   nonce: string;
+  copy?: boolean;
   EditorIcons: EditorIconsType;
   pk?: number;
   urls: {
@@ -225,6 +226,7 @@ export type CreateQuestionAppProps = {
     categories: string;
     disciplines: string;
     library: string;
+    questions: string;
     teachers: string;
   };
 };
@@ -256,6 +258,7 @@ export type CreateQuestionAppState = {
     discipline_pk: number | null;
     image: File;
     image_alt_text: string;
+    parent?: number;
     pk?: number;
     rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms;
     sequential_review: boolean;

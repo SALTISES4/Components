@@ -250,6 +250,7 @@ export type CreateQuestionAppState = {
   errors: {
     delete: string[][];
   };
+  loading: boolean;
   nonFieldErrors: string[];
   questionForm: {
     answer_style: AnswerStyles;

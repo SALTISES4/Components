@@ -21,6 +21,7 @@ import {
 // MUI components
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import LinearProgress from "@mui/material/LinearProgress";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -80,6 +81,7 @@ export class App extends Component<
       errors: {
         delete: [],
       },
+      loading: false,
       nonFieldErrors: [],
       questionForm: {
         answer_style: AnswerStyles.Alphabetic,
@@ -315,13 +317,15 @@ export class App extends Component<
 
   sync = async (pk: number) => {
     console.info(`Fetching data for question ${pk}`);
+    this.setState({ loading: true });
     try {
       // Fetch question data (passing only needed fields is quick, but text field does not update)
-      const url = `${this.props.urls.questions}?q=${this.props.pk}`; //&field=title&field=text&field=answerchoice_set&field=answer_style&field=category&field=collaborators&field=discipline&field=image&field=image_alt_text&field=rationale_selection_algorithm&field=type&field=video_url`;
+      const url = `${this.props.urls.questions}?q=${this.props.pk}&field=title&field=text&field=answerchoice_set&field=answer_style&field=category&field=collaborators&field=discipline&field=image&field=image_alt_text&field=rationale_selection_algorithm&field=type&field=video_url`;
 
       const questions = (await get(url)) as QuestionType[];
 
       this.updateForms(questions[0]);
+      this.setState({ loading: false });
     } catch {}
   };
 
@@ -454,6 +458,282 @@ export class App extends Component<
     questionTypeValidator(this.state.questionForm.type) &&
     questionVideoURLValidator(this.state.questionForm.video_url);
 
+  app = () => {
+    return (
+      <Fragment>
+        {this.state.step == 1 ? (
+          <Fragment>
+            <Typography variant="h3">
+              {this.state.questionForm.type == "PI"
+                ? this.props.gettext("Step 1/2")
+                : this.props.gettext("Step 1/1")}
+            </Typography>
+            <Typography fontSize="body1">
+              {this.props.gettext("Question content and settings")}
+            </Typography>
+            <StepBar
+              sx={{
+                background:
+                  "linear-gradient(to right, #1743B3 50%, #AEAEBF 50%)",
+              }}
+            />
+
+            <Stack spacing={"30px"}>
+              <Errors errors={[this.state.nonFieldErrors]} />
+
+              <Content
+                gettext={this.props.gettext}
+                EditorIcons={this.props.EditorIcons}
+                form={this.state.questionForm}
+                formErrors={this.state.questionFormErrors}
+                setAnswerStyle={(answer_style) =>
+                  this.setState({
+                    questionForm: {
+                      ...this.state.questionForm,
+                      answer_style,
+                    },
+                  })
+                }
+                setImage={(image, cb) => {
+                  this.setState(
+                    {
+                      questionForm: {
+                        ...this.state.questionForm,
+                        image,
+                      },
+                    },
+                    cb,
+                  );
+                }}
+                setImageAltText={(image_alt_text) => {
+                  this.setState({
+                    questionForm: {
+                      ...this.state.questionForm,
+                      image_alt_text,
+                    },
+                  });
+                }}
+                setRationaleSectionAlgorithm={(
+                  rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms,
+                ) => {
+                  this.setState({
+                    questionForm: {
+                      ...this.state.questionForm,
+                      rationale_selection_algorithm,
+                    },
+                  });
+                }}
+                setText={(text) =>
+                  this.setState({
+                    questionForm: { ...this.state.questionForm, text },
+                  })
+                }
+                setTitle={(title) =>
+                  this.setState({
+                    questionForm: { ...this.state.questionForm, title },
+                  })
+                }
+                setType={(type) =>
+                  this.setState({
+                    questionForm: { ...this.state.questionForm, type },
+                  })
+                }
+                setVideo={(video_url) =>
+                  this.setState({
+                    questionForm: {
+                      ...this.state.questionForm,
+                      video_url,
+                    },
+                  })
+                }
+              />
+
+              <Indexing
+                gettext={this.props.gettext}
+                categoryValues={this.state.questionForm.category_pk}
+                disciplineValue={this.state.questionForm.discipline_pk}
+                setCategoryValues={(category_pk) =>
+                  this.setState({
+                    questionForm: {
+                      ...this.state.questionForm,
+                      category_pk,
+                    },
+                  })
+                }
+                setDisciplineValue={(discipline_pk) =>
+                  this.setState({
+                    questionForm: {
+                      ...this.state.questionForm,
+                      discipline_pk,
+                    },
+                  })
+                }
+                urls={{
+                  categories: this.props.urls.categories,
+                  disciplines: this.props.urls.disciplines,
+                }}
+              />
+
+              <Collaborators
+                gettext={this.props.gettext}
+                setUserValues={(collaborators_pk) =>
+                  this.setState({
+                    questionForm: {
+                      ...this.state.questionForm,
+                      collaborators_pk,
+                    },
+                  })
+                }
+                url={this.props.urls.teachers}
+                userValues={this.state.questionForm.collaborators_pk}
+              />
+            </Stack>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Typography variant="h2" sx={{ marginTop: "30px" }}>
+              {this.props.gettext("Step 2/2")}
+            </Typography>
+            <Typography fontSize="body1">
+              {this.props.gettext(
+                "Answer choices, sample answers, and expert rationales",
+              )}
+            </Typography>
+            <StepBar
+              sx={{
+                background:
+                  "linear-gradient(to right, #1743B3 100%, #AEAEBF 100%)",
+              }}
+            />
+            <Errors errors={[this.state.nonFieldErrors]} />
+            <Answer
+              gettext={this.props.gettext}
+              EditorIcons={this.props.EditorIcons}
+              forms={this.state.answerChoiceForm}
+              formErrors={this.state.answerChoiceFormErrors}
+              addForm={(i) => {
+                console.info("Add answer choice form");
+                const _answerChoiceForm = [...this.state.answerChoiceForm];
+                _answerChoiceForm.splice(i + 1, 0, {
+                  correct: false,
+                  formId: uuid(),
+                  text: "",
+                  sample_answers: [{ formId: uuid(), rationale: "" }],
+                });
+                this.setState({
+                  answerChoiceForm: [..._answerChoiceForm],
+                });
+              }}
+              deleteForm={(i) => {
+                const _answerChoiceForm = [...this.state.answerChoiceForm];
+                const _answerChoiceFormErrors = {
+                  ...this.state.answerChoiceFormErrors,
+                };
+                _answerChoiceForm.splice(i, 1);
+                _answerChoiceFormErrors.splice(i, 1);
+                this.setState(
+                  {
+                    answerChoiceForm: [..._answerChoiceForm],
+                    answerChoiceFormErrors: {
+                      ..._answerChoiceFormErrors,
+                    },
+                  },
+                  () =>
+                    console.info(
+                      this.state.answerChoiceForm,
+                      this.state.answerChoiceFormErrors,
+                    ),
+                );
+              }}
+              setForm={(i, form, fieldErrors = undefined) => {
+                const _answerChoiceForm = [...this.state.answerChoiceForm];
+                const _answerChoiceFormErrors = {
+                  ...this.state.answerChoiceFormErrors,
+                };
+                _answerChoiceForm[i] = form;
+                if (fieldErrors) {
+                  _answerChoiceFormErrors[i] = fieldErrors;
+                }
+                this.setState(
+                  {
+                    answerChoiceForm: [..._answerChoiceForm],
+                    answerChoiceFormErrors: {
+                      ..._answerChoiceFormErrors,
+                    },
+                  },
+                  () =>
+                    console.info(
+                      this.state.answerChoiceForm,
+                      this.state.answerChoiceFormErrors,
+                    ),
+                );
+              }}
+            />
+          </Fragment>
+        )}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: "10px",
+            margin: "50px 0px 0px 0px",
+          }}
+        >
+          <CancelButton onClick={() => history.back()}>
+            <Typography>{this.props.gettext("Cancel")}</Typography>
+          </CancelButton>
+          {this.props.pk ? (
+            <CancelButton onClick={() => this.setState({ dialogOpen: true })}>
+              <Typography>{this.props.gettext("Delete")}</Typography>
+            </CancelButton>
+          ) : null}
+          {this.state.step == 1 ? (
+            this.state.questionForm.type == "PI" ? (
+              <Fragment>
+                <Button
+                  disabled={!this.validateQuestionForm()}
+                  onClick={this.next}
+                  variant="contained"
+                >
+                  <Typography>{this.props.gettext("Continue")}</Typography>
+                </Button>
+              </Fragment>
+            ) : (
+              <LoadingButton
+                disabled={!this.validateQuestionForm()}
+                loadingPosition="end"
+                onClick={this.save}
+                loading={this.state.waiting}
+                variant="contained"
+              >
+                <Typography tag={"span"}>
+                  {this.props.gettext("Save")}
+                </Typography>
+              </LoadingButton>
+            )
+          ) : (
+            <Fragment>
+              <Button onClick={this.back} variant="contained">
+                <Typography>{this.props.gettext("Back")}</Typography>
+              </Button>
+              <LoadingButton
+                disabled={!this.validateAnswerForm()}
+                loadingPosition="end"
+                onClick={this.save}
+                loading={this.state.waiting}
+                variant="contained"
+              >
+                <Typography tag={"span"}>
+                  {this.props.gettext("Save")}
+                </Typography>
+              </LoadingButton>
+            </Fragment>
+          )}
+        </Box>
+      </Fragment>
+    );
+  };
+
   render() {
     return (
       <ThemeProvider theme={formTheme}>
@@ -466,268 +746,14 @@ export class App extends Component<
                   : `${this.props.gettext("Update question")} ${this.props.pk}`
                 : this.props.gettext("Create question")}
             </Typography>
-            {this.state.step == 1 ? (
-              <Fragment>
-                <Typography variant="h3">
-                  {this.state.questionForm.type == "PI"
-                    ? this.props.gettext("Step 1/2")
-                    : this.props.gettext("Step 1/1")}
-                </Typography>
-                <Typography fontSize="body1">
-                  {this.props.gettext("Question content and settings")}
-                </Typography>
-                <StepBar
-                  sx={{
-                    background:
-                      "linear-gradient(to right, #1743B3 50%, #AEAEBF 50%)",
-                  }}
-                />
-                <Stack spacing={"30px"}>
-                  <Errors errors={[this.state.nonFieldErrors]} />
-                  <Content
-                    gettext={this.props.gettext}
-                    EditorIcons={this.props.EditorIcons}
-                    form={this.state.questionForm}
-                    formErrors={this.state.questionFormErrors}
-                    setAnswerStyle={(answer_style) =>
-                      this.setState({
-                        questionForm: {
-                          ...this.state.questionForm,
-                          answer_style,
-                        },
-                      })
-                    }
-                    setImage={(image, cb) => {
-                      this.setState(
-                        {
-                          questionForm: { ...this.state.questionForm, image },
-                        },
-                        cb,
-                      );
-                    }}
-                    setImageAltText={(image_alt_text) => {
-                      this.setState({
-                        questionForm: {
-                          ...this.state.questionForm,
-                          image_alt_text,
-                        },
-                      });
-                    }}
-                    setRationaleSectionAlgorithm={(
-                      rationale_selection_algorithm: keyof typeof RationaleSelectionAlgorithms,
-                    ) => {
-                      this.setState({
-                        questionForm: {
-                          ...this.state.questionForm,
-                          rationale_selection_algorithm,
-                        },
-                      });
-                    }}
-                    setText={(text) =>
-                      this.setState({
-                        questionForm: { ...this.state.questionForm, text },
-                      })
-                    }
-                    setTitle={(title) =>
-                      this.setState({
-                        questionForm: { ...this.state.questionForm, title },
-                      })
-                    }
-                    setType={(type) =>
-                      this.setState({
-                        questionForm: { ...this.state.questionForm, type },
-                      })
-                    }
-                    setVideo={(video_url) =>
-                      this.setState({
-                        questionForm: {
-                          ...this.state.questionForm,
-                          video_url,
-                        },
-                      })
-                    }
-                  />
 
-                  <Indexing
-                    gettext={this.props.gettext}
-                    categoryValues={this.state.questionForm.category_pk}
-                    disciplineValue={this.state.questionForm.discipline_pk}
-                    setCategoryValues={(category_pk) =>
-                      this.setState({
-                        questionForm: {
-                          ...this.state.questionForm,
-                          category_pk,
-                        },
-                      })
-                    }
-                    setDisciplineValue={(discipline_pk) =>
-                      this.setState({
-                        questionForm: {
-                          ...this.state.questionForm,
-                          discipline_pk,
-                        },
-                      })
-                    }
-                    urls={{
-                      categories: this.props.urls.categories,
-                      disciplines: this.props.urls.disciplines,
-                    }}
-                  />
-
-                  <Collaborators
-                    gettext={this.props.gettext}
-                    setUserValues={(collaborators_pk) =>
-                      this.setState({
-                        questionForm: {
-                          ...this.state.questionForm,
-                          collaborators_pk,
-                        },
-                      })
-                    }
-                    url={this.props.urls.teachers}
-                    userValues={this.state.questionForm.collaborators_pk}
-                  />
-                </Stack>
-              </Fragment>
+            {this.state.loading ? (
+              <Box sx={{ width: "100%" }}>
+                <LinearProgress />
+              </Box>
             ) : (
-              <Fragment>
-                <Typography variant="h2" sx={{ marginTop: "30px" }}>
-                  {this.props.gettext("Step 2/2")}
-                </Typography>
-                <Typography fontSize="body1">
-                  {this.props.gettext(
-                    "Answer choices, sample answers, and expert rationales",
-                  )}
-                </Typography>
-                <StepBar
-                  sx={{
-                    background:
-                      "linear-gradient(to right, #1743B3 100%, #AEAEBF 100%)",
-                  }}
-                />
-                <Errors errors={[this.state.nonFieldErrors]} />
-                <Answer
-                  gettext={this.props.gettext}
-                  EditorIcons={this.props.EditorIcons}
-                  forms={this.state.answerChoiceForm}
-                  formErrors={this.state.answerChoiceFormErrors}
-                  addForm={(i) => {
-                    console.info("Add answer choice form");
-                    const _answerChoiceForm = [...this.state.answerChoiceForm];
-                    _answerChoiceForm.splice(i + 1, 0, {
-                      correct: false,
-                      formId: uuid(),
-                      text: "",
-                      sample_answers: [{ formId: uuid(), rationale: "" }],
-                    });
-                    this.setState({
-                      answerChoiceForm: [..._answerChoiceForm],
-                    });
-                  }}
-                  deleteForm={(i) => {
-                    const _answerChoiceForm = [...this.state.answerChoiceForm];
-                    const _answerChoiceFormErrors = {
-                      ...this.state.answerChoiceFormErrors,
-                    };
-                    _answerChoiceForm.splice(i, 1);
-                    _answerChoiceFormErrors.splice(i, 1);
-                    this.setState(
-                      {
-                        answerChoiceForm: [..._answerChoiceForm],
-                        answerChoiceFormErrors: { ..._answerChoiceFormErrors },
-                      },
-                      () =>
-                        console.info(
-                          this.state.answerChoiceForm,
-                          this.state.answerChoiceFormErrors,
-                        ),
-                    );
-                  }}
-                  setForm={(i, form, fieldErrors = undefined) => {
-                    const _answerChoiceForm = [...this.state.answerChoiceForm];
-                    const _answerChoiceFormErrors = {
-                      ...this.state.answerChoiceFormErrors,
-                    };
-                    _answerChoiceForm[i] = form;
-                    if (fieldErrors) {
-                      _answerChoiceFormErrors[i] = fieldErrors;
-                    }
-                    this.setState(
-                      {
-                        answerChoiceForm: [..._answerChoiceForm],
-                        answerChoiceFormErrors: { ..._answerChoiceFormErrors },
-                      },
-                      () =>
-                        console.info(
-                          this.state.answerChoiceForm,
-                          this.state.answerChoiceFormErrors,
-                        ),
-                    );
-                  }}
-                />
-              </Fragment>
+              this.app()
             )}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: "10px",
-                margin: "50px 0px 0px 0px",
-              }}
-            >
-              <CancelButton onClick={() => history.back()}>
-                <Typography>{this.props.gettext("Cancel")}</Typography>
-              </CancelButton>
-              {this.props.pk ? (
-                <CancelButton
-                  onClick={() => this.setState({ dialogOpen: true })}
-                >
-                  <Typography>{this.props.gettext("Delete")}</Typography>
-                </CancelButton>
-              ) : null}
-              {this.state.step == 1 ? (
-                this.state.questionForm.type == "PI" ? (
-                  <Fragment>
-                    <Button
-                      disabled={!this.validateQuestionForm()}
-                      onClick={this.next}
-                      variant="contained"
-                    >
-                      <Typography>{this.props.gettext("Continue")}</Typography>
-                    </Button>
-                  </Fragment>
-                ) : (
-                  <LoadingButton
-                    disabled={!this.validateQuestionForm()}
-                    loadingPosition="end"
-                    onClick={this.save}
-                    loading={this.state.waiting}
-                    variant="contained"
-                  >
-                    <Typography tag={"span"}>
-                      {this.props.gettext("Save")}
-                    </Typography>
-                  </LoadingButton>
-                )
-              ) : (
-                <Fragment>
-                  <Button onClick={this.back} variant="contained">
-                    <Typography>{this.props.gettext("Back")}</Typography>
-                  </Button>
-                  <LoadingButton
-                    disabled={!this.validateAnswerForm()}
-                    loadingPosition="end"
-                    onClick={this.save}
-                    loading={this.state.waiting}
-                    variant="contained"
-                  >
-                    <Typography tag={"span"}>
-                      {this.props.gettext("Save")}
-                    </Typography>
-                  </LoadingButton>
-                </Fragment>
-              )}
-            </Box>
 
             <DeleteDialog
               errors={this.state.errors.delete}

@@ -38,7 +38,7 @@ const modules = [
   "createQuestion",
   // "updateAssignment",
   // "library",
-  // "search",
+  "search",
   // "styleguide",
 ];
 

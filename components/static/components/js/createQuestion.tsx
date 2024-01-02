@@ -86,7 +86,6 @@ export class App extends Component<
         category_pk: [],
         collaborators_pk: [],
         discipline_pk: null,
-        parent: undefined,
         pk: undefined,
         image: new File([], ""),
         image_alt_text: "",
@@ -406,7 +405,7 @@ export class App extends Component<
           discipline_pk: question.discipline ? question.discipline.pk : null,
           image: file,
           image_alt_text: question.image_alt_text,
-          parent: this.props.copy ? this.props.pk : undefined,
+          parent: this.props.copy ? this.props.pk : null,
           pk: question.pk,
           rationale_selection_algorithm:
             question.rationale_selection_algorithm ||

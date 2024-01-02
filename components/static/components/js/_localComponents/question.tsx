@@ -428,7 +428,7 @@ export function Question({
   };
 
   const discipline = () => {
-    if (question?.discipline) {
+    if (question?.discipline?.title) {
       return (
         <Tag
           sx={{ backgroundColor: theme.palette.primary1.main }}

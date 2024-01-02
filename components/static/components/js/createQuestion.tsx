@@ -416,7 +416,7 @@ export class App extends Component<
             "prefer_expert_and_highly_voted",
           sequential_review: false,
           text: question.text,
-          title: question.title,
+          title: this.props.copy ? `${question.title} copy` : question.title,
           type: question.type,
           video_url: question.video_url,
         },

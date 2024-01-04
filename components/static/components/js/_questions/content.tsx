@@ -111,7 +111,7 @@ function Content({
 
   return (
     <Card>
-      <CardHeader title={"Content"} />
+      <CardHeader title={gettext("Content")} />
       <Divider />
       <CardContent>
         <Stack spacing={"25px"}>

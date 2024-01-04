@@ -110,6 +110,8 @@ export type CategoryType = {
 
 export type DisciplineType = { pk: number; title: string };
 
+export type InstitutionType = { pk: number; name: string };
+
 export type CollectionType = {
   description: string;
   discipline?: DisciplineType;
